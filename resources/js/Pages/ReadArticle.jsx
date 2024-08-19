@@ -77,6 +77,8 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                                         isAuthenticated={isAuthenticated}
                                     />
                                 </div>
+
+                                
                               </div>
                             {/* Body */}
                             <div className="mt-8">
