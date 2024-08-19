@@ -1,12 +1,22 @@
-
-import UnauthenticatedLayout from '@/Layouts/UnauthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import React from 'react'
+import RatingComponent from "@/Components/RatingComponent";
+import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import React from "react";
 
 export default function ReadArticle({ auth, article, categories, userRating }) {
+    // Check if user is authenticated
+    const isAuthenticated = !!auth.user;
+
+    // Function to handle text-to-speech
+    const handleTextToSpeech = () => {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(article.body);
+        utterance.lang = "en-US"; // Set the language of the speech
+        synth.speak(utterance);
+    };
+
     return (
         <UnauthenticatedLayout
-            auth={auth}
             categories={categories}
             user={auth.user}
             header={
@@ -17,7 +27,6 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                 </div>
             }
         >
-            {/* <div>{JSON.stringify(article, undefined, 2)}</div> */}
             <Head title={`Article ${article.title}`} />
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
@@ -37,7 +46,7 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex flex-col md:flex-row justify-between">
                                 {/* ID */}
-                                <div className="flex items-center gap-2">
+                                <div className="flex gap-2">
                                     <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
                                         {article.article_image_path && (
                                             <img
@@ -57,29 +66,37 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                                         <p className="mt-1">
                                             Publish: {article.created_at}
                                         </p>
+                                        <h4 className="font-bold mt-4 text-lg">
+                                            Category: {article.category.name}
+                                        </h4>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg">
-                                        Category: {article.category.name}
-                                    </h4>
-                                    {/* <RatingComponent
+                                    <RatingComponent
                                         articleId={article.id}
-                                        userRating={userRating}
-                                    /> */}
+                                        isAuthenticated={isAuthenticated}
+                                    />
                                 </div>
-                            </div>
+                              </div>
                             {/* Body */}
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
                                 </p>
                             </div>
+                            {/* Text-to-Speech Button */}
+                            <div className="mt-4">
+                                <button
+                                    onClick={handleTextToSpeech}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Listen to this article
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </UnauthenticatedLayout>
-        // <div>{JSON.stringify(article, undefined, 2)}</div>
     );
 }

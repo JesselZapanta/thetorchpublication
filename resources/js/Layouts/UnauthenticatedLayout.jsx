@@ -4,7 +4,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function UnauthenticatedLayout({ auth, children, categories, header }) {
+export default function UnauthenticatedLayout({ user, children, categories, header }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -45,14 +45,14 @@ export default function UnauthenticatedLayout({ auth, children, categories, head
                         </div>
                         <div className="hidden sm:flex sm:ms-6">
                             <nav className="-mx-3 flex flex-1 justify-end">
-                                {auth.user ? (
-                                    auth.user.role === "admin" ? (
+                                {user ? (
+                                    user.role === "admin" ? (
                                         <NavLink
                                             href={route("admin.dashboard")}
                                         >
                                             Dashboard
                                         </NavLink>
-                                    ) : auth.user.role === "student" ? (
+                                    ) : user.role === "student" ? (
                                         <NavLink
                                             href={route("student.dashboard")}
                                         >
@@ -61,8 +61,8 @@ export default function UnauthenticatedLayout({ auth, children, categories, head
                                     ) : null
                                 ) : (
                                     <>
-                                        <NavLink href={route("register")}>
-                                            Register
+                                        <NavLink href={route("login")}>
+                                            LOGIN
                                         </NavLink>
                                     </>
                                 )}
@@ -118,7 +118,7 @@ export default function UnauthenticatedLayout({ auth, children, categories, head
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">
-                        {!auth.user && (
+                        {!user && (
                             <>
                                 <ResponsiveNavLink href={route("login")}>
                                     Log in

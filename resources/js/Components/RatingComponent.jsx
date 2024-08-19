@@ -1,33 +1,91 @@
-import { useForm } from "@inertiajs/react";
-import Rating from "@mui/material/Rating";
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
-export default function RatingComponent({ articleId, userRating }) {
-    const { data, setData, post } = useForm({
-        rating: userRating || null,
-        article_id: articleId,
-    });
+export default function RatingComponent({ articleId, isAuthenticated }) {
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [averageRating, setAverageRating] = useState(0);
+    const [userHasRated, setUserHasRated] = useState(false);
+    const [totalRatings, setTotalRatings] = useState(0);
+    const [userRating, setUserRating] = useState("None");
 
-    const handleRatingChange = (event, newValue) => {
-        // Update local state with new rating
-        setData("rating", newValue);
+    // color variables
+    const colors = {
+        hoverColor: "gold",
+        ratedColor: "green",
+        averageColor: "blue",
+        unauthenticatedColor: "red",
+        defaultColor: "white",
+    };
 
-        // Post the updated rating to the server
-        post(route("rate.article"), {
-            // Pass additional data if needed
-            preserveState: true,  // Optional: preserve form state
+    // Function to fetch and update ratings
+    const fetchAndUpdateRatings = async () => {
+        const response = await axios.get(`/get-article-ratings/${articleId}`);
+        const { avgRating, totalRatings, userRating } = response.data;
+
+        setAverageRating(Math.round(avgRating) || 0);
+        setTotalRatings(totalRatings || 0);
+        setUserRating(userRating || "None");
+        setUserHasRated(userRating !== "None");
+    };
+
+    // Fetch ratings when the component mounts
+    useEffect(() => {
+        fetchAndUpdateRatings();
+    }, [articleId]);
+
+    const handleRatingClick = async (star) => {
+        if (!isAuthenticated) return;
+
+        await axios.post("/rate-article", {
+            article_id: articleId,
+            rating: star,
         });
+
+        // Update local state
+        setRating(star);
+        setUserHasRated(true);
+
+        // Fetch updated ratings immediately
+        fetchAndUpdateRatings();
     };
 
     return (
         <div>
-            <h2>Rate this article:</h2>
-            <Rating
-                name="simple-controlled"
-                value={data.rating}
-                onChange={handleRatingChange}
-                size="large"
-            />
+            {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                    key={star}
+                    className="star"
+                    style={{
+                        cursor: isAuthenticated ? "pointer" : "not-allowed",
+                        color: isAuthenticated
+                            ? hoverRating >= star
+                                ? colors.hoverColor
+                                : userHasRated
+                                ? averageRating >= star
+                                    ? colors.ratedColor
+                                    : colors.defaultColor
+                                : averageRating >= star
+                                ? colors.averageColor
+                                : colors.defaultColor
+                            : averageRating >= star
+                            ? colors.unauthenticatedColor
+                            : colors.defaultColor,
+                        fontSize: "35px",
+                        transition: "color 0.3s ease",
+                    }}
+                    onClick={() => isAuthenticated && handleRatingClick(star)}
+                    onMouseEnter={() => isAuthenticated && setHoverRating(star)}
+                    onMouseLeave={() => isAuthenticated && setHoverRating(0)}
+                >
+                    ★
+                </span>
+            ))}
+            <div>Average Rating: {averageRating} / 5</div>
+            <div>Total Ratings: {totalRatings}</div>
+            {isAuthenticated && userHasRated && (
+                <div>Your Rating: {userRating}</div>
+            )}
         </div>
     );
 }
