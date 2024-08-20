@@ -40,6 +40,7 @@ Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('ar
 Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
 Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
 
+//Admin Routes
 Route::middleware(['auth','admin' ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 

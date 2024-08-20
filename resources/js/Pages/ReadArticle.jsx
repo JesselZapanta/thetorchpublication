@@ -7,51 +7,47 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
     // Check if user is authenticated
     const isAuthenticated = !!auth.user;
 
+    // State to manage speech synthesis
     const [isSpeaking, setIsSpeaking] = useState(false);
-    const [synth, setSynth] = useState(null);
-    const [utterance, setUtterance] = useState(null);
+    const speechSynthesis = window.speechSynthesis;
 
-    useEffect(() => {
-        setSynth(window.speechSynthesis);
-        return () => {
-            if (synth) {
-                synth.cancel(); // Stop TTS if the page reloads
-            }
-        };
-    }, [synth]);
+    const handleSpeak = () => {
+        if (isSpeaking) {
+            speechSynthesis.cancel();
+            setIsSpeaking(false);
+        } else {
+            // Get the selected text or fallback to the full article text
+            const selectedText = window.getSelection().toString();
+            const textToRead =
+                selectedText ||
+                `${article.title}. Written by ${article.createdBy.name}. ${article.body}`;
+            const utterance = new SpeechSynthesisUtterance(textToRead);
 
-    const handleTextToSpeech = () => {
-        if (!synth) return;
+            utterance.onend = () => {
+                setIsSpeaking(false);
+            };
 
-        const fullText = `${article.title}. Author: ${article.createdBy.name}. ${article.body}`;
-        const newUtterance = new SpeechSynthesisUtterance(fullText);
-        newUtterance.lang = "en-US";
-
-        newUtterance.onstart = () => setIsSpeaking(true);
-        newUtterance.onend = () => setIsSpeaking(false);
-
-        setUtterance(newUtterance);
-        synth.speak(newUtterance);
-    };
-
-    const handlePauseResume = () => {
-        if (!synth) return;
-
-        if (synth.speaking) {
-            if (synth.paused) {
-                synth.resume();
-            } else {
-                synth.pause();
-            }
+            setIsSpeaking(true);
+            speechSynthesis.speak(utterance);
         }
     };
 
-    const handleStop = () => {
-        if (!synth) return;
+    useEffect(() => {
+        const stopSpeech = () => {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+        };
 
-        synth.cancel();
-        setIsSpeaking(false);
-    };
+        // Add event listener for beforeunload
+        window.addEventListener("beforeunload", stopSpeech);
+
+        // Cleanup function
+        return () => {
+            stopSpeech(); // Ensure speech synthesis is stopped
+            window.removeEventListener("beforeunload", stopSpeech);
+        };
+    }, [speechSynthesis]);
 
     return (
         <UnauthenticatedLayout
@@ -121,30 +117,15 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                                     {article.body}
                                 </p>
                             </div>
-
-                            <div className="mt-4 flex gap-2">
-                                <button
-                                    onClick={handleTextToSpeech}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                    disabled={isSpeaking}
-                                >
-                                    Listen to this article
-                                </button>
-                                <button
-                                    onClick={handlePauseResume}
-                                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
-                                    disabled={!isSpeaking}
-                                >
-                                    {synth && synth.paused ? "Resume" : "Pause"}
-                                </button>
-                                <button
-                                    onClick={handleStop}
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                    disabled={!isSpeaking}
-                                >
-                                    Stop
-                                </button>
-                            </div>
+                        </div>
+                        <div className="py-4">
+                            {/* TTS Button */}
+                            <button
+                                onClick={handleSpeak}
+                                className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                            >
+                                {isSpeaking ? "Stop Reading" : "Read Aloud"}
+                            </button>
                         </div>
                     </div>
                 </div>
