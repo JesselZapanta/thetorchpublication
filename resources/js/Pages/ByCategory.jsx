@@ -61,9 +61,9 @@ export default function ByCategory({
                     </p>
                 </div>
 
-                <div className="max-w-7xl py-12 flex gap-4 mx-auto">
+                <div className="max-w-7xl py-12 flex flex-col sm:flex-row gap-4 mx-auto">
                     <SelectInput
-                        className="w-full p-2 border border-gray-300 rounded-lg"
+                        className="w-full sm:w-1/3 p-2 border border-gray-300 rounded-lg"
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
                     >
@@ -73,13 +73,14 @@ export default function ByCategory({
                         <option value="title_asc">Title: A-Z</option>
                         <option value="title_desc">Title: Z-A</option>
                     </SelectInput>
+
                     <TextInput
                         type="text"
                         placeholder="Search articles..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyPress={handleKeyPress}
-                        className="w-full p-2 border border-gray-300 rounded-lg"
+                        className="w-full sm:w-2/3 p-2 border border-gray-300 rounded-lg"
                     />
                 </div>
 
