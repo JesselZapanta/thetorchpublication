@@ -1,12 +1,56 @@
-
-import UnauthenticatedLayout from '@/Layouts/UnauthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import React from 'react'
+import RatingComponent from "@/Components/RatingComponent";
+import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
 
 export default function ReadArticle({ auth, article, categories, userRating }) {
+    // Check if user is authenticated
+    const isAuthenticated = !!auth.user;
+
+    // State to manage speech synthesis
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const speechSynthesis = window.speechSynthesis;
+
+    const handleSpeak = () => {
+        if (isSpeaking) {
+            speechSynthesis.cancel();
+            setIsSpeaking(false);
+        } else {
+            // Get the selected text or fallback to the full article text
+            const selectedText = window.getSelection().toString();
+            const textToRead =
+                selectedText ||
+                `${article.title}. Written by ${article.createdBy.name}. ${article.body}`;
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+
+            utterance.onend = () => {
+                setIsSpeaking(false);
+            };
+
+            setIsSpeaking(true);
+            speechSynthesis.speak(utterance);
+        }
+    };
+
+    useEffect(() => {
+        const stopSpeech = () => {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+        };
+
+        // Add event listener for beforeunload
+        window.addEventListener("beforeunload", stopSpeech);
+
+        // Cleanup function
+        return () => {
+            stopSpeech(); // Ensure speech synthesis is stopped
+            window.removeEventListener("beforeunload", stopSpeech);
+        };
+    }, [speechSynthesis]);
+
     return (
         <UnauthenticatedLayout
-            auth={auth}
             categories={categories}
             user={auth.user}
             header={
@@ -17,7 +61,6 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                 </div>
             }
         >
-            {/* <div>{JSON.stringify(article, undefined, 2)}</div> */}
             <Head title={`Article ${article.title}`} />
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
@@ -36,8 +79,7 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                         </div>
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex flex-col md:flex-row justify-between">
-                                {/* ID */}
-                                <div className="flex items-center gap-2">
+                                <div className="flex gap-2">
                                     <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
                                         {article.article_image_path && (
                                             <img
@@ -57,29 +99,37 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                                         <p className="mt-1">
                                             Publish: {article.created_at}
                                         </p>
+                                        <h4 className="font-bold mt-4 text-lg">
+                                            Category: {article.category.name}
+                                        </h4>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg">
-                                        Category: {article.category.name}
-                                    </h4>
-                                    {/* <RatingComponent
+                                    <RatingComponent
                                         articleId={article.id}
-                                        userRating={userRating}
-                                    /> */}
+                                        isAuthenticated={isAuthenticated}
+                                    />
                                 </div>
                             </div>
-                            {/* Body */}
+
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
                                 </p>
                             </div>
                         </div>
+                        <div className="py-4">
+                            {/* TTS Button */}
+                            <button
+                                onClick={handleSpeak}
+                                className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                            >
+                                {isSpeaking ? "Stop Reading" : "Read Aloud"}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </UnauthenticatedLayout>
-        // <div>{JSON.stringify(article, undefined, 2)}</div>
     );
 }

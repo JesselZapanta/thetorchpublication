@@ -10,9 +10,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\StudentDashboardController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +37,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 
-Route::post('/rate-article', [RatingController::class, 'store'])->name('rate.article');
+Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
+Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
 
+//Admin Routes
 Route::middleware(['auth','admin' ])->group(function() {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');//for error
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('user', AdminUserController::class);
