@@ -3,15 +3,12 @@ import { stringify } from "qs";
 
 export default function Welcome({ auth, categories }) {
     return (
-        <UnauthenticatedLayout
-            user={auth.user}
-            categories={categories}
-        >
+        <UnauthenticatedLayout user={auth.user} categories={categories}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
                     Welcome to the TORCH Publication Website
                 </h1>
-                <p>The Oficial Publication of TCGC</p>
+                <p>The Oficial Publication of Tangub City Global College</p>
                 {/* <pre className="text-white">
                     {JSON.stringify(categoryarticles, undefined, 2)}
                 </pre> */}
