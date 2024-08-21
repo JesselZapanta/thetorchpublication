@@ -8,7 +8,7 @@ export default function Welcome({ auth, categories }) {
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
                     Welcome to the TORCH Publication Website
                 </h1>
-                <p>The Oficial Publication of Tangub City Global College</p>
+                <p className="text-center text-xl">The Oficial Publication of Tangub City Global College</p>
                 {/* <pre className="text-white">
                     {JSON.stringify(categoryarticles, undefined, 2)}
                 </pre> */}
