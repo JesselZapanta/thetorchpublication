@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');//toto why null??
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');//todo why null??
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('edited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');

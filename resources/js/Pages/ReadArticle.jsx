@@ -66,10 +66,20 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="relative">
-                            <img
+                            {/* <img
                                 src={article.article_image_path}
                                 alt={article.name}
                                 className="w-full object-cover"
+                            /> */}
+                            <img
+                                src={article.article_image_path}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
+                                    e.target.src =
+                                        "/images/default/article.png";
+                                }}
+                                alt={article.title}
                             />
                             <div className="absolute bottom-0 left-0 w-full px-6 py-2 bg-slate-800 bg-opacity-50">
                                 <p className="italic text-justify text-white text-xs">
@@ -88,6 +98,11 @@ export default function ReadArticle({ auth, article, categories, userRating }) {
                                                         .profile_image_path
                                                 }
                                                 className="object-cover w-full h-full"
+                                                onError={(e) => {
+                                                    e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
+                                                    e.target.src =
+                                                        "/images/default/profile.jpg";
+                                                }}
                                                 alt={article.article_image_path}
                                             />
                                         )}
