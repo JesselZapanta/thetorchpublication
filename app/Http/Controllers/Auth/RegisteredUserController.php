@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirect to the dashboard
-        return redirect(route('dashboard'));//todo redirect to specific route
+        return redirect(route('student.dashboard'));//todo redirect to specific route
 
         // Redirect to the dashboard
         // if($request->user()->role == 'admin'){
