@@ -8,7 +8,6 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Laravel\Scout\Builder;
 
 class HomeController extends Controller
 {
@@ -62,30 +61,13 @@ class HomeController extends Controller
     }
 
 
-    // public function read(Article $article)
-    // {
-    //     // Fetch active categories
-    //     $categories = Category::where('status', 'active')->limit(10)->get();
-    //     return inertia('ReadArticle', [
-    //         'article' => new ArticleResource($article),
-    //         'categories' => CategoryResource::collection($categories),
-    //     ]);
-    // }
     public function read(Article $article)
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
-
-        // Use Laravel Scout to search for related articles
-        $relatedArticles = Article::search($article->title . ' ' . $article->body)
-            ->where('id', '!=', $article->id)
-            ->take(5)
-            ->get();
-
         return inertia('ReadArticle', [
             'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
-            'relatedArticles' => ArticleResource::collection($relatedArticles),
         ]);
     }
 
