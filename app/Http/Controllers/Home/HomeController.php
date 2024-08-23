@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CommentResource;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -65,12 +67,19 @@ class HomeController extends Controller
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
+
+        // Fetch the latest 5 comments for the article
+        $comments = Comment::where('article_id', $article->id)
+            ->latest()
+            // ->take(5)
+            ->get();
+
         return inertia('ReadArticle', [
             'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
+            'comments' => CommentResource::collection($comments),
         ]);
     }
-
 }
 
 

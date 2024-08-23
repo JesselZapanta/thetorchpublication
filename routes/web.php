@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
+use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
@@ -37,8 +38,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 
+// ratings
 Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
 Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
+
+// Comments
+Route::resource('comments', CommentController::class)->middleware('auth');
 
 //Admin Routes
 Route::middleware(['auth','admin' ])->group(function() {

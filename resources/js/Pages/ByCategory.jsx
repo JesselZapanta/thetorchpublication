@@ -1,10 +1,8 @@
 import TextInput from "@/Components/TextInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import SelectInput from "@/Components/SelectInput";
-import { Link } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import ArticleCard from "@/Components/ArticleCard";
-import ReadArticle from "./ReadArticle";
 
 export default function ByCategory({
     auth,
