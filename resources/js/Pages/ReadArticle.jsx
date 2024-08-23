@@ -221,7 +221,7 @@ export default function ReadArticle({
                             </form>
                         ) : (
                             <Link href={route("login")}>
-                                <p className="text-white w-full text-center">
+                                <p className="text-gray-400 w-full text-center">
                                     Please log in to comment.
                                 </p>
                             </Link>
@@ -272,63 +272,66 @@ export default function ReadArticle({
                                         <h2>{auth.user.id}</h2> */}
                                         </div>
                                     </div>
-                                    <div className="ms-3 relative">
-                                        <Dropdown>
-                                            <Dropdown.Trigger>
-                                                {/* <span className="text-white cursor-pointer">
-                                                ...
-                                            </span> */}
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={1.5}
-                                                    stroke="currentColor"
-                                                    className="size-6 text-white cursor-pointer"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                    />
-                                                </svg>
-                                            </Dropdown.Trigger>
+                                    {auth.user && (
+                                        <div className="ms-3 relative">
+                                            <Dropdown>
+                                                <Dropdown.Trigger>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={1.5}
+                                                        stroke="currentColor"
+                                                        className="size-6 text-white cursor-pointer"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                        />
+                                                    </svg>
+                                                </Dropdown.Trigger>
 
-                                            <Dropdown.Content>
-                                                {/* Delete */}
-                                                {auth.user.id ===
-                                                    comment.user_id && (
-                                                    <Dropdown.Link
-                                                        onClick={(event) => {
-                                                            event.preventDefault();
-                                                            handleDelete(
-                                                                comment
-                                                            );
-                                                        }}
-                                                    >
-                                                        Delete
-                                                    </Dropdown.Link>
-                                                )}
-                                                {/* Report */}
-                                                {auth ? (
-                                                    <Dropdown.Link
-                                                        onClick={(event) => {
-                                                            event.preventDefault();
-                                                            handleDelete(
-                                                                comment
-                                                            );
-                                                        }}
-                                                    >
-                                                        Report[todo]
-                                                    </Dropdown.Link>
-                                                ) : (
-                                                    console.log(
-                                                        "User is not authenticated"
-                                                    )
-                                                )}
-                                            </Dropdown.Content>
-                                        </Dropdown>
-                                    </div>
+                                                <Dropdown.Content>
+                                                    {/* Delete */}
+                                                    {auth.user.id ===
+                                                        comment.user_id && (
+                                                        <Dropdown.Link
+                                                            onClick={(
+                                                                event
+                                                            ) => {
+                                                                event.preventDefault();
+                                                                handleDelete(
+                                                                    comment
+                                                                );
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </Dropdown.Link>
+                                                    )}
+                                                    {/* Report */}
+                                                    {auth ? (
+                                                        <Dropdown.Link
+                                                            onClick={(
+                                                                event
+                                                            ) => {
+                                                                event.preventDefault();
+                                                                handleDelete(
+                                                                    comment
+                                                                );
+                                                            }}
+                                                        >
+                                                            Report[todo]
+                                                        </Dropdown.Link>
+                                                    ) : (
+                                                        console.log(
+                                                            "User is not authenticated"
+                                                        )
+                                                    )}
+                                                </Dropdown.Content>
+                                            </Dropdown>
+                                        </div>
+                                    )}
                                 </div>
                             ))
                         ) : (
