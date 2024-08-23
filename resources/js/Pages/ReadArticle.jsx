@@ -222,7 +222,7 @@ export default function ReadArticle({
                         ) : (
                             <Link href={route("login")}>
                                 <p className="text-gray-400 w-full text-center">
-                                    Please log in to comment.
+                                    Please log in to your account to comment.
                                 </p>
                             </Link>
                         )}
