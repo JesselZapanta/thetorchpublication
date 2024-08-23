@@ -9,6 +9,7 @@ export default function Welcome({ auth, categories }) {
                     Welcome to the TORCH Publication Website
                 </h1>
                 <p className="text-center text-xl">The Oficial Publication of Tangub City Global College</p>
+                <p className="text-center text-xl">TCGC</p>
                 {/* <pre className="text-white">
                     {JSON.stringify(categoryarticles, undefined, 2)}
                 </pre> */}
