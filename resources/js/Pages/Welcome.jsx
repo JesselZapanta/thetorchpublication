@@ -10,6 +10,7 @@ export default function Welcome({ auth, categories }) {
                 </h1>
                 <p className="text-center text-xl">The Oficial Publication of Tangub City Global College</p>
                 <p className="text-center text-xl">TCGC</p>
+                <p className="text-center text-xl">Maloro, Tangub City</p>
                 {/* <pre className="text-white">
                     {JSON.stringify(categoryarticles, undefined, 2)}
                 </pre> */}
