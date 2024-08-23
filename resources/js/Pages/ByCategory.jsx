@@ -89,7 +89,7 @@ export default function ByCategory({
                 </div>
 
                 {filteredArticles.length > 0 ? (
-                    <div className="max-w-7xl py-12 mx-auto grid grid-cols-3 gap-2">
+                    <div className="max-w-7xl py-2 mx-auto grid grid-cols-3 gap-2">
                         {filteredArticles.map((article) => (
                             <ArticleCard key={article.id} article={article} />
                         ))}

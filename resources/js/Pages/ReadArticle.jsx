@@ -6,6 +6,7 @@ import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import Dropdown from "./../Components/Dropdown";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
 
 export default function ReadArticle({
     auth,
@@ -75,6 +76,7 @@ export default function ReadArticle({
         });
     };
 
+    //Delete Comment
     const handleDelete = (comment) => {
         if (comment) {
             router.delete(route("comments.destroy", comment.id), {
@@ -89,6 +91,15 @@ export default function ReadArticle({
         }
     };
 
+    const [showAll, setShowAll] = useState(false);
+
+    const toggleComments = () => {
+        setShowAll(!showAll);
+    };
+
+    const displayedComments = showAll
+        ? comments.data
+        : comments.data.slice(0, 3);
 
     return (
         <UnauthenticatedLayout
@@ -224,7 +235,6 @@ export default function ReadArticle({
                                 <p className="text-gray-400 w-full text-center">
                                     Please log in to your account to comment.
                                 </p>
-                                <p>dadadasdas</p>
                             </Link>
                         )}
                     </div>
@@ -233,9 +243,24 @@ export default function ReadArticle({
                     </pre> */}
                     {/*Show limit 5 Comment */}
                     <div className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
+                        <div className="flex gap-1">
+                            <button
+                                onClick={toggleComments}
+                                className="text-gray-400"
+                            >
+                                {showAll
+                                    ? "show less comments"
+                                    : "view all comments"}
+                            </button>
+                            <ChevronDownIcon
+                                className={`w-6 ${
+                                    showAll ? "rotate-180" : ""
+                                } text-gray-400`}
+                            />
+                        </div>
                         {/* comments */}
-                        {comments.data.length > 0 ? (
-                            comments.data.map((comment) => (
+                        {displayedComments.length > 0 ? (
+                            displayedComments.map((comment) => (
                                 <div
                                     className="flex flex-col md:flex-row justify-between"
                                     key={comment.id}
@@ -251,7 +276,7 @@ export default function ReadArticle({
                                                     }
                                                     className="object-cover w-full h-full"
                                                     onError={(e) => {
-                                                        e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
+                                                        e.target.onerror = null;
                                                         e.target.src =
                                                             "/images/default/profile.jpg";
                                                     }}
@@ -263,14 +288,12 @@ export default function ReadArticle({
                                         </div>
                                         <div className="bg-gray-900 w-full rounded-md p-2 shadow-sm border-indigo-500">
                                             <small className="text-sm text-purple-300">
-                                                {comment.commentedBy.name} |
+                                                {comment.commentedBy.name} |{" "}
                                                 {comment.created_at}
                                             </small>
                                             <p className="text-justify text-gray-100 mt-2">
                                                 {comment.body}
                                             </p>
-                                            {/* <h2>{comment.user_id}</h2>
-                                        <h2>{auth.user.id}</h2> */}
                                         </div>
                                     </div>
                                     {auth.user && (
@@ -292,9 +315,7 @@ export default function ReadArticle({
                                                         />
                                                     </svg>
                                                 </Dropdown.Trigger>
-
                                                 <Dropdown.Content>
-                                                    {/* Delete */}
                                                     {auth.user.id ===
                                                         comment.user_id && (
                                                         <Dropdown.Link
@@ -310,25 +331,16 @@ export default function ReadArticle({
                                                             Delete
                                                         </Dropdown.Link>
                                                     )}
-                                                    {/* Report */}
-                                                    {auth ? (
-                                                        <Dropdown.Link
-                                                            onClick={(
-                                                                event
-                                                            ) => {
-                                                                event.preventDefault();
-                                                                handleDelete(
-                                                                    comment
-                                                                );
-                                                            }}
-                                                        >
-                                                            Report[todo]
-                                                        </Dropdown.Link>
-                                                    ) : (
-                                                        console.log(
-                                                            "User is not authenticated"
-                                                        )
-                                                    )}
+                                                    <Dropdown.Link
+                                                        onClick={(event) => {
+                                                            event.preventDefault();
+                                                            handleReport(
+                                                                comment
+                                                            );
+                                                        }}
+                                                    >
+                                                        Report[todo]
+                                                    </Dropdown.Link>
                                                 </Dropdown.Content>
                                             </Dropdown>
                                         </div>
