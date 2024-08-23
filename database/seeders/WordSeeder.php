@@ -16,6 +16,8 @@ class WordSeeder extends Seeder
             // Bisaya
             ['name' => 'yawa'],
             ['name' => 'atay'],
+            ['name' => 'nimal'],
+            ['name' => 'deputa'],
             ['name' => 'giatay'],
             ['name' => 'geatay'],
             ['name' => 'bogo'],
