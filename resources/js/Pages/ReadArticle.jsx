@@ -243,21 +243,23 @@ export default function ReadArticle({
                     </pre> */}
                     {/*Show limit 5 Comment */}
                     <div className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
-                        <div className="flex gap-1">
-                            <button
-                                onClick={toggleComments}
-                                className="text-gray-400"
-                            >
-                                {showAll
-                                    ? "show less comments"
-                                    : "view all comments"}
-                            </button>
-                            <ChevronDownIcon
-                                className={`w-6 ${
-                                    showAll ? "rotate-180" : ""
-                                } text-gray-400`}
-                            />
-                        </div>
+                        {displayedComments.length > 0 && (
+                            <div className="flex gap-1">
+                                <button
+                                    onClick={toggleComments}
+                                    className="text-gray-400"
+                                >
+                                    {showAll
+                                        ? "show less comments"
+                                        : "view all comments"}
+                                </button>
+                                <ChevronDownIcon
+                                    className={`w-6 ${
+                                        showAll ? "rotate-180" : ""
+                                    } text-gray-400`}
+                                />
+                            </div>
+                        )}
                         {/* comments */}
                         {displayedComments.length > 0 ? (
                             displayedComments.map((comment) => (
@@ -348,7 +350,7 @@ export default function ReadArticle({
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center text-gray-400 mt-4">
+                            <div className="text-center text-gray-400">
                                 No comments yet.
                             </div>
                         )}
