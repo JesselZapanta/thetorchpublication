@@ -27,12 +27,6 @@ class CategorySeeder extends Seeder
                 'category_image_path' => 'NEWS_category_image_path.png'
             ],
             [
-                'name' => 'SPORTS',
-                'description' => 'This is SPORTS description',
-                'status' => 'active',
-                'category_image_path' => 'SPORTS_category_image_path.png'
-            ],
-            [
                 'name' => 'FEATURE',
                 'description' => 'This is FEATURE description',
                 'status' => 'active',
