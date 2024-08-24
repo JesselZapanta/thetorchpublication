@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
+use App\Http\Controllers\CommentLikeController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
@@ -44,6 +45,12 @@ Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArt
 
 // Comments
 Route::resource('comments', CommentController::class)->middleware('auth');
+
+//Comment Like Dislike
+Route::middleware('auth')->group(function () {
+    Route::post('/comments/{comment}/like', [CommentLikeController::class, 'toggleLike'])->name('comments.like');
+    Route::post('/comments/{comment}/dislike', [CommentLikeController::class, 'toggleDislike'])->name('comments.dislike');
+});
 
 //Admin Routes
 Route::middleware(['auth','admin' ])->group(function() {

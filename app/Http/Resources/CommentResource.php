@@ -21,6 +21,11 @@ class CommentResource extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'commentedBy' => new UserResource($this->commentedBy), // Assuming you have a UserResource
+
+            'likes_count' => $this->likes()->count(),
+            'dislikes_count' => $this->dislikes()->count(),
+            'user_has_liked' => $this->likes()->where('user_id', auth()->id())->exists(),
+            'user_has_disliked' => $this->dislikes()->where('user_id', auth()->id())->exists(),
         ];
     }
 }

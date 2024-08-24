@@ -1,12 +1,9 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import RatingComponent from "@/Components/RatingComponent";
-import TextAreaInput from "@/Components/TextAreaInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
-import Dropdown from "./../Components/Dropdown";
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
+import CommentsSection from "@/Components/CommentsSection";
+import CommentForm from "@/Components/CommentForm ";
 
 export default function ReadArticle({
     auth,
@@ -77,6 +74,7 @@ export default function ReadArticle({
     };
 
     //Delete Comment
+    
     const handleDelete = (comment) => {
         if (comment) {
             router.delete(route("comments.destroy", comment.id), {
@@ -91,15 +89,37 @@ export default function ReadArticle({
         }
     };
 
-    const [showAll, setShowAll] = useState(false);
-
-    const toggleComments = () => {
-        setShowAll(!showAll);
+    const handleReport = (comment) => {
+        // Implement report functionality here
     };
 
-    const displayedComments = showAll
-        ? comments.data
-        : comments.data.slice(0, 3);
+    //LIke and Dislike
+
+    const { post: likePost, post: dislikePost } = useForm();
+
+    const handleLike = (commentId) => {
+        likePost(route("comments.like", commentId), {
+            onSuccess: () => {
+                console.log("Comment liked successfully");
+            },
+            onError: (errors) => {
+                console.error("Failed to like comment", errors);
+            },
+            preserveScroll: true, // Preserve scroll on success
+        });
+    };
+
+    const handleDislike = (commentId) => {
+        dislikePost(route("comments.dislike", commentId), {
+            onSuccess: () => {
+                console.log("Comment disliked successfully");
+            },
+            onError: (errors) => {
+                console.error("Failed to dislike comment", errors);
+            },
+            preserveScroll: true, // Preserve scroll on success
+        });
+    };
 
     return (
         <UnauthenticatedLayout
@@ -196,165 +216,26 @@ export default function ReadArticle({
                             </button>
                         </div>
                     </div>
-                    {/* Comment Form */}
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg my-4 p-4">
-                        {auth.user ? (
-                            <form onSubmit={handleSubmit}>
-                                {/* body */}
-                                <div className="mt-2 w-full">
-                                    <InputLabel
-                                        htmlFor="body"
-                                        value="Write a Comment"
-                                    />
-
-                                    <TextAreaInput
-                                        id="body"
-                                        type="text"
-                                        name="body"
-                                        value={data.body}
-                                        className="mt-2 block w-full min-h-24 resize-none"
-                                        onChange={(e) =>
-                                            setData("body", e.target.value)
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.body}
-                                        className="mt-2"
-                                    />
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-                                >
-                                    Comment
-                                </button>
-                            </form>
-                        ) : (
-                            <Link href={route("login")}>
-                                <p className="text-gray-400 w-full text-center">
-                                    Please log in to your account to comment.
-                                </p>
-                            </Link>
-                        )}
-                    </div>
+                    {/* Use the CommentForm Component */}
+                    <CommentForm
+                        auth={auth}
+                        data={data}
+                        setData={setData}
+                        handleSubmit={handleSubmit}
+                        errors={errors}
+                    />
                     {/* <pre className="text-white">
                         {JSON.stringify(comments, undefined, 2)}
                     </pre> */}
                     {/*Show limit 5 Comment */}
-                    <div className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
-                        {displayedComments.length > 0 && (
-                            <div className="flex gap-1">
-                                <button
-                                    onClick={toggleComments}
-                                    className="text-gray-400"
-                                >
-                                    {showAll
-                                        ? "show less comments"
-                                        : "view all comments"}
-                                </button>
-                                <ChevronDownIcon
-                                    className={`w-6 ${
-                                        showAll ? "rotate-180" : ""
-                                    } text-gray-400`}
-                                />
-                            </div>
-                        )}
-                        {/* comments */}
-                        {displayedComments.length > 0 ? (
-                            displayedComments.map((comment) => (
-                                <div
-                                    className="flex flex-col md:flex-row justify-between"
-                                    key={comment.id}
-                                >
-                                    <div className="flex gap-2 w-full">
-                                        <div className="rounded-full overflow-hidden w-14 h-14 flex-shrink-0 border-2 border-indigo-500">
-                                            {comment.commentedBy
-                                                .profile_image_path && (
-                                                <img
-                                                    src={
-                                                        comment.commentedBy
-                                                            .profile_image_path
-                                                    }
-                                                    className="object-cover w-full h-full"
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src =
-                                                            "/images/default/profile.jpg";
-                                                    }}
-                                                    alt={
-                                                        comment.commentedBy.name
-                                                    }
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="bg-gray-900 w-full rounded-md p-2 shadow-sm border-indigo-500">
-                                            <small className="text-sm text-purple-300">
-                                                {comment.commentedBy.name} |{" "}
-                                                {comment.created_at}
-                                            </small>
-                                            <p className="text-justify text-gray-100 mt-2">
-                                                {comment.body}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    {auth.user && (
-                                        <div className="ms-3 relative">
-                                            <Dropdown>
-                                                <Dropdown.Trigger>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        strokeWidth={1.5}
-                                                        stroke="currentColor"
-                                                        className="size-6 text-white cursor-pointer"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                        />
-                                                    </svg>
-                                                </Dropdown.Trigger>
-                                                <Dropdown.Content>
-                                                    {auth.user.id ===
-                                                        comment.user_id && (
-                                                        <Dropdown.Link
-                                                            onClick={(
-                                                                event
-                                                            ) => {
-                                                                event.preventDefault();
-                                                                handleDelete(
-                                                                    comment
-                                                                );
-                                                            }}
-                                                        >
-                                                            Delete
-                                                        </Dropdown.Link>
-                                                    )}
-                                                    <Dropdown.Link
-                                                        onClick={(event) => {
-                                                            event.preventDefault();
-                                                            handleReport(
-                                                                comment
-                                                            );
-                                                        }}
-                                                    >
-                                                        Report[todo]
-                                                    </Dropdown.Link>
-                                                </Dropdown.Content>
-                                            </Dropdown>
-                                        </div>
-                                    )}
-                                </div>
-                            ))
-                        ) : (
-                            <div className="text-center text-gray-400">
-                                No comments yet.
-                            </div>
-                        )}
-                    </div>
+                    <CommentsSection
+                        auth={auth}
+                        comments={comments}
+                        handleDelete={handleDelete}
+                        handleReport={handleReport}
+                        handleLike={handleLike}
+                        handleDislike={handleDislike}
+                    />
                 </div>
             </div>
         </UnauthenticatedLayout>
