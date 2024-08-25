@@ -43,15 +43,15 @@ class RatingController extends Controller
         $userId = auth()->id();
         $averageRating = Rating::where('article_id', $articleId)->avg('rating');
         $userRating = Rating::where('article_id', $articleId)->where('user_id', $userId)->value('rating');
-        $totalRatings = Rating::where('article_id', $articleId)->count(); // Get the total number of ratings
+        $totalRatings = Rating::where('article_id', $articleId)->count();
 
-        $averageRating = round($averageRating);
-        $averageRating = max(1, min($averageRating, 5));
+        $averageRating = round($averageRating ?? 0, 1); // Default to 0 if null
 
         return response()->json([
             'userRating' => $userRating ?: 'None', // Return 'None' if no rating
-            'avgRating' => $averageRating ?: 0,
-            'totalRatings' => $totalRatings, // Include the total number of ratings
+            'avgRating' => $averageRating,
+            'totalRatings' => $totalRatings,
         ]);
     }
+
 }
