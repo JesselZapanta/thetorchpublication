@@ -80,6 +80,14 @@ class HomeController extends Controller
             'comments' => CommentResource::collection($comments),
         ]);
     }
+
+    public function incrementViews($articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        $article->increment('views');
+
+        return redirect()->route('article.read', $articleId);
+    }
 }
 
 

@@ -1,11 +1,30 @@
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React from "react";
 
-export default function ArticleCard({article}) {
+export default function ArticleCard({ article }) {
+    const incrementViews = () => {
+        router.post(
+            `/articles/${article.id}/increment-views`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    router.visit(route("article.read", article.id));
+                },
+            }
+        );
+    };
+
     return (
         <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40 h-64">
-                <Link href={route("article.read", article.id)}>
+                <Link
+                    href={route("article.read", article.id)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        incrementViews();
+                    }}
+                >
                     <img
                         src={article.article_image_path}
                         className="w-full h-full object-cover"
@@ -22,6 +41,10 @@ export default function ArticleCard({article}) {
                     <div className="flex items-center justify-between mb-3">
                         <Link
                             href={route("article.read", article.id)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                incrementViews();
+                            }}
                             className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
                         >
                             {article.title.length > 150

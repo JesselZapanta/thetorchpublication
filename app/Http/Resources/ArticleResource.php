@@ -23,6 +23,7 @@ class ArticleResource extends JsonResource
             'body' => $this->body,
             'status' => $this->status,
             'caption' => $this->caption,
+            'views' => $this->views,
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
             'createdBy' => new UserResource($this->createdBy),

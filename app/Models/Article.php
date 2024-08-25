@@ -19,6 +19,7 @@ class Article extends Model
         'caption',
         'body',
         'status',
+        'views',
     ];
 
     public function category()

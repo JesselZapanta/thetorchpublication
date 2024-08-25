@@ -161,36 +161,41 @@ export default function ReadArticle({
                         </div>
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex flex-col md:flex-row justify-between">
-                                <div className="flex gap-2">
-                                    <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
-                                        {article.createdBy
-                                            .profile_image_path && (
-                                            <img
-                                                src={
-                                                    article.createdBy
-                                                        .profile_image_path
-                                                }
-                                                className="object-cover w-full h-full"
-                                                onError={(e) => {
-                                                    e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
-                                                    e.target.src =
-                                                        "/images/default/profile.jpg";
-                                                }}
-                                                alt={article.createdBy.name}
-                                            />
-                                        )}
+                                <div className="flex gap-2 flex-col">
+                                    <div className="flex gap-2">
+                                        <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
+                                            {article.createdBy
+                                                .profile_image_path && (
+                                                <img
+                                                    src={
+                                                        article.createdBy
+                                                            .profile_image_path
+                                                    }
+                                                    className="object-cover w-full h-full"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
+                                                        e.target.src =
+                                                            "/images/default/profile.jpg";
+                                                    }}
+                                                    alt={article.createdBy.name}
+                                                />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-lg">
+                                                Author: {article.createdBy.name}
+                                            </h4>
+                                            <p className="mt-1">
+                                                Publish: {article.created_at}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-bold text-lg">
-                                            Author: {article.createdBy.name}
-                                        </h4>
-                                        <p className="mt-1">
-                                            Publish: {article.created_at}
-                                        </p>
-                                        <h4 className="font-bold mt-4 text-lg">
-                                            Category: {article.category.name}
-                                        </h4>
-                                    </div>
+                                    <h4 className="font-bold mt-4 text-lg">
+                                        Category: {article.category.name}
+                                    </h4>
+                                    <p className="mt-1">
+                                        Views: {article.views}
+                                    </p>
                                 </div>
                                 <div>
                                     <RatingComponent
@@ -199,7 +204,7 @@ export default function ReadArticle({
                                     />
                                 </div>
                             </div>
-
+                            <div className="w-full h-[2px] bg-violet-400 my-8"></div>
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}

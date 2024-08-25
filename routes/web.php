@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
+Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
 
 // ratings
 Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
