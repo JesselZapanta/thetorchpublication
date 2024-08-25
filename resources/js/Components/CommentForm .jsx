@@ -22,6 +22,7 @@ export default function CommentForm({
                             id="body"
                             type="text"
                             name="body"
+                            placeholder={`Comment as ${auth.user.name}`}
                             value={data.body}
                             className="mt-2 block w-full min-h-24 resize-none"
                             onChange={(e) => setData("body", e.target.value)}
