@@ -176,6 +176,7 @@ class AdminArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
 
+        //todo very important must fix, all the image will be deleted 
         if($image){
             // Delete the old  image if a new one is uploaded
             if($article->article_image_path){

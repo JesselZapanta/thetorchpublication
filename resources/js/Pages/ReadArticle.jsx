@@ -191,7 +191,10 @@ export default function ReadArticle({
                                         </div>
                                     </div>
                                     <h4 className="font-bold mt-4 text-lg">
-                                        Category: {article.category.name}
+                                        Category:{" "}
+                                        <span className="text-violet-500">
+                                            { article.category.name}
+                                        </span>
                                     </h4>
                                     <p className="mt-1">
                                         Views: {article.views}

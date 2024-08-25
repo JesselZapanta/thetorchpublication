@@ -4,7 +4,13 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function UnauthenticatedLayout({ user, children, categories, header }) {
+
+export default function UnauthenticatedLayout({
+    user,
+    children,
+    categories,
+    header,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -24,10 +30,11 @@ export default function UnauthenticatedLayout({ user, children, categories, head
                                     href={route("home")}
                                     active={route().current("home")}
                                 >
-                                    HOME
+                                    Home
                                 </NavLink>
                                 {categories.data.map((category) => (
                                     <NavLink
+                                        className="capitalize"
                                         href={route(
                                             "articles.byCategory",
                                             category.id
@@ -38,7 +45,7 @@ export default function UnauthenticatedLayout({ user, children, categories, head
                                             category.id
                                         )}
                                     >
-                                        {category.name}
+                                        {category.name.toLowerCase()}
                                     </NavLink>
                                 ))}
                             </div>
@@ -131,7 +138,46 @@ export default function UnauthenticatedLayout({ user, children, categories, head
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <ResponsiveNavLink href="/">Home</ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("home")}
+                            active={route().current("home")}
+                        >
+                            Home
+                        </ResponsiveNavLink>
+                        {categories.data.map((category) => (
+                            <ResponsiveNavLink
+                                className="capitalize"
+                                href={route("articles.byCategory", category.id)}
+                                key={category.id}
+                                active={route().current(
+                                    "articles.byCategory",
+                                    category.id
+                                )}
+                            >
+                                {category.name.toLowerCase()}
+                            </ResponsiveNavLink>
+                        ))}
+                        {user ? (
+                            user.role === "admin" ? (
+                                <ResponsiveNavLink
+                                    href={route("admin.dashboard")}
+                                >
+                                    Dashboard
+                                </ResponsiveNavLink>
+                            ) : user.role === "student" ? (
+                                <ResponsiveNavLink
+                                    href={route("student.dashboard")}
+                                >
+                                    Dashboard
+                                </ResponsiveNavLink>
+                            ) : null
+                        ) : (
+                            <>
+                                <ResponsiveNavLink href={route("login")}>
+                                    LOGIN
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

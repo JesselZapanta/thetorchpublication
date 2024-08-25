@@ -17,11 +17,21 @@ class HomeController extends Controller
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
-        $articles = Article::all();
+
+        // Fetch the featured article
+        $featuredArticle = Article::where('is_featured', '1')->limit(1)->get();
+
+        // Get the top 3 articles with the most views
+        $topArticles = Article::orderBy('views', 'DESC')->limit(2)->get();
+        //todo might include the ratings and the comments
+
+        $latestArticles = Article::orderBy('created_at', 'DESC')->limit(10)->get();
 
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),
-            // 'articles' => ArticleResource::collection($articles),
+            'featuredArticle' => ArticleResource::collection($featuredArticle),
+            'topArticles' => ArticleResource::collection($topArticles),
+            'latestArticles' => ArticleResource::collection($latestArticles),
         ]);
     }
 

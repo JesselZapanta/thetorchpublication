@@ -51,7 +51,7 @@ export default function ByCategory({
     return (
         <UnauthenticatedLayout user={auth.user} categories={categories}>
             <div className="w-full mx-auto text-center">
-                <div className="w-full h-64 overflow-hidden bg-gray-600 flex items-center justify-center relative">
+                <div className="w-full h-[200px] sm:h-[350px] overflow-hidden bg-gray-600 flex items-center justify-center relative">
                     <img
                         src={currentCategory.category_image_path}
                         className="w-full h-full object-cover"
@@ -65,7 +65,7 @@ export default function ByCategory({
                         {currentCategory.name}
                     </p>
                 </div>
-                <div className="max-w-7xl py-12 flex flex-col sm:flex-row gap-4 mx-auto">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center py-4 overflow-hidden flex gap-2">
                     <SelectInput
                         className="w-full sm:w-1/3 p-2 border border-gray-300 rounded-lg"
                         value={sort}
@@ -87,18 +87,22 @@ export default function ByCategory({
                         className="w-full sm:w-2/3 p-2 border border-gray-300 rounded-lg"
                     />
                 </div>
-
-                {filteredArticles.length > 0 ? (
-                    <div className="max-w-7xl py-2 mx-auto grid grid-cols-3 gap-2">
-                        {filteredArticles.map((article) => (
-                            <ArticleCard key={article.id} article={article} />
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-gray-400 text-center">
-                        No articles found.
-                    </p>
-                )}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
+                    {filteredArticles.length > 0 ? (
+                        <div className="max-w-7xl py-2 mx-auto w-full grid lg:grid-cols-3 gap-4">
+                            {filteredArticles.map((article) => (
+                                <ArticleCard
+                                    key={article.id}
+                                    article={article}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-gray-400 text-center">
+                            No articles found.
+                        </p>
+                    )}
+                </div>
             </div>
         </UnauthenticatedLayout>
     );

@@ -8,15 +8,15 @@ export default function ArticleCard({ article }) {
             {},
             {
                 preserveScroll: true,
-                onSuccess: () => {
-                    router.visit(route("article.read", article.id));
-                },
+                // onSuccess: () => {
+                //     router.visit(route("article.read", article.id));
+                // },
             }
         );
     };
 
     return (
-        <div className="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
+        <div className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
             <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40 h-64">
                 <Link
                     href={route("article.read", article.id)}
@@ -40,20 +40,34 @@ export default function ArticleCard({ article }) {
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                         <Link
-                            href={route("article.read", article.id)}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                incrementViews();
-                            }}
-                            className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
+                            className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-violet-500"
+                            href={route(
+                                "articles.byCategory",
+                                article.category.id
+                            )}
                         >
-                            {article.title.length > 150
-                                ? `${article.title.substring(0, 150)}...`
-                                : article.title}
+                            {article.category.name}
                         </Link>
                     </div>
+                    <Link
+                        href={route("article.read", article.id)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            incrementViews(article.id);
+                        }}
+                        className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
+                    >
+                        {article.title.length > 100
+                            ? `${article.title.substring(0, 100)}...`
+                            : article.title}
+                    </Link>
                     <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
                         By: {article.createdBy.name}
+                    </p>
+                    <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
+                        {article.body.length > 100
+                            ? `${article.body.substring(0, 100)}...`
+                            : article.body}
                     </p>
                 </div>
             </div>
