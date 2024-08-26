@@ -26,7 +26,7 @@ class FreedomWallController extends Controller
 
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),
-            'freedomWallEntries' => $freedomWallEntries,
+            'freedomWallEntries' => $freedomWallEntries,//todo Freedom Wall Resource
         ]);
     }
 
