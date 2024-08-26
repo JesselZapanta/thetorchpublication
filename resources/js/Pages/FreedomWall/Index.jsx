@@ -56,8 +56,6 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         setCreateModalOpen(false);
     };
 
-    //LIke and Dislike
-
     // Like and Dislike
     const likeForm = useForm();
     const dislikeForm = useForm();
@@ -101,7 +99,10 @@ export default function Index({ auth, categories, freedomWallEntries }) {
             }
         >
             <Head title="Freedom Wall" />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
+            <div
+                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
+            overflow-hidden"
+            >
                 <div className="w-full justify-center flex gap-4 my-4">
                     <button
                         onClick={openPolicyModal}
@@ -116,163 +117,165 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         Write Something
                     </button>
                 </div>
-            </div>
-            {/* Freedom Wall Entries */}
-            <FreedomWallEntries
-                freedomWallEntries={freedomWallEntries}
-                handleLike={handleLike}
-                handleDislike={handleDislike}
-            />
-            {/* <pre className="text-white">
-                {JSON.stringify(freedomWallEntries, null, 2)}
-            </pre> */}
 
-            {/* Policy Modal */}
-            <Modal show={policyModalOpen} onClose={closePolicyModal}>
-                <div className="p-6">
-                    <div className="flex justify-between">
-                        <h2 className="text-2xl text-emerald-500 font-bold">
-                            The Torch Freedom Wall Policy
-                        </h2>
-                        <button
-                            onClick={closePolicyModal}
-                            className="text-gray-400 cursor-pointer"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18 18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                    <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                        Welcome to the Torch Freedom Wall, a platform for open
-                        and respectful expression. By using this platform, you
-                        agree to communicate respectfully, avoiding hate speech,
-                        bullying, harassment, and discrimination. Offensive
-                        content, such as vulgar or obscene posts, is not
-                        allowed, and feedback should always be constructive.
-                        Please do not share personal information, including
-                        addresses, phone numbers, or sensitive data about
-                        yourself or others. While you may post anonymously, all
-                        posts must comply with this policy. Ensure that your
-                        posts are relevant to the platform’s purpose, and avoid
-                        spam, repetitive content, and advertisements. Respect
-                        intellectual property rights and do not post content
-                        that infringes on these rights. Posts are monitored to
-                        ensure compliance with this policy. Users can report
-                        posts that violate the guidelines, and these reports
-                        will be reviewed with appropriate actions taken.
-                        Violations may result in the removal of posts from the
-                        platform.
-                    </p>
-                    <div className="w-full flex">
-                        <button
-                            onClick={closePolicyModal}
-                            className="ml-auto px-4 py-2 bg-emerald-600 text-white transition-all rounded hover:bg-emerald-700"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </Modal>
+                {/* Freedom Wall Entries */}
+                <FreedomWallEntries
+                    freedomWallEntries={freedomWallEntries}
+                    handleLike={handleLike}
+                    handleDislike={handleDislike}
+                />
 
-            {/* Create/Edit Modal */}
-            <Modal show={createModalOpen} onClose={closeCreateModal}>
-                <div className="p-6">
-                    <div className="flex justify-between">
-                        <h2 className="text-2xl text-indigo-600 font-bold">
-                            Freedom Wall Entry
-                        </h2>
-                        <button
-                            onClick={closeCreateModal}
-                            className="text-gray-400 cursor-pointer"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18 18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                {/* <pre className="text-white">
+                    {JSON.stringify(freedomWallEntries, null, 2)}
+                </pre> */}
 
-                    <form onSubmit={onSubmit}>
-                        {/* body */}
-                        <div className="mt-2 w-full">
-                            <InputLabel htmlFor="body" value="Message" />
-
-                            <TextAreaInput
-                                id="body"
-                                type="text"
-                                name="body"
-                                value={data.body}
-                                className="mt-2 block w-full min-h-44 resize-none"
-                                onChange={(e) =>
-                                    setData("body", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.body}
-                                className="mt-2"
-                            />
-                        </div>
-                        {/* Emotion */}
-                        <div className="mt-2 w-full">
-                            <InputLabel
-                                htmlFor="emotion"
-                                value="Message Emotion"
-                            />
-
-                            <SelectInput
-                                name="emotion"
-                                id="emotion"
-                                value={data.emotion}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("emotion", e.target.value)
-                                }
-                            >
-                                <option value="">Select a emotion</option>
-                                <option value="happy">Happy</option>
-                                <option value="sad">Sad</option>
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.emotion}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div className="w-full flex mt-4">
+                {/* Policy Modal */}
+                <Modal show={policyModalOpen} onClose={closePolicyModal}>
+                    <div className="p-6">
+                        <div className="flex justify-between">
+                            <h2 className="text-2xl text-emerald-500 font-bold">
+                                The Torch Freedom Wall Policy
+                            </h2>
                             <button
-                                // onClick={closeCreateModal}
-                                className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
-                                disabled={processing}
+                                onClick={closePolicyModal}
+                                className="text-gray-400 cursor-pointer"
                             >
-                                Submit Entry
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="size-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18 18 6M6 6l12 12"
+                                    />
+                                </svg>
                             </button>
                         </div>
-                    </form>
-                </div>
-            </Modal>
+                        <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
+                            Welcome to the Torch Freedom Wall, a platform for
+                            open and respectful expression. By using this
+                            platform, you agree to communicate respectfully,
+                            avoiding hate speech, bullying, harassment, and
+                            discrimination. Offensive content, such as vulgar or
+                            obscene posts, is not allowed, and feedback should
+                            always be constructive. Please do not share personal
+                            information, including addresses, phone numbers, or
+                            sensitive data about yourself or others. While you
+                            may post anonymously, all posts must comply with
+                            this policy. Ensure that your posts are relevant to
+                            the platform’s purpose, and avoid spam, repetitive
+                            content, and advertisements. Respect intellectual
+                            property rights and do not post content that
+                            infringes on these rights. Posts are monitored to
+                            ensure compliance with this policy. Users can report
+                            posts that violate the guidelines, and these reports
+                            will be reviewed with appropriate actions taken.
+                            Violations may result in the removal of posts from
+                            the platform.
+                        </p>
+                        <div className="w-full flex">
+                            <button
+                                onClick={closePolicyModal}
+                                className="ml-auto px-4 py-2 bg-emerald-600 text-white transition-all rounded hover:bg-emerald-700"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+                {/* Create/Edit Modal */}
+                <Modal show={createModalOpen} onClose={closeCreateModal}>
+                    <div className="p-6">
+                        <div className="flex justify-between">
+                            <h2 className="text-2xl text-indigo-600 font-bold">
+                                Freedom Wall Entry
+                            </h2>
+                            <button
+                                onClick={closeCreateModal}
+                                className="text-gray-400 cursor-pointer"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="size-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18 18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form onSubmit={onSubmit}>
+                            {/* body */}
+                            <div className="mt-2 w-full">
+                                <InputLabel htmlFor="body" value="Message" />
+
+                                <TextAreaInput
+                                    id="body"
+                                    type="text"
+                                    name="body"
+                                    value={data.body}
+                                    className="mt-2 block w-full min-h-44 resize-none"
+                                    onChange={(e) =>
+                                        setData("body", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.body}
+                                    className="mt-2"
+                                />
+                            </div>
+                            {/* Emotion */}
+                            <div className="mt-2 w-full">
+                                <InputLabel
+                                    htmlFor="emotion"
+                                    value="Message Emotion"
+                                />
+
+                                <SelectInput
+                                    name="emotion"
+                                    id="emotion"
+                                    value={data.emotion}
+                                    className="mt-1 block w-full"
+                                    onChange={(e) =>
+                                        setData("emotion", e.target.value)
+                                    }
+                                >
+                                    <option value="">Select a emotion</option>
+                                    <option value="happy">Happy</option>
+                                    <option value="sad">Sad</option>
+                                </SelectInput>
+
+                                <InputError
+                                    message={errors.emotion}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div className="w-full flex mt-4">
+                                <button
+                                    // onClick={closeCreateModal}
+                                    className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
+                                    disabled={processing}
+                                >
+                                    Submit Entry
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </Modal>
+            </div>
         </UnauthenticatedLayout>
     );
 }

@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function FreedomWallEntries({
@@ -47,7 +48,7 @@ export default function FreedomWallEntries({
     }, [speechSynthesis]);
 
     return (
-        <div className="max-w-7xl py-2 mx-auto w-full grid lg:grid-cols-3 gap-4">
+        <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {freedomWallEntries.length === 0 && (
                 <div className="text-center text-gray-400 lg:col-span-3">
                     No freedom wall entries found.
@@ -90,11 +91,17 @@ export default function FreedomWallEntries({
                         </svg>
                     </div>
                     <div className="relative h-[300px] flex gap-1 items-end justify-end p-2 transition-all duration-300">
-                        <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
+                        {/* <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
+                            {entry.body}
+                        </p> */}
+                        <Link
+                            href={route("freedom-wall.show", entry.id)}
+                            className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify"
+                        >
                             {entry.body.length > 350
                                 ? `${entry.body.substring(0, 350)}...`
                                 : entry.body}
-                        </p>
+                        </Link>
                         <div>
                             <button
                                 className={`${
@@ -127,7 +134,6 @@ export default function FreedomWallEntries({
                                 }`}
                             >
                                 {entry.likes_count}
-                                {/* {entry.id} */}
                             </span>
                             <button
                                 className={`${

@@ -75,7 +75,14 @@ class FreedomWallController extends Controller
      */
     public function show(FreedomWall $freedomWall)
     {
-        //
+        // Fetch active categories
+        $categories = Category::where('status', 'active')->limit(10)->get();
+
+        return inertia('FreedomWall/Show', [
+            // 'freedomWall' => $freedomWall,
+            'freedomWall' => new FreedomWallResource($freedomWall),
+            'categories' => CategoryResource::collection($categories),
+        ]);
     }
 
     /**
