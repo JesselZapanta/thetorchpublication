@@ -1,17 +1,56 @@
-
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import Modal from '@/Components/Modal';
-import SelectInput from '@/Components/SelectInput';
-import TextAreaInput from '@/Components/TextAreaInput';
-import UnauthenticatedLayout from '@/Layouts/UnauthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import React, { useState } from 'react'
-
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
+import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
+import { Head, useForm } from "@inertiajs/react";
+import React, { useEffect, useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries }) {
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
+
+    //tts
+    const [isSpeaking, setIsSpeaking] = useState(null);
+    const handleSpeak = (entry) => {
+        // Stop any ongoing speech synthesis
+        speechSynthesis.cancel();
+
+        // If the same entry's button is clicked again, stop the speech and reset state
+        if (isSpeaking === entry.id) {
+            setIsSpeaking(null);
+        } else {
+            // Create a SpeechSynthesisUtterance with a pause after the name
+            const textToRead = `${entry.body}`;
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+
+            utterance.onend = () => {
+                setIsSpeaking(null);
+            };
+
+            // Set the current speaking entry ID and start speaking
+            setIsSpeaking(entry.id);
+            speechSynthesis.speak(utterance);
+        }
+    };
+
+    useEffect(() => {
+        const stopSpeech = () => {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+        };
+
+        // Add event listener for beforeunload
+        window.addEventListener("beforeunload", stopSpeech);
+
+        // Cleanup function
+        return () => {
+            stopSpeech(); // Ensure speech synthesis is stopped
+            window.removeEventListener("beforeunload", stopSpeech);
+        };
+    }, [speechSynthesis]);
 
     //create freedom wall entry
     const { data, setData, post, errors, reset, clearErrors, processing } =
@@ -165,12 +204,12 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                             </p>
                             <div>
                                 <button
-                                // className={`${
-                                //     isSpeaking === comment.id
-                                //         ? "text-indigo-400 animate-pulse"
-                                //         : "text-gray-400"
-                                // }`}
-                                // onClick={() => handleSpeak(comment)}
+                                    className={`${
+                                        isSpeaking === entry.id
+                                            ? "text-indigo-400 animate-pulse"
+                                            : "text-gray-400"
+                                    }`}
+                                    onClick={() => handleSpeak(entry)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
