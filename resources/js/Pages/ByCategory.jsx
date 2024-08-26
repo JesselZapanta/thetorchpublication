@@ -3,6 +3,7 @@ import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import SelectInput from "@/Components/SelectInput";
 import { useState, useEffect } from "react";
 import ArticleCard from "@/Components/ArticleCard";
+import { Head } from "@inertiajs/react";
 
 export default function ByCategory({
     auth,
@@ -49,9 +50,20 @@ export default function ByCategory({
     };
 
     return (
-        <UnauthenticatedLayout user={auth.user} categories={categories}>
+        <UnauthenticatedLayout
+            user={auth.user}
+            categories={categories}
+            // header={
+            //     <div className="max-w-7xl mx-auto flex items-center justify-between">
+            //         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
+            //             {currentCategory.name}
+            //         </h2>
+            //     </div>
+            // }
+        >
+            <Head title={currentCategory.name} />
             <div className="w-full mx-auto text-center">
-                <div className="w-full h-[200px] sm:h-[350px] overflow-hidden bg-gray-600 flex items-center justify-center relative">
+                <div className="w-full h-[200px] sm:h-[350px] overflow-hidden bg-gray-600 flex items-center justify-center relative pt-16">
                     <img
                         src={currentCategory.category_image_path}
                         className="w-full h-full object-cover"

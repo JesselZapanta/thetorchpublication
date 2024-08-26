@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
+use App\Http\Controllers\Home\FreedomWallController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
@@ -40,18 +41,25 @@ Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->nam
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
 
-// ratings
-Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
-Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
-
-// Comments
-Route::resource('comments', CommentController::class)->middleware('auth');
+//Get Ratings
+    Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
 
 //Comment Like Dislike
 Route::middleware('auth')->group(function () {
+    // rate an article
+    Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
+    
+    // Comments
+    Route::resource('comments', CommentController::class);
     Route::post('/comments/{comment}/like', [CommentLikeController::class, 'toggleLike'])->name('comments.like');
     Route::post('/comments/{comment}/dislike', [CommentLikeController::class, 'toggleDislike'])->name('comments.dislike');
+
+    //Freedom Wall
+
+    Route::resource('/freedom-wall', FreedomWallController::class);
 });
+
+
 
 //Admin Routes
 Route::middleware(['auth','admin' ])->group(function() {
