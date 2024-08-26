@@ -9,6 +9,28 @@ import { Head, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries }) {
+    
+    useEffect(() => {
+        // Retrieve the scroll position from localStorage
+        const scrollPosition = localStorage.getItem("scrollPosition");
+        if (scrollPosition) {
+            // Scroll to the stored position
+            window.scrollTo(0, parseInt(scrollPosition, 10));
+        }
+
+        // Save the current scroll position before navigating away
+        const saveScrollPosition = () => {
+            localStorage.setItem("scrollPosition", window.scrollY.toString());
+        };
+
+        window.addEventListener("beforeunload", saveScrollPosition);
+
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener("beforeunload", saveScrollPosition);
+        };
+    }, []);
+
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -253,9 +275,19 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                                         setData("emotion", e.target.value)
                                     }
                                 >
-                                    <option value="">Select a emotion</option>
+                                    <option value="">
+                                        How are you feeling?
+                                    </option>
                                     <option value="happy">Happy</option>
                                     <option value="sad">Sad</option>
+                                    <option value="annoyed">Annoyed</option>
+                                    <option value="proud">Proud</option>
+                                    <option value="drained">Drained</option>
+                                    <option value="inlove">Inlove</option>
+                                    <option value="calm">Calm</option>
+                                    <option value="excited">Excited</option>
+                                    <option value="angry">Angry</option>
+                                    <option value="down">Down</option>
                                 </SelectInput>
 
                                 <InputError

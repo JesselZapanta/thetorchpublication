@@ -71,6 +71,22 @@ export default function Show({ auth, categories, freedomWall }) {
             preserveScroll: true, // Preserve scroll on success
         });
     };
+    
+    //Colors
+    const emotionColors = {
+        happy: "bg-yellow-700",
+        sad: "bg-blue-800",
+        annoyed: "bg-red-700",
+        proud: "bg-green-700",
+        drained: "bg-gray-700",
+        inlove: "bg-pink-700",
+        calm: "bg-blue-600",
+        excited: "bg-purple-700",
+        angry: "bg-red-800",
+        down: "bg-gray-600",
+    };
+
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -128,9 +144,15 @@ export default function Show({ auth, categories, freedomWall }) {
                             </svg>
                         </div>
                         <div className="relative flex gap-1 items-end justify-end p-2 transition-all duration-300">
-                            <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-md mt-16 break-words text-justify">
+                            <p
+                                className={`${
+                                    emotionColors[freedomWall.data.emotion] ||
+                                    "bg-gray-500"
+                                } text-white p-2 rounded-lg max-w-md mt-16 break-words text-justify`}
+                            >
                                 {freedomWall.data.body}
                             </p>
+
                             <div>
                                 <button
                                     className={`${

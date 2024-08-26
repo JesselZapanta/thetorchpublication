@@ -6,6 +6,11 @@ export default function FreedomWallEntries({
     handleLike,
     handleDislike,
 }) {
+	const handleLinkClick = () => {
+        // Store the current scroll position in localStorage
+        localStorage.setItem("scrollPosition", window.scrollY);
+    };
+
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (entry) => {
@@ -38,7 +43,7 @@ export default function FreedomWallEntries({
         };
 
         // Add event listener for beforeunload
-        window.addEventListener("beforeunload", stopSpeech);
+        window.addEventListener("beforeunload", stopSpeech); 
 
         // Cleanup function
         return () => {
@@ -46,6 +51,21 @@ export default function FreedomWallEntries({
             window.removeEventListener("beforeunload", stopSpeech);
         };
     }, [speechSynthesis]);
+
+	//Colors
+	const emotionColors = {
+        happy: "bg-yellow-700",
+        sad: "bg-blue-800",
+        annoyed: "bg-red-700",
+        proud: "bg-green-700",
+        drained: "bg-gray-700",
+        inlove: "bg-pink-700",
+        calm: "bg-blue-600",
+        excited: "bg-purple-700",
+        angry: "bg-red-800",
+        down: "bg-gray-600",
+    };
+
 
     return (
         <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -96,12 +116,16 @@ export default function FreedomWallEntries({
                         </p> */}
                         <Link
                             href={route("freedom-wall.show", entry.id)}
-                            className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify"
+                            className={`${
+                                emotionColors[entry.emotion] || "bg-gray-500"
+                            } text-white p-2 rounded-lg max-w-xs break-words text-justify`}
+                            onClick={handleLinkClick}
                         >
                             {entry.body.length > 350
                                 ? `${entry.body.substring(0, 350)}...`
                                 : entry.body}
                         </Link>
+
                         <div>
                             <button
                                 className={`${
