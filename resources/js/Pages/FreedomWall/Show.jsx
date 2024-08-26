@@ -46,6 +46,9 @@ export default function Show({ auth, categories, freedomWall }) {
     }, [speechSynthesis]);
 
     // Like and Dislike
+    const likeForm = useForm();
+    const dislikeForm = useForm();
+
     const handleLike = (entryId) => {
         // alert(entryId);
         likeForm.post(route("freedom-wall.like", entryId), {
@@ -71,7 +74,7 @@ export default function Show({ auth, categories, freedomWall }) {
             preserveScroll: true, // Preserve scroll on success
         });
     };
-    
+
     //Colors
     const emotionColors = {
         happy: "bg-yellow-700",
@@ -85,7 +88,6 @@ export default function Show({ auth, categories, freedomWall }) {
         angry: "bg-red-800",
         down: "bg-gray-600",
     };
-
 
     return (
         <UnauthenticatedLayout
@@ -192,7 +194,7 @@ export default function Show({ auth, categories, freedomWall }) {
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
-                                    onClick={() => handleLike(freedomWall.id)}
+                                    onClick={() => handleLike(freedomWall.data.id)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +221,7 @@ export default function Show({ auth, categories, freedomWall }) {
                                             : "text-gray-400"
                                     }`}
                                     onClick={() =>
-                                        handleDislike(freedomWall.id)
+                                        handleDislike(freedomWall.data.id)
                                     }
                                 >
                                     <svg
