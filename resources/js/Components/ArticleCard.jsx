@@ -40,7 +40,7 @@ export default function ArticleCard({ article }) {
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                         <Link
-                            className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-violet-500"
+                            className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-indigo-500"
                             href={route(
                                 "articles.byCategory",
                                 article.category.id

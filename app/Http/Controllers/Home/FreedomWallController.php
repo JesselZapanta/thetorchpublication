@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\FreedomWall;
 use App\Http\Requests\StoreFreedomWallRequest;
 use App\Http\Requests\UpdateFreedomWallRequest;
+use App\Models\Word;
+use App\Utilities\AhoCorasick;
 
 class FreedomWallController extends Controller
 {
@@ -18,8 +20,13 @@ class FreedomWallController extends Controller
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
+
+        //todo implement sorting
+        $freedomWallEntries = FreedomWall::orderBy('created_at', 'DESC')->get();
+
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),
+            'freedomWallEntries' => $freedomWallEntries,
         ]);
     }
 
@@ -36,7 +43,30 @@ class FreedomWallController extends Controller
      */
     public function store(StoreFreedomWallRequest $request)
     {
-        //
+        // dd($request);
+        $data = $request->validated();
+
+        //todo check entry limitation
+
+         // Build the Trie
+        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+        
+        $ahoCorasick->buildFailureLinks();
+
+        // Check if the article body contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['body']))) {
+            return redirect()->back()->withErrors(['body' => 'The message contains inappropriate content.']);
+        }
+
+        $data['user_id'] = auth()->id();
+
+        FreedomWall::create($data);
+
+        return back()->with('success', 'Entry Submitted Successfully');
     }
 
     /**

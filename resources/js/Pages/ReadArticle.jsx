@@ -192,7 +192,7 @@ export default function ReadArticle({
                                     </div>
                                     <h4 className="font-bold mt-4 text-lg">
                                         Category:{" "}
-                                        <span className="text-violet-500">
+                                        <span className="text-indigo-500">
                                             { article.category.name}
                                         </span>
                                     </h4>
@@ -207,7 +207,7 @@ export default function ReadArticle({
                                     />
                                 </div>
                             </div>
-                            <div className="w-full h-[2px] bg-violet-400 my-8"></div>
+                            <div className="w-full h-[2px] bg-indigo-400 my-8"></div>
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}

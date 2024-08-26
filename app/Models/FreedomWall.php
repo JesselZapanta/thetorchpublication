@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class FreedomWall extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id', 'body', 'emotion'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

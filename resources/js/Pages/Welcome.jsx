@@ -24,9 +24,9 @@ export default function Welcome({
                     <TopArticles topArticles={topArticles} />
                 </div>
 
-                <div className="w-full h-[2px] bg-violet-500 my-8"></div>
+                <div className="w-full h-[2px] bg-indigo-500 my-8"></div>
 
-                <h5 className="block text-start font-sans text-2xl antialiased font-medium leading-snug tracking-normal text-violet-500">
+                <h5 className="block text-start font-sans text-2xl antialiased font-medium leading-snug tracking-normal text-indigo-500">
                     The Latest
                 </h5>
 

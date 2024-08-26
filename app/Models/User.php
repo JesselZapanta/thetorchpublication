@@ -48,21 +48,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    //for articles
     public function author()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    
+    //for comments
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
     // for comments like and dislike
-
     public function commentLikes()
     {
         return $this->hasMany(CommentLike::class);
+    }
+
+    public function freedomWalls()
+    {
+        return $this->hasMany(FreedomWall::class);
     }
 }

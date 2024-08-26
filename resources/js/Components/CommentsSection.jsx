@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./../Components/Dropdown";
 import { ChevronDownIcon  } from "@heroicons/react/16/solid";
-import { SpeakerWaveIcon, SpeakerXMarkIcon } from "@heroicons/react/24/solid"; // Import the necessary icons
 
 
 export default function CommentsSection({
@@ -116,7 +115,7 @@ export default function CommentsSection({
                                         <span
                                             className={`${
                                                 comment.user_has_liked
-                                                    ? "text-violet-400"
+                                                    ? "text-indigo-400"
                                                     : "text-gray-400"
                                             }`}
                                         >
@@ -125,7 +124,7 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 comment.user_has_liked
-                                                    ? "text-violet-400"
+                                                    ? "text-indigo-400"
                                                     : "text-gray-400"
                                             }`}
                                             onClick={() =>
@@ -144,7 +143,7 @@ export default function CommentsSection({
                                         <span
                                             className={`${
                                                 comment.user_has_disliked
-                                                    ? "text-violet-400"
+                                                    ? "text-indigo-400"
                                                     : "text-gray-400"
                                             }`}
                                         >
@@ -153,7 +152,7 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 comment.user_has_disliked
-                                                    ? "text-violet-400"
+                                                    ? "text-indigo-400"
                                                     : "text-gray-400"
                                             }`}
                                             onClick={() =>
@@ -174,7 +173,7 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 isSpeaking === comment.id
-                                                    ? "text-violet-400 animate-pulse"
+                                                    ? "text-indigo-400 animate-pulse"
                                                     : "text-gray-400"
                                             }`}
                                             onClick={() => handleSpeak(comment)}

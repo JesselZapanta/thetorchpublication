@@ -4,7 +4,6 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 
-
 export default function UnauthenticatedLayout({
     user,
     children,
@@ -166,6 +165,13 @@ export default function UnauthenticatedLayout({
                                 {category.name.toLowerCase()}
                             </ResponsiveNavLink>
                         ))}
+                        <ResponsiveNavLink
+                            href={route("freedom-wall.index")}
+                            active={route().current("freedom-wall.index")}
+                            className="text-nowrap"
+                        >
+                            Freedom Wall
+                        </ResponsiveNavLink>
                         {user ? (
                             user.role === "admin" ? (
                                 <ResponsiveNavLink
