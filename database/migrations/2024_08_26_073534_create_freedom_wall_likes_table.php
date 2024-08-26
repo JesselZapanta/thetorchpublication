@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('freedom_wall_likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('body');
+            $table->foreignId('freedom_wall_id')->constrained('freedom_walls')->onDelete('cascade');
+            $table->boolean('is_like')->default(true); // true for like, false for dislike
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('freedom_wall_likes');
     }
 };

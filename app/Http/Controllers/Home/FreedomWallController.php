@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\FreedomWallResource;
 use App\Models\Category;
 use App\Models\FreedomWall;
 use App\Http\Requests\StoreFreedomWallRequest;
@@ -26,7 +27,7 @@ class FreedomWallController extends Controller
 
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),
-            'freedomWallEntries' => $freedomWallEntries,//todo Freedom Wall Resource
+            'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
         ]);
     }
 

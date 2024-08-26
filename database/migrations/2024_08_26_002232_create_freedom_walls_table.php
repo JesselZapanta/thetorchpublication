@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('freedom_walls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('body');
             $table->string('emotion');
             $table->timestamps();

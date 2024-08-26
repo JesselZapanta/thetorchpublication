@@ -57,6 +57,38 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         setCreateModalOpen(false);
     };
 
+    //LIke and Dislike
+
+    // Like and Dislike
+    const likeForm = useForm();
+    const dislikeForm = useForm();
+
+    const handleLike = (entryId) => {
+        // alert(entryId);
+        likeForm.post(route("freedom-wall.like", entryId), {
+            onSuccess: () => {
+                console.log("Freedom wall liked successfully");
+            },
+            onError: (errors) => {
+                console.error("Failed to like freedom wall", errors);
+            },
+            preserveScroll: true, // Preserve scroll on success
+        });
+    };
+
+    const handleDislike = (entryId) => {
+        // alert(entryId);
+        dislikeForm.post(route("freedom-wall.dislike", entryId), {
+            onSuccess: () => {
+                console.log("Freedom wall disliked successfully");
+            },
+            onError: (errors) => {
+                console.error("Failed to dislike freedom wall", errors);
+            },
+            preserveScroll: true, // Preserve scroll on success
+        });
+    };
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -87,101 +119,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 </div>
             </div>
             <div className="max-w-7xl py-2 mx-auto w-full grid lg:grid-cols-3 gap-4">
-                {/* <div className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
-                    <div className="bg-gray-700 p-2 flex justify-between items-center">
-                        <div className="flex gap-2">
-                            <div className="w-12 h-12 rounded-full border-2 border-indigo-500 overflow-hidden">
-                                <img
-                                    src="/images/default/profile.jpg"
-                                    alt=""
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-lg">Anonymous</h4>
-                                <p className="text-sm">Publish: 09-78-43</p>
-                            </div>
-                        </div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6 text-white cursor-pointer"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                            />
-                        </svg>
-                    </div>
-                    <div className="relative min-h-[250px] flex gap-1 items-end justify-end p-2 transition-all duration-300">
-                        <p className="bg-cyan-500 text-white p-2 rounded max-w-xs break-words text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Saepe deserunt qui exercitationem repellendus
-                            sint architecto, accusantium vel delectus ratione
-                            rem nobis deleniti ipsam aspernatur consequatur
-                            veniam! Quibusdam, repellat, quisquam saepe ad eius
-                            doloribus voluptas maxime aspernatur culpa dicta
-                            quaerat eos, at odio assumenda quidem ea eligendi
-                            labore nesciunt sed fuga.
-                        </p>
-                        <div>
-                            <button
-                                // className={`${
-                                //     isSpeaking === comment.id
-                                //         ? "text-indigo-400 animate-pulse"
-                                //         : "text-gray-400"
-                                // }`}
-                                // onClick={() => handleSpeak(comment)}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 0 0 1.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06ZM18.584 5.106a.75.75 0 0 1 1.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 0 1-1.06-1.06 8.25 8.25 0 0 0 0-11.668.75.75 0 0 1 0-1.06Z" />
-                                    <path d="M15.932 7.757a.75.75 0 0 1 1.061 0 6 6 0 0 1 0 8.486.75.75 0 0 1-1.06-1.061 4.5 4.5 0 0 0 0-6.364.75.75 0 0 1 0-1.06Z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="bg-gray-700 p-2 flex justify-between items-center">
-                        <div className="flex gap-2">
-                            <div className="w-12 h-12 rounded-full border-2 border-indigo-500 overflow-hidden">
-                                <img
-                                    src="/images/default/profile.jpg"
-                                    alt=""
-                                    className="w-full"
-                                />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-lg">Anonymous</h4>
-                                <p className="text-sm">Publish: 09-78-43</p>
-                            </div>
-                        </div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6 text-white cursor-pointer"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                            />
-                        </svg>
-                    </div>
-                </div> */}
-
-                {freedomWallEntries.map((entry) => (
+                {freedomWallEntries.data.map((entry) => (
                     <div
                         key={entry.id}
                         className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden"
@@ -220,7 +158,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                             </svg>
                         </div>
                         <div className="relative h-[300px] flex gap-1 items-end justify-end p-2 transition-all duration-300">
-                            <p className="bg-cyan-500 text-white p-2 rounded max-w-xs break-words text-justify">
+                            <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
                                 {entry.body.length > 350
                                     ? `${entry.body.substring(0, 350)}...`
                                     : entry.body}
@@ -250,22 +188,22 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <div className="bg-gray-700 p-2  w-full h-16 flex justify-between items-center">
                             <div className="flex gap-4">
                                 <span
-                                // className={`${
-                                //     comment.user_has_liked
-                                //         ? "text-indigo-400"
-                                //         : "text-gray-400"
-                                // }`}
+                                    className={`${
+                                        entry.user_has_liked
+                                            ? "text-indigo-400"
+                                            : "text-gray-400"
+                                    }`}
                                 >
-                                    {/* {comment.likes_count} */}
-                                    10
+                                    {entry.likes_count}
+                                    {/* {entry.id} */}
                                 </span>
                                 <button
-                                // className={`${
-                                //     comment.user_has_liked
-                                //         ? "text-indigo-400"
-                                //         : "text-gray-400"
-                                // }`}
-                                // onClick={() => handleLike(comment.id)}
+                                    className={`${
+                                        entry.user_has_liked
+                                            ? "text-indigo-400"
+                                            : "text-gray-400"
+                                    }`}
+                                    onClick={() => handleLike(entry.id)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -277,22 +215,21 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                                     </svg>
                                 </button>
                                 <span
-                                // className={`${
-                                //     comment.user_has_disliked
-                                //         ? "text-indigo-400"
-                                //         : "text-gray-400"
-                                // }`}
+                                    className={`${
+                                        entry.user_has_disliked
+                                            ? "text-indigo-400"
+                                            : "text-gray-400"
+                                    }`}
                                 >
-                                    {/* {comment.dislikes_count} */}
-                                    20
+                                    {entry.dislikes_count}
                                 </span>
                                 <button
-                                // className={`${
-                                //     comment.user_has_disliked
-                                //         ? "text-indigo-400"
-                                //         : "text-gray-400"
-                                // }`}
-                                // onClick={() => handleDislike(comment.id)}
+                                    className={`${
+                                        entry.user_has_disliked
+                                            ? "text-indigo-400"
+                                            : "text-gray-400"
+                                    }`}
+                                    onClick={() => handleDislike(entry.id)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -305,7 +242,12 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                                 </button>
                             </div>
                             <div>
-                                <h2>Feeling <span className='capitalize'>{entry.emotion}</span></h2>
+                                <h2>
+                                    Feeling{" "}
+                                    <span className="capitalize">
+                                        {entry.emotion}
+                                    </span>
+                                </h2>
                             </div>
                         </div>
                     </div>

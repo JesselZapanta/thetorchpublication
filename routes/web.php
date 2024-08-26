@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
 use App\Http\Controllers\Home\FreedomWallController;
+use App\Http\Controllers\Home\FreedomWallLikeController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
@@ -56,7 +57,9 @@ Route::middleware('auth')->group(function () {
 
     //Freedom Wall
 
-    Route::resource('/freedom-wall', FreedomWallController::class);
+    route::resource('/freedom-wall', FreedomWallController::class);
+    Route::post('/freedom-wall/{entryId}/like', [FreedomWallLikeController::class, 'toggleLike'])->name('freedom-wall.like');
+    Route::post('/freedom-wall/{entryId}/dislike', [FreedomWallLikeController::class, 'toggleDislike'])->name('freedom-wall.dislike');
 });
 
 
