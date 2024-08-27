@@ -11,25 +11,46 @@ use App\Http\Requests\StoreFreedomWallRequest;
 use App\Http\Requests\UpdateFreedomWallRequest;
 use App\Models\Word;
 use App\Utilities\AhoCorasick;
+use Illuminate\Http\Request;
 
 class FreedomWallController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
 
-        //todo implement sorting
-        $freedomWallEntries = FreedomWall::orderBy('created_at', 'DESC')->get();
+        $query = FreedomWall::query();
+
+        // Apply sorting by date or body
+        if ($request->has('sort')) {
+            if ($request->sort == 'date_asc') {
+                $query->orderBy('created_at', 'asc');
+            } elseif ($request->sort == 'date_desc') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($request->sort == 'body_asc') {
+                $query->orderBy('body', 'asc');
+            } elseif ($request->sort == 'body_desc') {
+                $query->orderBy('body', 'desc');
+            }
+        }
+
+        // Apply sorting by emotion
+        if ($request->has('emotionSort') && !empty($request->emotionSort)) {
+            $query->where('emotion', $request->emotionSort);
+        }
+
+        $freedomWallEntries = $query->get();
 
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),
             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

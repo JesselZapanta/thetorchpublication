@@ -6,11 +6,6 @@ export default function FreedomWallEntries({
     handleLike,
     handleDislike,
 }) {
-	const handleLinkClick = () => {
-        // Store the current scroll position in localStorage
-        localStorage.setItem("scrollPosition", window.scrollY);
-    };
-
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (entry) => {
@@ -119,7 +114,7 @@ export default function FreedomWallEntries({
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"
                             } text-white p-2 rounded-lg max-w-xs break-words text-justify`}
-                            onClick={handleLinkClick}
+                            // onClick={handleLinkClick}
                         >
                             {entry.body.length > 350
                                 ? `${entry.body.substring(0, 350)}...`

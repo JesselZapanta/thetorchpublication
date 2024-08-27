@@ -4,33 +4,14 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import TextInput from "@/Components/TextInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries }) {
-    
-    useEffect(() => {
-        // Retrieve the scroll position from localStorage
-        const scrollPosition = localStorage.getItem("scrollPosition");
-        if (scrollPosition) {
-            // Scroll to the stored position
-            window.scrollTo(0, parseInt(scrollPosition, 10));
-        }
 
-        // Save the current scroll position before navigating away
-        const saveScrollPosition = () => {
-            localStorage.setItem("scrollPosition", window.scrollY.toString());
-        };
-
-        window.addEventListener("beforeunload", saveScrollPosition);
-
-        // Cleanup event listener on component unmount
-        return () => {
-            window.removeEventListener("beforeunload", saveScrollPosition);
-        };
-    }, []);
-
+    //state for modal create and policy
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -108,6 +89,57 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         });
     };
 
+    // const [search, setSearch] = useState("");
+    // const [filteredFreedomWall, setFilteredFreedomWall] = useState(
+    //     freedomWallEntries.data //
+    // );
+    // const [sort, setSort] = useState("");
+
+    // useEffect(() => {
+    //     handleSearch();
+    // }, [search, sort]);
+
+    // const handleSearch = () => {
+    //     let filtered = freedomWallEntries.data.filter((entry) =>
+    //         entry.body.toLowerCase().includes(search.toLowerCase())
+    //     );
+
+    //     if (sort === "date_asc") {
+    //         filtered.sort(
+    //             (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    //         );
+    //     } else if (sort === "date_desc") {
+    //         filtered.sort(
+    //             (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    //         );
+    //     } else if (sort === "body_asc") {
+    //         filtered.sort((a, b) => a.body.localeCompare(b.body));
+    //     } else if (sort === "body_desc") {
+    //         filtered.sort((a, b) => b.body.localeCompare(a.body));
+    //     }
+
+    //     setFilteredFreedomWall(filtered);
+    // };
+
+    // const handleKeyPress = (e) => {
+    //     if (e.key === "Enter") {
+    //         handleSearch();
+    //     }
+    // };
+
+    const [sort, setSort] = useState("");
+
+    useEffect(() => {
+        // Fetch sorted data whenever `sort` changes
+        if (sort) {
+            router.get(route("freedom-wall.index"), { sort });
+        }
+    }, [sort]);
+
+    const handleSortChange = (e) => {
+        setSort(e.target.value);
+    };
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -139,7 +171,46 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         Write Something
                     </button>
                 </div>
+                <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <SelectInput
+                        className="w-full p-2 border border-gray-300 rounded-lg mt-4"
+                        value={sort} // This binds the state to the select input
+                        onChange={handleSortChange} // This updates the state on change
+                    >
+                        <option value="">Sort by</option>
+                        <option value="date_asc">Date: Ascending</option>
+                        <option value="date_desc">Date: Descending</option>
+                        <option value="body_asc">Body: A-Z</option>
+                        <option value="body_desc">Body: Z-A</option>
+                    </SelectInput>
 
+                    {/* <SelectInput
+                        className="w-full p-2 border border-gray-300 rounded-lg mt-4"
+                        // value={emotionSort}
+                        // onChange={handleEmotionSortChange}
+                    >
+                        <option value="">Sort by Emotion</option>
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="annoyed">Annoyed</option>
+                        <option value="proud">Proud</option>
+                        <option value="drained">Drained</option>
+                        <option value="inlove">Inlove</option>
+                        <option value="calm">Calm</option>
+                        <option value="excited">Excited</option>
+                        <option value="angry">Angry</option>
+                        <option value="down">Down</option>
+                    </SelectInput> */}
+
+                    {/* <TextInput
+                        type="text"
+                        placeholder="Search Freedom Wall Entries..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="w-full p-2 border border-gray-300 rounded-lg"
+                    /> */}
+                </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries
                     freedomWallEntries={freedomWallEntries}
