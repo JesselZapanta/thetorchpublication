@@ -128,19 +128,31 @@ export default function Index({ auth, categories, freedomWallEntries }) {
     // };
 
     const [sort, setSort] = useState(""); // Initial value is an empty string
+    const [emotionSort, setEmotionSort] = useState(""); // Initial value is an empty string
 
     useEffect(() => {
-        // Fetch sorted data whenever `sort` changes, excluding the initial empty state
-        if (sort) {
-            router.get(route("freedom-wall.index"), { sort });
+        // Combine the parameters into a single request
+        const params = {
+            ...(sort && { sort }),
+            ...(emotionSort && { emotionSort }),
+        };
+
+        if (sort || emotionSort) {
+            router.get(route("freedom-wall.index"), params, {
+                preserveState: true, // Preserve the component state after navigation
+            });
         }
-    }, [sort]);
+    }, [sort, emotionSort]);
 
     const handleSortChange = (e) => {
         const selectedValue = e.target.value;
-        setSort(selectedValue); // Update the state with the selected value
+        setSort(selectedValue);
     };
 
+    const handleEmotionSortChange = (e) => {
+        const selectedValue = e.target.value;
+        setEmotionSort(selectedValue);
+    };
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -175,8 +187,8 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <SelectInput
                         className="w-full p-2 border border-gray-300 rounded-lg mt-4"
-                        value={sort} // This binds the state to the select input
-                        onChange={handleSortChange} // This updates the state on change
+                        value={sort}
+                        onChange={handleSortChange} // Handle the change
                     >
                         <option value="">Sort by</option>
                         <option value="date_asc">Date: Ascending</option>
@@ -185,10 +197,10 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="body_desc">Body: Z-A</option>
                     </SelectInput>
 
-                    {/* <SelectInput
+                    <SelectInput
                         className="w-full p-2 border border-gray-300 rounded-lg mt-4"
-                        // value={emotionSort}
-                        // onChange={handleEmotionSortChange}
+                        value={emotionSort}
+                        onChange={handleEmotionSortChange} // Handle the change
                     >
                         <option value="">Sort by Emotion</option>
                         <option value="happy">Happy</option>
@@ -201,7 +213,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="excited">Excited</option>
                         <option value="angry">Angry</option>
                         <option value="down">Down</option>
-                    </SelectInput> */}
+                    </SelectInput>
 
                     {/* <TextInput
                         type="text"
