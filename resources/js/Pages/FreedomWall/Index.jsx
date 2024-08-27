@@ -88,7 +88,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         });
     };
 
-    const [sort, setSort] = useState(""); // Initial value is an empty string
+    const [sort, setSort] = useState("date_desc"); // Initial value is an empty string
     const [emotionSort, setEmotionSort] = useState(""); // Initial value is an empty string
 
     useEffect(() => {
@@ -153,9 +153,9 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         value={sort}
                         onChange={handleSortChange} // Handle the change
                     >
-                        <option value="">Sort by</option>
-                        <option value="date_asc">Date: Ascending</option>
+                        {/* <option value="">Sort by</option> */}
                         <option value="date_desc">Date: Descending</option>
+                        <option value="date_asc">Date: Ascending</option>
                         <option value="body_asc">Body: A-Z</option>
                         <option value="body_desc">Body: Z-A</option>
                     </SelectInput>
@@ -177,8 +177,6 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="angry">Angry</option>
                         <option value="down">Down</option>
                     </SelectInput>
-
-    
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries

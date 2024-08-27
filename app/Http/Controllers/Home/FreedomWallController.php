@@ -43,11 +43,6 @@ class FreedomWallController extends Controller
             $query->where('emotion', $request->emotionSort);
         }
 
-        // Apply search filter
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('body', 'like', '%' . $request->search . '%');
-        }
-
         // Get the filtered results
         $freedomWallEntries = $query->get();
 
