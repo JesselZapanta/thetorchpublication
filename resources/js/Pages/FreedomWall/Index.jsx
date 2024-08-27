@@ -127,17 +127,18 @@ export default function Index({ auth, categories, freedomWallEntries }) {
     //     }
     // };
 
-    const [sort, setSort] = useState("");
+    const [sort, setSort] = useState(""); // Initial value is an empty string
 
     useEffect(() => {
-        // Fetch sorted data whenever `sort` changes
+        // Fetch sorted data whenever `sort` changes, excluding the initial empty state
         if (sort) {
             router.get(route("freedom-wall.index"), { sort });
         }
     }, [sort]);
 
     const handleSortChange = (e) => {
-        setSort(e.target.value);
+        const selectedValue = e.target.value;
+        setSort(selectedValue); // Update the state with the selected value
     };
 
     return (
