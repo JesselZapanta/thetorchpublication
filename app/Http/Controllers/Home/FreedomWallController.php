@@ -43,6 +43,12 @@ class FreedomWallController extends Controller
             $query->where('emotion', $request->emotionSort);
         }
 
+        // Apply search filter
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('body', 'like', '%' . $request->search . '%');
+        }
+
+        // Get the filtered results
         $freedomWallEntries = $query->get();
 
         return inertia('FreedomWall/Index', [
@@ -50,6 +56,7 @@ class FreedomWallController extends Controller
             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
         ]);
     }
+
 
 
     /**

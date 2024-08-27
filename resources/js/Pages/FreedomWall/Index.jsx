@@ -10,7 +10,6 @@ import { Head, router, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries }) {
-
     //state for modal create and policy
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -89,44 +88,6 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         });
     };
 
-    // const [search, setSearch] = useState("");
-    // const [filteredFreedomWall, setFilteredFreedomWall] = useState(
-    //     freedomWallEntries.data //
-    // );
-    // const [sort, setSort] = useState("");
-
-    // useEffect(() => {
-    //     handleSearch();
-    // }, [search, sort]);
-
-    // const handleSearch = () => {
-    //     let filtered = freedomWallEntries.data.filter((entry) =>
-    //         entry.body.toLowerCase().includes(search.toLowerCase())
-    //     );
-
-    //     if (sort === "date_asc") {
-    //         filtered.sort(
-    //             (a, b) => new Date(a.created_at) - new Date(b.created_at)
-    //         );
-    //     } else if (sort === "date_desc") {
-    //         filtered.sort(
-    //             (a, b) => new Date(b.created_at) - new Date(a.created_at)
-    //         );
-    //     } else if (sort === "body_asc") {
-    //         filtered.sort((a, b) => a.body.localeCompare(b.body));
-    //     } else if (sort === "body_desc") {
-    //         filtered.sort((a, b) => b.body.localeCompare(a.body));
-    //     }
-
-    //     setFilteredFreedomWall(filtered);
-    // };
-
-    // const handleKeyPress = (e) => {
-    //     if (e.key === "Enter") {
-    //         handleSearch();
-    //     }
-    // };
-
     const [sort, setSort] = useState(""); // Initial value is an empty string
     const [emotionSort, setEmotionSort] = useState(""); // Initial value is an empty string
 
@@ -137,7 +98,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
             ...(emotionSort && { emotionSort }),
         };
 
-        if (sort || emotionSort) {
+        if (sort || emotionSort ) {
             router.get(route("freedom-wall.index"), params, {
                 preserveState: true, // Preserve the component state after navigation
             });
@@ -145,7 +106,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
     }, [sort, emotionSort]);
 
     const handleSortChange = (e) => {
-        const selectedValue = e.target.value;
+        const selectedValue = e.target.value; 
         setSort(selectedValue);
     };
 
@@ -153,6 +114,8 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         const selectedValue = e.target.value;
         setEmotionSort(selectedValue);
     };
+
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -215,14 +178,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="down">Down</option>
                     </SelectInput>
 
-                    {/* <TextInput
-                        type="text"
-                        placeholder="Search Freedom Wall Entries..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        className="w-full p-2 border border-gray-300 rounded-lg"
-                    /> */}
+    
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries
