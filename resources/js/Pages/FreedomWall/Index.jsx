@@ -237,6 +237,8 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                             will be reviewed with appropriate actions taken.
                             Violations may result in the removal of posts from
                             the platform.
+
+                            ==Must Update==
                         </p>
                         <div className="w-full flex">
                             <button
