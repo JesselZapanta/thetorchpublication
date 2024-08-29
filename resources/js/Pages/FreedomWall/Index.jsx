@@ -88,33 +88,70 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         });
     };
 
-    const [sort, setSort] = useState(""); // Initial value is an empty string
-    const [emotionSort, setEmotionSort] = useState(""); // Initial value is an empty string
-
-    useEffect(() => {
-        // Combine the parameters into a single request
-        const params = {
-            ...(sort && { sort }),
-            ...(emotionSort && { emotionSort }),
-        };
-
-        if (sort || emotionSort ) {
-            router.get(route("freedom-wall.index"), params, {
-                preserveState: true, // Preserve the component state after navigation
-            });
-        }
-    }, [sort, emotionSort]);
+    const [sort, setSort] = useState("");
+    const [emotionSort, setEmotionSort] = useState("");
+    const [search, setSearch] = useState("");
 
     const handleSortChange = (e) => {
-        const selectedValue = e.target.value; 
+        const selectedValue = e.target.value;
         setSort(selectedValue);
+
+        // Trigger the request immediately
+        router.get(
+            route("freedom-wall.index"),
+            { sort: selectedValue, emotionSort, search },
+            {
+                preserveState: true,
+            }
+        );
     };
 
     const handleEmotionSortChange = (e) => {
         const selectedValue = e.target.value;
         setEmotionSort(selectedValue);
+
+        // Trigger the request immediately
+        router.get(
+            route("freedom-wall.index"),
+            { sort, emotionSort: selectedValue, search },
+            {
+                preserveState: true,
+            }
+        );
     };
 
+    // Function to handle search input changes
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+
+        // Trigger the search immediately if the search input is cleared
+        if (value === "") {
+            router.get(
+                route("freedom-wall.index"),
+                { sort, emotionSort, search: value },
+                {
+                    preserveState: true,
+                }
+            );
+        }
+    };
+
+    // Function to handle pressing the Enter key
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            // Trigger the request immediately when Enter is pressed
+            router.get(
+                route("freedom-wall.index"),
+                { sort, emotionSort, search },
+                {
+                    preserveState: true,
+                }
+            );
+        }
+    };
 
     return (
         <UnauthenticatedLayout
@@ -149,7 +186,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 </div>
                 <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <SelectInput
-                        className="w-full p-2 border border-gray-300 rounded-lg mt-4"
+                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
                         value={sort}
                         onChange={handleSortChange} // Handle the change
                     >
@@ -172,7 +209,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     </SelectInput>
 
                     <SelectInput
-                        className="w-full p-2 border border-gray-300 rounded-lg mt-4"
+                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
                         value={emotionSort}
                         onChange={handleEmotionSortChange} // Handle the change
                     >
@@ -188,7 +225,14 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="angry">Angry</option>
                         <option value="down">Down</option>
                     </SelectInput>
-                    
+
+                    <TextInput
+                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
+                        value={search}
+                        placeholder="Search Entry"
+                        onChange={handleSearchChange}
+                        onKeyPress={handleKeyPress} // Trigger search on Enter key
+                    />
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries

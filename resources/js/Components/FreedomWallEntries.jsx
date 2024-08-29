@@ -64,7 +64,10 @@ export default function FreedomWallEntries({
 
     return (
         <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {freedomWallEntries.length === 0 && (
+            {/* <pre className="text-white">
+                {JSON.stringify(freedomWallEntries, null, 2)}
+            </pre> */}
+            {freedomWallEntries.data.length === 0 && (
                 <div className="text-center text-gray-400 lg:col-span-3">
                     No freedom wall entries found.
                 </div>
