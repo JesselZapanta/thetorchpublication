@@ -88,7 +88,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         });
     };
 
-    const [sort, setSort] = useState("date_desc"); // Initial value is an empty string
+    const [sort, setSort] = useState(""); // Initial value is an empty string
     const [emotionSort, setEmotionSort] = useState(""); // Initial value is an empty string
 
     useEffect(() => {
@@ -156,8 +156,19 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         {/* <option value="">Sort by</option> */}
                         <option value="date_desc">Date: Descending</option>
                         <option value="date_asc">Date: Ascending</option>
-                        <option value="body_asc">Body: A-Z</option>
+
                         <option value="body_desc">Body: Z-A</option>
+                        <option value="body_asc">Body: A-Z</option>
+
+                        <option value="likes_desc">Likes: Descending</option>
+                        <option value="likes_asc">Likes: Ascending</option>
+
+                        <option value="dislikes_desc">
+                            Dislikes: Descending
+                        </option>
+                        <option value="dislikes_asc">
+                            Dislikes: Ascending
+                        </option>
                     </SelectInput>
 
                     <SelectInput
@@ -177,6 +188,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="angry">Angry</option>
                         <option value="down">Down</option>
                     </SelectInput>
+                    
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries
@@ -236,9 +248,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                             posts that violate the guidelines, and these reports
                             will be reviewed with appropriate actions taken.
                             Violations may result in the removal of posts from
-                            the platform.
-
-                            ==Must Update==
+                            the platform. ==Must Update==
                         </p>
                         <div className="w-full flex">
                             <button

@@ -18,24 +18,85 @@ class FreedomWallController extends Controller
     /**
      * Display a listing of the resource.
      */
+//     public function index(Request $request)
+//     {
+//         // Fetch active categories
+//         $categories = Category::where('status', 'active')->limit(10)->get();
+
+//         $query = FreedomWall::query();
+
+//         // Apply default sorting by date descending
+//         $sort = $request->input('sort', 'date_desc');
+
+//         // Apply sorting based on the input or default
+//         if ($sort == 'date_asc') {
+//             $query->orderBy('created_at', 'asc');
+//         } elseif ($sort == 'date_desc') {
+//             $query->orderBy('created_at', 'desc');
+//         } elseif ($sort == 'body_asc') {
+//             $query->orderBy('body', 'asc');
+//         } elseif ($sort == 'body_desc') {
+//             $query->orderBy('body', 'desc');
+//         }
+
+//         //add the likes asc and desc
+//         //add dislikes asc desc
+
+//         // Apply sorting by emotion
+//         if ($request->has('emotionSort') && !empty($request->emotionSort)) {
+//             $query->where('emotion', $request->emotionSort);
+//         }
+
+//         // Get the filtered results
+//         $freedomWallEntries = $query->get();
+
+//         return inertia('FreedomWall/Index', [
+//             'categories' => CategoryResource::collection($categories),
+//             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
+//         ]);
+// }
+
     public function index(Request $request)
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
 
+        // Base query for FreedomWall entries
         $query = FreedomWall::query();
 
-        // Apply sorting by date or body
-        if ($request->has('sort')) {
-            if ($request->sort == 'date_asc') {
+        // Apply default sorting by date descending
+        $sort = $request->input('sort', 'date_desc');
+
+        // Apply sorting based on the input or default
+        switch ($sort) {
+            case 'date_asc':
                 $query->orderBy('created_at', 'asc');
-            } elseif ($request->sort == 'date_desc') {
+                break;
+            case 'date_desc':
                 $query->orderBy('created_at', 'desc');
-            } elseif ($request->sort == 'body_asc') {
+                break;
+            case 'body_asc':
                 $query->orderBy('body', 'asc');
-            } elseif ($request->sort == 'body_desc') {
+                break;
+            case 'body_desc':
                 $query->orderBy('body', 'desc');
-            }
+                break;
+            case 'likes_asc':
+                $query->withCount(['likes as like_count'])
+                    ->orderBy('like_count', 'asc');
+                break;
+            case 'likes_desc':
+                $query->withCount(['likes as like_count'])
+                    ->orderBy('like_count', 'desc');
+                break;
+            case 'dislikes_asc':
+                $query->withCount(['dislikes as dislike_count'])
+                    ->orderBy('dislike_count', 'asc');
+                break;
+            case 'dislikes_desc':
+                $query->withCount(['dislikes as dislike_count'])
+                    ->orderBy('dislike_count', 'desc');
+                break;
         }
 
         // Apply sorting by emotion
@@ -51,7 +112,6 @@ class FreedomWallController extends Controller
             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
         ]);
     }
-
 
 
     /**
