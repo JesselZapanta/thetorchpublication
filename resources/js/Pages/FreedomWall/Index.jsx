@@ -194,9 +194,6 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="date_desc">Date: Descending</option>
                         <option value="date_asc">Date: Ascending</option>
 
-                        <option value="body_desc">Body: Z-A</option>
-                        <option value="body_asc">Body: A-Z</option>
-
                         <option value="likes_desc">Likes: Descending</option>
                         <option value="likes_asc">Likes: Ascending</option>
 
@@ -206,6 +203,9 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                         <option value="dislikes_asc">
                             Dislikes: Ascending
                         </option>
+
+                        <option value="body_desc">Body: Z-A</option>
+                        <option value="body_asc">Body: A-Z</option>
                     </SelectInput>
 
                     <SelectInput
@@ -229,7 +229,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     <TextInput
                         className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
                         value={search}
-                        placeholder="Search Entry"
+                        placeholder="Search Entry..."
                         onChange={handleSearchChange}
                         onKeyPress={handleKeyPress} // Trigger search on Enter key
                     />

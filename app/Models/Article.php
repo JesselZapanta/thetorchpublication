@@ -38,6 +38,11 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'layout_by');
     }
+     //for comments like and dislike
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
     
     public function comments()
     {

@@ -46,21 +46,53 @@ class HomeController extends Controller
         // Fetch articles by the selected category and filter by title if search query is provided
         $query = Article::where('category_id', $id);
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('title', 'like', '%' . $request->search . '%');
+         // Apply default sorting by date descending
+        $sort = $request->input('sort', 'date_desc');
+
+        switch($sort){
+            case 'date_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'date_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'title_desc':
+                $query->orderBy('title', 'desc');
+                break;
+            case 'title_asc':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'views_desc':
+                $query->orderBy('views', 'desc');
+                break;
+            case 'views_asc':
+                $query->orderBy('views', 'asc');
+                break;
+            case 'ratings_desc':
+                $query->withCount(['ratings as avg_ratings'])
+                    ->orderBy('avg_ratings', 'desc');
+                    break;
+            case 'ratings_asc':
+                $query->withCount(['ratings as avg_ratings'])
+                    ->orderBy('avg_ratings', 'asc');
+                    break;
+            case '30_days_desc':
+                $query->where('created_at', '>=', now()->subDays(30))
+                        ->orderBy('created_at', 'desc');
+                break;
+            case '60_days_desc':
+                $query->where('created_at', '>=', now()->subDays(30))
+                        ->orderBy('created_at', 'desc');
+                break;
+            case '90_days_desc':
+                $query->where('created_at', '>=', now()->subDays(30))
+                        ->orderBy('created_at', 'desc');
+                break;
         }
 
-        // Apply sorting
-        if ($request->has('sort')) {
-            if ($request->sort == 'date_asc') {
-                $query->orderBy('created_at', 'asc');
-            } elseif ($request->sort == 'date_desc') {
-                $query->orderBy('created_at', 'desc');
-            } elseif ($request->sort == 'title_asc') {
-                $query->orderBy('title', 'asc');
-            } elseif ($request->sort == 'title_desc') {
-                $query->orderBy('title', 'desc');
-            }
+        //Apply search filter
+        if($request->has('search') && !empty($request->search)){
+            $query->where('body', 'like', "%{$request->search}%");
         }
 
         $categoryarticles = $query->get();
