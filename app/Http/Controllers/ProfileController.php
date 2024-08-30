@@ -38,19 +38,22 @@ class ProfileController extends Controller
         if ($request->hasFile('profile_image_path')) {
             // Delete the old profile image if a new one is uploaded
             if ($user->profile_image_path) {
-                Storage::disk('public')->deleteDirectory(dirname($user->profile_image_path));
+                Storage::disk('public')->delete($user->profile_image_path);
             }
-            // Store the new profile image and save its path
+            // Store the new profile image directly under the 'profile/' directory and save its path
             $data['profile_image_path'] = $request->file('profile_image_path')
-                ->store('profile/' . Str::random(10), 'public');
+                ->store('profile', 'public');
         } else {
             // If no new image is uploaded, keep the existing image
             $data['profile_image_path'] = $user->profile_image_path;
         }
 
+
+
         // If the email has been updated, reset email verification status
-        if ($user->isDirty('email')) {
-            $data['email_verified_at'] = null;
+        if ($user->email !== $request->input('email')) {
+            // Reset email verification status
+            $user->email_verified_at = null;
         }
 
         // Update the user with the validated data
@@ -74,6 +77,8 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->delete();
+
+        //todo delete images
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

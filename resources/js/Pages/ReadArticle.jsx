@@ -186,7 +186,7 @@ export default function ReadArticle({
                                                 Author: {article.createdBy.name}
                                             </h4>
                                             <p className="mt-1">
-                                                Publish: {article.created_at}
+                                                Published Date: {article.created_at}
                                             </p>
                                         </div>
                                     </div>
