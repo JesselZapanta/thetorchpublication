@@ -62,9 +62,11 @@ class AdminCategoryController extends Controller
 
         $data['name']=strtoupper($data['name']);
 
-        if($image){
-            $data['category_image_path'] = $image->store('category/' . Str::random(), 'public');
+        if ($image) {
+            // Store the image directly under the 'category/' directory and save its path
+            $data['category_image_path'] = $image->store('category', 'public');
         }
+
         
         Category::create($data);
 
@@ -102,17 +104,18 @@ class AdminCategoryController extends Controller
 
         $image = $data['category_image_path'];
 
-        if($image){
-            // Delete the old  image if a new one is uploaded
-            if($category->category_image_path){
-                Storage::disk('public')->deleteDirectory(dirname($category->category_image_path));
+        if ($image) {
+            // Delete the old image file if a new one is uploaded
+            if ($category->category_image_path) {
+                Storage::disk('public')->delete($category->category_image_path);
             }
-            // Store the new  image
-            $data['category_image_path'] = $image->store('category/' . Str::random(), 'public');
-        }else{
+            // Store the new image directly under the 'category/' directory
+            $data['category_image_path'] = $image->store('category', 'public');
+        } else {
             // If no new image is uploaded, keep the existing image
             $data['category_image_path'] = $category->category_image_path;
         }
+
 
         $category->update($data);
 
@@ -131,7 +134,7 @@ class AdminCategoryController extends Controller
 
         // Delete the category image if it exists
         if($category->category_image_path) {
-            Storage::disk('public')->deleteDirectory(dirname($category->category_image_path));
+            Storage::disk('public')->delete($category->category_image_path);
         }
 
         // Delete the category

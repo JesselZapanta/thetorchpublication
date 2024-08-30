@@ -109,8 +109,9 @@ class AdminArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
 
-        if($image){
-            $data['article_image_path'] = $image->store('article/' . Str::random(), 'public');
+        if ($image) {
+            // Store the image directly under the 'article/' directory and save its path
+            $data['article_image_path'] = $image->store('article', 'public');
         }
 
         Article::create($data);
@@ -176,18 +177,18 @@ class AdminArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
 
-        //todo very important must fix, all the image will be deleted 
-        if($image){
-            // Delete the old  image if a new one is uploaded
-            if($article->article_image_path){
-                Storage::disk('public')->deleteDirectory(dirname($article->article_image_path));
+        if ($image) {
+            // Delete the old image file if a new one is uploaded
+            if ($article->article_image_path) {
+                Storage::disk('public')->delete($article->article_image_path);
             }
-            // Store the new  image
-            $data['article_image_path'] = $image->store('article/' . Str::random(), 'public');
-        }else{
+            // Store the new image directly under the 'article/' directory
+            $data['article_image_path'] = $image->store('article', 'public');
+        } else {
             // If no new image is uploaded, keep the existing image
             $data['article_image_path'] = $article->article_image_path;
         }
+
         
         $article->update($data);
 
@@ -201,9 +202,11 @@ class AdminArticleController extends Controller
     {
         $article->delete();
 
-        if($article->article_image_path){
-            Storage::disk('public')->deleteDirectory(dirname($article->article_image_path));
+        if ($article->article_image_path) {
+            // Delete the specific old image file
+            Storage::disk('public')->delete($article->article_image_path);
         }
+
 
         return to_route('article.index')->with('delete_success', 'Deleted Successfully');
     }

@@ -66,7 +66,8 @@ class AdminUserController extends Controller
         $data['password'] = bcrypt($data['password']);
 
         if($image){
-            $data['profile_image_path'] = $image->store('profile/' . Str::random(), 'public');
+            // Store the image directly under the 'profile/' directory and save its path
+            $data['profile_image_path'] = $image->store('profile', 'public');
         }
 
         User::create($data);
@@ -110,17 +111,18 @@ class AdminUserController extends Controller
             unset($data['password']);
         }
         
-        if($image){
-            // Delete the old profile image if a new one is uploaded
-            if($user->profile_image_path){
-                Storage::disk('public')->deleteDirectory(dirname($user->profile_image_path));
+        if ($image) {
+            // Delete the old profile image file if a new one is uploaded
+            if ($user->profile_image_path) {
+                Storage::disk('public')->delete($user->profile_image_path);
             }
-            // Store the new profile image
-            $data['profile_image_path'] = $image->store('profile/' . Str::random(), 'public');
+            // Store the new profile image directly under the 'profile/' directory
+            $data['profile_image_path'] = $image->store('profile', 'public');
         } else {
             // If no new image is uploaded, keep the existing image
             $data['profile_image_path'] = $user->profile_image_path;
         }
+
 
         $user->update($data);
 
@@ -133,9 +135,12 @@ class AdminUserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        if($user->profile_image_path){
-            Storage::disk('public')->deleteDirectory(dirname($user->profile_image_path));
+
+        if ($user->profile_image_path) {
+            // Delete the specific old profile image file
+            Storage::disk('public')->delete($user->profile_image_path);
         }
+
         return to_route('user.index')->with('delete_success', 'Deleted Successfully');
     }
 }
