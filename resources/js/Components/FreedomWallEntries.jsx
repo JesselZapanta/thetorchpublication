@@ -75,7 +75,7 @@ export default function FreedomWallEntries({
             {freedomWallEntries.data.map((entry) => (
                 <div
                     key={entry.id}
-                    className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden"
+                    className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden "
                 >
                     <div className="bg-gray-700 p-2 w-full h-16 flex justify-between items-center">
                         <div className="flex gap-2">
@@ -116,7 +116,7 @@ export default function FreedomWallEntries({
                             href={route("freedom-wall.show", entry.id)}
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"
-                            } text-white p-2 rounded-lg max-w-xs break-words text-justify`}
+                            } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-105 origin-bottom-right`}
                             // onClick={handleLinkClick}
                         >
                             {entry.body.length > 350

@@ -11,7 +11,7 @@ export default function Welcome({
     topArticles,
     latestArticles,
 }) {
-    return (    
+    return (
         <UnauthenticatedLayout user={auth.user} categories={categories}>
             <Head title="Home Page" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">

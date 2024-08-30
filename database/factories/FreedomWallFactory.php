@@ -19,7 +19,7 @@ class FreedomWallFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'body' => fake()->paragraphs(3, true), // Generates a paragraph of text
+            'body' => fake()->realText(fake()->numberBetween(10, 500)),
             'emotion' => fake()->randomElement(['happy', 'sad', 'annoyed', 'proud', 'drained', 'inlove', 'calm', 'excited', 'angry', 'down']), // Random emotion
             'created_at' => fake()->dateTimeBetween('-1 year', 'now'), 
             'updated_at' => fake()->dateTimeBetween('-1 year', 'now'), 

@@ -1,3 +1,4 @@
+import ArticlePagination from "@/Components/ArticlePagination";
 import FreedomWallEntries from "@/Components/FreedomWallEntries";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -7,9 +8,11 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head, router, useForm } from "@inertiajs/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries }) {
+    // Infinite Scroll Logic
+    
     //state for modal create and policy
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -173,13 +176,13 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 <div className="w-full justify-center flex gap-4 my-4">
                     <button
                         onClick={openPolicyModal}
-                        className="px-4 py-2 bg-emerald-600 text-white transition-all rounded hover:bg-emerald-700"
+                        className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700 "
                     >
                         View Our Policy
                     </button>
                     <button
                         onClick={openCreateModal}
-                        className="px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
+                        className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                     >
                         Write Something
                     </button>
@@ -240,11 +243,18 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     handleLike={handleLike}
                     handleDislike={handleDislike}
                 />
+                <ArticlePagination
+                    links={freedomWallEntries.meta.links}
+                    queryParams={{
+                        sort: sort,
+                        emotionSort: emotionSort,
+                        search: search,
+                    }}
+                />
 
                 {/* <pre className="text-white">
                     {JSON.stringify(freedomWallEntries, null, 2)}
                 </pre> */}
-
                 {/* Policy Modal */}
                 <Modal show={policyModalOpen} onClose={closePolicyModal}>
                     <div className="p-6">
@@ -402,6 +412,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     </div>
                 </Modal>
             </div>
+            {/* {loading && <p className="text-center">Loading more entries...</p>} */}
         </UnauthenticatedLayout>
     );
 }

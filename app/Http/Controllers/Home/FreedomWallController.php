@@ -18,43 +18,6 @@ class FreedomWallController extends Controller
     /**
      * Display a listing of the resource.
      */
-//     public function index(Request $request)
-//     {
-//         // Fetch active categories
-//         $categories = Category::where('status', 'active')->limit(10)->get();
-
-//         $query = FreedomWall::query();
-
-//         // Apply default sorting by date descending
-//         $sort = $request->input('sort', 'date_desc');
-
-//         // Apply sorting based on the input or default
-//         if ($sort == 'date_asc') {
-//             $query->orderBy('created_at', 'asc');
-//         } elseif ($sort == 'date_desc') {
-//             $query->orderBy('created_at', 'desc');
-//         } elseif ($sort == 'body_asc') {
-//             $query->orderBy('body', 'asc');
-//         } elseif ($sort == 'body_desc') {
-//             $query->orderBy('body', 'desc');
-//         }
-
-//         //add the likes asc and desc
-//         //add dislikes asc desc
-
-//         // Apply sorting by emotion
-//         if ($request->has('emotionSort') && !empty($request->emotionSort)) {
-//             $query->where('emotion', $request->emotionSort);
-//         }
-
-//         // Get the filtered results
-//         $freedomWallEntries = $query->get();
-
-//         return inertia('FreedomWall/Index', [
-//             'categories' => CategoryResource::collection($categories),
-//             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
-//         ]);
-// }
 
     public function index(Request $request)
     {
@@ -106,11 +69,12 @@ class FreedomWallController extends Controller
 
          // Apply search filter
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('body', 'like', '%' . $request->search . '%');
+            $query->where('body', 'like', "%{$request->search}%");
         }
 
         // Get the filtered results
-        $freedomWallEntries = $query->get();
+        $freedomWallEntries = $query->paginate(15);
+        // $freedomWallEntries = $query->get();
 
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),

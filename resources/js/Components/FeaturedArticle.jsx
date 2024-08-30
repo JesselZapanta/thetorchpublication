@@ -2,9 +2,6 @@ import { Link, router } from '@inertiajs/react';
 import React from 'react'
 
 export default function FeaturedArticle({ featuredArticle }) {
-    // Extract the data array from featuredArticle
-    const article = featuredArticle?.data?.[0] || null;
-
     const incrementViews = (articleId) => {
         router.post(
             `/articles/${articleId}/increment-views`,
@@ -18,22 +15,21 @@ export default function FeaturedArticle({ featuredArticle }) {
         );
     };
 
-
     return (
         <div className="w-full md:w-[65%] flex flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
-            {article ? (
+            {featuredArticle ? (
                 <>
                     <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40">
                         <Link
-                            href={route("article.read", article.id)}
+                            href={route("article.read", featuredArticle.id)}
                             onClick={(e) => {
                                 e.preventDefault();
-                                incrementViews(article.id);
+                                incrementViews(featuredArticle.id);
                             }}
                         >
                             <img
-                                src={article.article_image_path}
-                                alt={article.title}
+                                src={featuredArticle.article_image_path}
+                                alt={featuredArticle.title}
                                 className="w-full h-auto"
                             />
                         </Link>
@@ -44,31 +40,31 @@ export default function FeaturedArticle({ featuredArticle }) {
                                 className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-indigo-500"
                                 href={route(
                                     "articles.byCategory",
-                                    article.category.id
+                                    featuredArticle.category.id
                                 )}
                             >
-                                {article.category.name}
+                                {featuredArticle.category.name}
                             </Link>
                         </div>
                         <Link
-                            href={route("article.read", article.id)}
+                            href={route("article.read", featuredArticle.id)}
                             onClick={(e) => {
                                 e.preventDefault();
-                                incrementViews(article.id);
+                                incrementViews(featuredArticle.id);
                             }}
                             className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
                         >
-                            {article.title.length > 150
-                                ? `${article.title.substring(0, 150)}...`
-                                : article.title}
+                            {featuredArticle.title.length > 150
+                                ? `${featuredArticle.title.substring(0, 150)}...`
+                                : featuredArticle.title}
                         </Link>
                         <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                            By: {article.createdBy.name}
+                            By: {featuredArticle.createdBy.name}
                         </p>
                         <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                            {article.body.length > 800
-                                ? `${article.body.substring(0, 800)}...`
-                                : article.body}
+                            {featuredArticle.body.length > 800
+                                ? `${featuredArticle.body.substring(0, 800)}...`
+                                : featuredArticle.body}
                         </p>
                     </div>
                 </>

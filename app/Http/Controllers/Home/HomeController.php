@@ -18,18 +18,23 @@ class HomeController extends Controller
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(10)->get();
 
-        // Fetch the featured article
-        $featuredArticle = Article::where('is_featured', '1')->limit(1)->get();
+       // Fetch the featured article
+        $featuredArticle = Article::where('is_featured', 1)->first();
 
-        // Get the top 3 articles with the most views
-        $topArticles = Article::orderBy('views', 'DESC')->limit(2)->get();
+        // If there is no featured article, get the latest article
+        if (!$featuredArticle) {
+            $featuredArticle = Article::latest()->first();
+        }
+
+        // Get the top  articles with the most views
+        $topArticles = Article::orderBy('views', 'DESC')->whereNot('is_featured', 1)->limit(2)->get();
         //todo might include the ratings and the comments
 
         $latestArticles = Article::orderBy('created_at', 'DESC')->limit(10)->get();
 
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),
-            'featuredArticle' => ArticleResource::collection($featuredArticle),
+            'featuredArticle' => new ArticleResource($featuredArticle),
             'topArticles' => ArticleResource::collection($topArticles),
             'latestArticles' => ArticleResource::collection($latestArticles),
         ]);
@@ -95,7 +100,7 @@ class HomeController extends Controller
             $query->where('body', 'like', "%{$request->search}%");
         }
 
-        $categoryarticles = $query->get();
+        $categoryarticles = $query->paginate(15);
 
         return inertia('ByCategory', [
             'categories' => CategoryResource::collection($categories),

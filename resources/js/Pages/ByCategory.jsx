@@ -4,6 +4,7 @@ import SelectInput from "@/Components/SelectInput";
 import { useState, useEffect } from "react";
 import ArticleCard from "@/Components/ArticleCard";
 import { Head, router } from "@inertiajs/react";
+import ArticlePagination from "@/Components/ArticlePagination";
 
 export default function ByCategory({
     auth,
@@ -155,15 +156,9 @@ export default function ByCategory({
                             Ratings: Ascending(0 - 5)
                         </option>
 
-                        <option value="30_days_desc">
-                            30 Days Ago
-                        </option>
-                        <option value="60_days_desc">
-                            60 Days Ago
-                        </option>
-                        <option value="90_days_desc">
-                            90 Days Ago
-                        </option>
+                        <option value="30_days_desc">30 Days Ago</option>
+                        <option value="60_days_desc">60 Days Ago</option>
+                        <option value="90_days_desc">90 Days Ago</option>
                     </SelectInput>
 
                     <TextInput
@@ -180,13 +175,22 @@ export default function ByCategory({
                         {JSON.stringify(categoryarticles, null, 2)}
                     </pre> */}
                     {categoryarticles.data.length > 0 ? (
-                        <div className="max-w-7xl py-2 mx-auto w-full grid lg:grid-cols-3 gap-4">
-                            {categoryarticles.data.map((article) => (
-                                <ArticleCard
-                                    key={article.id}
-                                    article={article}
-                                />
-                            ))}
+                        <div>
+                            <div className="max-w-7xl py-2 mx-auto w-full grid lg:grid-cols-3 gap-4">
+                                {categoryarticles.data.map((article) => (
+                                    <ArticleCard
+                                        key={article.id}
+                                        article={article}
+                                    />
+                                ))}
+                            </div>
+                            <ArticlePagination
+                                links={categoryarticles.meta.links}
+                                queryParams={{
+                                    sort: sort,
+                                    search: search,
+                                }}
+                            />
                         </div>
                     ) : (
                         <p className="text-gray-400 text-center">
