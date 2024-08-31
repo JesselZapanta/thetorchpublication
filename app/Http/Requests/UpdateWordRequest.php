@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateWordRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class UpdateWordRequest extends FormRequest
     {
         
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:words,name'],
+            'name' => [
+                'required', 
+                'string', 
+                'max:255', 
+                Rule::unique('words', 'name')->ignore($this->word),
+                ],
         ];
     }
 }

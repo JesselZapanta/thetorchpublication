@@ -82,7 +82,17 @@ class AcademicYearController extends Controller
      */
     public function update(UpdateAcademicYearRequest $request, AcademicYear $academicYear)
     {
-        //
+        // dd($request);
+        $data = $request->validated();
+
+        if($data['status'] === 'active'){
+            // Set all existing academic years' status to 'inactive'
+            AcademicYear::query()->update(['status' => 'inactive']);
+        }
+
+        $academicYear->update($data);
+
+        return to_route('academic-year.index')->with('success', 'Academic Year is Updated Succssfully');
     }
 
     /**

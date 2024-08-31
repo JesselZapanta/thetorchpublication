@@ -59,13 +59,23 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         setIsCreateModalOpen(true);
     };
 
+    // Open modal for editing an existing word
+    const openEditModal = (academicYear) => {
+        setAcademicYear(academicYear);
+        setData({
+            code: academicYear.code,
+            description: academicYear.description,
+            status: academicYear.status,
+        }); // Set the form data with the selected word's data
+        setIsCreateModalOpen(true);
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
 
-
         if (academicYear) {
             // Update existing academicYear
-            put(route("academicYear.update", academicYear.id), {
+            put(route("academic-year.update", academicYear.id), {
                 onSuccess: () => {
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
@@ -279,11 +289,11 @@ export default function Index({ auth, academicYears, queryParams = null }) {
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             <button
-                                                                // onClick={() =>
-                                                                //     openEditModal(
-                                                                //         academicYear
-                                                                //     )
-                                                                // }
+                                                                onClick={() =>
+                                                                    openEditModal(
+                                                                        academicYear
+                                                                    )
+                                                                }
                                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                                             >
                                                                 Edit
@@ -328,10 +338,9 @@ export default function Index({ auth, academicYears, queryParams = null }) {
             <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-lg font-bold">
-                        {/* {word
-                            ? "Edit Inappropriate Word"
-                            : "Add New Inappropriate Word"} */}
-                        Add New Academic Year
+                        {academicYear
+                            ? "Edit Academic Year Word"
+                            : "Add New Academic Year"}
                     </h2>
 
                     <form onSubmit={onSubmit} className="mt-4">
@@ -372,7 +381,6 @@ export default function Index({ auth, academicYears, queryParams = null }) {
                                 name="description"
                                 value={data.description}
                                 className="mt-2 block w-full"
-                                isFocused={true}
                                 onChange={(e) =>
                                     setData("description", e.target.value)
                                 }
@@ -419,8 +427,7 @@ export default function Index({ auth, academicYears, queryParams = null }) {
                                 type="submit"
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
-                                {/* {word ? "Update" : "Submit"} */}
-                                Create
+                                {academicYear ? "Update" : "Create"}
                             </button>
                         </div>
                     </form>

@@ -128,7 +128,7 @@ export default function Index({
                     <div className="flex gap-4">
                         <button
                             onClick={openCreateModal}
-                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                            className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
                         </button>
@@ -330,13 +330,13 @@ export default function Index({
                             />
                         </div>
 
-                        <div className="mt-4 flex justify-end">
+                        <div className="mt-4 flex justify-end gap-2">
                             <SecondaryButton onClick={closeCreateModal}>
                                 Cancel
                             </SecondaryButton>
                             <button
                                 type="submit"
-                                className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 ml-2"
+                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
                                 {word ? "Update" : "Submit"}
                             </button>
