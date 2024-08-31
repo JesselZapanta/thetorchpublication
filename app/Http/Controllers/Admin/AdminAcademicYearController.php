@@ -8,7 +8,7 @@ use App\Models\AcademicYear;
 use App\Http\Requests\StoreAcademicYearRequest;
 use App\Http\Requests\UpdateAcademicYearRequest;
 
-class AcademicYearController extends Controller
+class AdminAcademicYearController extends Controller
 {
     /**
      * Display a listing of the resource.

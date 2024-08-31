@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             // $table->integer('order')->nullable();//tddo in next migration for the navigation
             $table->string('status')->default('active');
-            $table->string('category_image_path');
+            $table->string('category_image_path')->nullable();
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
         if (isFocused) {
             input.current.focus();
         }
-    }, []);
+    }, [isFocused]); // Add isFocused to the dependency array to ensure it refocuses when the prop changes
 
     return (
         <input

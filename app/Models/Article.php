@@ -12,14 +12,22 @@ class Article extends Model
         'id',
         'category_id',
         'academic_year_id',
+        'author',
+
+        'title',
+        'excerpt',
+        'body',
+        'status',
+        'published_date',
+        'is_anonymous',
+        'is_featured',
+        'article_image_path',
+        'caption',
+        
+        'slug',
         'created_by',
         'edited_by',
         'layout_by',
-        'title',
-        'article_image_path',
-        'caption',
-        'body',
-        'status',
         'views',
     ];
 

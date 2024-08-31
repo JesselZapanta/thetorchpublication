@@ -29,11 +29,12 @@ class ArticleSeeder extends Seeder
                 'layout_by' => 1,
                 'title' => 'Sample title for ' . $category->name,
                 'caption' => 'Sample caption for ' . $category->name,
-                'article_image_path' => strtolower($category->name) . '_article_image_path.png',
+                // 'article_image_path' => strtolower($category->name) . '_article_image_path.png',
                 'body' => 'This is a sample body for the ' . $category->name . ' category.',
                 'status' => 'published',
-                'is_featured' => 0,
-                'is_anonymous' => 0,//todo
+                'is_featured' => 'no',
+                'is_anonymous' => 'no',//todo
+                'published_date' => now(),
                 'views' => 20
             ];
 

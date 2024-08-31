@@ -19,7 +19,7 @@ class HomeController extends Controller
         $categories = Category::where('status', 'active')->limit(10)->get();
 
        // Fetch the featured article
-        $featuredArticle = Article::where('is_featured', 1)->first();
+        $featuredArticle = Article::where('is_featured', 'yes')->first();
 
         // If there is no featured article, get the latest article
         if (!$featuredArticle) {
@@ -27,7 +27,7 @@ class HomeController extends Controller
         }
 
         // Get the top  articles with the most views
-        $topArticles = Article::orderBy('views', 'DESC')->whereNot('is_featured', 1)->limit(2)->get();
+        $topArticles = Article::orderBy('views', 'DESC')->whereNot('is_featured', 'yes')->limit(2)->get();
         //todo might include the ratings and the comments
 
         $latestArticles = Article::orderBy('created_at', 'DESC')->limit(10)->get();

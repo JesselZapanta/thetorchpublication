@@ -24,16 +24,22 @@ class StoreArticleRequest extends FormRequest
     {
         return [
             'category_id' => ['required','exists:categories,id'],
+            'academic_year_id' => ['required','exists:academic_years,id'],//added
             'created_by' => ['nullable','exists:users,id'],
+            'author' => ['nullable','string', 'max:255'],//added
             'edited_by' => ['nullable','exists:users,id'],
             'layout_by' => ['nullable','exists:users,id'],
             'title' => ['required', 'string'],
+            'excerpt' => ['required', 'string'],//added
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['pending','reject','edited', 'revision', 'publish'])
+                Rule::in(['pending','reject','edited', 'revision', 'published'])
             ],
             'article_image_path' => ['required','image','mimes:jpg,png,jpeg'],
+            'is_featured' => ['required', Rule::in(['no','yes',])],
+            'is_anonymous' => ['required', Rule::in(['no','yes',])],
+            'published_date' => ['required', 'date'],//added
         ];
     }
 }

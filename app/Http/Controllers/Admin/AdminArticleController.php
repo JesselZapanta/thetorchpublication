@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
+use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -66,9 +68,19 @@ class AdminArticleController extends Controller
      */
     public function create()
     {
+        // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
+        $activeAy = AcademicYear::all();//for admin
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
         $categories = Category::all();
+
         return inertia('Admin/Article/Create', [
             'categories' => CategoryResource::collection($categories),
+            // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
+            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
 
@@ -114,6 +126,13 @@ class AdminArticleController extends Controller
             $data['article_image_path'] = $image->store('article', 'public');
         }
 
+        if($data['is_featured'] === "yes") {
+            // Set all existing is_featured status to 'no'
+            Article::query()->update(['is_featured' => "no"]);
+        }
+
+
+
         Article::create($data);
 
         return to_route('article.index')->with('success', 'Article submitted Successfully');
@@ -134,11 +153,20 @@ class AdminArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
+        $activeAy = AcademicYear::all();//for admin
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
         $categories = Category::all();
 
         return inertia('Admin/Article/Edit', [
             'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
+            // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
+            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
 
@@ -189,8 +217,14 @@ class AdminArticleController extends Controller
             $data['article_image_path'] = $article->article_image_path;
         }
 
-        
+        if($data['is_featured'] === "yes") {
+            // Set all existing is_featured status to 'no'
+            Article::query()->update(['is_featured' => "no"]);
+        }
+
+        // Update the specific article with the provided data
         $article->update($data);
+
 
         return to_route('article.index')->with('success', 'Article Updated Successfully');
     }

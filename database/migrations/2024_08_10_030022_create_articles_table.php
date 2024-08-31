@@ -24,11 +24,12 @@ return new class extends Migration
             $table->text('excerpt')->nullable();//todo
             $table->longText('body');
             $table->text('caption');
-            $table->string('article_image_path');
+            $table->string('article_image_path')->nullable();
             $table->string('status')->default('pending');
             $table->bigInteger('views')->default(0);
-            $table->boolean('is_featured')->default(false);
-            $table->boolean('is_anonymous')->default(false);//todo
+            $table->tinyText('is_featured')->default('no');
+            $table->tinyText('is_anonymous')->default('no');//todo
+            $table->datetime('published_date');//todo
             $table->timestamps();
         });
     }

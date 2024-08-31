@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'position' => $this->position,
             // 'profile_image_path' => $this->profile_image_path ? Storage::url($this->profile_image_path) : '',
-            'profile_image_path' => $this->profile_image_path ? Storage::url($this->profile_image_path) : '',
+            'profile_image_path' => $this->profile_image_path ? Storage::url($this->profile_image_path) : '/images/default/profile.jpg',
         ];
     }
 }

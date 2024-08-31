@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\AdminAcademicYearController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
@@ -73,7 +73,7 @@ Route::middleware(['auth','admin' ])->group(function() {
     Route::resource('category', AdminCategoryController::class);
     Route::resource('article', AdminArticleController::class);
     Route::resource('word', AdminWordController::class);
-    Route::resource('academic-year', AcademicYearController::class);
+    Route::resource('academic-year', AdminAcademicYearController::class);
     Route::resource('task', AdminTaskController::class);
 });
 
