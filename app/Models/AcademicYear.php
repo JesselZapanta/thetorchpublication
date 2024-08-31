@@ -14,4 +14,9 @@ class AcademicYear extends Model
         'description',
         'status',
     ];
+    //for articles
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

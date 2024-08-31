@@ -40,6 +40,11 @@ export default function FeaturedArticle({ featuredArticle }) {
                                 src={featuredArticle.article_image_path}
                                 alt={featuredArticle.title}
                                 className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src =
+                                        "/images/default/article.png";
+                                }}
                             />
                         </Link>
                     </div>

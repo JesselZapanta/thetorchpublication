@@ -107,6 +107,12 @@ export default function Authenticated({ user, header, children }) {
                                     Words
                                 </NavLink>
                                 <NavLink
+                                    href={route("academic-year.index")}
+                                    active={route().current("academic-year.index")}
+                                >
+                                    Academic Years
+                                </NavLink>
+                                <NavLink
                                     href={route("task.index")}
                                     active={route().current("task.index")}
                                 >
@@ -251,7 +257,7 @@ export default function Authenticated({ user, header, children }) {
                                         )} */}
                             </>
                         ) : null}
-                        
+
                         <ResponsiveNavLink
                             href={route("user.index")}
                             active={route().current("user.index")}

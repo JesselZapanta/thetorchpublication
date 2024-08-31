@@ -15,6 +15,7 @@ class WordSeeder extends Seeder
         $data = [
             // Bisaya
             ['name' => 'm@ut'],
+            ['name' => 'atay'],
             ['name' => 'maut'],
             ['name' => 'maot'],
             ['name' => 'bati'],
