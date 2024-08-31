@@ -81,7 +81,7 @@ export default function Index({
                     <div className="flex gap-4">
                         <Link
                             href={route("category.create")}
-                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                            className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
                         </Link>
@@ -291,8 +291,8 @@ export default function Index({
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-lg font-bold">Confirm Delete</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete "
-                        {category?.name}" Category?
+                        Are you sure you want to delete "{category?.name}"
+                        Category?
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

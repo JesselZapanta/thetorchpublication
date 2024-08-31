@@ -75,7 +75,7 @@ export default function Index({
                     <div className="flex gap-4">
                         <Link
                             href={route("article.create")}
-                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                            className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
                         </Link>

@@ -713,7 +713,7 @@ export default function Index({
                             </SecondaryButton>
                             <button
                                 type="submit"
-                                className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600 ml-2"
+                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
                                 {task ? "Update" : "Assign Task"}
                             </button>

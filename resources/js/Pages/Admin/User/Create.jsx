@@ -1,5 +1,6 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -250,18 +251,13 @@ export default function Create({ auth }) {
                                     className="mt-2"
                                 />
                             </div>
-                            <div className="mt-8 text-right grid justify-items-end">
-                                <div className="flex">
-                                    <Link
-                                        href={route("user.index")}
-                                        className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
-                                    >
-                                        Cancel
-                                    </Link>
-                                    <button className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600">
-                                        Submit
-                                    </button>
-                                </div>
+                            <div className="mt-6 flex justify-end gap-2">
+                                <SecondaryButton href={route("user.index")}>
+                                    Cancel
+                                </SecondaryButton>
+                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                    Submit
+                                </button>
                             </div>
                         </form>
                     </div>

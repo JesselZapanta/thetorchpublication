@@ -1,3 +1,4 @@
+import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -65,21 +66,16 @@ export default function Index({ auth, user }) {
                                     <p className="mt-1">{user.position}</p>
                                 </div>
                             </div>
-                            <div className="mt-8 text-right grid justify-items-end">
-                                <div className="flex">
-                                    <Link
-                                        href={route("user.edit", user.id)}
-                                        className="bg-blue-600 py-1 px-3 text-blue-100 rounded shadow transition-all hover:bg-blue-500 mr-2"
-                                    >
-                                        Edit User
-                                    </Link>
-                                    <Link
-                                        href={route("user.index")}
-                                        className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
-                                    >
-                                        Back
-                                    </Link>
-                                </div>
+                            <div className="mt-6 flex justify-end gap-2">
+                                <Link
+                                    href={route("user.edit", user.id)}
+                                    className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Edit User
+                                </Link>
+                                <SecondaryButton href={route("user.index")}>
+                                    Back
+                                </SecondaryButton>
                             </div>
                         </div>
                     </div>

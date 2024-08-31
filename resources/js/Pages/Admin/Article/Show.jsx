@@ -1,3 +1,4 @@
+import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -33,11 +34,7 @@ export default function Index({ auth, article }) {
                             />
                             <div className="absolute bottom-0 left-0 w-full px-6 py-2 bg-slate-800 bg-opacity-50">
                                 <p className="italic text-justify text-white text-xs">
-                                    {/* {article.caption} */}
-                                    Lorem ipsum dolor sit amet consectetur
-                                    adipisicing elit. Quasi sed reprehenderit
-                                    iste autem eos facere ipsa maxime tempore
-                                    illo velit.
+                                    {article.caption}
                                 </p>
                             </div>
                         </div>
@@ -81,7 +78,7 @@ export default function Index({ auth, article }) {
                                     {article.body}
                                 </p>
                             </div>
-                            <div className="mt-12 text-right grid justify-items-end">
+                            {/* <div className="mt-12 text-right grid justify-items-end">
                                 <div className="flex">
                                     <Link
                                         href={route("article.edit", article.id)}
@@ -96,6 +93,17 @@ export default function Index({ auth, article }) {
                                         Back
                                     </Link>
                                 </div>
+                            </div> */}
+                            <div className="mt-6 flex justify-end gap-2">
+                                <Link
+                                    href={route("article.edit", article.id)}
+                                    className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Edit Article
+                                </Link>
+                                <SecondaryButton href={route("article.index")}>
+                                    Back
+                                </SecondaryButton>
                             </div>
                         </div>
                     </div>

@@ -186,14 +186,15 @@ export default function ReadArticle({
                                                 Author: {article.createdBy.name}
                                             </h4>
                                             <p className="mt-1">
-                                                Published Date: {article.created_at}
+                                                Published Date:{" "}
+                                                {article.created_at}
                                             </p>
                                         </div>
                                     </div>
                                     <h4 className="font-bold mt-4 text-lg">
                                         Category:{" "}
                                         <span className="text-indigo-500">
-                                            { article.category.name}
+                                            {article.category.name}
                                         </span>
                                     </h4>
                                     <p className="mt-1">
@@ -218,7 +219,7 @@ export default function ReadArticle({
                             {/* TTS Button */}
                             <button
                                 onClick={handleSpeak}
-                                className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                                className="ml-4 px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                             >
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
