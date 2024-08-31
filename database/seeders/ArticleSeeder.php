@@ -20,7 +20,11 @@ class ArticleSeeder extends Seeder
         foreach ($categories as $category) {
             $data = [
                 'created_by' => 1,
+                // 'author' => null, //todo
                 'category_id' => $category->id,
+                'slug' => 'Sample',//todo
+                'excerpt' => 'Sample',//todo
+                'academic_year_id' => 1,//todo
                 'edited_by' => 1,
                 'layout_by' => 1,
                 'title' => 'Sample title for ' . $category->name,
@@ -29,6 +33,7 @@ class ArticleSeeder extends Seeder
                 'body' => 'This is a sample body for the ' . $category->name . ' category.',
                 'status' => 'published',
                 'is_featured' => 0,
+                'is_anonymous' => 0,//todo
                 'views' => 20
             ];
 

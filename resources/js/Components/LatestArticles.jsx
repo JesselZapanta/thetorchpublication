@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, router } from "@inertiajs/react";
 
+export default function LatestArticles({ latestArticles }) {
+
     const incrementViews = (articleId) => {
         router.post(
             `/articles/${articleId}/increment-views`,
@@ -14,7 +16,14 @@ import { Link, router } from "@inertiajs/react";
         );
     };
 
-export default function LatestArticles({ latestArticles }) {
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
+
     return (
         <>
             {latestArticles.data.length > 0 ? (
@@ -65,20 +74,13 @@ export default function LatestArticles({ latestArticles }) {
                                     }}
                                     className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
                                 >
-                                    {article.title.length > 100
-                                        ? `${article.title.substring(
-                                              0,
-                                              100
-                                          )}...`
-                                        : article.title}
+                                    {truncate(article.title, 100)}
                                 </Link>
                                 <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
                                     By: {article.createdBy.name}
                                 </p>
                                 <p className="block mt-2 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                                    {article.body.length > 100
-                                        ? `${article.body.substring(0, 100)}...`
-                                        : article.body}
+                                    {truncate(article.body, 100)}
                                 </p>
                             </div>
                         </div>

@@ -13,22 +13,26 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');//todo why null??
+            $table->string('author')->nullable()->default(null);//todo
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//todo
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('edited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('slug')->nullable();//todo
             $table->longText('title');
-            $table->string('article_image_path');
-            $table->text('caption');
+            $table->text('excerpt')->nullable();//todo
             $table->longText('body');
+            $table->text('caption');
+            $table->string('article_image_path');
             $table->string('status')->default('pending');
-
-            // todo
             $table->bigInteger('views')->default(0);
             $table->boolean('is_featured')->default(false);
+            $table->boolean('is_anonymous')->default(false);//todo
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

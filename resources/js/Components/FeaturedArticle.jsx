@@ -15,11 +15,20 @@ export default function FeaturedArticle({ featuredArticle }) {
         );
     };
 
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
+
+
     return (
         <div className="w-full md:w-[65%] flex flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
             {featuredArticle ? (
                 <>
-                    <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40">
+                    <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40 h-[300px] sm:h-[600px]">
                         <Link
                             href={route("article.read", featuredArticle.id)}
                             onClick={(e) => {
@@ -30,7 +39,7 @@ export default function FeaturedArticle({ featuredArticle }) {
                             <img
                                 src={featuredArticle.article_image_path}
                                 alt={featuredArticle.title}
-                                className="w-full h-auto"
+                                className="w-full h-full object-cover"
                             />
                         </Link>
                     </div>
@@ -54,17 +63,13 @@ export default function FeaturedArticle({ featuredArticle }) {
                             }}
                             className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
                         >
-                            {featuredArticle.title.length > 150
-                                ? `${featuredArticle.title.substring(0, 150)}...`
-                                : featuredArticle.title}
+                            {truncate(featuredArticle?.title, 150)}
                         </Link>
                         <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
                             By: {featuredArticle.createdBy.name}
                         </p>
                         <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                            {featuredArticle.body.length > 800
-                                ? `${featuredArticle.body.substring(0, 800)}...`
-                                : featuredArticle.body}
+                            {truncate(featuredArticle?.body, 500)}
                         </p>
                     </div>
                 </>

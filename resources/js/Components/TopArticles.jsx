@@ -2,19 +2,25 @@ import { Link, router } from "@inertiajs/react";
 import React from "react";
 
 export default function TopArticles({ topArticles }) {
-    
     const incrementViews = (articleId) => {
-            router.post(
-                `/articles/${articleId}/increment-views`,
-                {},
-                {
-                    preserveScroll: true,
-                    // onSuccess: () => {
-                    //     router.visit(route("article.read", article.id))
-                    // }
-                }
-            );
-        };
+        router.post(
+            `/articles/${articleId}/increment-views`,
+            {},
+            {
+                preserveScroll: true,
+                // onSuccess: () => {
+                //     router.visit(route("article.read", article.id))
+                // }
+            }
+        );
+    };
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
 
     return (
         <div className="w-full md:w-[35%] flex gap-4 flex-col">
@@ -65,20 +71,13 @@ export default function TopArticles({ topArticles }) {
                                     }}
                                     className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
                                 >
-                                    {article.title.length > 100
-                                        ? `${article.title.substring(
-                                              0,
-                                              100
-                                          )}...`
-                                        : article.title}
+                                    {truncate(article.title, 100)}
                                 </Link>
                                 <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
                                     By: {article.createdBy.name}
                                 </p>
                                 <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                                    {article.body.length > 100
-                                        ? `${article.body.substring(0, 100)}...`
-                                        : article.body}
+                                    {truncate(article.body, 100)}
                                 </p>
                             </div>
                         </div>

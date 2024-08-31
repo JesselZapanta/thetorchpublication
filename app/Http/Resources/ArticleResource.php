@@ -19,6 +19,10 @@ class ArticleResource extends JsonResource
     {
         return[
             'id' => $this->id,
+
+            'author' => $this->author ?? '',
+            'excerpt' => $this->excerpt,
+
             'title' => $this->title,
             'body' => $this->body,
             'status' => $this->status,
@@ -26,9 +30,14 @@ class ArticleResource extends JsonResource
             'views' => $this->views,
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
+            
+            'academic_year_id' => $this->academic_year_id,
+
             'createdBy' => new UserResource($this->createdBy),
             'article_image_path' => $this->article_image_path ? Storage::url($this->article_image_path) : '',
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
+
+            'is_anonymous' => $this->is_anonymous ?? 0
         ];
     }
 }

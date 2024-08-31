@@ -22,18 +22,18 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'position' => 'adviser',
                 'profile_image_path' => 'profile.png',
-                'email' => 'thetorchpubpress@gmail.com',
+                'email' => 'torchpublication@gmail.com',
                 'password' => Hash::make('password'),
             ],
 
-            [
+            [   
                 'student_id' => '123369',
                 'username' => 'jesselzapanta',
                 'name' => 'jesselzapanta',
                 'role' => 'student',
                 'position' => 'none',
                 'profile_image_path' => 'profile.png',
-                'email' => 'jesselzapanta@gmail.com',
+                'email' => 'jesselzapanta9@gmail.com',
                 'password' => Hash::make('password'),
             ],
         ];
