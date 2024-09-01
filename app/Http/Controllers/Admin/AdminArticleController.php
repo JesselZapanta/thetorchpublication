@@ -121,6 +121,10 @@ class AdminArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
 
+        $data['slug'] = Str::slug($request->title);
+
+        //  'slug' => Str::slug($req->title),
+
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
             $data['article_image_path'] = $image->store('article', 'public');
@@ -204,6 +208,7 @@ class AdminArticleController extends Controller
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
+        $data['slug'] = Str::slug($request->title);
 
         if ($image) {
             // Delete the old image file if a new one is uploaded

@@ -108,9 +108,19 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink
                                     href={route("academic-year.index")}
-                                    active={route().current("academic-year.index")}
+                                    active={route().current(
+                                        "academic-year.index"
+                                    )}
                                 >
                                     Academic Years
+                                </NavLink>
+                                <NavLink
+                                    href={route("newsletter.index")}
+                                    active={route().current(
+                                        "newsletter.index"
+                                    )}
+                                >
+                                    Newsletters
                                 </NavLink>
                                 <NavLink
                                     href={route("task.index")}

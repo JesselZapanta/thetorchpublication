@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAcademicYearController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
@@ -74,6 +75,7 @@ Route::middleware(['auth','admin' ])->group(function() {
     Route::resource('article', AdminArticleController::class);
     Route::resource('word', AdminWordController::class);
     Route::resource('academic-year', AdminAcademicYearController::class);
+    Route::resource('newsletter', AdminNewsletterController::class);
     Route::resource('task', AdminTaskController::class);
 });
 

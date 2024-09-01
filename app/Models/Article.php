@@ -29,6 +29,7 @@ class Article extends Model
         'edited_by',
         'layout_by',
         'views',
+        'is_newsletter'
     ];
 
     //for category

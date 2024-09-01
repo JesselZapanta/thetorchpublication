@@ -29,6 +29,7 @@ return new class extends Migration
             $table->bigInteger('views')->default(0);
             $table->tinyText('is_featured')->default('no');
             $table->tinyText('is_anonymous')->default('no');//todo
+            $table->tinyText('is_newsletter')->default('no');//todo
             $table->datetime('published_date');//todo
             $table->timestamps();
         });
