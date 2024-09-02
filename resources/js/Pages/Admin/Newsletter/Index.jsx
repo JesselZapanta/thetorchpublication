@@ -1,4 +1,3 @@
-import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
@@ -12,6 +11,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 
 export default function Index({
     auth,
@@ -24,18 +24,22 @@ export default function Index({
     const [confirmDistribute, setConfirmDistribute] = useState(false);
     const [newsletter, setNewsletter] = useState(null); // Storing newsletter to edit/delete/distribute
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [isDistributing, setIsDistributing] = useState(false);
-    const [progress, setProgress] = useState(0);
 
-    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        errors,
+        reset,
+        clearErrors,
+        progress,
+        processing,
+    } = useForm({
         academic_year_id: "",
         description: "",
         newsletter_thumbnail_image_path: "",
         newsletter_file_path: "",
         status: "",
-
-        message: "",
-        password: "",
     });
 
     // for tables sorting and searching
@@ -141,37 +145,26 @@ export default function Index({
     };
 
     // Handle newsletter distribution
-    const handleDistribute = async (e) => {
+    const handleDistribute = (e) => {
         e.preventDefault();
-        setIsDistributing(true);
-        setProgress(0);
-
-        try {
-            const response = await post(
-                route("newsletter.distribute", newsletter.id),
-                {
-                    message: data.message,
-                    password: data.password,
+        post(
+            route("newsletter.distribute", newsletter.id),
+            {
+                onSuccess: () => {
+                    setConfirmDistribute(false);
+                    reset(); 
+                    alert("Success");
                 },
-                {
-                    onProgress: (event) => {
-                        setProgress(
-                            Math.round((event.loaded / event.total) * 100)
-                        );
-                    },
-                }
-            );
-
-            if (response.success) {
-                setConfirmDistribute(false);
-                reset(); // Reset the form after successful distribution
+                onError: (errors) => {
+                    console.error("Distribution failed:", errors);
+                },
+                onFinish: () => {
+                    console.log("Request finished");
+                },
             }
-        } catch (error) {
-            console.error("Distribution failed:", error);
-        } finally {
-            setIsDistributing(false);
-        }
+        );
     };
+
 
     // Close distribution modal
     const closeDistributeModal = () => {
@@ -338,6 +331,7 @@ export default function Index({
                                                                 href={
                                                                     newsletter.newsletter_file_path
                                                                 }
+                                                                target="blank"
                                                             >
                                                                 VIEW
                                                             </a>
@@ -596,12 +590,12 @@ export default function Index({
                     <form onSubmit={handleDistribute}>
                         <div className="mt-4">
                             <InputLabel htmlFor="message" value="Message" />
-                            <TextInput
+                            <TextAreaInput
                                 id="message"
                                 type="text"
                                 name="message"
                                 value={data.message}
-                                className="mt-2 block w-full"
+                                className="mt-2 block w-full min-h-24"
                                 onChange={(e) =>
                                     setData("message", e.target.value)
                                 }
@@ -613,47 +607,38 @@ export default function Index({
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel
-                                htmlFor="password"
-                                value="Your Password"
-                            />
+                            <InputLabel htmlFor="password" value="password" />
+
                             <TextInput
                                 id="password"
                                 type="password"
                                 name="password"
-                                value={data.password}
-                                className="mt-2 block w-full"
+                                value={data.password || ""}
+                                className="mt-1 block w-full"
+                                autoComplete="current-password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)
                                 }
                             />
+
                             <InputError
                                 message={errors.password}
                                 className="mt-2"
                             />
                         </div>
-
-                        {isDistributing && (
-                            <div className="mt-4">
-                                <p>Progress: {progress}%</p>
-                            </div>
-                        )}
-
                         <div className="mt-4 flex justify-end gap-2">
                             <SecondaryButton
                                 onClick={closeDistributeModal}
-                                disabled={isDistributing}
+                                disabled={processing}
                             >
                                 Cancel
                             </SecondaryButton>
                             <button
                                 type="submit"
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                                disabled={isDistributing}
+                                disabled={processing}
                             >
-                                {isDistributing
-                                    ? "Distributing..."
-                                    : "Distribute"}
+                                {processing ? "Distributing..." : "Distribute"}
                             </button>
                         </div>
                     </form>

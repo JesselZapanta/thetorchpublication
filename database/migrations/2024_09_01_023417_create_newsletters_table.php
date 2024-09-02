@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('newsletter_file_path');
             $table->string('status')->default('pending');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//todo
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
         });
     }

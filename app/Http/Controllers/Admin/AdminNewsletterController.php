@@ -182,8 +182,9 @@ class AdminNewsletterController extends Controller
         if (!Hash::check($request->password, Auth::user()->password)) {
             return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
         }
-          // Log the message
-        Log::info('Distributing newsletter with message:', ['message' => $request->message]);
+
+        // Log the message for debugging
+        // Log::info('Distributing newsletter with message:', ['message' => $request->message]);
 
         // Get all user emails
         $users = User::pluck('email');
