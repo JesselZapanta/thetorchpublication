@@ -76,9 +76,11 @@ Route::middleware(['auth','admin' ])->group(function() {
     Route::resource('word', AdminWordController::class);
     Route::resource('academic-year', AdminAcademicYearController::class);
     
-    
     Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])
     ->name('newsletter.distribute');
+
+    Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
+
     Route::resource('newsletter', AdminNewsletterController::class);
     
     Route::resource('task', AdminTaskController::class);

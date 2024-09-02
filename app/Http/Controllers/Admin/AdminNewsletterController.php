@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\NewsletterResource;
+use App\Jobs\SendNewsletterEmail;
 use App\Mail\NewsletterMail;
 use App\Models\AcademicYear;
+use App\Models\Job;
 use App\Models\Newsletter;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Requests\UpdateNewsletterRequest;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Bus;
 
 
 class AdminNewsletterController extends Controller
@@ -183,18 +186,24 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
         }
 
-        // Log the message for debugging
-        // Log::info('Distributing newsletter with message:', ['message' => $request->message]);
-
-        // Get all user emails
+         // Get all user emails
         $users = User::pluck('email');
 
-        // Send the newsletter to each user
+        // Queue each email
         foreach ($users as $email) {
-            Mail::to($email)->send(new NewsletterMail($newsletter, $request->message));
+            SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
         }
 
         return redirect()->back()->with('success', 'Newsletter has been sent to all users.');
+    }
+
+    public function jobIndex()
+    {
+        $jobs = Job::all(); // Fetch jobs from the default `jobs` table
+
+        return inertia('Admin/Newsletter/Jobs', [
+            'jobs' => $jobs
+        ]);
     }
 }
 

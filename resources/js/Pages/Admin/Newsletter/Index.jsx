@@ -181,7 +181,14 @@ export default function Index({
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Lists of Newsletters
                     </h2>
+
                     <div className="flex gap-4">
+                        <Link
+                            href={route("jobs.index")}
+                            className="px-4 py-2 bg-rose-600 text-white transition-all duration-300 rounded hover:bg-rose-700"
+                        >
+                            Newsletter Jobs
+                        </Link>
                         <button
                             onClick={openCreateModal}
                             className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
@@ -626,6 +633,7 @@ export default function Index({
                                 className="mt-2"
                             />
                         </div>
+
                         <div className="mt-4 flex justify-end gap-2">
                             <SecondaryButton
                                 onClick={closeDistributeModal}
