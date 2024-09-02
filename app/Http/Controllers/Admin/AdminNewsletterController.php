@@ -5,12 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\NewsletterResource;
+use App\Mail\NewsletterMail;
 use App\Models\AcademicYear;
 use App\Models\Newsletter;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Requests\UpdateNewsletterRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class AdminNewsletterController extends Controller
 {
@@ -67,16 +74,16 @@ class AdminNewsletterController extends Controller
         $data = $request->validated();
 
         $image = $data['newsletter_thumbnail_image_path'];
-        $file = $data['newsletter_file_path'];
+        $pdfFile = $data['newsletter_file_path'];
 
         if ($image) {
             // Store the image directly under the 'newsletter-thumbnail/' directory and save its path
             $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
         }
 
-        if ($file) {
+        if ($pdfFile) {
             // Store the image directly under the 'newsletter-file/' directory and save its path
-            $data['newsletter_file_path'] = $file->store('newsletter-file', 'public');
+            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
         }
 
         $data['layout_by'] = Auth::user()->id;
@@ -109,6 +116,7 @@ class AdminNewsletterController extends Controller
     {
         $data = $request->validated();
 
+        // dd($data['newsletter_file_path']);
         $image = $data['newsletter_thumbnail_image_path'];
         $pdfFile = $data['newsletter_file_path'];
 
@@ -130,9 +138,9 @@ class AdminNewsletterController extends Controller
                 Storage::disk('public')->delete($newsletter->newsletter_file_path);
             }
             // Store the new pdfFile directly under the 'newsletter/' directory
-            $data['newsletter_file_path'] = $image->store('newsletter-file', 'public');
+            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
         } else {
-            // If no new pdfFile is uploaded, keep the existing image
+            // If no new pdfFile is uploaded, keep the existing pdfFile
             $data['newsletter_file_path'] = $newsletter->newsletter_file_path;
         }
 
@@ -153,12 +161,39 @@ class AdminNewsletterController extends Controller
             Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
         }
 
-        if ($newsletter->newsletter_file_path) {
+        if ($newsletter->newsletter_thumbnail_image_path) {
             // Delete the specific old  file
-            Storage::disk('public')->delete($newsletter->newsletter_file_path);
+            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
         }
 
 
         return to_route('newsletter.index')->with('delete_success', 'Deleted Successfully');
     }
+
+    public function distributeNewsletter(Request $request, Newsletter $newsletter)
+    {
+        // Validate the message and password
+        $request->validate([
+            'message' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Verify the authenticated user's password
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
+        }
+          // Log the message
+        Log::info('Distributing newsletter with message:', ['message' => $request->message]);
+
+        // Get all user emails
+        $users = User::pluck('email');
+
+        // Send the newsletter to each user
+        foreach ($users as $email) {
+            Mail::to($email)->send(new NewsletterMail($newsletter, $request->message));
+        }
+
+        return redirect()->back()->with('success', 'Newsletter has been sent to all users.');
+    }
 }
+

@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('newsletters', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->string('newsletter_thumbnail_image_path');//todo change to image
+            $table->string('message')->nullable();//todo remove this one
+            $table->string('revision_message')->nullable();
+            $table->string('newsletter_thumbnail_image_path');
             $table->string('newsletter_file_path');
             $table->string('status')->default('pending');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');

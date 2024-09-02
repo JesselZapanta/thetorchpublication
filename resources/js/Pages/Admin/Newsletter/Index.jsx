@@ -21,8 +21,11 @@ export default function Index({
     queryParams = null,
 }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [newsletter, setWewsletter] = useState(null); // For storing the newsletter to edit/delete
+    const [confirmDistribute, setConfirmDistribute] = useState(false);
+    const [newsletter, setNewsletter] = useState(null); // Storing newsletter to edit/delete/distribute
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isDistributing, setIsDistributing] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const { data, setData, post, put, errors, reset, clearErrors } = useForm({
         academic_year_id: "",
@@ -30,6 +33,9 @@ export default function Index({
         newsletter_thumbnail_image_path: "",
         newsletter_file_path: "",
         status: "",
+
+        message: "",
+        password: "",
     });
 
     // for tables sorting and searching
@@ -65,13 +71,13 @@ export default function Index({
     // Open modal for creating a new newsletter
     const openCreateModal = () => {
         reset(); // Reset the form to clear previous data
-        setWewsletter(null); // Clear the selected newsletter for editing
+        setNewsletter(null); // Clear the selected newsletter for editing
         setIsCreateModalOpen(true);
     };
 
     // Open modal for editing an existing newsletter
     const openEditModal = (newsletter) => {
-        setWewsletter(newsletter);
+        setNewsletter(newsletter);
         setData({
             academic_year_id: newsletter.academic_year_id,
             description: newsletter.description, // Set description
@@ -101,7 +107,7 @@ export default function Index({
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
-            })
+            });
         }
     };
 
@@ -113,7 +119,7 @@ export default function Index({
 
     // Open modal and set newsletter to delete
     const openDeleteModal = (newsletter) => {
-        setWewsletter(newsletter);
+        setNewsletter(newsletter);
         setConfirmDelete(true);
     };
 
@@ -123,7 +129,55 @@ export default function Index({
             router.delete(route("newsletter.destroy", newsletter.id));
         }
         setConfirmDelete(false);
-        setWewsletter(null);
+        setNewsletter(null);
+    };
+
+    //distribution
+    // Open modal for distributing a newsletter
+    const openDistributeModal = (newsletter) => {
+        setNewsletter(newsletter);
+        setData({ message: "", password: "" }); // Reset message and password fields
+        setConfirmDistribute(true);
+    };
+
+    // Handle newsletter distribution
+    const handleDistribute = async (e) => {
+        e.preventDefault();
+        setIsDistributing(true);
+        setProgress(0);
+
+        try {
+            const response = await post(
+                route("newsletter.distribute", newsletter.id),
+                {
+                    message: data.message,
+                    password: data.password,
+                },
+                {
+                    onProgress: (event) => {
+                        setProgress(
+                            Math.round((event.loaded / event.total) * 100)
+                        );
+                    },
+                }
+            );
+
+            if (response.success) {
+                setConfirmDistribute(false);
+                reset(); // Reset the form after successful distribution
+            }
+        } catch (error) {
+            console.error("Distribution failed:", error);
+        } finally {
+            setIsDistributing(false);
+        }
+    };
+
+    // Close distribution modal
+    const closeDistributeModal = () => {
+        setConfirmDistribute(false);
+        reset(); // Reset the form when closing the modal
+        clearErrors(); // Clear any validation errors
     };
 
     return (
@@ -280,13 +334,13 @@ export default function Index({
                                                             </div>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            <Link
+                                                            <a
                                                                 href={
                                                                     newsletter.newsletter_file_path
                                                                 }
                                                             >
-                                                                view
-                                                            </Link>
+                                                                VIEW
+                                                            </a>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
@@ -304,7 +358,7 @@ export default function Index({
                                                         <td className="px-3 py-2 text-nowrap">
                                                             <button
                                                                 onClick={() =>
-                                                                    openEditModal(
+                                                                    openDistributeModal(
                                                                         newsletter
                                                                     )
                                                                 }
@@ -396,7 +450,7 @@ export default function Index({
                             />
                         </div>
                         {/* description */}
-                        <div>
+                        <div className="mt-4">
                             <InputLabel
                                 htmlFor="description"
                                 value="Newsletter Description"
@@ -533,6 +587,76 @@ export default function Index({
                             Delete
                         </DangerButton>
                     </div>
+                </div>
+            </Modal>
+            {/* Confirm Distribute Modal */}
+            <Modal show={confirmDistribute}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-lg font-bold">Distribute Newsletter</h2>
+                    <form onSubmit={handleDistribute}>
+                        <div className="mt-4">
+                            <InputLabel htmlFor="message" value="Message" />
+                            <TextInput
+                                id="message"
+                                type="text"
+                                name="message"
+                                value={data.message}
+                                className="mt-2 block w-full"
+                                onChange={(e) =>
+                                    setData("message", e.target.value)
+                                }
+                            />
+                            <InputError
+                                message={errors.message}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel
+                                htmlFor="password"
+                                value="Your Password"
+                            />
+                            <TextInput
+                                id="password"
+                                type="password"
+                                name="password"
+                                value={data.password}
+                                className="mt-2 block w-full"
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                            />
+                            <InputError
+                                message={errors.password}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        {isDistributing && (
+                            <div className="mt-4">
+                                <p>Progress: {progress}%</p>
+                            </div>
+                        )}
+
+                        <div className="mt-4 flex justify-end gap-2">
+                            <SecondaryButton
+                                onClick={closeDistributeModal}
+                                disabled={isDistributing}
+                            >
+                                Cancel
+                            </SecondaryButton>
+                            <button
+                                type="submit"
+                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                disabled={isDistributing}
+                            >
+                                {isDistributing
+                                    ? "Distributing..."
+                                    : "Distribute"}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </Modal>
         </AuthenticatedLayout>

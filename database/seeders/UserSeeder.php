@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'position' => 'adviser',
                 // 'profile_image_path' => 'profile.png',
-                'email' => 'torchpublication@gmail.com',
+                'email' => 'jeszapanta9@gmail.com',
                 'password' => Hash::make('password'),
             ],
 

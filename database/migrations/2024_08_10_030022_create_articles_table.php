@@ -13,24 +13,25 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->string('author')->nullable()->default(null);//todo
+            $table->string('author')->nullable()->default(null);
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//todo
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('edited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
             $table->string('slug')->nullable();//todo
             $table->longText('title');
-            $table->text('excerpt')->nullable();//todo
+            $table->text('excerpt')->nullable();
             $table->longText('body');
             $table->text('caption');
             $table->string('article_image_path')->nullable();
             $table->string('status')->default('pending');
+            $table->string('revision_message')->nullable();//todo
             $table->bigInteger('views')->default(0);
             $table->tinyText('is_featured')->default('no');
-            $table->tinyText('is_anonymous')->default('no');//todo
-            $table->tinyText('is_newsletter')->default('no');//todo
-            $table->datetime('published_date');//todo
+            $table->tinyText('is_anonymous')->default('no');
+            $table->tinyText('is_newsletter')->default('no');
+            $table->datetime('published_date');
             $table->timestamps();
         });
     }
