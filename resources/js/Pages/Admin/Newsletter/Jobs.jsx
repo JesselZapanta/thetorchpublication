@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 export default function Jobs({ jobs, auth }) {
     return (
@@ -8,7 +8,7 @@ export default function Jobs({ jobs, auth }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Lists of Newsletters
+                        Newsletters Queue
                     </h2>
                     <div className="flex gap-4">
                         <Link
@@ -22,18 +22,21 @@ export default function Jobs({ jobs, auth }) {
             }
         >
             <Head title="Newsletters" />
-
-            {/* <pre className="text-white">
-                {JSON.stringify(jobs, null, 2)}
-            </pre> */}
-            {/* Alerts */}
-            {/* {success && <AlertSuccess message={success} />} */}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                        <tr>
+                                            <th className="px-3 py-3">Id</th>
+                                            <th className="px-3 py-3">queue</th>
+                                            <th className="px-3 py-3">
+                                                payload
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         {jobs.length > 0 ? (
                                             jobs.map((job) => (
@@ -65,10 +68,6 @@ export default function Jobs({ jobs, auth }) {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* <Pagination
-                                links={jobs.meta.links}
-                                queryParams={queryParams}
-                            /> */}
                         </div>
                     </div>
                 </div>

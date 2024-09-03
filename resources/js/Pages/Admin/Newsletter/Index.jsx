@@ -185,9 +185,9 @@ export default function Index({
                     <div className="flex gap-4">
                         <Link
                             href={route("jobs.index")}
-                            className="px-4 py-2 bg-rose-600 text-white transition-all duration-300 rounded hover:bg-rose-700"
+                            className="px-4 py-2 bg-yellow-600 text-white transition-all duration-300 rounded hover:bg-yellow-700"
                         >
-                            Newsletter Jobs
+                            Queue
                         </Link>
                         <button
                             onClick={openCreateModal}

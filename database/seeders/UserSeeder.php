@@ -41,6 +41,6 @@ class UserSeeder extends Seeder
         
         User::insertOrIgnore($users);
          // Generate 1000 Freedom Wall entries
-        User::factory()->count(48)->create();
+        User::factory()->count(8)->create();
     }
 }

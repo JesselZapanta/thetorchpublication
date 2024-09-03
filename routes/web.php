@@ -15,6 +15,7 @@ use App\Http\Controllers\Home\FreedomWallLikeController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QueueController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -78,11 +79,9 @@ Route::middleware(['auth','admin' ])->group(function() {
     
     Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])
     ->name('newsletter.distribute');
-
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
-
     Route::resource('newsletter', AdminNewsletterController::class);
-    
+
     Route::resource('task', AdminTaskController::class);
 });
 
