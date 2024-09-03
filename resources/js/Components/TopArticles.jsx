@@ -69,7 +69,7 @@ export default function TopArticles({ topArticles }) {
                                         e.preventDefault();
                                         incrementViews(article.id);
                                     }}
-                                    className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
+                                    className="block text-justify font-sans text-base antialiased font-medium leading-snug tracking-normal text-gray-100"
                                 >
                                     {truncate(article.title, 100)}
                                 </Link>

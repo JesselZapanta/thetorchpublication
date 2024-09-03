@@ -55,7 +55,7 @@ export default function Index({ auth, article }) {
                                         )}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-lg">
+                                        <h4 className="font-bold text-base">
                                             Author: {article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
@@ -64,7 +64,7 @@ export default function Index({ auth, article }) {
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg">
+                                    <h4 className="font-bold text-base">
                                         Category: {article.category.name}
                                     </h4>
                                     <p className="mt-1">

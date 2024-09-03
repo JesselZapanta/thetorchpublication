@@ -122,7 +122,7 @@ export default function Show({ auth, categories, freedomWall }) {
                                     />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-lg">
+                                    <h4 className="font-bold text-base">
                                         Anonymous
                                     </h4>
                                     <p className="text-sm">

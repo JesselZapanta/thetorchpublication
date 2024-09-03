@@ -68,16 +68,19 @@ export default function CommentsSection({
         : comments.data.slice(0, 3);
 
     return (
-        <div className="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
+        <div className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
             {displayedComments.length > 0 && (
                 <div className="flex gap-1">
-                    <button onClick={toggleComments} className="text-gray-400">
+                    <button
+                        onClick={toggleComments}
+                        className="text-gray-700 dark:text-gray-400"
+                    >
                         {showAll ? "View less comments" : "View all comments"}
                     </button>
                     <ChevronDownIcon
                         className={`w-6 ${
                             showAll ? "rotate-180" : ""
-                        } text-gray-400`}
+                        } text-gray-700`}
                     />
                 </div>
             )}
@@ -102,12 +105,12 @@ export default function CommentsSection({
                                     />
                                 )}
                             </div>
-                            <div className="bg-gray-900 w-full rounded-md p-2 shadow-sm border-indigo-500">
-                                <small className="text-sm text-purple-300">
+                            <div className="bg-gray-200 dark:bg-gray-900 w-full rounded-md p-2 shadow-sm border-indigo-500">
+                                <small className="text-base text-purple-800 dark:text-purple-300">
                                     {comment.commentedBy.name} |{" "}
                                     {comment.created_at}
                                 </small>
-                                <p className="text-justify text-gray-100 mt-2">
+                                <p className="text-justify text-base whitespace-pre-line text-gray-900 dark:text-gray-100 mt-2">
                                     {comment.body}
                                 </p>
                                 <div className="flex justify-between mt-4">
@@ -115,8 +118,8 @@ export default function CommentsSection({
                                         <span
                                             className={`${
                                                 comment.user_has_liked
-                                                    ? "text-indigo-400"
-                                                    : "text-gray-400"
+                                                    ? "text-indigo-700"
+                                                    : "text-gray-700 dark:text-gray-400"
                                             }`}
                                         >
                                             {comment.likes_count}
@@ -124,8 +127,8 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 comment.user_has_liked
-                                                    ? "text-indigo-400"
-                                                    : "text-gray-400"
+                                                    ? "text-indigo-700"
+                                                    : "text-gray-700 dark:text-gray-400"
                                             }`}
                                             onClick={() =>
                                                 handleLike(comment.id)
@@ -143,8 +146,8 @@ export default function CommentsSection({
                                         <span
                                             className={`${
                                                 comment.user_has_disliked
-                                                    ? "text-indigo-400"
-                                                    : "text-gray-400"
+                                                    ? "text-indigo-700"
+                                                    : "text-gray-700 dark:text-gray-400"
                                             }`}
                                         >
                                             {comment.dislikes_count}
@@ -152,8 +155,8 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 comment.user_has_disliked
-                                                    ? "text-indigo-400"
-                                                    : "text-gray-400"
+                                                    ? "text-indigo-700"
+                                                    : "text-gray-700 dark:text-gray-400"
                                             }`}
                                             onClick={() =>
                                                 handleDislike(comment.id)
@@ -173,8 +176,8 @@ export default function CommentsSection({
                                         <button
                                             className={`${
                                                 isSpeaking === comment.id
-                                                    ? "text-indigo-400 animate-pulse"
-                                                    : "text-gray-400"
+                                                    ? "text-indigo-700 animate-pulse"
+                                                    : "text-gray-700"
                                             }`}
                                             onClick={() => handleSpeak(comment)}
                                         >
@@ -202,7 +205,7 @@ export default function CommentsSection({
                                             viewBox="0 0 24 24"
                                             strokeWidth={1.5}
                                             stroke="currentColor"
-                                            className="size-6 text-white cursor-pointer"
+                                            className="size-6 text-indigo-800 dark:text-gray-50 cursor-pointer"
                                         >
                                             <path
                                                 strokeLinecap="round"
@@ -237,7 +240,7 @@ export default function CommentsSection({
                     </div>
                 ))
             ) : (
-                <div className="text-center text-gray-400">
+                <div className="text-center text-gray-700">
                     No comments yet.
                 </div>
             )}

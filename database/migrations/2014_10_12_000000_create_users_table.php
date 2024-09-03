@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // $table->tinyText('theme')->default('dark');//for light or dark mode
             $table->rememberToken();
             $table->timestamps();
         });

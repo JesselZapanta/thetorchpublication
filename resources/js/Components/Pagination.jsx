@@ -19,11 +19,11 @@ export default function Pagination({ links, queryParams }) {
                     key={link.label}
                     disabled={!link.url}
                     className={
-                        "inline-block py-3 px-5 rounded-lg text-gray-200 text-xs " +
-                        (link.active ? "bg-gray-950 " : " ") +
+                        "inline-block transition-all duration-300 py-3 px-5 rounded-lg text-gray-900 dark:text-gray-200 text-xs " +
+                        (link.active ? "bg-gray-300 dark:bg-gray-950 " : " ") +
                         (!link.url
                             ? "!text-gray-500 cursor-not-allowed "
-                            : "hover:bg-gray-950")
+                            : "hover:bg-gray-400")
                     }
                     dangerouslySetInnerHTML={{ __html: link.label }}
                 ></button>

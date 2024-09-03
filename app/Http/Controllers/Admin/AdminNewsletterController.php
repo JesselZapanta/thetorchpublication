@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
+use App\Http\Resources\JobResource;
 use App\Http\Resources\NewsletterResource;
 use App\Jobs\SendNewsletterEmail;
 use App\Mail\NewsletterMail;
@@ -59,7 +60,7 @@ class AdminNewsletterController extends Controller
             // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
             'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
-    }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -199,10 +200,12 @@ class AdminNewsletterController extends Controller
 
     public function jobIndex()
     {
-        $jobs = Job::all(); // Fetch jobs from the default `jobs` table
-
+        // $jobs = Job::all(); // Fetch jobs from the default `jobs` table
+        $query = Job::query();
+        $jobs = $query->orderBy('id', 'asc')->paginate(10)->onEachSide(1);
+        // dd($jobs);
         return inertia('Admin/Newsletter/Jobs', [
-            'jobs' => $jobs
+            'jobs' => JobResource::collection($jobs),
         ]);
     }
 }

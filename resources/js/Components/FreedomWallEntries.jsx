@@ -87,7 +87,7 @@ export default function FreedomWallEntries({
                                 />
                             </div>
                             <div>
-                                <h4 className="font-bold text-lg">Anonymous</h4>
+                                <h4 className="font-bold text-base">Anonymous</h4>
                                 <p className="text-sm">
                                     Publish: {entry.created_at}
                                 </p>

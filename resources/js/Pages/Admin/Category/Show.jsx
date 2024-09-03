@@ -37,28 +37,28 @@ export default function Index({ auth, category }) {
                             <div>
                                 {/* ID */}
                                 <div>
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Category ID
                                     </label>
                                     <p className="mt-1">{category.id}</p>
                                 </div>
                                 {/* Name */}
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Category Name
                                     </label>
                                     <p className="mt-1">{category.name}</p>
                                 </div>
                                 {/* Status */}
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Status
                                     </label>
                                     <p className="mt-1">{category.status}</p>
                                 </div>
                                 {/* Description */}
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Description
                                     </label>
                                     <p className="mt-1">

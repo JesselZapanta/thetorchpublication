@@ -182,7 +182,7 @@ export default function ReadArticle({
                                             )}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-lg">
+                                            <h4 className="font-bold text-base">
                                                 Author: {article.createdBy.name}
                                             </h4>
                                             <p className="mt-1">
@@ -191,7 +191,7 @@ export default function ReadArticle({
                                             </p>
                                         </div>
                                     </div>
-                                    <h4 className="font-bold mt-4 text-lg">
+                                    <h4 className="font-bold mt-4 text-base">
                                         Category:{" "}
                                         <span className="text-indigo-500">
                                             {article.category.name}

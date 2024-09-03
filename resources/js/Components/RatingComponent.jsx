@@ -15,7 +15,7 @@ export default function RatingComponent({ articleId, isAuthenticated }) {
         ratedColor: "green",
         averageColor: "blue",
         unauthenticatedColor: "red",
-        defaultColor: "white",
+        defaultColor: "gray",
     };
 
     // Function to fetch and update ratings

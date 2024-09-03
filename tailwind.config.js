@@ -19,6 +19,6 @@ export default {
     },
 
     plugins: [forms],
-    //for dark mode and light mode
-    // darkMode: "class",
+    //user.theme=light show this if dark remove, the
+    darkMode: "class",
 };

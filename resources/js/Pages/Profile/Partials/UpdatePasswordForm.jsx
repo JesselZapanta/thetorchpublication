@@ -39,7 +39,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <h2 className="text-base font-medium text-gray-900 dark:text-gray-100">
                     Update Password
                 </h2>
 

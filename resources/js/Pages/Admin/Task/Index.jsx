@@ -145,7 +145,7 @@ export default function Index({
                     <div className="flex gap-4">
                         <button
                             onClick={openCreateModal}
-                            className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
                         </button>
@@ -159,7 +159,7 @@ export default function Index({
             {success && <AlertSuccess message={success} />}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -296,8 +296,9 @@ export default function Index({
                                             <th className="px-3 py-3"></th>
                                         </tr>
                                     </thead>
-                                    {/* Thhead with sorting */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
+                                    {/* Thead with sorting*/}
+                                    {/* added */}
+                                    <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <TableHeading
                                                 name="id"
@@ -392,7 +393,8 @@ export default function Index({
                                         {tasks.data.length > 0 ? (
                                             tasks.data.map((task) => (
                                                 <tr
-                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                    //added
+                                                    className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
                                                     key={task.id}
                                                 >
                                                     <td className="px-3 py-2 text-nowrap">
@@ -465,7 +467,7 @@ export default function Index({
             {/* Create/Edit Modal */}
             <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-lg font-bold">
+                    <h2 className="text-base font-bold">
                         {task ? "Edit Task" : "Add New Task"}
                     </h2>
 
@@ -725,7 +727,7 @@ export default function Index({
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-lg font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">Confirm Delete</h2>
                     <p className="mt-4">
                         Are you sure you want to delete "{task?.name}" Task?
                     </p>

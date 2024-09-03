@@ -1,3 +1,4 @@
+import ArticleCard from "@/Components/ArticleCard";
 import FeaturedArticle from "@/Components/FeaturedArticle";
 import LatestArticles from "@/Components/LatestArticles";
 import TopArticles from "@/Components/TopArticles";
@@ -20,8 +21,11 @@ export default function Welcome({
                     <FeaturedArticle featuredArticle={featuredArticle} />
 
                     {/* Top Articles */}
-
-                    <TopArticles topArticles={topArticles} />
+                    <div className="w-full md:w-[35%] flex gap-4 flex-col">
+                        {topArticles.data.map((article) => (
+                            <ArticleCard key={article.id} article={article} />
+                        ))}
+                    </div>
                 </div>
 
                 <div className="w-full h-[2px] bg-indigo-500 my-8"></div>

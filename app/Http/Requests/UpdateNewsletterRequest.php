@@ -29,7 +29,7 @@ class UpdateNewsletterRequest extends FormRequest
             'newsletter_thumbnail_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],//todo
             'newsletter_file_path' => ['nullable','file','mimes:pdf'], //todo
             'status' => ['required',
-                Rule::in(['pending','revision', 'approved', 'distributed'])
+                Rule::in(['pending','revision', 'approved'])
             ],
         ];
     }

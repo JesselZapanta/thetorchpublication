@@ -36,31 +36,31 @@ export default function Index({ auth, user }) {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div>
                                 <div>
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Student ID
                                     </label>
                                     <p className="mt-1">{user.student_id}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Full Name
                                     </label>
                                     <p className="mt-1">{user.name}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Email
                                     </label>
                                     <p className="mt-1">{user.email}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Role
                                     </label>
                                     <p className="mt-1">{user.role}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-lg">
+                                    <label className="font-bold text-base">
                                         Position
                                     </label>
                                     <p className="mt-1">{user.position}</p>

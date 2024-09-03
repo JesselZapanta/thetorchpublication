@@ -15,9 +15,17 @@ export default function ArticleCard({ article }) {
         );
     };
 
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
+
     return (
-        <div className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg">
-            <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40 h-64">
+        <div className="flex w-full flex-col">
+            <div className="overflow-hidden rounded-xl h-64">
                 <Link
                     href={route("article.read", article.id)}
                     onClick={(e) => {
@@ -36,40 +44,36 @@ export default function ArticleCard({ article }) {
                     />
                 </Link>
             </div>
-            <div className="flex flex-col w-full justify-between">
-                <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                        <Link
-                            className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-indigo-500"
-                            href={route(
-                                "articles.byCategory",
-                                article.category.id
-                            )}
-                        >
-                            {article.category.name}
-                        </Link>
-                    </div>
-                    <Link
-                        href={route("article.read", article.id)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            incrementViews(article.id);
-                        }}
-                        className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
-                    >
-                        {article.title.length > 100
-                            ? `${article.title.substring(0, 100)}...`
-                            : article.title}
-                    </Link>
-                    <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                        By: {article.createdBy.name}
-                    </p>
-                    <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                        {article.body.length > 100
-                            ? `${article.body.substring(0, 100)}...`
-                            : article.body}
-                    </p>
-                </div>
+            <div className="flex items-center justify-between ">
+                <Link
+                    className="block mt-2 text-xl font-bold text-indigo-500"
+                    href={route("articles.byCategory", article.category.id)}
+                >
+                    {article.category.name}
+                </Link>
+                {/* star */}
+                <p className="text-amber-600 text-2xl">★</p>
+            </div>
+            <div className="text-gray-800 dark:text-gray-400 ">
+                <Link
+                    href={route("article.read", article.id)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        incrementViews(article.id);
+                    }}
+                    className="block text-justify text-base font-bold mt-2"
+                >
+                    {truncate(article?.title, 50)}
+                </Link>
+                <p className="block text-sm text-justify mt-2">
+                    By: {article.createdBy.name}
+                </p>
+                <p className="block text-sm text-justify">
+                    Published Date: {article.published_date}
+                </p>
+                <p className="block mt-2 text-justify">
+                    {truncate(article?.excerpt, 150)}
+                </p>
             </div>
         </div>
     );
