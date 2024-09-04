@@ -16,6 +16,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueController;
+use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +89,7 @@ Route::middleware(['auth','admin' ])->group(function() {
 
 Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+    Route::resource('student-article', StudentArticleController::class);
 });
 
 

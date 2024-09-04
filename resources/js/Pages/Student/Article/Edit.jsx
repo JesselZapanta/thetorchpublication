@@ -4,7 +4,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Edit({ auth, article, categories, activeAy }) {
@@ -31,7 +31,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <StudentAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -423,6 +423,6 @@ export default function Edit({ auth, article, categories, activeAy }) {
                     </div>
                 </div>
             </div>
-        </AdminAuthenticatedLayout>
+        </StudentAuthenticatedLayout>
     );
 }

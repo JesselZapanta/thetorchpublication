@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
@@ -114,7 +114,7 @@ export default function Index({ auth, academicYears, queryParams = null }) {
     };
 
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -456,6 +456,6 @@ export default function Index({ auth, academicYears, queryParams = null }) {
                     </div>
                 </div>
             </Modal>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

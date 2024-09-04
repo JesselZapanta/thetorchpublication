@@ -6,7 +6,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -27,7 +27,7 @@ export default function Index({
             delete queryParams[name];
         }
 
-        router.get(route("article.index"), queryParams);
+        router.get(route("student-article.index"), queryParams);
     };
 
     const onKeyPressed = (name, e) => {
@@ -47,7 +47,7 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("article.index"), queryParams);
+        router.get(route("student-article.index"), queryParams);
     };
 
     // Delete
@@ -73,7 +73,7 @@ export default function Index({
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <StudentAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -82,7 +82,7 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("article.create")}
+                            href={route("student-article.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
@@ -92,7 +92,7 @@ export default function Index({
             }
         >
             <Head title="Articles" />
-            {/* {<pre>{JSON.stringify(users, null, 2)}</pre>} */}
+            {/* {<pre>{JSON.stringify(articles, null, 2)}</pre>} */}
             {/* Alert */}
             {success && <AlertSuccess message={success} />}
             {delete_success && <AlertSuccess message={delete_success} />}
@@ -107,25 +107,22 @@ export default function Index({
                                         <tr text-text-nowrap="true">
                                             <th
                                                 className="px-3 py-3"
-                                                colSpan="3"
+                                                colSpan="2"
                                             >
                                                 <TextInput
                                                     className="w-full"
                                                     defaultValue={
-                                                        queryParams.created_by
+                                                        queryParams.title
                                                     }
-                                                    placeholder="Search Author Name"
+                                                    placeholder="Search Article Name"
                                                     onBlur={(e) =>
                                                         searchFieldChanged(
-                                                            "created_by",
+                                                            "title",
                                                             e.target.value
                                                         )
                                                     }
                                                     onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "created_by",
-                                                            e
-                                                        )
+                                                        onKeyPressed("title", e)
                                                     }
                                                 />
                                             </th>
@@ -150,24 +147,7 @@ export default function Index({
                                                     }
                                                 />
                                             </th>
-                                            <th className="px-3 py-3">
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.title
-                                                    }
-                                                    placeholder="Search Article Name"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "title",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("title", e)
-                                                    }
-                                                />
-                                            </th>
+                                            <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3">
                                                 <SelectInput
                                                     className="w-full"
@@ -211,18 +191,6 @@ export default function Index({
                                                 ID
                                             </TableHeading>
                                             <th className="px-3 py-3">Image</th>
-                                            <TableHeading
-                                                name="created_by"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Author
-                                            </TableHeading>
                                             <TableHeading
                                                 name="category_id"
                                                 sort_field={
@@ -291,9 +259,6 @@ export default function Index({
                                                         </div>
                                                     </th>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {article.createdBy.name}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-nowrap">
                                                         {article.category.name}
                                                     </td>
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
@@ -317,7 +282,7 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
-                                                                "article.edit",
+                                                                "student-article.edit",
                                                                 article.id
                                                             )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
@@ -394,6 +359,6 @@ export default function Index({
                     </div>
                 </div>
             </div>
-        </AdminAuthenticatedLayout>
+        </StudentAuthenticatedLayout>
     );
 }

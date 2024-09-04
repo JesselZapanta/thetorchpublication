@@ -1,5 +1,5 @@
 import Pagination from "@/Components/Pagination";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Jobs({ jobs, auth, queryParams }) {
@@ -12,7 +12,7 @@ export default function Jobs({ jobs, auth, queryParams }) {
     }
 
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -99,6 +99,6 @@ export default function Jobs({ jobs, auth, queryParams }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

@@ -7,7 +7,7 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
@@ -178,7 +178,7 @@ export default function Index({
     };
 
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -662,6 +662,6 @@ export default function Index({
                     </form>
                 </div>
             </Modal>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

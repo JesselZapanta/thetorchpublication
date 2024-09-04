@@ -6,7 +6,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -70,7 +70,7 @@ export default function Index({
     };
 
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -372,6 +372,6 @@ export default function Index({
                     </div>
                 </div>
             </Modal>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

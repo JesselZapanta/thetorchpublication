@@ -1,10 +1,10 @@
 import SecondaryButton from "@/Components/SecondaryButton";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Index({ auth, category }) {
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -81,6 +81,6 @@ export default function Index({ auth, category }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

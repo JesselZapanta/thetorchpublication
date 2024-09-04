@@ -3,7 +3,7 @@ import InputLabel from "@/Components/InputLabel";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
@@ -26,7 +26,7 @@ export default function Create({ auth }) {
     };
 
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -263,6 +263,6 @@ export default function Create({ auth }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }
