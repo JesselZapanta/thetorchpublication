@@ -95,7 +95,7 @@ export default function Show({ auth, categories, freedomWall }) {
             categories={categories}
             header={
                 <div className="max-w-7xl mt-16 mx-auto flex items-center justify-center">
-                    <h2 className="font-semibold text-3xl text-nowrap text-gray-200 leading-tight text-justify uppercase">
+                    <h2 className="font-semibold text-3xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
                         The Torch Freedom Wall
                     </h2>
                 </div>
@@ -111,8 +111,8 @@ export default function Show({ auth, categories, freedomWall }) {
                     {JSON.stringify(freedomWall, null, 2)}
                 </pre> */}
                 <div className="max-w-xl py-2 mx-auto w-full">
-                    <div className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
-                        <div className="bg-gray-700 p-2 w-full h-16 flex justify-between items-center">
+                    <div className="relative flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
+                        <div className="dark:bg-gray-700 bg-gray-600 p-2 w-full h-16 flex justify-between items-center">
                             <div className="flex gap-2">
                                 <div className="w-12 h-12 rounded-full border-2 border-indigo-500 overflow-hidden">
                                     <img
@@ -177,7 +177,7 @@ export default function Show({ auth, categories, freedomWall }) {
                             </div>
                         </div>
                         {/* Bottoom Btns */}
-                        <div className="bg-gray-700 p-2  w-full h-16 flex justify-between items-center">
+                        <div className="dark:bg-gray-700 bg-gray-600 p-2  w-full h-16 flex justify-between items-center">
                             <div className="flex gap-4">
                                 <span
                                     className={`${
@@ -194,7 +194,9 @@ export default function Show({ auth, categories, freedomWall }) {
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
-                                    onClick={() => handleLike(freedomWall.data.id)}
+                                    onClick={() =>
+                                        handleLike(freedomWall.data.id)
+                                    }
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

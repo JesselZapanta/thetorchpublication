@@ -30,9 +30,9 @@ export default function LatestArticles({ latestArticles }) {
                 latestArticles.data.map((article) => (
                     <div
                         key={article.id}
-                        className="relative flex w-full flex-col md:flex-row rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg"
+                        className="relative flex w-full flex-col md:flex-row  dark:bg-gray-800"
                     >
-                        <div className="relative m-4 overflow-hidden text-white shadow-lg rounded-xl bg-gray-700 bg-clip-border shadow-gray-900/40 h-[300px] sm:h-[220px]">
+                        <div className="overflow-hidden rounded-xl h-64">
                             <Link
                                 href={route("article.read", article.id)}
                                 onClick={(e) => {
@@ -42,7 +42,7 @@ export default function LatestArticles({ latestArticles }) {
                             >
                                 <img
                                     src={article.article_image_path}
-                                    className="w-full md:w-[420px] h-full object-cover"
+                                    className="w-full h-full object-cover"
                                     onError={(e) => {
                                         e.target.onerror = null;
                                         e.target.src =
@@ -53,36 +53,37 @@ export default function LatestArticles({ latestArticles }) {
                             </Link>
                         </div>
 
-                        <div className="flex flex-col w-full justify-between">
-                            <div className="p-4 lg:pl-0">
-                                <div className="flex items-center justify-between mb-3">
-                                    <Link
-                                        className="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-indigo-500"
-                                        href={route(
-                                            "articles.byCategory",
-                                            article.category.id
-                                        )}
-                                    >
-                                        {article.category.name}
-                                    </Link>
-                                </div>
+                        <div className="flex flex-col w-full ml-0 md:ml-2">
+                            <div className="flex items-center justify-between">
                                 <Link
-                                    href={route("article.read", article.id)}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        incrementViews(article.id);
-                                    }}
-                                    className="block text-justify font-sans text-lg antialiased font-medium leading-snug tracking-normal text-gray-100"
+                                    className="block mt-2 md:mt-0 text-xl font-bold text-indigo-500"
+                                    href={route(
+                                        "articles.byCategory",
+                                        article.category.id
+                                    )}
                                 >
-                                    {truncate(article.title, 100)}
+                                    {article.category.name}
                                 </Link>
-                                <p className="block text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                                    By: {article.createdBy.name}
-                                </p>
-                                <p className="block mt-2 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
-                                    {truncate(article.body, 100)}
-                                </p>
                             </div>
+                            <Link
+                                href={route("article.read", article.id)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    incrementViews(article.id);
+                                }}
+                                className="block text-justify text-base font-bold mt-2 md:mt-0"
+                            >
+                                {truncate(article.title, 40)}
+                            </Link>
+                            <p className="block text-sm text-justify mt-2">
+                                By: {article.createdBy.name}
+                            </p>
+                            <p className="block text-sm text-justify">
+                                Published Date: {article.published_date}
+                            </p>
+                            <p className="block mt-2 text-justify">
+                                {truncate(article?.excerpt, 150)}
+                            </p>
                         </div>
                     </div>
                 ))

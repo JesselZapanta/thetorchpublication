@@ -162,7 +162,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
             categories={categories}
             header={
                 <div className="max-w-7xl mt-16 mx-auto flex items-center justify-center">
-                    <h2 className="font-semibold text-3xl text-nowrap text-gray-200 leading-tight text-justify uppercase">
+                    <h2 className="font-semibold text-3xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
                         The Torch Freedom Wall
                     </h2>
                 </div>
@@ -282,7 +282,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                                 </svg>
                             </button>
                         </div>
-                        <p className="block mt-4 text-justify font-sans text-base antialiased font-light leading-relaxed text-gray-400">
+                        <p className="block mt-4 text-justify text-base leading-relaxed text-gray-700 dark:text-gray-400">
                             Welcome to the Torch Freedom Wall, a platform for
                             open and respectful expression. By using this
                             platform, you agree to communicate respectfully,

@@ -307,7 +307,7 @@ export default function Index({
                                                         >
                                                             {truncate(
                                                                 article.title,
-                                                                500
+                                                                50
                                                             )}
                                                         </Link>
                                                     </th>

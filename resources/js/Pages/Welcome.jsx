@@ -28,14 +28,17 @@ export default function Welcome({
                     </div>
                 </div>
 
-                <div className="w-full h-[2px] bg-indigo-500 my-8"></div>
+                <div className="w-full h-[2px] bg-indigo-500 mt-2"></div>
 
-                <h5 className="block text-start font-sans text-2xl antialiased font-medium leading-snug tracking-normal text-indigo-500">
+                <h5 className="block text-start  text-2xl text-indigo-500 py-2">
                     The Latest
                 </h5>
 
-                <div className="w-full grid lg:grid-cols-2 gap-4 mt-8">
-                    <LatestArticles latestArticles={latestArticles} />
+                <div className="w-full grid lg:grid-cols-3 gap-4">
+                    {/* <LatestArticles latestArticles={latestArticles} /> */}
+                    {latestArticles.data.map((article) => (
+                        <ArticleCard key={article.id} article={article} />
+                    ))}
                 </div>
 
                 {/* <pre className="text-white">

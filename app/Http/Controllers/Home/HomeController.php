@@ -30,7 +30,7 @@ class HomeController extends Controller
         $topArticles = Article::orderBy('views', 'DESC')->whereNot('is_featured', 'yes')->limit(2)->get();
         //todo might include the ratings and the comments
 
-        $latestArticles = Article::orderBy('created_at', 'DESC')->limit(10)->get();
+        $latestArticles = Article::orderBy('created_at', 'DESC')->limit(9)->get();
 
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),

@@ -75,9 +75,9 @@ export default function FreedomWallEntries({
             {freedomWallEntries.data.map((entry) => (
                 <div
                     key={entry.id}
-                    className="relative flex w-full flex-col rounded-xl bg-gray-800 bg-clip-border text-gray-300 shadow-lg overflow-hidden "
+                    className="relative flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden "
                 >
-                    <div className="bg-gray-700 p-2 w-full h-16 flex justify-between items-center">
+                    <div className="dark:bg-gray-700 bg-gray-600 p-2 w-full h-16 flex justify-between items-center">
                         <div className="flex gap-2">
                             <div className="w-12 h-12 rounded-full border-2 border-indigo-500 overflow-hidden">
                                 <img
@@ -87,7 +87,9 @@ export default function FreedomWallEntries({
                                 />
                             </div>
                             <div>
-                                <h4 className="font-bold text-base">Anonymous</h4>
+                                <h4 className="font-bold text-base">
+                                    Anonymous
+                                </h4>
                                 <p className="text-sm">
                                     Publish: {entry.created_at}
                                 </p>
@@ -146,7 +148,7 @@ export default function FreedomWallEntries({
                         </div>
                     </div>
                     {/* Bottoom Btns */}
-                    <div className="bg-gray-700 p-2  w-full h-16 flex justify-between items-center">
+                    <div className="dark:bg-gray-700 bg-gray-600 p-2  w-full h-16 flex justify-between items-center">
                         <div className="flex gap-4">
                             <span
                                 className={`${

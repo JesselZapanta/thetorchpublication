@@ -206,6 +206,11 @@ class WordSeeder extends Seeder
             ['name' => 'shit-for-brains'],
             ['name' => 'fuckup'],
             ['name' => 'fuck-up'],
+            ['name' => 'fvc u'],
+            ['name' => 'fvck u'],
+            ['name' => 'fvck'],
+            ['name' => 'fck'],
+            ['name' => 'fvk'],
         ];
 
         \App\Models\Word::insertOrIgnore($data);
