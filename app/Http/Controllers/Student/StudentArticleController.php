@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Utilities\AhoCorasick; // Import the AhoCorasick class
+use Illuminate\Http\Request;
 
 class StudentArticleController extends Controller
 {
@@ -136,8 +137,11 @@ class StudentArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article)
+    public function edit(Request $req, $id)
     {
+
+        return Article::find($id);
+
         // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
         $activeAy = AcademicYear::all();//for admin
 
@@ -148,7 +152,7 @@ class StudentArticleController extends Controller
         $categories = Category::all();
 
         return inertia('Student/Article/Edit', [
-            'article' => new ArticleResource($article),
+            'article' => Article::find($id),
             'categories' => CategoryResource::collection($categories),
             // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
             'activeAy' => AcademicYearResource::collection($activeAy),//for admin
