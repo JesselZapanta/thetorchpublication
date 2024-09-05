@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
+use App\Http\Controllers\Editor\EditorDashboardController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
 use App\Http\Controllers\Home\FreedomWallController;
@@ -92,10 +93,10 @@ Route::middleware(['auth', 'student'])->group(function() {
     Route::resource('student-article', StudentArticleController::class);
 });
 
-// 
-Route::middleware(['auth', 'student'])->group(function() {
-    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
-    Route::resource('student-article', StudentArticleController::class);
+// for editor
+Route::middleware(['auth', 'editor'])->group(function() {
+    Route::get('/editor/dashboard', [EditorDashboardController::class, 'index'])->name('editor.dashboard');
+    Route::resource('editor-article', StudentArticleController::class);
 });
 
 
