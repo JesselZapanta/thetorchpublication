@@ -83,10 +83,11 @@ export default function StudentAuthenticatedLayout({ user, header, children }) {
                                     </>
                                 ) : null}
 
-                                
                                 <NavLink
                                     href={route("student-article.index")}
-                                    active={route().current("student-article.index")}
+                                    active={route().current(
+                                        "student-article.index"
+                                    )}
                                 >
                                     Articles
                                 </NavLink>

@@ -239,14 +239,13 @@ class AdminArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        // dd($article);
         $article->delete();
 
         if ($article->article_image_path) {
             // Delete the specific old image file
             Storage::disk('public')->delete($article->article_image_path);
         }
-
-
         return to_route('article.index')->with('delete_success', 'Deleted Successfully');
     }
 }

@@ -34,7 +34,7 @@ export default function Create({ auth, categories }) {
         <StudentAuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between h-6">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Create New Article
                     </h2>
@@ -220,7 +220,7 @@ export default function Create({ auth, categories }) {
                             <div className="mt-4">
                                 <InputLabel
                                     htmlFor="article_image_path"
-                                    value="Category Image"
+                                    value="Article Image"
                                 />
 
                                 <TextInput

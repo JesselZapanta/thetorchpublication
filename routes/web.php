@@ -86,7 +86,13 @@ Route::middleware(['auth','admin' ])->group(function() {
     Route::resource('task', AdminTaskController::class);
 });
 
+// For Student and Student Contributor
+Route::middleware(['auth', 'student'])->group(function() {
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+    Route::resource('student-article', StudentArticleController::class);
+});
 
+// 
 Route::middleware(['auth', 'student'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
     Route::resource('student-article', StudentArticleController::class);

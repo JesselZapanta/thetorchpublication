@@ -13,12 +13,11 @@ import { useState } from "react";
 export default function Index({
     auth,
     articles,
+    categories,
     success,
     delete_success,
     queryParams = null,
 }) {
-    const [confirmDelete, setConfirmDelete] = useState(false);
-
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) {
@@ -50,18 +49,23 @@ export default function Index({
         router.get(route("student-article.index"), queryParams);
     };
 
-    // Delete
-    const handleDelete = (article) => {
-        router.delete(route("article.destroy", article.id));
-        closeModal();
-    };
+    // Open modal and set article to delete
 
-    const confirmDeletion = () => {
+    const [confirmDelete, setConfirmDelete] = useState(false);
+
+    const [article, setArticle] = useState(null); // For storing the article to edit/delete
+    const openDeleteModal = (article) => {
+        setArticle(article);
         setConfirmDelete(true);
     };
 
-    const closeModal = () => {
+    // Handle delete and close modal
+    const handleDelete = () => {
+        if (article) {
+            router.delete(route("student-article.destroy", article.id));
+        }
         setConfirmDelete(false);
+        setArticle(null);
     };
 
     //text limit
@@ -76,7 +80,7 @@ export default function Index({
         <StudentAuthenticatedLayout
             user={auth.user}
             header={
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between h-6">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
@@ -126,7 +130,7 @@ export default function Index({
                                                     }
                                                 />
                                             </th>
-                                            <th className="px-3 py-3">
+                                            {/* <th className="px-3 py-3">
                                                 <TextInput
                                                     className="w-full"
                                                     defaultValue={
@@ -146,6 +150,38 @@ export default function Index({
                                                         )
                                                     }
                                                 />
+                                            </th> */}
+                                            <th className="px-3 py-3">
+                                                <SelectInput
+                                                    className="w-full"
+                                                    defaultValue={
+                                                        queryParams.category
+                                                    }
+                                                    onChange={(e) =>
+                                                        searchFieldChanged(
+                                                            "category",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        Select category
+                                                    </option>
+                                                    {categories.data.map(
+                                                        (category) => (
+                                                            <option
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                                value={
+                                                                    category.name
+                                                                }
+                                                            >
+                                                                {category.name}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </SelectInput>
                                             </th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3">
@@ -290,51 +326,15 @@ export default function Index({
                                                             Edit
                                                         </Link>
                                                         <button
-                                                            onClick={
-                                                                confirmDeletion
+                                                            onClick={() =>
+                                                                openDeleteModal(
+                                                                    article
+                                                                )
                                                             }
                                                             className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                         >
                                                             Delete
                                                         </button>
-                                                        <Modal
-                                                            show={confirmDelete}
-                                                        >
-                                                            <div
-                                                                onClose={
-                                                                    closeModal
-                                                                }
-                                                                className="p-6"
-                                                            >
-                                                                <h2 className="text-base font-medium text-gray-900 dark:text-gray-100">
-                                                                    Are you sure
-                                                                    you want to
-                                                                    delete this
-                                                                    Article?
-                                                                </h2>
-                                                                <div className="mt-6 flex justify-end">
-                                                                    <SecondaryButton
-                                                                        onClick={
-                                                                            closeModal
-                                                                        }
-                                                                    >
-                                                                        Cancel
-                                                                    </SecondaryButton>
-
-                                                                    <DangerButton
-                                                                        className="ms-3"
-                                                                        onClick={() =>
-                                                                            handleDelete(
-                                                                                article
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Delete
-                                                                        Article
-                                                                    </DangerButton>
-                                                                </div>
-                                                            </div>
-                                                        </Modal>
                                                     </td>
                                                 </tr>
                                             ))
@@ -359,6 +359,25 @@ export default function Index({
                     </div>
                 </div>
             </div>
+            {/* Confirm Delete Modal */}
+            <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <p className="mt-4">
+                        Are you sure you want to delete this Article?
+                    </p>
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton
+                            onClick={() => setConfirmDelete(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <DangerButton onClick={handleDelete} className="ml-2">
+                            Delete
+                        </DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </StudentAuthenticatedLayout>
     );
 }

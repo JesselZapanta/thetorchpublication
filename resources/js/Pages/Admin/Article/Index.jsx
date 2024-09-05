@@ -17,8 +17,6 @@ export default function Index({
     delete_success,
     queryParams = null,
 }) {
-    const [confirmDelete, setConfirmDelete] = useState(false);
-
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
         if (value) {
@@ -50,18 +48,23 @@ export default function Index({
         router.get(route("article.index"), queryParams);
     };
 
-    // Delete
-    const handleDelete = (article) => {
-        router.delete(route("article.destroy", article.id));
-        closeModal();
-    };
+    // Open modal and set article to delete
 
-    const confirmDeletion = () => {
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    
+    const [article, setArticle] = useState(null); // For storing the article to edit/delete
+    const openDeleteModal = (article) => {
+        setArticle(article);
         setConfirmDelete(true);
     };
 
-    const closeModal = () => {
+    // Handle delete and close modal
+    const handleDelete = () => {
+        if (article) {
+            router.delete(route("article.destroy", article.id));
+        }
         setConfirmDelete(false);
+        setArticle(null);
     };
 
     //text limit
@@ -325,51 +328,15 @@ export default function Index({
                                                             Edit
                                                         </Link>
                                                         <button
-                                                            onClick={
-                                                                confirmDeletion
+                                                            onClick={() =>
+                                                                openDeleteModal(
+                                                                    article
+                                                                )
                                                             }
                                                             className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                         >
                                                             Delete
                                                         </button>
-                                                        <Modal
-                                                            show={confirmDelete}
-                                                        >
-                                                            <div
-                                                                onClose={
-                                                                    closeModal
-                                                                }
-                                                                className="p-6"
-                                                            >
-                                                                <h2 className="text-base font-medium text-gray-900 dark:text-gray-100">
-                                                                    Are you sure
-                                                                    you want to
-                                                                    delete this
-                                                                    Article?
-                                                                </h2>
-                                                                <div className="mt-6 flex justify-end">
-                                                                    <SecondaryButton
-                                                                        onClick={
-                                                                            closeModal
-                                                                        }
-                                                                    >
-                                                                        Cancel
-                                                                    </SecondaryButton>
-
-                                                                    <DangerButton
-                                                                        className="ms-3"
-                                                                        onClick={() =>
-                                                                            handleDelete(
-                                                                                article
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Delete
-                                                                        Article
-                                                                    </DangerButton>
-                                                                </div>
-                                                            </div>
-                                                        </Modal>
                                                     </td>
                                                 </tr>
                                             ))
@@ -394,6 +361,25 @@ export default function Index({
                     </div>
                 </div>
             </div>
+            {/* Confirm Delete Modal */}
+            <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <p className="mt-4">
+                        Are you sure you want to delete this Article?
+                    </p>
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton
+                            onClick={() => setConfirmDelete(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <DangerButton onClick={handleDelete} className="ml-2">
+                            Delete
+                        </DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </AdminAuthenticatedLayout>
     );
 }
