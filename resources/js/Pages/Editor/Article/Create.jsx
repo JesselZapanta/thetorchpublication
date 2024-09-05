@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth, categories }) {
@@ -27,11 +27,11 @@ export default function Create({ auth, categories }) {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        post(route("student-article.store", data));
+        post(route("editor-article.store", data));
     };
 
     return (
-        <StudentAuthenticatedLayout
+        <EditorAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">
@@ -244,7 +244,7 @@ export default function Create({ auth, categories }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("student-article.index")}
+                                    href={route("editor-article.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -256,6 +256,6 @@ export default function Create({ auth, categories }) {
                     </div>
                 </div>
             </div>
-        </StudentAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

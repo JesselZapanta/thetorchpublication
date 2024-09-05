@@ -19,19 +19,22 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('edited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
-            $table->string('slug')->nullable();//todo
+            $table->text('slug')->nullable();//todo
             $table->longText('title');
             $table->text('excerpt')->nullable();
             $table->longText('body');
             $table->text('caption');
             $table->string('article_image_path')->nullable();
-            $table->string('status')->default('pending');
-            $table->string('revision_message')->nullable();//todo
+            $table->tinyText('status')->default('pending');
+            $table->text('revision_message')->nullable();
             $table->bigInteger('views')->default(0);
             $table->tinyText('is_featured')->default('no');
             $table->tinyText('is_anonymous')->default('no');
             $table->tinyText('is_newsletter')->default('no');
-            $table->datetime('published_date');
+            $table->datetime('published_date')->nullable();
+
+            $table->tinyText('report_count')->default(0);
+            $table->tinyText('visibility')->default('visible');//hidden
             $table->timestamps();
         });
     }

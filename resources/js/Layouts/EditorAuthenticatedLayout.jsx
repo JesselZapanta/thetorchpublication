@@ -86,9 +86,9 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                                 ) : null}
 
                                 <NavLink
-                                    href={route("student-article.index")}
+                                    href={route("editor-article.index")}
                                     active={route().current(
-                                        "student-article.index"
+                                        "editor-article.index"
                                     )}
                                 >
                                     Articles

@@ -1,94 +1,109 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Editor;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AcademicYearResource;
+use App\Http\Requests\Editor\EditorStoreArticleRequest;
+use App\Http\Requests\Editor\EditorUpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Category;
 use App\Models\Word;
+use App\Utilities\AhoCorasick;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Utilities\AhoCorasick; // Import the AhoCorasick class
 
-
-class AdminArticleController extends Controller
+class EditorArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        // $articles = Article::all();
-        $query = Article::query();
+{
+    $query = Article::query();
+    $id = Auth::user()->id;
 
-        $sortField = request('sort_field', 'created_at');
-        $sortDirection = request('sort_direction', 'desc');
-        
-        
-        if(request('title')){
-            $query->where('title', 'like', '%'. request('title') . '%');
-        }
-        //todo for anony and with author
-        if (request('created_by')) {
+    $sortField = request('sort_field', 'created_at');
+    $sortDirection = request('sort_direction', 'desc');
+
+    // Check if filtering by title
+    if (request('title')) {
+        $query->where('title', 'like', '%'. request('title') . '%');
+    }
+
+    //Author
+    if (request('created_by')) {
             // Join with the users table to search by name
             $query->whereHas('createdBy', function ($q) {
                 $q->where('name', 'like', '%' . request('created_by') . '%');
             });
         }
 
-        if (request('category')) {
-            // Join with the users table to search by name
-            $query->whereHas('category', function ($q) {
-                $q->where('name', 'like', '%' . request('category') . '%');
-            });
-        }
-
-        if(request('status')){
-            $query->where('status', request('status'));
-        }
-
-        $articles = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
-
-        return inertia('Admin/Article/Index', [
-            'articles' => ArticleResource::collection($articles),
-            'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
-            'delete_success' => session('delete_success'),
-        ]);
+    // Check if filtering by category
+    if (request('category')) {
+        $query->whereHas('category', function ($q) {
+            $q->where('name', 'like', '%' . request('category') . '%');
+        });
     }
+
+    // Check if filtering by status
+    if (request('status')) {
+        $query->where('status', request('status'));
+    }
+
+    // Filter based on "My Articles" selection 
+    switch (request('myArticle')) {
+    case 'myArticle':
+        // Show only articles created by the authenticated user
+        $query->where('created_by', $id);
+        break;
+
+    default:
+        // Show all articles created by the authenticated user and pending/rejected articles from others
+        $query->where(function ($query) use ($id) {
+            $query->where('created_by', $id) // Auth user's articles
+                    ->orWhere(function ($query) use ($id) {
+                        $query->where('created_by', '!=', $id)
+                                ->whereIn('status', ['pending']); 
+                    });
+            });
+        break;
+}
+    // Sorting the results
+    $articles = $query->orderBy($sortField, $sortDirection)
+                        ->paginate(10)
+                        ->onEachSide(1);
+
+    $categories = Category::all();
+
+    return inertia('Editor/Article/Index', [
+        'articles' => ArticleResource::collection($articles),
+        'categories' => CategoryResource::collection($categories),
+        'queryParams' => request()->query() ?: null,
+        'success' => session('success'),
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
-        $activeAy = AcademicYear::all();//for admin
-
-        if (!$activeAy) {
-            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
-        }
-
         $categories = Category::all();
 
-        return inertia('Admin/Article/Create', [
+        return inertia('Editor/Article/Create', [
             'categories' => CategoryResource::collection($categories),
-            // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
-            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreArticleRequest $request)
+    public function store(EditorStoreArticleRequest $request)
     {
         $data = $request->validated();
 
@@ -115,73 +130,75 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
         }
 
-
-        // 
-        $image = $data['article_image_path'];
-        $data['created_by'] = Auth::user()->id;
-        $data['edited_by'] = Auth::user()->id;
-        $data['layout_by'] = Auth::user()->id;
-
-        $data['slug'] = Str::slug($request->title);
-
-        //  'slug' => Str::slug($req->title),
-
-        if ($image) {
-            // Store the image directly under the 'article/' directory and save its path
-            $data['article_image_path'] = $image->store('article', 'public');
-        }
-
-        if($data['is_featured'] === "yes") {
-            // Set all existing is_featured status to 'no'
-            Article::query()->update(['is_featured' => "no"]);
-        }
-
-
-
-        Article::create($data);
-
-        return to_route('article.index')->with('success', 'Article submitted Successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Article $article)
-    {
-        return inertia('Admin/Article/Show', [
-            'article' => new ArticleResource($article),
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
-        $activeAy = AcademicYear::all();//for admin
+        $activeAy = AcademicYear::where('status', 'active')->first();
 
         if (!$activeAy) {
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
         }
 
+        // 
+        $image = $data['article_image_path'];
+        $data['created_by'] = Auth::user()->id;
+        $data['edited_by'] = Auth::user()->id;
+        $data['academic_year_id'] = $activeAy->id;
+        $data['status'] = 'edited';
+
+        $data['slug'] = Str::slug($request->title);
+
+        if ($image) {
+            // Store the image directly under the 'article/' directory and save its path
+            $data['article_image_path'] = $image->store('article', 'public');
+            $data['layout_by'] = Auth::user()->id;
+        }
+
+        Article::create($data);
+
+        return to_route('editor-article.index')->with('success', 'Article submitted Successfully');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    // HOW TO IMPLEMENT A SLUG
+    // public function show($editor_article)
+    // {
+    //     // Manually fetch the article by slug
+    //     $article = Article::where('slug', $editor_article)->firstOrFail();
+
+    //     return inertia('Editor/Article/Show', [
+    //         'article' => new ArticleResource($article),
+    //     ]);
+    // }
+
+    public function show(Article $editor_article)
+    {
+        return inertia('Editor/Article/Show', [
+            'article' => new ArticleResource($editor_article),
+        ]);
+    }
+    
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Article $editor_article)
+    {
         $categories = Category::all();
 
-        return inertia('Admin/Article/Edit', [
-            'article' => new ArticleResource($article),
+        return inertia('Editor/Article/Edit', [
+            'article' => new ArticleResource($editor_article),
             'categories' => CategoryResource::collection($categories),
-            // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
-            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(EditorUpdateArticleRequest $request, Article $editor_article)
     {
         $data = $request->validated();
-
+        
         // Build the Trie
         $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
         $ahoCorasick = new AhoCorasick();
@@ -204,49 +221,53 @@ class AdminArticleController extends Controller
         if ($ahoCorasick->search(strtolower($data['caption']))) {
             return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
         }
-        
+
+        // 
         $image = $data['article_image_path'];
-        $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
-        $data['layout_by'] = Auth::user()->id;
         $data['slug'] = Str::slug($request->title);
+
+         //the revision or reject message message 
+        $data['revision_message'] = $request->input('revision_message');
+        
+        $status = $data['status'];
+        
+        if($status == 'edited'){
+            $data['revision_message'] = null;
+        }
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
-            if ($article->article_image_path) {
-                Storage::disk('public')->delete($article->article_image_path);
+            if ($editor_article->article_image_path) {
+                Storage::disk('public')->delete($editor_article->article_image_path);
             }
             // Store the new image directly under the 'article/' directory
             $data['article_image_path'] = $image->store('article', 'public');
+
+            $data['layout_by'] = Auth::user()->id;
+
         } else {
             // If no new image is uploaded, keep the existing image
-            $data['article_image_path'] = $article->article_image_path;
+            $data['article_image_path'] = $editor_article->article_image_path;
         }
 
-        if($data['is_featured'] === "yes") {
-            // Set all existing is_featured status to 'no'
-            Article::query()->update(['is_featured' => "no"]);
-        }
+        $editor_article->update($data);
 
-        // Update the specific article with the provided data
-        $article->update($data);
-
-
-        return to_route('article.index')->with('success', 'Article Updated Successfully');
+        return to_route('editor-article.index')->with('success', 'Article Edited Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy(Article $editor_article)
     {
         // dd($article);
-        $article->delete();
+        $editor_article->delete();
 
-        if ($article->article_image_path) {
+        if ($editor_article->article_image_path) {
             // Delete the specific old image file
-            Storage::disk('public')->delete($article->article_image_path);
+            Storage::disk('public')->delete($editor_article->article_image_path);
         }
-        return to_route('article.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('editor-article.index')->with('delete_success', 'Deleted Successfully');
     }
 }

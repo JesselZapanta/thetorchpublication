@@ -4,10 +4,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, article, categories, activeAy }) {
+export default function Edit({ auth, article, categories }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
         // academic_year_id: article.academic_year_id || "", //todo
@@ -15,23 +15,24 @@ export default function Edit({ auth, article, categories, activeAy }) {
         title: article.title || "",
         excerpt: article.excerpt || "", //todo
         body: article.body || "",
-        // status: article.status || "",
+        status: article.status || "",
+        revision_message: "",
         caption: article.caption || "",
         article_image_path: "",
-        // is_featured: article.is_featured || "", 
-        is_anonymous: article.is_anonymous || "", 
-        // published_date: article.published_date || "", 
+        // is_featured: article.is_featured || "",
+        is_anonymous: article.is_anonymous || "",
+        // published_date: article.published_date || "",
         _method: "PUT",
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        post(route("student-article.update", article.id));
+        post(route("editor-article.update", article.id));
     };
 
     return (
-        <StudentAuthenticatedLayout
+        <EditorAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -46,6 +47,32 @@ export default function Edit({ auth, article, categories, activeAy }) {
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                    {article.revision_message && (
+                        <div
+                            class="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                            role="alert"
+                        >
+                            <div class="flex">
+                                <div class="py-1">
+                                    <svg
+                                        class="fill-current h-6 w-6 text-red-500 mr-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold">
+                                        Revision/Rejection Message:
+                                    </p>
+                                    <p class="text-sm">
+                                        {article.revision_message}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <form
                             onSubmit={onSubmit}
@@ -90,36 +117,111 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     />
                                 </div>
 
-                                {/* is_anonymous */}
-                                <div className="w-full">
+                                {/* Check if the article is created by the authenticated user */}
+                                {article.createdBy.id === auth.user.id ? (
+                                    <>
+                                        {/* is_anonymous */}
+                                        <div className="w-full">
+                                            <InputLabel
+                                                htmlFor="is_anonymous"
+                                                value="Anonymous Author"
+                                            />
+                                            <SelectInput
+                                                name="is_anonymous"
+                                                id="is_anonymous"
+                                                value={data.is_anonymous}
+                                                className="mt-2 block w-full"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "is_anonymous",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option value="">
+                                                    Select Option
+                                                </option>
+                                                <option value="no">No</option>
+                                                <option value="yes">Yes</option>
+                                            </SelectInput>
+
+                                            <InputError
+                                                message={errors.is_anonymous}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* Status */}
+                                        <div className="w-full">
+                                            <InputLabel
+                                                htmlFor="status"
+                                                value="Article status"
+                                            />
+                                            <SelectInput
+                                                name="status"
+                                                id="status"
+                                                value={data.status}
+                                                className="mt-2 block w-full"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "status",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option value="">
+                                                    Select a status
+                                                </option>
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                                <option value="rejected">
+                                                    Rejected
+                                                </option>
+                                                <option value="edited">
+                                                    Edited
+                                                </option>
+                                            </SelectInput>
+
+                                            <InputError
+                                                message={errors.status}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* revision_message */}
+                            {data.status === "rejected" && (
+                                <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="is_anonymous"
-                                        value="Anonymous Author"
+                                        htmlFor="revision_message"
+                                        value="Revision/Rejected message"
                                     />
 
-                                    <SelectInput
-                                        name="is_anonymous"
-                                        id="is_anonymous"
-                                        value={data.is_anonymous}
-                                        className="mt-2 block w-full"
+                                    <TextAreaInput
+                                        id="revision_message"
+                                        type="text"
+                                        name="revision_message"
+                                        value={data.revision_message}
+                                        className="mt-2 block w-full min-h-24"
                                         onChange={(e) =>
                                             setData(
-                                                "is_anonymous",
+                                                "revision_message",
                                                 e.target.value
                                             )
                                         }
-                                    >
-                                        <option value="">Select Option</option>
-                                        <option value="no">No</option>
-                                        <option value="yes">Yes</option>
-                                    </SelectInput>
+                                    />
 
                                     <InputError
-                                        message={errors.is_anonymous}
+                                        message={errors.revision_message}
                                         className="mt-2"
                                     />
                                 </div>
-                            </div>
+                            )}
 
                             {/* title */}
                             <div className="mt-4 w-full">
@@ -243,7 +345,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("student-article.index")}
+                                    href={route("editor-article.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -255,6 +357,6 @@ export default function Edit({ auth, article, categories, activeAy }) {
                     </div>
                 </div>
             </div>
-        </StudentAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

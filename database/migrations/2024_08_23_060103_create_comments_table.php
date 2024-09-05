@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('body');
+
+            $table->tinyText('report_count')->default(0);
+            $table->tinyText('visibility')->default('visible');//hidden
             $table->timestamps();
         });
     }

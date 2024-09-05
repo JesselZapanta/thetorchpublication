@@ -225,7 +225,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                             Select a status
                                         </option>
                                         <option value="pending">Pending</option>
-                                        <option value="reject">Reject</option>
+                                        <option value="rejected">Rejected</option>
                                         <option value="edited">Edited</option>
                                         <option value="revision">
                                             Need Revision

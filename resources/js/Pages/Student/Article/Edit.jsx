@@ -7,7 +7,7 @@ import TextInput from "@/Components/TextInput";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, article, categories, activeAy }) {
+export default function Edit({ auth, article, categories }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
         // academic_year_id: article.academic_year_id || "", //todo
@@ -15,7 +15,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
         title: article.title || "",
         excerpt: article.excerpt || "", //todo
         body: article.body || "",
-        // status: article.status || "",
+        status: article.status || "",
         caption: article.caption || "",
         article_image_path: "",
         // is_featured: article.is_featured || "", 
@@ -46,6 +46,32 @@ export default function Edit({ auth, article, categories, activeAy }) {
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                    {article.revision_message && (
+                        <div
+                            class="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                            role="alert"
+                        >
+                            <div class="flex">
+                                <div class="py-1">
+                                    <svg
+                                        class="fill-current h-6 w-6 text-red-500 mr-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold">
+                                        Revision/Rejection Message:
+                                    </p>
+                                    <p class="text-sm">
+                                        {article.revision_message}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <form
                             onSubmit={onSubmit}
@@ -63,7 +89,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         name="category_id"
                                         id="category_id"
                                         value={data.category_id}
-                                        className="mt-2 block w-full"
+                                        className={`mt-2 block w-full ${
+                                            article.status !== "pending" && article.status !== "rejected"
+                                                ? "cursor-not-allowed bg-gray-200"
+                                                : "cursor-pointer"
+                                        }`}
+                                        disabled={
+                                            article.status !== "pending" && article.status !== "rejected"
+                                                ? true
+                                                : false
+                                        }
                                         onChange={(e) =>
                                             setData(
                                                 "category_id",
@@ -101,7 +136,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         name="is_anonymous"
                                         id="is_anonymous"
                                         value={data.is_anonymous}
-                                        className="mt-2 block w-full"
+                                        className="mt-2 block w-full cursor-pointer"
                                         onChange={(e) =>
                                             setData(
                                                 "is_anonymous",
@@ -133,7 +168,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     type="text"
                                     name="title"
                                     value={data.title}
-                                    className="mt-2 block w-full"
+                                    className={`mt-2 block w-full ${
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : "cursor-pointer"
+                                    }`}
+                                    disabled={
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
                                     onChange={(e) =>
                                         setData("title", e.target.value)
                                     }
@@ -157,7 +201,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     type="text"
                                     name="excerpt"
                                     value={data.excerpt}
-                                    className="mt-2 block w-full min-h-24"
+                                    className={`mt-2 block w-full min-h-24 ${
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : "cursor-pointer"
+                                    }`}
+                                    disabled={
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
                                     onChange={(e) =>
                                         setData("excerpt", e.target.value)
                                     }
@@ -181,7 +234,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     type="text"
                                     name="body"
                                     value={data.body}
-                                    className="mt-2 block w-full min-h-64"
+                                    className={`mt-2 block w-full min-h-64 ${
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : "cursor-pointer"
+                                    }`}
+                                    disabled={
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
                                     onChange={(e) =>
                                         setData("body", e.target.value)
                                     }
@@ -205,7 +267,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     type="text"
                                     name="caption"
                                     value={data.caption}
-                                    className="mt-2 block w-full"
+                                    className={`mt-2 block w-full ${
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : "cursor-pointer"
+                                    }`}
+                                    disabled={
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
                                     onChange={(e) =>
                                         setData("caption", e.target.value)
                                     }
@@ -227,7 +298,16 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     id="article_image_path"
                                     type="file"
                                     name="article_image_path"
-                                    className="mt-2 block w-full cursor-pointer"
+                                    className={`mt-2 block w-full ${
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : "cursor-pointer"
+                                    }`}
+                                    disabled={
+                                        article.status !== "pending" && article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
                                     onChange={(e) =>
                                         setData(
                                             "article_image_path",

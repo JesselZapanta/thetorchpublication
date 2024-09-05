@@ -118,7 +118,7 @@ export default function Index({
                                                     defaultValue={
                                                         queryParams.title
                                                     }
-                                                    placeholder="Search Article Name"
+                                                    placeholder="Search Article Title"
                                                     onBlur={(e) =>
                                                         searchFieldChanged(
                                                             "title",
@@ -130,27 +130,7 @@ export default function Index({
                                                     }
                                                 />
                                             </th>
-                                            {/* <th className="px-3 py-3">
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.category
-                                                    }
-                                                    placeholder="Search Category"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "category",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "category",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th> */}
+
                                             <th className="px-3 py-3">
                                                 <SelectInput
                                                     className="w-full"
@@ -165,7 +145,7 @@ export default function Index({
                                                     }
                                                 >
                                                     <option value="">
-                                                        Select category
+                                                        Category
                                                     </option>
                                                     {categories.data.map(
                                                         (category) => (
@@ -184,6 +164,7 @@ export default function Index({
                                                 </SelectInput>
                                             </th>
                                             <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3">
                                                 <SelectInput
                                                     className="w-full"
@@ -198,7 +179,7 @@ export default function Index({
                                                     }
                                                 >
                                                     <option value="">
-                                                        Select Status
+                                                        Status
                                                     </option>
                                                     <option value="pending">
                                                         Pending
@@ -252,6 +233,18 @@ export default function Index({
                                                 Title
                                             </TableHeading>
                                             <TableHeading
+                                                name="is_anonymous"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Anonymous
+                                            </TableHeading>
+                                            <TableHeading
                                                 name="status"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -302,7 +295,7 @@ export default function Index({
                                                             // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
-                                                                "article.show",
+                                                                "student-article.show",
                                                                 article.id
                                                             )}
                                                         >
@@ -312,6 +305,9 @@ export default function Index({
                                                             )}
                                                         </Link>
                                                     </th>
+                                                    <td className="px-3 py-2 text-nowrap uppercase">
+                                                        {article.is_anonymous}
+                                                    </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {article.status}
                                                     </td>

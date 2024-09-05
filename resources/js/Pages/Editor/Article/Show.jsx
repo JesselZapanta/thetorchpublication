@@ -1,10 +1,10 @@
 import SecondaryButton from "@/Components/SecondaryButton";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Index({ auth, article }) {
     return (
-        <AdminAuthenticatedLayout
+        <EditorAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">
@@ -46,17 +46,27 @@ export default function Index({ auth, article }) {
                                         {article.article_image_path && (
                                             <img
                                                 src={
-                                                    article.createdBy
-                                                        .profile_image_path
+                                                    article.is_anonymous ===
+                                                    "yes"
+                                                        ? "/images/default/profile.jpg"
+                                                        : article.article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
-                                                alt={article.article_image_path}
+                                                alt={
+                                                    article.is_anonymous ===
+                                                    "yes"
+                                                        ? "Default image"
+                                                        : article.article_image_path
+                                                }
                                             />
                                         )}
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-base">
-                                            Author: {article.createdBy.name}
+                                            Author:
+                                            {article.is_anonymous === "yes"
+                                                ? " Anonymous"
+                                                : article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
                                             Publish: {article.created_at}
@@ -72,6 +82,37 @@ export default function Index({ auth, article }) {
                                     </p>
                                 </div>
                             </div>
+                            <div className="mt-4 text-gray-400">
+                                <p>for testing</p>
+                                <p> Edited by:{article.editedBy.name}</p>
+                                <p> Layout By by:{article.layoutBy.name}</p>
+                            </div>
+                            {article.revision_message && (
+                                <div
+                                    class="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                    role="alert"
+                                >
+                                    <div class="flex">
+                                        <div class="py-1">
+                                            <svg
+                                                class="fill-current h-6 w-6 text-red-500 mr-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold">
+                                                Revision/Rejection Message:
+                                            </p>
+                                            <p class="text-sm">
+                                                {article.revision_message}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             {/* Body */}
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
@@ -96,12 +137,17 @@ export default function Index({ auth, article }) {
                             </div> */}
                             <div className="mt-6 flex justify-end gap-2">
                                 <Link
-                                    href={route("article.edit", article.id)}
+                                    href={route(
+                                        "editor-article.edit",
+                                        article.id
+                                    )}
                                     className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Edit Article
                                 </Link>
-                                <SecondaryButton href={route("article.index")}>
+                                <SecondaryButton
+                                    href={route("editor-article.index")}
+                                >
                                     Back
                                 </SecondaryButton>
                             </div>
@@ -109,6 +155,6 @@ export default function Index({ auth, article }) {
                     </div>
                 </div>
             </div>
-        </AdminAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

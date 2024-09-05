@@ -34,7 +34,7 @@ class StudentStoreArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             // 'status' => ['required',
-            //     Rule::in(['pending','reject','edited', 'revision', 'published'])
+            //     Rule::in(['pending','rejected','edited', 'revision', 'published'])
             // ],
             'article_image_path' => ['required','image','mimes:jpg,png,jpeg'],
             // 'is_featured' => ['required', Rule::in(['no','yes',])],

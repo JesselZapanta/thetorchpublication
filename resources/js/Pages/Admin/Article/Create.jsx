@@ -222,7 +222,7 @@ export default function Create({ auth, categories, activeAy }) {
                                         }
                                     >
                                         <option value="pending">Pending</option>
-                                        <option value="reject">Reject</option>
+                                        <option value="rejected">Rejected</option>
                                         <option value="edited">Edited</option>
                                         <option value="revision">
                                             Revision

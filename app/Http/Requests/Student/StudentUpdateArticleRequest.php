@@ -33,9 +33,9 @@ class StudentUpdateArticleRequest extends FormRequest
             'excerpt' => ['required', 'string'],//added
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
-            // 'status' => ['required',
-            //     Rule::in(['pending','reject','edited', 'revision', 'published'])
-            // ],
+            'status' => ['required',
+                Rule::in(['pending','rejected','edited', 'revision', 'published'])
+            ],
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             // 'is_featured' => ['required', Rule::in(['no','yes',])],
             'is_anonymous' => ['required', Rule::in(['no','yes',])],

@@ -26,9 +26,13 @@ class ArticleResource extends JsonResource
 
             'title' => $this->title,
             'body' => $this->body,
+            
             'status' => $this->status,
+            'revision_message' => $this->revision_message,
+
             'caption' => $this->caption,
             'views' => $this->views,
+
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
 
@@ -37,6 +41,9 @@ class ArticleResource extends JsonResource
             'academic_year_id' => $this->academic_year_id,
 
             'createdBy' => new UserResource($this->createdBy),
+            'editedBy' => new UserResource($this->editedBy),
+            'layoutBy' => new UserResource($this->layoutBy),
+
             'article_image_path' => $this->article_image_path ? Storage::url($this->article_image_path) : '/images/default/article.png',
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
 

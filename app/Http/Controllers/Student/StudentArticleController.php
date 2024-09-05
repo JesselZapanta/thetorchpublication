@@ -48,7 +48,10 @@ class StudentArticleController extends Controller
 
         $categories = Category::all();
 
-        $articles = $query->where('created_by', $id)->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        $articles = $query->where('created_by', $id)
+                            ->orderBy($sortField, $sortDirection)
+                            ->paginate(10)
+                            ->onEachSide(1);
 
         return inertia('Student/Article/Index', [
             'articles' => ArticleResource::collection($articles),
@@ -107,20 +110,16 @@ class StudentArticleController extends Controller
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
         }
 
-        // 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
-        $data['edited_by'] = Auth::user()->id;
-        $data['layout_by'] = Auth::user()->id;
-        //todo
         $data['academic_year_id'] = $activeAy->id;
-        $data['published_date'] = now();
 
         $data['slug'] = Str::slug($request->title);
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
             $data['article_image_path'] = $image->store('article', 'public');
+            $data['layout_by'] = Auth::user()->id;
         }
 
         Article::create($data);
@@ -131,9 +130,11 @@ class StudentArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Article $student_article)
     {
-        //
+        return inertia('Student/Article/Show', [
+            'article' => new ArticleResource($student_article),
+        ]);
     }
 
     /**
@@ -157,55 +158,58 @@ class StudentArticleController extends Controller
     {
         $data = $request->validated();
 
-        // Build the Trie
-        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        // Build the Trie for bad word filtering
+        $badWords = Word::pluck('name')->toArray(); // might change 'name' to 'word'
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
         $ahoCorasick->buildFailureLinks();
 
-        // Check if the article title contains any bad words using Aho-Corasick
+        // Check if the article title, body, or caption contains any bad words
         if ($ahoCorasick->search(strtolower($data['title']))) {
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
         }
-
-        // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['body']))) {
             return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
         }
-
-        // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['caption']))) {
             return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
         }
 
-        $activeAy = AcademicYear::where('status', 'active')->first();
+        // Logic based on status
+        $status = $data['status'];
+        
+        if (in_array($status, ['edited', 'revision', 'published'])) {
+            // Only update the 'is_anonymous' field
+            $student_article->update(['is_anonymous' => $data['is_anonymous']]);
+        } else if (in_array($status, ['pending', 'rejected'])) {
+            // Update all fields
 
-        if (!$activeAy) {
-            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+            $image = $data['article_image_path'] ?? null;
+            $data['created_by'] = Auth::user()->id;
+            $data['status'] = 'pending'; // Always set to 'pending'
+            $data['slug'] = Str::slug($data['title']);
+
+            if ($image) {
+                // Delete the old image file if a new one is uploaded
+                if ($student_article->article_image_path) {
+                    Storage::disk('public')->delete($student_article->article_image_path);
+                }
+                // Store the new image under the 'article/' directory
+                $data['article_image_path'] = $image->store('article', 'public');
+                $data['layout_by'] = Auth::user()->id;
+            } else {
+                // Keep the existing image
+                $data['article_image_path'] = $student_article->article_image_path;
+            }
+
+            $student_article->update($data);
         }
-
-        // 
-        $image = $data['article_image_path'];
-        $data['created_by'] = Auth::user()->id;
-        $data['edited_by'] = Auth::user()->id;
-        $data['layout_by'] = Auth::user()->id;
-        //todo
-        $data['academic_year_id'] = $activeAy->id;
-        $data['published_date'] = now();
-
-        $data['slug'] = Str::slug($request->title);
-
-        if ($image) {
-            // Store the image directly under the 'article/' directory and save its path
-            $data['article_image_path'] = $image->store('article', 'public');
-        }
-
-        $student_article->update($data);;
 
         return to_route('student-article.index')->with('success', 'Article Edited Successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.

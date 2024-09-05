@@ -37,10 +37,43 @@ class UserSeeder extends Seeder
                 'email' => 'jesselzapanta9@gmail.com',
                 'password' => Hash::make('password'),
             ],
+
+            [   
+                'student_id' => '000000',
+                'username' => 'torchadmin',
+                'name' => 'torchadmin',
+                'role' => 'admin',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'torchadmin@gmail.com',
+                'password' => Hash::make('password'),
+            ],
+
+            [   
+                'student_id' => '543369',
+                'username' => 'torcheditor',
+                'name' => 'torcheditor',
+                'role' => 'editor',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'torcheditor@gmail.com',
+                'password' => Hash::make('password'),
+            ],
+
+            [   
+                'student_id' => '546569',
+                'username' => 'torchstudent',
+                'name' => 'torchstudent',
+                'role' => 'student',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'torchstudent@gmail.com',
+                'password' => Hash::make('password'),
+            ],
         ];
         
         User::insertOrIgnore($users);
          // Generate 1000 Freedom Wall entries
-        User::factory()->count(8)->create();
+        User::factory()->count(15)->create();
     }
 }

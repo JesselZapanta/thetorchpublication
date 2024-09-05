@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
+use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'student'])->group(function() {
 // for editor
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', [EditorDashboardController::class, 'index'])->name('editor.dashboard');
-    Route::resource('editor-article', StudentArticleController::class);
+    Route::resource('editor-article', EditorArticleController::class);
 });
 
 

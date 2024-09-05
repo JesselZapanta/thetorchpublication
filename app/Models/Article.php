@@ -18,6 +18,7 @@ class Article extends Model
         'excerpt',
         'body',
         'status',
+        'revision_message',
         'published_date',
         'is_anonymous',
         'is_featured',
@@ -47,7 +48,7 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    public function editeddBy()
+    public function editedBy()
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
