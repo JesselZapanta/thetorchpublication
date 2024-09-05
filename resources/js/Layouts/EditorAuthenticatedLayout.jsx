@@ -55,7 +55,7 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                                                     "editor.dashboard"
                                                 )}
                                             >
-                                                Editor Dashboard
+                                                Dashboard
                                             </NavLink>
                                         )}
 

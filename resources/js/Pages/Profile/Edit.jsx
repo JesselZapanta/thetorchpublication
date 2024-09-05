@@ -1,5 +1,6 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
@@ -9,7 +10,9 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
     const Layout =
         auth.user.role === "student"
             ? StudentAuthenticatedLayout
-            : AdminAuthenticatedLayout;
+            : auth.user.role === "admin"
+            ? AdminAuthenticatedLayout
+            : EditorAuthenticatedLayout;
 
     return (
         <Layout
