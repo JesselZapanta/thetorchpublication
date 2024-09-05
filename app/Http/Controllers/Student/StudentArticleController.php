@@ -140,7 +140,6 @@ class StudentArticleController extends Controller
      * Show the form for editing the specified resource.
      */
 
-
     public function edit(Article $student_article)
     {
         $categories = Category::all();
