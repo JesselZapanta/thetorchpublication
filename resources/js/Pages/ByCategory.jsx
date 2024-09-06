@@ -12,43 +12,6 @@ export default function ByCategory({
     categoryarticles,
     currentCategory,
 }) {
-    // const [search, setSearch] = useState("");
-    // const [filteredArticles, setFilteredArticles] = useState(
-    //     categoryarticles.data
-    // );
-    // const [sort, setSort] = useState("");
-
-    // useEffect(() => {
-    //     handleSearch();
-    // }, [search, sort]);
-
-    // const handleSearch = () => {
-    //     let filtered = categoryarticles.data.filter((article) =>
-    //         article.title.toLowerCase().includes(search.toLowerCase())
-    //     );
-
-    //     if (sort === "date_asc") {
-    //         filtered.sort(
-    //             (a, b) => new Date(a.created_at) - new Date(b.created_at)
-    //         );
-    //     } else if (sort === "date_desc") {
-    //         filtered.sort(
-    //             (a, b) => new Date(b.created_at) - new Date(a.created_at)
-    //         );
-    //     } else if (sort === "title_asc") {
-    //         filtered.sort((a, b) => a.title.localeCompare(b.title));
-    //     } else if (sort === "title_desc") {
-    //         filtered.sort((a, b) => b.title.localeCompare(a.title));
-    //     }
-
-    //     setFilteredArticles(filtered);
-    // };
-
-    // const handleKeyPress = (e) => {
-    //     if (e.key === "Enter") {
-    //         handleSearch();
-    //     }
-    // };
 
     const [sort, setSort] = useState("");
     const [search, setSearch] = useState("");

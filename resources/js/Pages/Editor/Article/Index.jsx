@@ -19,20 +19,36 @@ export default function Index({
     queryParams = null,
 }) {
     queryParams = queryParams || {};
+
     const searchFieldChanged = (name, value) => {
+        if (value === "") {
+            delete queryParams[name];
+            router.get(route("editor-article.index"), queryParams, {
+                preserveState: true,
+            });
+        }
         if (value) {
             queryParams[name] = value;
-        } else {
-            delete queryParams[name];
-        }
-
-        router.get(route("editor-article.index"), queryParams);
+            router.get(route("editor-article.index"), queryParams, {
+                preserveState: true,
+            });
+        } 
     };
+    
 
+    // Search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value) {
+                queryParams[name] = value; // Update query params if value is provided
+            }
+            router.get(route("editor-article.index"), queryParams, {
+                preserveState: true,
+            });
+        }
     };
 
     const sortChanged = (name) => {
@@ -205,7 +221,7 @@ export default function Index({
                                                         queryParams.title
                                                     }
                                                     placeholder="Search Article Title"
-                                                    onBlur={(e) =>
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
                                                             "title",
                                                             e.target.value
