@@ -237,18 +237,6 @@ class EditorArticleController extends Controller
          //the reject message message 
         $data['rejection_message'] = $request->input('rejection_message');
         
-        // $status = $data['status'];
-        
-        // if($status == 'rejected'){
-        //     $data['revision_message'] = null;
-        // }
-
-        //do nnot pass 
-        // if($status == 'edited'){
-        //     $data['revision_message'] = $request->input('rejection_message');
-        //     $data['rejection_message'] = null;
-        // }
-
 
         if ($image) {
             // Delete the old image file if a new one is uploaded

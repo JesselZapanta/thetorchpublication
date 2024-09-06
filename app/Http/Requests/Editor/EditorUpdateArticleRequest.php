@@ -34,7 +34,7 @@ class EditorUpdateArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['pending','rejected','edited','revision'])
+                Rule::in(['pending','rejected','edited','revision', 'published'])
             ],
             'rejection_message' => ['nullable', 'string', 'required_if:status,rejected'],
             // 'revision_message' => ['nullable', 'string', 'required_if:status,rejected'],

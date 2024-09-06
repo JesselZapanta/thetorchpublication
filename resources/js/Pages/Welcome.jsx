@@ -41,7 +41,7 @@ export default function Welcome({
                     ))}
                 </div>
 
-                {/* <pre className="text-white">
+                {/* <pre className="text-gray-900">
                     {JSON.stringify(latestArticles, null, 2)}
                 </pre> */}
             </div>

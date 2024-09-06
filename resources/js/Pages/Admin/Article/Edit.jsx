@@ -1,11 +1,14 @@
+import DangerButton from "@/Components/DangerButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export default function Edit({ auth, article, categories, activeAy }) {
     const { data, setData, post, errors } = useForm({
@@ -26,10 +29,27 @@ export default function Edit({ auth, article, categories, activeAy }) {
         _method: "PUT",
     });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
+    // Automatically set published_date if status is "published"
+    useEffect(() => {
+        if (data.status === "published" && !data.published_date) {
+            const today = new Date().toISOString().split("T")[0];
+            setData("published_date", today);
+        }
+    }, [data.status, setData]); // Run effect when status changes
+    
+    const onSubmit = () => {
         post(route("admin-article.update", article.id));
+    };
+
+    const [confirmUpdate, setConfirmUpdate] = useState(false);
+
+    const openUpdateModal = () => {
+        setConfirmUpdate(true);
+    };
+
+    const handleConfirmUpdate = () => {
+        setConfirmUpdate(false);
+        onSubmit();
     };
 
     return (
@@ -45,7 +65,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
             }
         >
             <Head title={`Edit ${article.title}`} />
-            {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
+            {/* <pre className="text-gray-900">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.revision_message && (
@@ -260,7 +280,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     />
                                 </div>
 
-                                {/* published_date */}
+                                {/* Published Date */}
                                 <div className="w-full mt-4">
                                     <InputLabel
                                         htmlFor="published_date"
@@ -279,6 +299,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                                 e.target.value
                                             )
                                         }
+                                        disabled={data.status !== "published"} // Disable unless status is "published"
                                     />
 
                                     <InputError
@@ -467,10 +488,45 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
-                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                <button
+                                    type="button" 
+                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                    onClick={openUpdateModal}
+                                >
                                     Update
                                 </button>
                             </div>
+                            {/* Confirm Update Modal */}
+                            <Modal
+                                show={confirmUpdate}
+                                onClose={() => setConfirmUpdate(false)}
+                            >
+                                <div className="p-6 text-gray-900 dark:text-gray-100">
+                                    <h2 className="text-base font-bold">
+                                        Confirm Update
+                                    </h2>
+                                    <p className="mt-4">
+                                        Are you sure you want to Update this
+                                        Article?
+                                    </p>
+                                    <div className="mt-4 flex justify-end gap-2">
+                                        <SecondaryButton
+                                            onClick={() =>
+                                                setConfirmUpdate(false)
+                                            }
+                                        >
+                                            Cancel
+                                        </SecondaryButton>
+                                        <button
+                                            type="button" 
+                                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                            onClick={handleConfirmUpdate}
+                                        >
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </Modal>
                         </form>
                     </div>
                 </div>

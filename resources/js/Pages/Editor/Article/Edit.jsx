@@ -1,11 +1,13 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Edit({ auth, article, categories }) {
 
@@ -23,10 +25,19 @@ export default function Edit({ auth, article, categories }) {
     });
 
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
+    const onSubmit = () => {
         post(route("editor-article.update", article.id));
+    };
+
+    const [confirmUpdate, setConfirmUpdate] = useState(false);
+
+    const openUpdateModal = () => {
+        setConfirmUpdate(true);
+    };
+
+    const handleConfirmUpdate = () => {
+        setConfirmUpdate(false);
+        onSubmit();
     };
 
     return (
@@ -45,30 +56,33 @@ export default function Edit({ auth, article, categories }) {
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {(article.status === "pending" && article.rejection_message) && (
-                        <div
-                            className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
-                            role="alert"
-                        >
-                            <div className="flex">
-                                <div className="py-1">
-                                    <svg
-                                        className="fill-current h-6 w-6 text-red-500 mr-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p className="font-bold">Rejection Message:</p>
-                                    <p className="text-sm">
-                                        {article.rejection_message}
-                                    </p>
+                    {article.status === "pending" &&
+                        article.rejection_message && (
+                            <div
+                                className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                role="alert"
+                            >
+                                <div className="flex">
+                                    <div className="py-1">
+                                        <svg
+                                            className="fill-current h-6 w-6 text-red-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold">
+                                            Rejection Message:
+                                        </p>
+                                        <p className="text-sm">
+                                            {article.rejection_message}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
                     {article.status == "revision" && (
                         <div
@@ -375,10 +389,45 @@ export default function Edit({ auth, article, categories }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
-                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                    onClick={openUpdateModal}
+                                >
                                     Update
                                 </button>
                             </div>
+                            {/* Confirm Update Modal */}
+                            <Modal
+                                show={confirmUpdate}
+                                onClose={() => setConfirmUpdate(false)}
+                            >
+                                <div className="p-6 text-gray-900 dark:text-gray-100">
+                                    <h2 className="text-base font-bold">
+                                        Confirm Update
+                                    </h2>
+                                    <p className="mt-4">
+                                        Are you sure you want to Update this
+                                        Article?
+                                    </p>
+                                    <div className="mt-4 flex justify-end gap-2">
+                                        <SecondaryButton
+                                            onClick={() =>
+                                                setConfirmUpdate(false)
+                                            }
+                                        >
+                                            Cancel
+                                        </SecondaryButton>
+                                        <button
+                                            type="button"
+                                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                            onClick={handleConfirmUpdate}
+                                        >
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </Modal>
                         </form>
                     </div>
                 </div>

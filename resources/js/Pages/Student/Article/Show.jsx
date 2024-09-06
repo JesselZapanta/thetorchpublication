@@ -23,6 +23,9 @@ export default function Index({ auth, article }) {
             }
         >
             <Head title={`Article ${article.title}`} />
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(article, null, 2)}
+            </pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -69,8 +72,10 @@ export default function Index({ auth, article }) {
                                                 : article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
-                                            Published Date:
-                                            {article.published_date}
+                                            Edited by:
+                                            {article.Published
+                                                ? article.Published.name
+                                                : " Not Publish"}
                                         </p>
                                     </div>
                                 </div>

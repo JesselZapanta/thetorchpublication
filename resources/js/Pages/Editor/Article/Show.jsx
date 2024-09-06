@@ -69,8 +69,10 @@ export default function Index({ auth, article }) {
                                                 : article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
-                                            Published Date:
-                                            {article.published_date}
+                                            Edited by:
+                                            {article.Published
+                                                ? article.Published.name
+                                                : " Not Publish"}
                                         </p>
                                     </div>
                                 </div>
