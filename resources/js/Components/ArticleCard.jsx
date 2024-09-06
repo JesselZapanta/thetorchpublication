@@ -66,7 +66,10 @@ export default function ArticleCard({ article }) {
                     {truncate(article?.title, 50)}
                 </Link>
                 <p className="block text-sm text-justify mt-2">
-                    By: {article.createdBy.name}
+                    By:
+                    {article.is_anonymous === "yes"
+                        ? " Anonymous"
+                        : article.createdBy.name}
                 </p>
                 <p className="block text-sm text-justify">
                     Published Date: {article.published_date}

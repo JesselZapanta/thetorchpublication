@@ -46,20 +46,31 @@ export default function Index({ auth, article }) {
                                         {article.article_image_path && (
                                             <img
                                                 src={
-                                                    article.createdBy
-                                                        .profile_image_path
+                                                    article.is_anonymous ===
+                                                    "yes"
+                                                        ? "/images/default/profile.jpg"
+                                                        : article.article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
-                                                alt={article.article_image_path}
+                                                alt={
+                                                    article.is_anonymous ===
+                                                    "yes"
+                                                        ? "Default image"
+                                                        : article.article_image_path
+                                                }
                                             />
                                         )}
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-base">
-                                            Author: {article.createdBy.name}
+                                            Author:
+                                            {article.is_anonymous === "yes"
+                                                ? " Anonymous"
+                                                : article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
-                                            Publish: {article.created_at}
+                                            Published Date:
+                                            {article.published_date}
                                         </p>
                                     </div>
                                 </div>
@@ -74,7 +85,12 @@ export default function Index({ auth, article }) {
                             </div>
                             <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
-                                <p> Edited by:{article.editedBy.name}</p>
+                                <p>
+                                    Edited by:
+                                    {article.editedBy
+                                        ? article.editedBy.name
+                                        : "No Editor"}
+                                </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
                             </div>
                             {/* Body */}

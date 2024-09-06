@@ -69,7 +69,8 @@ export default function Index({ auth, article }) {
                                                 : article.createdBy.name}
                                         </h4>
                                         <p className="mt-1">
-                                            Publish: {article.created_at}
+                                            Published Date:
+                                            {article.published_date}
                                         </p>
                                     </div>
                                 </div>
@@ -84,7 +85,12 @@ export default function Index({ auth, article }) {
                             </div>
                             <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
-                                <p> Edited by:{article.editedBy.name}</p>
+                                <p>
+                                    Edited by:
+                                    {article.editedBy
+                                        ? article.editedBy.name
+                                        : "No Editor"}
+                                </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
                             </div>
                             {article.revision_message && (

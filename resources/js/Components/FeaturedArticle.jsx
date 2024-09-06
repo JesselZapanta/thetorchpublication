@@ -76,7 +76,10 @@ export default function FeaturedArticle({ featuredArticle }) {
                             {truncate(featuredArticle?.title, 150)}
                         </Link>
                         <p className="block text-sm mt-2 text-justify">
-                            By: {featuredArticle.createdBy.name}
+                            By:
+                            {featuredArticle.is_anonymous === "yes"
+                                ? " Anonymous"
+                                : featuredArticle.createdBy.name}
                         </p>
                         <p className="block text-sm text-justify">
                             Published Date: {featuredArticle.published_date}

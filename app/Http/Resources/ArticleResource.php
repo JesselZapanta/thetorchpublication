@@ -36,7 +36,8 @@ class ArticleResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
 
-            'published_date' => (new Carbon($this->published_date))->format('Y-m-d'),
+            'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : 'Not Published',
+
             
             'academic_year_id' => $this->academic_year_id,
 

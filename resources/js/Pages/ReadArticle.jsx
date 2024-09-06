@@ -168,26 +168,36 @@ export default function ReadArticle({
                                                 .profile_image_path && (
                                                 <img
                                                     src={
-                                                        article.createdBy
-                                                            .profile_image_path
+                                                        article.is_anonymous ===
+                                                        "yes"
+                                                            ? "/images/default/profile.jpg"
+                                                            : article.article_image_path
                                                     }
                                                     className="object-cover w-full h-full"
                                                     onError={(e) => {
-                                                        e.target.onerror = null; // Prevents infinite loop in case the default image also fails to load
+                                                        e.target.onerror = null;
                                                         e.target.src =
                                                             "/images/default/profile.jpg";
                                                     }}
-                                                    alt={article.createdBy.name}
+                                                    alt={
+                                                        article.is_anonymous ===
+                                                        "yes"
+                                                            ? "Default image"
+                                                            : article.article_image_path
+                                                    }
                                                 />
                                             )}
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-base">
-                                                Author: {article.createdBy.name}
+                                                Author:
+                                                {article.is_anonymous === "yes"
+                                                    ? " Anonymous"
+                                                    : article.createdBy.name}
                                             </h4>
                                             <p className="mt-1">
                                                 Published Date:{" "}
-                                                {article.created_at}
+                                                {article.published_date}
                                             </p>
                                         </div>
                                     </div>

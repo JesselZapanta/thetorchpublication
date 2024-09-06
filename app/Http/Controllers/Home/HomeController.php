@@ -21,18 +21,21 @@ class HomeController extends Controller
        // Fetch the featured article
         $featuredArticle = Article::where('is_featured', 'yes')
                                 ->where('status', 'published')
+                                ->where('visibility', 'visible')
                                 ->first();
 
         // If there is no featured article, get the latest article
         if (!$featuredArticle) {
             $featuredArticle = Article::latest()
                                 ->where('status', 'published')
+                                ->where('visibility', 'visible')
                                 ->first();
         }
 
         // Get the top  articles with the most views
         $topArticles = Article::orderBy('views', 'DESC')
                                 ->where('status', 'published')
+                                ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
                                 ->limit(2)
                                 ->get();
@@ -40,6 +43,8 @@ class HomeController extends Controller
 
         $latestArticles = Article::orderBy('created_at', 'DESC')
                                 ->where('status', 'published')
+                                ->where('visibility', 'visible')
+                                ->whereNot('is_featured', 'yes')
                                 ->limit(9)
                                 ->get();
 
@@ -60,7 +65,9 @@ class HomeController extends Controller
         $currentCategory = Category::findOrFail($id);
 
         // Fetch articles by the selected category and filter by title if search query is provided
-        $query = Article::where('category_id', $id);
+        $query = Article::where('category_id', $id)
+                            ->where('status', 'published')
+                            ->where('visibility', 'visible');
 
          // Apply default sorting by date descending
         $sort = $request->input('sort', 'date_desc');
@@ -128,8 +135,8 @@ class HomeController extends Controller
 
         // Fetch the latest 5 comments for the article
         $comments = Comment::where('article_id', $article->id)
+            ->where('visibility', 'visible')
             ->latest()
-            // ->take(5)
             ->get();
 
         return inertia('ReadArticle', [

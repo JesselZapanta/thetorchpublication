@@ -30,6 +30,7 @@ class Article extends Model
         'edited_by',
         'layout_by',
         'views',
+        'visibility',
         'is_newsletter'
     ];
 
