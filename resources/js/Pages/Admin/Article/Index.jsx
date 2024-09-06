@@ -13,25 +13,40 @@ import { useState } from "react";
 export default function Index({
     auth,
     articles,
+    categories,
+    academicYears,
     success,
-    delete_success,
     queryParams = null,
 }) {
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
+        if (value === "") {
+            delete queryParams[name];
+            router.get(route("admin-article.index"), queryParams, {
+                preserveState: true,
+            });
+        }
         if (value) {
             queryParams[name] = value;
-        } else {
-            delete queryParams[name];
+            router.get(route("admin-article.index"), queryParams, {
+                preserveState: true,
+            });
         }
-
-        router.get(route("article.index"), queryParams);
     };
 
+    // Search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value) {
+                queryParams[name] = value; // Update query params if value is provided
+            }
+            router.get(route("admin-article.index"), queryParams, {
+                preserveState: true,
+            });
+        }
     };
 
     const sortChanged = (name) => {
@@ -45,13 +60,13 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("article.index"), queryParams);
+        router.get(route("admin-article.index"), queryParams);
     };
 
     // Open modal and set article to delete
 
     const [confirmDelete, setConfirmDelete] = useState(false);
-    
+
     const [article, setArticle] = useState(null); // For storing the article to edit/delete
     const openDeleteModal = (article) => {
         setArticle(article);
@@ -61,7 +76,7 @@ export default function Index({
     // Handle delete and close modal
     const handleDelete = () => {
         if (article) {
-            router.delete(route("article.destroy", article.id));
+            router.delete(route("admin-article.destroy", article.id));
         }
         setConfirmDelete(false);
         setArticle(null);
@@ -85,7 +100,7 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("article.create")}
+                            href={route("admin-article.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
@@ -98,7 +113,6 @@ export default function Index({
             {/* {<pre>{JSON.stringify(users, null, 2)}</pre>} */}
             {/* Alert */}
             {success && <AlertSuccess message={success} />}
-            {delete_success && <AlertSuccess message={delete_success} />}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -110,48 +124,90 @@ export default function Index({
                                         <tr text-text-nowrap="true">
                                             <th
                                                 className="px-3 py-3"
-                                                colSpan="3"
+                                                colSpan="2"
                                             >
-                                                <TextInput
+                                                <SelectInput
                                                     className="w-full"
                                                     defaultValue={
-                                                        queryParams.created_by
+                                                        queryParams.academic_year_id
                                                     }
-                                                    placeholder="Search Author Name"
-                                                    onBlur={(e) =>
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
-                                                            "created_by",
+                                                            "academic_year_id",
                                                             e.target.value
                                                         )
                                                     }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "created_by",
-                                                            e
+                                                >
+                                                    <option value="">AY</option>
+                                                    {academicYears.data.map(
+                                                        (ay) => (
+                                                            <option
+                                                                key={ay.id}
+                                                                value={ay.code}
+                                                            >
+                                                                {ay.description}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </SelectInput>
+                                            </th>
+                                            <th
+                                                className="px-3 py-3"
+                                                colSpan="1"
+                                            >
+                                                <SelectInput
+                                                    className="w-full"
+                                                    defaultValue={
+                                                        queryParams.myArticle
+                                                    }
+                                                    onChange={(e) =>
+                                                        searchFieldChanged(
+                                                            "myArticle",
+                                                            e.target.value
                                                         )
                                                     }
-                                                />
+                                                >
+                                                    <option value="">
+                                                        All
+                                                    </option>
+                                                    {/* <option value={auth.user.id}> */}
+                                                    <option value="myArticle">
+                                                        My Article
+                                                    </option>
+                                                </SelectInput>
                                             </th>
+
                                             <th className="px-3 py-3">
-                                                <TextInput
+                                                <SelectInput
                                                     className="w-full"
                                                     defaultValue={
                                                         queryParams.category
                                                     }
-                                                    placeholder="Search Category"
-                                                    onBlur={(e) =>
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
                                                             "category",
                                                             e.target.value
                                                         )
                                                     }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "category",
-                                                            e
+                                                >
+                                                    <option value="">
+                                                        Category
+                                                    </option>
+                                                    {categories.data.map(
+                                                        (category) => (
+                                                            <option
+                                                                key={
+                                                                    category.id
+                                                                }
+                                                                value={
+                                                                    category.name
+                                                                }
+                                                            >
+                                                                {category.name}
+                                                            </option>
                                                         )
-                                                    }
-                                                />
+                                                    )}
+                                                </SelectInput>
                                             </th>
                                             <th className="px-3 py-3">
                                                 <TextInput
@@ -159,8 +215,8 @@ export default function Index({
                                                     defaultValue={
                                                         queryParams.title
                                                     }
-                                                    placeholder="Search Article Name"
-                                                    onBlur={(e) =>
+                                                    placeholder="Search Article Title"
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
                                                             "title",
                                                             e.target.value
@@ -185,10 +241,10 @@ export default function Index({
                                                     }
                                                 >
                                                     <option value="">
-                                                        Select Status
+                                                        Status
                                                     </option>
-                                                    <option value="pending">
-                                                        Pending
+                                                    <option value="edited">
+                                                        Edited
                                                     </option>
                                                     <option value="published">
                                                         Published
@@ -304,7 +360,7 @@ export default function Index({
                                                             // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
-                                                                "article.show",
+                                                                "admin-article.show",
                                                                 article.id
                                                             )}
                                                         >
@@ -320,7 +376,7 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
-                                                                "article.edit",
+                                                                "admin-article.edit",
                                                                 article.id
                                                             )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"

@@ -34,7 +34,7 @@ class EditorUpdateArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['pending','rejected','edited'])
+                Rule::in(['pending','rejected','edited','revision'])
             ],
             'revision_message' => ['nullable', 'string', 'required_if:status,rejected'],
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],

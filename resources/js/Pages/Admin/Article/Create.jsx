@@ -27,7 +27,7 @@ export default function Create({ auth, categories, activeAy }) {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        post(route("article.store", data));
+        post(route("admin-article.store", data));
     };
 
     return (
@@ -413,7 +413,7 @@ export default function Create({ auth, categories, activeAy }) {
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("article.index")}>
+                                <SecondaryButton href={route("admin-article.index")}>
                                     Cancel
                                 </SecondaryButton>
                                 <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">

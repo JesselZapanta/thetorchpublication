@@ -25,24 +25,21 @@ class AdminArticleController extends Controller
      */
     public function index()
     {
-        // $articles = Article::all();
+        // $admin_articles = Article::all();
         $query = Article::query();
+        $id = Auth::user()->id;
+        $categories = Category::all();
+        $academicYears = AcademicYear::all();
 
-        $sortField = request('sort_field', 'created_at');
+        $sortField = request('sort_field', 'id');
         $sortDirection = request('sort_direction', 'desc');
         
         
         if(request('title')){
             $query->where('title', 'like', '%'. request('title') . '%');
         }
-        //todo for anony and with author
-        if (request('created_by')) {
-            // Join with the users table to search by name
-            $query->whereHas('createdBy', function ($q) {
-                $q->where('name', 'like', '%' . request('created_by') . '%');
-            });
-        }
 
+        //category
         if (request('category')) {
             // Join with the users table to search by name
             $query->whereHas('category', function ($q) {
@@ -50,17 +47,46 @@ class AdminArticleController extends Controller
             });
         }
 
+        // academic_year_id sort
+        if (request('academic_year_id')) {
+            // Join with the academicYear table to search by name
+            $query->whereHas('academicYear', function ($q) {
+                $q->where('code', 'like', '%' . request('academic_year_id') . '%');
+            });
+        }
+
         if(request('status')){
             $query->where('status', request('status'));
         }
 
-        $articles = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        // Filter based on "My Articles" selection 
+        switch (request('myArticle')) {
+            case 'myArticle':
+                // Show only articles created by the authenticated user
+                $query->where('created_by', $id);
+                break;
+
+            default:
+                // Show all articles created by the authenticated user and pending/rejected articles from others
+                $query->where(function ($query) use ($id) {
+                    $query->where('created_by', $id) // Auth user's articles
+                            ->orWhere(function ($query) use ($id) {
+                                $query->where('created_by', '!=', $id)
+                                        ->whereIn('status', ['edited', 'published']); 
+                            });
+                    });
+                break;
+        }
+        
+
+        $admin_articles = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
         return inertia('Admin/Article/Index', [
-            'articles' => ArticleResource::collection($articles),
+            'articles' => ArticleResource::collection($admin_articles),
+            'categories' => CategoryResource::collection($categories),
+            'academicYears' => AcademicYearResource::collection($academicYears),
             'queryParams' => request()->query() ? : null,
             'success' => session('success'),
-            'delete_success' => session('delete_success'),
         ]);
     }
 
@@ -105,6 +131,11 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
         }
 
+        // Check if the article excerpt contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
+            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        }
+
         // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['body']))) {
             return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
@@ -140,23 +171,23 @@ class AdminArticleController extends Controller
 
         Article::create($data);
 
-        return to_route('article.index')->with('success', 'Article submitted Successfully');
+        return to_route('admin-article.index')->with('success', 'Article submitted Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(Article $admin_article)
     {
         return inertia('Admin/Article/Show', [
-            'article' => new ArticleResource($article),
+            'article' => new ArticleResource($admin_article),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article)
+    public function edit(Article $admin_article)
     {
         // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
         $activeAy = AcademicYear::all();//for admin
@@ -168,7 +199,7 @@ class AdminArticleController extends Controller
         $categories = Category::all();
 
         return inertia('Admin/Article/Edit', [
-            'article' => new ArticleResource($article),
+            'article' => new ArticleResource($admin_article),
             'categories' => CategoryResource::collection($categories),
             // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
             'activeAy' => AcademicYearResource::collection($activeAy),//for admin
@@ -178,7 +209,7 @@ class AdminArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $admin_article)
     {
         $data = $request->validated();
 
@@ -195,32 +226,49 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
         }
 
+        // Check if the article excerpt contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
+            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        }
+
         // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['body']))) {
             return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
         }
 
-        // Check if the article body contains any bad words using Aho-Corasick
+        // Check if the article caption contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['caption']))) {
             return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
         }
         
         $image = $data['article_image_path'];
-        $data['created_by'] = Auth::user()->id;
-        $data['edited_by'] = Auth::user()->id;
-        $data['layout_by'] = Auth::user()->id;
         $data['slug'] = Str::slug($request->title);
+
+        //the revision or reject message message 
+        $data['revision_message'] = $request->input('revision_message');
+        
+        $status = $data['status'];
+        
+        if($status == 'published'){
+            $data['revision_message'] = null;
+        }
+
+        if($status !== 'published'){
+            $data['published_date'] = null;
+        }
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
-            if ($article->article_image_path) {
-                Storage::disk('public')->delete($article->article_image_path);
+            if ($admin_article->article_image_path) {
+                Storage::disk('public')->delete($admin_article->article_image_path);
             }
             // Store the new image directly under the 'article/' directory
             $data['article_image_path'] = $image->store('article', 'public');
+
+            $data['layout_by'] = Auth::user()->id;  
         } else {
             // If no new image is uploaded, keep the existing image
-            $data['article_image_path'] = $article->article_image_path;
+            $data['article_image_path'] = $admin_article->article_image_path;
         }
 
         if($data['is_featured'] === "yes") {
@@ -229,24 +277,24 @@ class AdminArticleController extends Controller
         }
 
         // Update the specific article with the provided data
-        $article->update($data);
+        $admin_article->update($data);
 
 
-        return to_route('article.index')->with('success', 'Article Updated Successfully');
+        return to_route('admin-article.index')->with('success', 'Article Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy(Article $admin_article)
     {
-        // dd($article);
-        $article->delete();
+        // dd($admin_article);
+        $admin_article->delete();
 
-        if ($article->article_image_path) {
+        if ($admin_article->article_image_path) {
             // Delete the specific old image file
-            Storage::disk('public')->delete($article->article_image_path);
+            Storage::disk('public')->delete($admin_article->article_image_path);
         }
-        return to_route('article.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('admin-article.index')->with('success', 'Deleted Successfully');
     }
 }

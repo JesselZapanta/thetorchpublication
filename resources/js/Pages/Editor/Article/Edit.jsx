@@ -10,13 +10,13 @@ import { Head, Link, useForm } from "@inertiajs/react";
 export default function Edit({ auth, article, categories }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
-        // academic_year_id: article.academic_year_id || "", //todo
-        // author: article.author || "", //todo
+        // academic_year_id: article.academic_year_id || "", 
+        // author: article.author || "", 
         title: article.title || "",
-        excerpt: article.excerpt || "", //todo
+        excerpt: article.excerpt || "", 
         body: article.body || "",
         status: article.status || "",
-        revision_message: "",
+        revision_message: article.revision_message || "", 
         caption: article.caption || "",
         article_image_path: "",
         // is_featured: article.is_featured || "",
@@ -182,6 +182,9 @@ export default function Edit({ auth, article, categories }) {
                                                 </option>
                                                 <option value="edited">
                                                     Edited
+                                                </option>
+                                                <option value="revision">
+                                                    Revision
                                                 </option>
                                             </SelectInput>
 

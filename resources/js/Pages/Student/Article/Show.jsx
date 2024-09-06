@@ -122,13 +122,13 @@ export default function Index({ auth, article }) {
                             {/* <div className="mt-12 text-right grid justify-items-end">
                                 <div className="flex">
                                     <Link
-                                        href={route("article.edit", article.id)}
+                                        href={route("admin-article.edit", article.id)}
                                         className="bg-blue-600 py-1 px-3 text-blue-100 rounded shadow transition-all hover:bg-blue-500 mr-2"
                                     >
                                         Edit Article
                                     </Link>
                                     <Link
-                                        href={route("article.index")}
+                                        href={route("admin-article.index")}
                                         className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                                     >
                                         Back

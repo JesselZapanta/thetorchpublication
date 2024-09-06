@@ -104,6 +104,11 @@ class StudentArticleController extends Controller
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
         }
 
+        // Check if the article excerpt contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
+            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        }
+
         // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['body']))) {
             return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
@@ -180,9 +185,15 @@ class StudentArticleController extends Controller
         if ($ahoCorasick->search(strtolower($data['title']))) {
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
         }
+        // Check if the article excerpt contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
+            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        }
+        // Check if the article body contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['body']))) {
             return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
         }
+        // Check if the article caption contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['caption']))) {
             return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
         }

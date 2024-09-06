@@ -76,7 +76,7 @@ Route::middleware(['auth','admin' ])->group(function() {
 
     Route::resource('user', AdminUserController::class);
     Route::resource('category', AdminCategoryController::class);
-    Route::resource('article', AdminArticleController::class);
+    Route::resource('admin-article', AdminArticleController::class);
     Route::resource('word', AdminWordController::class);
     Route::resource('academic-year', AdminAcademicYearController::class);
     

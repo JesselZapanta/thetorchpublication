@@ -16,18 +16,19 @@ export default function Edit({ auth, article, categories, activeAy }) {
         excerpt: article.excerpt || "", //todo
         body: article.body || "",
         status: article.status || "",
+        revision_message: "",
         caption: article.caption || "",
         article_image_path: "",
-        is_featured: article.is_featured || "", 
-        is_anonymous: article.is_anonymous || "", 
-        published_date: article.published_date || "", 
+        is_featured: article.is_featured || "",
+        is_anonymous: article.is_anonymous || "",
+        published_date: article.published_date || "",
         _method: "PUT",
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        post(route("article.update", article.id));
+        post(route("admin-article.update", article.id));
     };
 
     return (
@@ -90,61 +91,8 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     />
                                 </div>
 
-                                {/* Ay not admin*/}
-                                {/* <div className="mt-2 w-full">
-                                    <InputLabel
-                                        htmlFor="title"
-                                        value="Academic Year (Read Only)"
-                                    />
-
-                                    <TextInput
-                                        id="title"
-                                        value={activeAy.description}
-                                        disabled
-                                        className="mt-2 block w-full cursor-not-allowed"
-                                    />
-                                </div> */}
-
-                                {/* AY */}
-                                <div className="w-full">
-                                    <InputLabel
-                                        htmlFor="academic_year_id"
-                                        value="Select Academic Year"
-                                    />
-
-                                    <SelectInput
-                                        name="academic_year_id"
-                                        id="academic_year_id"
-                                        value={data.academic_year_id}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData(
-                                                "academic_year_id",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a Academic Year
-                                        </option>
-                                        {activeAy.data.map((ay) => (
-                                            <option key={ay.id} value={ay.id}>
-                                                {ay.description}
-                                            </option>
-                                        ))}
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.academic_year_id}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* featured and anonymous */}
-                            <div className="flex gap-4">
                                 {/* is_featured */}
-                                <div className="w-full mt-4">
+                                <div className="w-full">
                                     <InputLabel
                                         htmlFor="is_featured"
                                         value="Featured Article"
@@ -172,36 +120,82 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         className="mt-2"
                                     />
                                 </div>
+                            </div>
 
+                            {/* featured and Academic Year */}
+                            <div className="flex gap-4">
+                                {/* Academic Year */}
+                                {article.createdBy.id === auth.user.id && (
+                                    <div className="w-full mt-4">
+                                        <InputLabel
+                                            htmlFor="academic_year_id"
+                                            value="Select Academic Year"
+                                        />
+
+                                        <SelectInput
+                                            name="academic_year_id"
+                                            id="academic_year_id"
+                                            value={data.academic_year_id}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "academic_year_id",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select a Academic Year
+                                            </option>
+                                            {activeAy.data.map((ay) => (
+                                                <option
+                                                    key={ay.id}
+                                                    value={ay.id}
+                                                >
+                                                    {ay.description}
+                                                </option>
+                                            ))}
+                                        </SelectInput>
+
+                                        <InputError
+                                            message={errors.academic_year_id}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
                                 {/* is_anonymous */}
-                                <div className="w-full mt-4">
-                                    <InputLabel
-                                        htmlFor="is_anonymous"
-                                        value="Anonymous Author"
-                                    />
+                                {article.createdBy.id === auth.user.id && (
+                                    <div className="w-full mt-4">
+                                        <InputLabel
+                                            htmlFor="is_anonymous"
+                                            value="Anonymous Author"
+                                        />
 
-                                    <SelectInput
-                                        name="is_anonymous"
-                                        id="is_anonymous"
-                                        value={data.is_anonymous}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData(
-                                                "is_anonymous",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="">Select Option</option>
-                                        <option value="no">No</option>
-                                        <option value="yes">Yes</option>
-                                    </SelectInput>
+                                        <SelectInput
+                                            name="is_anonymous"
+                                            id="is_anonymous"
+                                            value={data.is_anonymous}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "is_anonymous",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select Option
+                                            </option>
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </SelectInput>
 
-                                    <InputError
-                                        message={errors.is_anonymous}
-                                        className="mt-2"
-                                    />
-                                </div>
+                                        <InputError
+                                            message={errors.is_anonymous}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
                             </div>
                             {/* status and published */}
                             <div className="flex gap-4">
@@ -224,8 +218,6 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         <option value="">
                                             Select a status
                                         </option>
-                                        <option value="pending">Pending</option>
-                                        <option value="rejected">Rejected</option>
                                         <option value="edited">Edited</option>
                                         <option value="revision">
                                             Need Revision
@@ -270,29 +262,60 @@ export default function Edit({ auth, article, categories, activeAy }) {
                             </div>
 
                             {/* author if no acc */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="author"
-                                    value="Article Author (If you are the author, leave empty.)"
-                                />
+                            {article.createdBy.id === auth.user.id && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="author"
+                                        value="Article Author (If you are the author, leave empty.)"
+                                    />
 
-                                <TextInput
-                                    id="author"
-                                    type="text"
-                                    name="author"
-                                    placeholder={auth.user.username}
-                                    value={data.author}
-                                    className="mt-2 block w-full"
-                                    onChange={(e) =>
-                                        setData("author", e.target.value)
-                                    }
-                                />
+                                    <TextInput
+                                        id="author"
+                                        type="text"
+                                        name="author"
+                                        placeholder={auth.user.username}
+                                        value={data.author}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("author", e.target.value)
+                                        }
+                                    />
 
-                                <InputError
-                                    message={errors.author}
-                                    className="mt-2"
-                                />
-                            </div>
+                                    <InputError
+                                        message={errors.author}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
+
+                            {/* revision_message */}
+                            {data.status === "revision" && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="revision_message"
+                                        value="Revision/Rejected message"
+                                    />
+
+                                    <TextAreaInput
+                                        id="revision_message"
+                                        type="text"
+                                        name="revision_message"
+                                        value={data.revision_message}
+                                        className="mt-2 block w-full min-h-24"
+                                        onChange={(e) =>
+                                            setData(
+                                                "revision_message",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.revision_message}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
                             {/* title */}
                             <div className="mt-2 w-full">
                                 <InputLabel
@@ -306,7 +329,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     name="title"
                                     value={data.title}
                                     className="mt-2 block w-full"
-                                    isFocused={true}
+                                    // isFocused={true}
                                     onChange={(e) =>
                                         setData("title", e.target.value)
                                     }
@@ -412,7 +435,9 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                 />
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("article.index")}>
+                                <SecondaryButton
+                                    href={route("admin-article.index")}
+                                >
                                     Cancel
                                 </SecondaryButton>
                                 <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">

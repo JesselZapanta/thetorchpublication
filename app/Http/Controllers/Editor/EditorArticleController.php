@@ -28,7 +28,7 @@ class EditorArticleController extends Controller
         $query = Article::query();
         $id = Auth::user()->id;
 
-        $sortField = request('sort_field', 'created_at');
+        $sortField = request('sort_field', 'id');
         $sortDirection = request('sort_direction', 'desc');
 
         // Check if filtering by title
@@ -57,22 +57,22 @@ class EditorArticleController extends Controller
 
         // Filter based on "My Articles" selection 
         switch (request('myArticle')) {
-        case 'myArticle':
-            // Show only articles created by the authenticated user
-            $query->where('created_by', $id);
-            break;
+            case 'myArticle':
+                // Show only articles created by the authenticated user
+                $query->where('created_by', $id);
+                break;
 
-        default:
-            // Show all articles created by the authenticated user and pending/rejected articles from others
-            $query->where(function ($query) use ($id) {
-                $query->where('created_by', $id) // Auth user's articles
-                        ->orWhere(function ($query) use ($id) {
-                            $query->where('created_by', '!=', $id)
-                                    ->whereIn('status', ['pending']); 
-                        });
-                });
-            break;
-    }
+            default:
+                // Show all articles created by the authenticated user and pending/rejected articles from others
+                $query->where(function ($query) use ($id) {
+                    $query->where('created_by', $id) // Auth user's articles
+                            ->orWhere(function ($query) use ($id) {
+                                $query->where('created_by', '!=', $id)
+                                        ->whereIn('status', ['pending', 'revision']); 
+                            });
+                    });
+                break;
+        }
         // Sorting the results
         $articles = $query->orderBy($sortField, $sortDirection)
                             ->paginate(10)
@@ -120,6 +120,11 @@ class EditorArticleController extends Controller
         // Check if the article title contains any bad words using Aho-Corasick
         if ($ahoCorasick->search(strtolower($data['title']))) {
             return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
+        }
+
+        // Check if the article excerpt contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
+            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
         }
 
         // Check if the article body contains any bad words using Aho-Corasick
@@ -237,6 +242,8 @@ class EditorArticleController extends Controller
         if($status == 'edited'){
             $data['revision_message'] = null;
         }
+
+        // dd($data['revision_message']);
 
         if ($image) {
             // Delete the old image file if a new one is uploaded

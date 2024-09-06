@@ -72,6 +72,11 @@ export default function Index({ auth, article }) {
                                     </p>
                                 </div>
                             </div>
+                            <div className="mt-4 text-gray-400">
+                                <p>for testing</p>
+                                <p> Edited by:{article.editedBy.name}</p>
+                                <p> Layout By by:{article.layoutBy.name}</p>
+                            </div>
                             {/* Body */}
                             <div className="mt-8">
                                 <p className="text-base text-justify whitespace-pre-line">
@@ -81,13 +86,13 @@ export default function Index({ auth, article }) {
                             {/* <div className="mt-12 text-right grid justify-items-end">
                                 <div className="flex">
                                     <Link
-                                        href={route("article.edit", article.id)}
+                                        href={route("admin-article.edit", article.id)}
                                         className="bg-blue-600 py-1 px-3 text-blue-100 rounded shadow transition-all hover:bg-blue-500 mr-2"
                                     >
                                         Edit Article
                                     </Link>
                                     <Link
-                                        href={route("article.index")}
+                                        href={route("admin-article.index")}
                                         className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                                     >
                                         Back
@@ -96,12 +101,17 @@ export default function Index({ auth, article }) {
                             </div> */}
                             <div className="mt-6 flex justify-end gap-2">
                                 <Link
-                                    href={route("article.edit", article.id)}
+                                    href={route(
+                                        "admin-article.edit",
+                                        article.id
+                                    )}
                                     className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Edit Article
                                 </Link>
-                                <SecondaryButton href={route("article.index")}>
+                                <SecondaryButton
+                                    href={route("admin-article.index")}
+                                >
                                     Back
                                 </SecondaryButton>
                             </div>
