@@ -14,6 +14,7 @@ export default function Index({
     auth,
     articles,
     categories,
+    academicYears,
     success,
     queryParams = null,
 }) {
@@ -104,12 +105,11 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <th
                                                 className="px-3 py-3"
-                                                colSpan="2"
+                                                colSpan="1"
                                             >
                                                 <SelectInput
                                                     className="w-full"
@@ -132,30 +132,37 @@ export default function Index({
                                                     </option>
                                                 </SelectInput>
                                             </th>
+
                                             <th
                                                 className="px-3 py-3"
-                                                colSpan="1"
+                                                colSpan="2"
                                             >
-                                                <TextInput
+                                                <SelectInput
                                                     className="w-full"
                                                     defaultValue={
-                                                        queryParams.created_by
+                                                        queryParams.academic_year_id
                                                     }
-                                                    placeholder="Search Author Name"
-                                                    onBlur={(e) =>
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
-                                                            "created_by",
+                                                            "academic_year_id",
                                                             e.target.value
                                                         )
                                                     }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "created_by",
-                                                            e
+                                                >
+                                                    <option value="">AY</option>
+                                                    {academicYears.data.map(
+                                                        (ay) => (
+                                                            <option
+                                                                key={ay.id}
+                                                                value={ay.code}
+                                                            >
+                                                                {ay.description}
+                                                            </option>
                                                         )
-                                                    }
-                                                />
+                                                    )}
+                                                </SelectInput>
                                             </th>
+
                                             <th className="px-3 py-3">
                                                 <SelectInput
                                                     className="w-full"
@@ -335,11 +342,11 @@ export default function Index({
                                                         </div>
                                                     </th>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {article.is_anonymous === 'yes' ? (
-                                                            "Anonymous"
-                                                        ) : (
-                                                            article.createdBy.name
-                                                        )}
+                                                        {article.is_anonymous ===
+                                                        "yes"
+                                                            ? "Anonymous"
+                                                            : article.createdBy
+                                                                  .name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {article.category.name}
@@ -355,7 +362,7 @@ export default function Index({
                                                         >
                                                             {truncate(
                                                                 article.title,
-                                                                50
+                                                                20
                                                             )}
                                                         </Link>
                                                     </th>

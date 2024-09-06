@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\StudentStoreArticleRequest;
 use App\Http\Requests\Student\StudentUpdateArticleRequest;
+use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
@@ -35,6 +36,13 @@ class StudentArticleController extends Controller
             $query->where('title', 'like', '%'. request('title') . '%');
         }
         
+        if (request('academic_year_id')) {
+            // Join with the academicYear table to search by name
+            $query->whereHas('academicYear', function ($q) {
+                $q->where('code', 'like', '%' . request('academic_year_id') . '%');
+            });
+        }
+
         if (request('category')) {
             // Join with the users table to search by name
             $query->whereHas('category', function ($q) {
@@ -46,6 +54,7 @@ class StudentArticleController extends Controller
             $query->where('status', request('status'));
         }
 
+        $academicYears = AcademicYear::all();
         $categories = Category::all();
 
         $articles = $query->where('created_by', $id)
@@ -56,6 +65,7 @@ class StudentArticleController extends Controller
         return inertia('Student/Article/Index', [
             'articles' => ArticleResource::collection($articles),
             'categories' => CategoryResource::collection($categories),
+            'academicYears' => AcademicYearResource::collection($academicYears),
             'queryParams' => request()->query() ? : null,
             'success' => session('success'),
         ]);
@@ -223,6 +233,6 @@ class StudentArticleController extends Controller
             // Delete the specific old image file
             Storage::disk('public')->delete($student_article->article_image_path);
         }
-        return to_route('student-article.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('student-article.index')->with('success', 'Deleted Successfully');
     }
 }

@@ -14,8 +14,8 @@ export default function Index({
     auth,
     articles,
     categories,
+    academicYears,
     success,
-    delete_success,
     queryParams = null,
 }) {
     queryParams = queryParams || {};
@@ -99,7 +99,6 @@ export default function Index({
             {/* {<pre>{JSON.stringify(articles, null, 2)}</pre>} */}
             {/* Alert */}
             {success && <AlertSuccess message={success} />}
-            {delete_success && <AlertSuccess message={delete_success} />}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -113,24 +112,31 @@ export default function Index({
                                                 className="px-3 py-3"
                                                 colSpan="2"
                                             >
-                                                <TextInput
+                                                <SelectInput
                                                     className="w-full"
                                                     defaultValue={
-                                                        queryParams.title
+                                                        queryParams.academic_year_id
                                                     }
-                                                    placeholder="Search Article Title"
-                                                    onBlur={(e) =>
+                                                    onChange={(e) =>
                                                         searchFieldChanged(
-                                                            "title",
+                                                            "academic_year_id",
                                                             e.target.value
                                                         )
                                                     }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("title", e)
-                                                    }
-                                                />
+                                                >
+                                                    <option value="">AY</option>
+                                                    {academicYears.data.map(
+                                                        (ay) => (
+                                                            <option
+                                                                key={ay.id}
+                                                                value={ay.code}
+                                                            >
+                                                                {ay.code}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </SelectInput>
                                             </th>
-
                                             <th className="px-3 py-3">
                                                 <SelectInput
                                                     className="w-full"
@@ -163,7 +169,28 @@ export default function Index({
                                                     )}
                                                 </SelectInput>
                                             </th>
-                                            <th className="px-3 py-3"></th>
+
+                                            <th
+                                                className="px-3 py-3"
+                                                colSpan="1"
+                                            >
+                                                <TextInput
+                                                    className="w-full"
+                                                    defaultValue={
+                                                        queryParams.title
+                                                    }
+                                                    placeholder="Search Article Title"
+                                                    onBlur={(e) =>
+                                                        searchFieldChanged(
+                                                            "title",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    onKeyPress={(e) =>
+                                                        onKeyPressed("title", e)
+                                                    }
+                                                />
+                                            </th>
                                             <th className="px-3 py-3"></th>
                                             <th className="px-3 py-3">
                                                 <SelectInput

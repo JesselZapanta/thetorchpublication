@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Editor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Editor\EditorStoreArticleRequest;
 use App\Http\Requests\Editor\EditorUpdateArticleRequest;
+use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
@@ -23,70 +24,71 @@ class EditorArticleController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $query = Article::query();
-    $id = Auth::user()->id;
+    {
+        $query = Article::query();
+        $id = Auth::user()->id;
 
-    $sortField = request('sort_field', 'created_at');
-    $sortDirection = request('sort_direction', 'desc');
+        $sortField = request('sort_field', 'created_at');
+        $sortDirection = request('sort_direction', 'desc');
 
-    // Check if filtering by title
-    if (request('title')) {
-        $query->where('title', 'like', '%'. request('title') . '%');
-    }
+        // Check if filtering by title
+        if (request('title')) {
+            $query->where('title', 'like', '%'. request('title') . '%');
+        }
 
-    //Author
-    if (request('created_by')) {
-            // Join with the users table to search by name
-            $query->whereHas('createdBy', function ($q) {
-                $q->where('name', 'like', '%' . request('created_by') . '%');
+        // Check if filtering by category
+        if (request('category')) {
+            $query->whereHas('category', function ($q) {
+                $q->where('name', 'like', '%' . request('category') . '%');
+            });
+        }
+        // academic_year_id sort
+        if (request('academic_year_id')) {
+            // Join with the academicYear table to search by name
+            $query->whereHas('academicYear', function ($q) {
+                $q->where('code', 'like', '%' . request('academic_year_id') . '%');
             });
         }
 
-    // Check if filtering by category
-    if (request('category')) {
-        $query->whereHas('category', function ($q) {
-            $q->where('name', 'like', '%' . request('category') . '%');
-        });
+        // Check if filtering by status
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        // Filter based on "My Articles" selection 
+        switch (request('myArticle')) {
+        case 'myArticle':
+            // Show only articles created by the authenticated user
+            $query->where('created_by', $id);
+            break;
+
+        default:
+            // Show all articles created by the authenticated user and pending/rejected articles from others
+            $query->where(function ($query) use ($id) {
+                $query->where('created_by', $id) // Auth user's articles
+                        ->orWhere(function ($query) use ($id) {
+                            $query->where('created_by', '!=', $id)
+                                    ->whereIn('status', ['pending']); 
+                        });
+                });
+            break;
     }
+        // Sorting the results
+        $articles = $query->orderBy($sortField, $sortDirection)
+                            ->paginate(10)
+                            ->onEachSide(1);
 
-    // Check if filtering by status
-    if (request('status')) {
-        $query->where('status', request('status'));
+        $categories = Category::all();
+        $academicYears = AcademicYear::all();
+
+        return inertia('Editor/Article/Index', [
+            'articles' => ArticleResource::collection($articles),
+            'categories' => CategoryResource::collection($categories),
+            'academicYears' => AcademicYearResource::collection($academicYears),
+            'queryParams' => request()->query() ?: null,
+            'success' => session('success'),
+        ]);
     }
-
-    // Filter based on "My Articles" selection 
-    switch (request('myArticle')) {
-    case 'myArticle':
-        // Show only articles created by the authenticated user
-        $query->where('created_by', $id);
-        break;
-
-    default:
-        // Show all articles created by the authenticated user and pending/rejected articles from others
-        $query->where(function ($query) use ($id) {
-            $query->where('created_by', $id) // Auth user's articles
-                    ->orWhere(function ($query) use ($id) {
-                        $query->where('created_by', '!=', $id)
-                                ->whereIn('status', ['pending']); 
-                    });
-            });
-        break;
-}
-    // Sorting the results
-    $articles = $query->orderBy($sortField, $sortDirection)
-                        ->paginate(10)
-                        ->onEachSide(1);
-
-    $categories = Category::all();
-
-    return inertia('Editor/Article/Index', [
-        'articles' => ArticleResource::collection($articles),
-        'categories' => CategoryResource::collection($categories),
-        'queryParams' => request()->query() ?: null,
-        'success' => session('success'),
-    ]);
-}
 
 
     /**
