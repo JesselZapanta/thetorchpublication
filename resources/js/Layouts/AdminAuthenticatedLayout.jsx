@@ -5,6 +5,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
+import Footer from '@/Components/Footer';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -116,9 +117,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink
                                     href={route("newsletter.index")}
-                                    active={route().current(
-                                        "newsletter.index"
-                                    )}
+                                    active={route().current("newsletter.index")}
                                 >
                                     Newsletters
                                 </NavLink>
@@ -335,6 +334,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            {/* <Footer /> */}
         </div>
     );
 }

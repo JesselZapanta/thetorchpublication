@@ -48,13 +48,13 @@ export default function Edit({ auth, article, categories }) {
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.revision_message && (
                         <div
-                            class="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                            className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
                         >
-                            <div class="flex">
-                                <div class="py-1">
+                            <div className="flex">
+                                <div className="py-1">
                                     <svg
-                                        class="fill-current h-6 w-6 text-red-500 mr-4"
+                                        className="fill-current h-6 w-6 text-red-500 mr-4"
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20"
                                     >
@@ -62,10 +62,10 @@ export default function Edit({ auth, article, categories }) {
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="font-bold">
+                                    <p className="font-bold">
                                         Revision/Rejection Message:
                                     </p>
-                                    <p class="text-sm">
+                                    <p className="text-sm">
                                         {article.revision_message}
                                     </p>
                                 </div>

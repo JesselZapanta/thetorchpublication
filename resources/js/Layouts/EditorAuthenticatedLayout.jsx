@@ -5,6 +5,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
+import Footer from '@/Components/Footer';
 
 export default function EditorAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -300,6 +301,7 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            {/* <Footer /> */}
         </div>
     );
 }
