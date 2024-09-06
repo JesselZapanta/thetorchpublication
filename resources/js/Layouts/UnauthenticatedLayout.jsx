@@ -153,6 +153,66 @@ export default function UnauthenticatedLayout({
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                        {user ? (
+                            <>
+                                {user.role === "admin" && (
+                                    <ResponsiveNavLink
+                                        href={route("admin.dashboard")}
+                                        active={route().current(
+                                            "admin.dashboard"
+                                        )}
+                                    >
+                                        Dashboard
+                                    </ResponsiveNavLink>
+                                )}
+                                {user.role === "student" && (
+                                    <ResponsiveNavLink
+                                        href={route("student.dashboard")}
+                                        active={route().current(
+                                            "student.dashboard"
+                                        )}
+                                    >
+                                        Dashboard
+                                    </ResponsiveNavLink>
+                                )}
+
+                                {user.role === "editor" && (
+                                    <ResponsiveNavLink
+                                        href={route("editor.dashboard")}
+                                        active={route().current(
+                                            "editor.dashboard"
+                                        )}
+                                    >
+                                        Dashboard
+                                    </ResponsiveNavLink>
+                                )}
+
+                                {/* {user.role === "writer" && (
+                                            <ResponsiveNavLink
+                                                href={route("writer.dashboard")}
+                                                active={route().current(
+                                                    "writer.dashboard"
+                                                )}
+                                            >
+                                                Writer Dashboard
+                                            </ResponsiveNavLink>
+                                        )}
+                                        
+                                        {user.role === "designer" && (
+                                            <ResponsiveNavLink
+                                                href={route(
+                                                    "designer.dashboard"
+                                                )}
+                                                active={route().current(
+                                                    "designer.dashboard"
+                                                )}
+                                            >
+                                                Designer Dashboard
+                                            </ResponsiveNavLink>
+                                        )} */}
+                            </>
+                        ) : null}
+
                         <ResponsiveNavLink
                             href={route("home")}
                             active={route().current("home")}
