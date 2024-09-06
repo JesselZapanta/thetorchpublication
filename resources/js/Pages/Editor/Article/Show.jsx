@@ -93,7 +93,7 @@ export default function Index({ auth, article }) {
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
                             </div>
-                            {article.revision_message && (
+                            {article.rejection_message && (
                                 <div
                                     className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                     role="alert"
@@ -113,7 +113,7 @@ export default function Index({ auth, article }) {
                                                 Revision/Rejection Message:
                                             </p>
                                             <p className="text-sm">
-                                                {article.revision_message}
+                                                {article.rejection_message}
                                             </p>
                                         </div>
                                     </div>

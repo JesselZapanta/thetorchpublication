@@ -18,6 +18,7 @@ class Article extends Model
         'excerpt',
         'body',
         'status',
+        'rejection_message',
         'revision_message',
         'published_date',
         'is_anonymous',

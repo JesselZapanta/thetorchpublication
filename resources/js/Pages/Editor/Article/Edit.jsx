@@ -8,22 +8,20 @@ import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Edit({ auth, article, categories }) {
+
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
-        // academic_year_id: article.academic_year_id || "", 
-        // author: article.author || "", 
         title: article.title || "",
-        excerpt: article.excerpt || "", 
+        excerpt: article.excerpt || "",
         body: article.body || "",
         status: article.status || "",
-        revision_message: article.revision_message || "", 
+        rejection_message: article.rejection_message || "",
         caption: article.caption || "",
         article_image_path: "",
-        // is_featured: article.is_featured || "",
         is_anonymous: article.is_anonymous || "",
-        // published_date: article.published_date || "",
         _method: "PUT",
     });
+
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -47,7 +45,32 @@ export default function Edit({ auth, article, categories }) {
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {article.revision_message && (
+                    {(article.status === "pending" && article.rejection_message) && (
+                        <div
+                            className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                            role="alert"
+                        >
+                            <div className="flex">
+                                <div className="py-1">
+                                    <svg
+                                        className="fill-current h-6 w-6 text-red-500 mr-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="font-bold">Rejection Message:</p>
+                                    <p className="text-sm">
+                                        {article.rejection_message}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {article.status == "revision" && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
@@ -64,7 +87,7 @@ export default function Edit({ auth, article, categories }) {
                                 </div>
                                 <div>
                                     <p className="font-bold">
-                                        Revision/Rejection Message:
+                                        Revision Message:
                                     </p>
                                     <p className="text-sm">
                                         {article.revision_message}
@@ -197,30 +220,30 @@ export default function Edit({ auth, article, categories }) {
                                 )}
                             </div>
 
-                            {/* revision_message */}
+                            {/* rejection_message */}
                             {data.status === "rejected" && (
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="revision_message"
-                                        value="Revision/Rejected message"
+                                        htmlFor="rejection_message"
+                                        value="Rejected message"
                                     />
 
                                     <TextAreaInput
-                                        id="revision_message"
+                                        id="rejection_message"
                                         type="text"
-                                        name="revision_message"
-                                        value={data.revision_message}
+                                        name="rejection_message"
+                                        value={data.rejection_message}
                                         className="mt-2 block w-full min-h-24"
                                         onChange={(e) =>
                                             setData(
-                                                "revision_message",
+                                                "rejection_message",
                                                 e.target.value
                                             )
                                         }
                                     />
 
                                     <InputError
-                                        message={errors.revision_message}
+                                        message={errors.rejection_message}
                                         className="mt-2"
                                     />
                                 </div>

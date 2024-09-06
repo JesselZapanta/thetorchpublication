@@ -234,16 +234,21 @@ class EditorArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['slug'] = Str::slug($request->title);
 
-         //the revision or reject message message 
-        $data['revision_message'] = $request->input('revision_message');
+         //the reject message message 
+        $data['rejection_message'] = $request->input('rejection_message');
         
-        $status = $data['status'];
+        // $status = $data['status'];
         
-        if($status == 'edited'){
-            $data['revision_message'] = null;
-        }
+        // if($status == 'rejected'){
+        //     $data['revision_message'] = null;
+        // }
 
-        // dd($data['revision_message']);
+        //do nnot pass 
+        // if($status == 'edited'){
+        //     $data['revision_message'] = $request->input('rejection_message');
+        //     $data['rejection_message'] = null;
+        // }
+
 
         if ($image) {
             // Delete the old image file if a new one is uploaded

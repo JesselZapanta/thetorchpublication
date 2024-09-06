@@ -350,7 +350,11 @@ export default function Index({
                                                         </div>
                                                     </th>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {article.createdBy.name}
+                                                        {article.is_anonymous ===
+                                                        "yes"
+                                                            ? "Anonymous"
+                                                            : article.createdBy
+                                                                  .name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {article.category.name}

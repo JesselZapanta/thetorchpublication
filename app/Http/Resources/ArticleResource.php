@@ -29,6 +29,7 @@ class ArticleResource extends JsonResource
             
             'status' => $this->status,
             'revision_message' => $this->revision_message,
+            'rejection_message' => $this->rejection_message,
 
             'caption' => $this->caption,
             'views' => $this->views,
@@ -36,8 +37,7 @@ class ArticleResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
 
-            'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : 'Not Published',
-
+            'published_date' => (new Carbon($this->published_date))->format('Y-m-d'),
             
             'academic_year_id' => $this->academic_year_id,
 

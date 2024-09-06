@@ -225,6 +225,7 @@ class StudentArticleController extends Controller
                 $data['article_image_path'] = $student_article->article_image_path;
             }
 
+
             $student_article->update($data);
         }
 

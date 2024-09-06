@@ -43,10 +43,10 @@ export default function Edit({ auth, article, categories }) {
             }
         >
             <Head title={`Edit ${article.title}`} />
-            {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
+            {/* <pre className="text-gray-950">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {article.revision_message && (
+                    {article.rejection_message && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
@@ -63,10 +63,10 @@ export default function Edit({ auth, article, categories }) {
                                 </div>
                                 <div>
                                     <p className="font-bold">
-                                        Revision/Rejection Message:
+                                        Rejection Message:
                                     </p>
                                     <p className="text-sm">
-                                        {article.revision_message}
+                                        {article.rejection_message}
                                     </p>
                                 </div>
                             </div>
@@ -90,12 +90,14 @@ export default function Edit({ auth, article, categories }) {
                                         id="category_id"
                                         value={data.category_id}
                                         className={`mt-2 block w-full ${
-                                            article.status !== "pending" && article.status !== "rejected"
+                                            article.status !== "pending" &&
+                                            article.status !== "rejected"
                                                 ? "cursor-not-allowed bg-gray-200"
                                                 : "cursor-pointer"
                                         }`}
                                         disabled={
-                                            article.status !== "pending" && article.status !== "rejected"
+                                            article.status !== "pending" &&
+                                            article.status !== "rejected"
                                                 ? true
                                                 : false
                                         }
@@ -169,12 +171,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="title"
                                     value={data.title}
                                     className={`mt-2 block w-full ${
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : "cursor-pointer"
                                     }`}
                                     disabled={
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? true
                                             : false
                                     }
@@ -202,12 +206,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="excerpt"
                                     value={data.excerpt}
                                     className={`mt-2 block w-full min-h-24 ${
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : "cursor-pointer"
                                     }`}
                                     disabled={
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? true
                                             : false
                                     }
@@ -235,12 +241,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="body"
                                     value={data.body}
                                     className={`mt-2 block w-full min-h-64 ${
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : "cursor-pointer"
                                     }`}
                                     disabled={
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? true
                                             : false
                                     }
@@ -268,12 +276,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="caption"
                                     value={data.caption}
                                     className={`mt-2 block w-full ${
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : "cursor-pointer"
                                     }`}
                                     disabled={
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? true
                                             : false
                                     }
@@ -299,12 +309,14 @@ export default function Edit({ auth, article, categories }) {
                                     type="file"
                                     name="article_image_path"
                                     className={`mt-2 block w-full ${
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : "cursor-pointer"
                                     }`}
                                     disabled={
-                                        article.status !== "pending" && article.status !== "rejected"
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
                                             ? true
                                             : false
                                     }

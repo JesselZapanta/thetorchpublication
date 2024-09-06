@@ -251,6 +251,7 @@ class AdminArticleController extends Controller
         
         if($status == 'published'){
             $data['revision_message'] = null;
+            $data['rejection_message'] = null;
         }
 
         if($status !== 'published'){
