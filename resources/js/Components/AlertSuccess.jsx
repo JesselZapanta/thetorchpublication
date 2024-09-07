@@ -3,7 +3,7 @@ import React from "react";
 export default function AlertSuccess({ message }) {
     return (
         <div
-            className="absolute bottom-12 right-12 z-20 bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-3 py-2 shadow-md"
+            className="fixed bottom-12 right-12 z-20 bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-3 py-2 shadow-md"
             role="alert"
         >
             <div className="flex">

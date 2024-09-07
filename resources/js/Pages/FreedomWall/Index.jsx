@@ -239,6 +239,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries
+                    auth={auth}
                     freedomWallEntries={freedomWallEntries}
                     handleLike={handleLike}
                     handleDislike={handleDislike}

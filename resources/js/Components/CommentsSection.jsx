@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./../Components/Dropdown";
 import { ChevronDownIcon  } from "@heroicons/react/16/solid";
+import { router } from "@inertiajs/react";
+import Modal from "./Modal";
+import SecondaryButton from "./SecondaryButton";
+import axios from "axios";
+import AlertSuccess from "./AlertSuccess";
 
 
 export default function CommentsSection({
     auth,
     comments,
     handleDelete,
-    handleReport,
     handleLike,
     handleDislike,
 }) {
-
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (comment) => {
@@ -36,8 +39,6 @@ export default function CommentsSection({
         }
     };
 
-
-
     useEffect(() => {
         const stopSpeech = () => {
             if (speechSynthesis.speaking) {
@@ -55,7 +56,6 @@ export default function CommentsSection({
         };
     }, [speechSynthesis]);
 
-
     //show all comments
     const [showAll, setShowAll] = useState(false);
 
@@ -67,8 +67,37 @@ export default function CommentsSection({
         ? comments.data
         : comments.data.slice(0, 3);
 
+    //report
+
+    const [alert, setAlert] = useState("");
+
+    const onSubmit = async (comment) => {
+        const response = await axios.post(`/comment/${comment.id}/report`, {
+            params: { preserveScroll: true },
+        });
+
+        if (response.data.success) {
+            setAlert(response.data.success);
+        }
+    };
+    
+
+    const [confirmReport, setConfirmReport] = useState(false);
+    const [currentComment, setCurrentComment] = useState(null);
+
+    const openReportModal = (comment) => {
+        setCurrentComment(comment);
+        setConfirmReport(true);
+    };
+
+    const handleReport = () => {
+        setConfirmReport(false);
+        onSubmit(currentComment);
+    };
+
     return (
         <div className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
+            {alert && <AlertSuccess message={alert} duration={2000} />}
             {displayedComments.length > 0 && (
                 <div className="flex gap-1">
                     <button
@@ -225,14 +254,18 @@ export default function CommentsSection({
                                                 Delete
                                             </Dropdown.Link>
                                         )}
-                                        <Dropdown.Link
-                                            onClick={(event) => {
-                                                event.preventDefault();
-                                                handleReport(comment);
-                                            }}
-                                        >
-                                            Report
-                                        </Dropdown.Link>
+                                        {auth.user.id !== comment.user_id && (
+                                            <Dropdown>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    onClick={() =>
+                                                        openReportModal(comment)
+                                                    }
+                                                >
+                                                    Report
+                                                </button>
+                                            </Dropdown>
+                                        )}
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -244,6 +277,29 @@ export default function CommentsSection({
                     No comments yet.
                 </div>
             )}
+            {/* Confirm Report Modal */}
+            <Modal show={confirmReport} onClose={() => setConfirmReport(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Report</h2>
+                    <p className="mt-4">
+                        Are you sure you want to report this content?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmReport(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleReport}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

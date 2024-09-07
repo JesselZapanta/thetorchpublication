@@ -26,6 +26,8 @@ class FreedomWallResource extends JsonResource
             'dislikes_count' => $this->dislikes()->count(),
             'user_has_liked' => $this->likes()->where('user_id', auth()->id())->exists(),
             'user_has_disliked' => $this->dislikes()->where('user_id', auth()->id())->exists(),
+
+            'user_id' => $this->user_id,
         ];
     }
 }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reported_by')->constrained('users')->onDelete('cascade'); 
+            $table->morphs('reportable'); // Polymorphic relation to any reportable content (article, comment, freedom wall)
+            $table->string('reason'); 
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ use App\Http\Controllers\Home\FreedomWallController;
 use App\Http\Controllers\Home\FreedomWallLikeController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
+use App\Http\Controllers\Home\ReportContentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\Student\StudentArticleController;
@@ -49,6 +50,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
+
+Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall']);
+Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment']);
+Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle']);
+
 
 //Get Ratings
     Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);

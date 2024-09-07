@@ -9,7 +9,7 @@ class FreedomWall extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'body', 'emotion'];
+    protected $fillable = ['user_id', 'body', 'emotion', 'report_count'];
 
     public function user()
     {

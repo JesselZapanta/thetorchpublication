@@ -1,7 +1,12 @@
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
+import Dropdown from "./../Components/Dropdown";
+import Modal from "./Modal";
+import SecondaryButton from "./SecondaryButton";
+import AlertSuccess from "./AlertSuccess";
 
 export default function FreedomWallEntries({
+    auth,
     freedomWallEntries,
     handleLike,
     handleDislike,
@@ -26,7 +31,7 @@ export default function FreedomWallEntries({
 
             // Set the current speaking entry ID and start speaking
             setIsSpeaking(entry.id);
-            speechSynthesis.speak(utterance);
+        speechSynthesis.speak(utterance);
         }
     };
 
@@ -61,12 +66,39 @@ export default function FreedomWallEntries({
         down: "bg-gray-600",
     };
 
+    //report
+    const [alert, setAlert] = useState("");
 
+    const onSubmit = async (entry) => {
+        const response = await axios.post(`/freedom-wall/${entry.id}/report`, {
+            params: { preserveScroll: true },
+        });
+
+        if (response.data.success) {
+            setAlert(response.data.success);
+        }
+    };
+
+    const [confirmReport, setConfirmReport] = useState(false);
+    const [currentEntry, setCurrentEntry] = useState(null);
+
+    const openReportModal = (entry) => {
+        setCurrentEntry(entry);
+        setConfirmReport(true);
+    };
+
+    const handleReport = () => {
+        setConfirmReport(false);
+        onSubmit(currentEntry);
+    };
+
+    // alert(auth.user.id);
     return (
         <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* <pre className="text-white">
                 {JSON.stringify(freedomWallEntries, null, 2)}
             </pre> */}
+            {alert && <AlertSuccess message={alert} />}
             {freedomWallEntries.data.length === 0 && (
                 <div className="text-center text-gray-400 lg:col-span-3">
                     No freedom wall entries found.
@@ -95,20 +127,22 @@ export default function FreedomWallEntries({
                                 </p>
                             </div>
                         </div>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6 text-white cursor-pointer"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                            />
-                        </svg>
+                        <button onClick={() => openReportModal(entry)}>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6 text-gray-50 dark:text-gray-50 cursor-pointer"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                />
+                            </svg>
+                        </button>
                     </div>
                     <div className="relative h-[300px] flex gap-1 items-end justify-end p-2 transition-all duration-300">
                         {/* <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
@@ -215,6 +249,30 @@ export default function FreedomWallEntries({
                     </div>
                 </div>
             ))}
+
+            {/* Confirm Report Modal */}
+            <Modal show={confirmReport} onClose={() => setConfirmReport(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Report</h2>
+                    <p className="mt-4">
+                        Are you sure you want to report this content?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmReport(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleReport}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

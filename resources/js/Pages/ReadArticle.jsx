@@ -4,17 +4,16 @@ import { Head, router, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import CommentsSection from "@/Components/CommentsSection";
 import CommentForm from "@/Components/CommentForm ";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import axios from "axios";
+import AlertSuccess from "@/Components/AlertSuccess";
 
-export default function ReadArticle({
-    auth,
-    article,
-    categories,
-    comments,
-}) {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-    
+export default function ReadArticle({ auth, article, categories, comments }) {
+    // useEffect(() => {
+    //     window.scrollTo(0, 0);
+    // }, []);
+
     // Check if user is authenticated
     const isAuthenticated = !!auth.user;
 
@@ -77,7 +76,7 @@ export default function ReadArticle({
     };
 
     //Delete Comment
-    
+
     const handleDelete = (comment) => {
         if (comment) {
             router.delete(route("comments.destroy", comment.id), {
@@ -90,10 +89,6 @@ export default function ReadArticle({
                 preserveScroll: true, // Preserve scroll on error
             });
         }
-    };
-
-    const handleReport = (comment) => {
-        // Implement report functionality here
     };
 
     //LIke and Dislike
@@ -124,6 +119,34 @@ export default function ReadArticle({
         });
     };
 
+    //report
+    const [alert, setAlert] = useState("");
+
+    const onSubmit = async (article) => {
+        const response = await axios.post(`/article/${article.id}/report`, {
+            params: { preserveScroll: true },
+        });
+
+        if (response.data.success) {
+            setAlert(response.data.success);
+        }
+    };
+
+
+
+    const [confirmReport, setConfirmReport] = useState(false);
+    const [currentArticle, setCurrentArticle] = useState(null);
+
+    const openReportModal = (article) => {
+        setCurrentArticle(article);
+        setConfirmReport(true);
+    };
+
+    const handleReport = () => {
+        setConfirmReport(false);
+        onSubmit(currentArticle);
+    };
+
     return (
         <UnauthenticatedLayout
             categories={categories}
@@ -137,6 +160,7 @@ export default function ReadArticle({
             }
         >
             <Head title={`Read ${article.title}`} />
+            {alert && <AlertSuccess message={alert}/>}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -173,7 +197,8 @@ export default function ReadArticle({
                                                     src={
                                                         article.author
                                                             ? "/images/default/profile.jpg"
-                                                            : article.is_anonymous === "yes"
+                                                            : article.is_anonymous ===
+                                                              "yes"
                                                             ? "/images/default/profile.jpg"
                                                             : article.article_image_path
                                                     }
@@ -197,7 +222,8 @@ export default function ReadArticle({
                                                 Author:
                                                 {article.author
                                                     ? article.author
-                                                    : article.is_anonymous === "yes"
+                                                    : article.is_anonymous ===
+                                                      "yes"
                                                     ? "Anonymous"
                                                     : article.createdBy.name}
                                             </h4>
@@ -222,6 +248,16 @@ export default function ReadArticle({
                                         articleId={article.id}
                                         isAuthenticated={isAuthenticated}
                                     />
+                                    <div className="mt-4">
+                                        <button
+                                            className="px-2 bg-rose-400 text-white transition-all duration-300 rounded hover:bg-rose-500"
+                                            onClick={() =>
+                                                openReportModal(article)
+                                            }
+                                        >
+                                            Report
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="w-full h-[2px] bg-indigo-400 my-8"></div>
@@ -231,14 +267,22 @@ export default function ReadArticle({
                                 </p>
                             </div>
                         </div>
-                        <div className="py-4">
+                        <div className="p-4 flex justify-between items-center">
                             {/* TTS Button */}
                             <button
                                 onClick={handleSpeak}
-                                className="ml-4 px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                                className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                             >
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
+                            {/* <div>
+                                <button
+                                    className="px-2 bg-rose-400 text-white transition-all duration-300 rounded hover:bg-rose-500"
+                                    onClick={() => openReportModal(article)}
+                                >
+                                    Report
+                                </button>
+                            </div> */}
                         </div>
                     </div>
                     {/* Use the CommentForm Component */}
@@ -257,12 +301,34 @@ export default function ReadArticle({
                         auth={auth}
                         comments={comments}
                         handleDelete={handleDelete}
-                        handleReport={handleReport}
                         handleLike={handleLike}
                         handleDislike={handleDislike}
                     />
                 </div>
             </div>
+            {/* Confirm Report Modal */}
+            <Modal show={confirmReport} onClose={() => setConfirmReport(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Report</h2>
+                    <p className="mt-4">
+                        Are you sure you want to report this content?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmReport(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleReport}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </UnauthenticatedLayout>
     );
 }
