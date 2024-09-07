@@ -1,33 +1,39 @@
 import Checkbox from "@/Components/Checkbox";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Create({ auth, categories }) {
     const { data, setData, post, errors } = useForm({
         category_id: "",
-        // academic_year_id: "",
-        // author: "",
         title: "",
         excerpt: "",
         body: "",
-        // status: "",
         caption: "",
         article_image_path: "",
-        // is_featured: "",
         is_anonymous: "",
-        // published_date: ""
     });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
+    const onSubmit = () => {
         post(route("student-article.store", data));
+    };
+
+    const [confirmSubmit, setConfirmSubmit] = useState(false);
+
+    const openSubmitModal = () => {
+        setConfirmSubmit(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        setConfirmSubmit(false);
+        onSubmit();
     };
 
     return (
@@ -248,7 +254,11 @@ export default function Create({ auth, categories }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
-                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                    onClick={openSubmitModal}
+                                >
                                     Submit
                                 </button>
                             </div>
@@ -256,6 +266,29 @@ export default function Create({ auth, categories }) {
                     </div>
                 </div>
             </div>
+            {/* Confirm Submit Modal */}
+            <Modal show={confirmSubmit} onClose={() => setConfirmSubmit(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Submit</h2>
+                    <p className="mt-4">
+                        Are you sure you want to Submit this Article?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmSubmit(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleConfirmSubmit}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </StudentAuthenticatedLayout>
     );
 }
