@@ -77,10 +77,13 @@ export default function FeaturedArticle({ featuredArticle }) {
                         </Link>
                         <p className="block text-sm mt-2 text-justify">
                             By:
-                            {featuredArticle.is_anonymous === "yes"
-                                ? " Anonymous"
+                            {featuredArticle.author
+                                ? featuredArticle.author
+                                : featuredArticle.is_anonymous === "yes"
+                                ? "Anonymous"
                                 : featuredArticle.createdBy.name}
                         </p>
+
                         <p className="block text-sm text-justify">
                             Published Date: {featuredArticle.published_date}
                         </p>

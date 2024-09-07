@@ -168,8 +168,9 @@ export default function ReadArticle({
                                                 .profile_image_path && (
                                                 <img
                                                     src={
-                                                        article.is_anonymous ===
-                                                        "yes"
+                                                        article.author
+                                                            ? "/images/default/profile.jpg"
+                                                            : article.is_anonymous === "yes"
                                                             ? "/images/default/profile.jpg"
                                                             : article.article_image_path
                                                     }
@@ -191,8 +192,10 @@ export default function ReadArticle({
                                         <div>
                                             <h4 className="font-bold text-base">
                                                 Author:
-                                                {article.is_anonymous === "yes"
-                                                    ? " Anonymous"
+                                                {article.author
+                                                    ? article.author
+                                                    : article.is_anonymous === "yes"
+                                                    ? "Anonymous"
                                                     : article.createdBy.name}
                                             </h4>
                                             <p className="mt-1">

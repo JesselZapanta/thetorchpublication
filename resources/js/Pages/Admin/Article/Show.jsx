@@ -46,17 +46,17 @@ export default function Index({ auth, article }) {
                                         {article.article_image_path && (
                                             <img
                                                 src={
-                                                    article.is_anonymous ===
-                                                    "yes"
+                                                    article.author
                                                         ? "/images/default/profile.jpg"
-                                                        : article.article_image_path
+                                                        : article.is_anonymous === "yes"
+                                                            ? "/images/default/profile.jpg"
+                                                            : article.article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
                                                 alt={
-                                                    article.is_anonymous ===
-                                                    "yes"
+                                                    article.is_anonymous === "yes"
                                                         ? "Default image"
-                                                        : article.article_image_path
+                                                        : article.createdBy.name
                                                 }
                                             />
                                         )}
@@ -66,8 +66,10 @@ export default function Index({ auth, article }) {
                                         <h4>
                                             Author:
                                             <span className="font-bold">
-                                                {article.is_anonymous === "yes"
-                                                    ? " Anonymous"
+                                                {article.author
+                                                    ? article.author
+                                                    : article.is_anonymous === "yes"
+                                                    ? "Anonymous"
                                                     : article.createdBy.name}
                                             </span>
                                         </h4>

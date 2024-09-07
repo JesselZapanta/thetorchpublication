@@ -67,8 +67,10 @@ export default function ArticleCard({ article }) {
                 </Link>
                 <p className="block text-sm text-justify mt-2">
                     By:
-                    {article.is_anonymous === "yes"
-                        ? " Anonymous"
+                    {article.author
+                        ? article.author
+                        : article.is_anonymous === "yes"
+                        ? "Anonymous"
                         : article.createdBy.name}
                 </p>
                 <p className="block text-sm text-justify">
