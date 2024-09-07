@@ -64,27 +64,40 @@ export default function Index({ auth, article }) {
                                             />
                                         )}
                                     </div>
+                                    {/* Information */}
                                     <div>
-                                        <h4 className="font-bold text-base">
+                                        <h4>
                                             Author:
-                                            {article.is_anonymous === "yes"
-                                                ? " Anonymous"
-                                                : article.createdBy.name}
+                                            <span className="font-bold">
+                                                {article.is_anonymous === "yes"
+                                                    ? " Anonymous"
+                                                    : article.createdBy.name}
+                                            </span>
                                         </h4>
                                         <p className="mt-1">
-                                            Edited by:
-                                            {article.Published
-                                                ? article.Published.name
-                                                : " Not Publish"}
+                                            Published Date:
+                                            <span className="font-bold">
+                                                {" "}
+                                                {article.published_date
+                                                    ? article.published_date
+                                                    : " Not Published"}
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
+                                {/* Information */}
                                 <div>
-                                    <h4 className="font-bold text-base">
-                                        Category: {article.category.name}
+                                    <h4>
+                                        Category:{" "}
+                                        <span className="font-bold">
+                                            {article.category.name}
+                                        </span>
                                     </h4>
                                     <p className="mt-1">
-                                        Status: {article.status}
+                                        Status:{" "}
+                                        <span className="font-bold uppercase">
+                                            {article.status}
+                                        </span>
                                     </p>
                                 </div>
                             </div>
