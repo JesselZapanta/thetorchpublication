@@ -13,10 +13,10 @@ import { useEffect, useState } from "react";
 export default function Edit({ auth, article, categories, activeAy }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
-        academic_year_id: article.academic_year_id || "", //todo
-        author: article.author || "", //todo
+        academic_year_id: article.academic_year_id || "", 
+        author: article.author || "", 
         title: article.title || "",
-        excerpt: article.excerpt || "", //todo
+        excerpt: article.excerpt || "", 
         body: article.body || "",
         status: article.status || "",
         revision_message: article.revision_message || "",
@@ -489,48 +489,40 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     Cancel
                                 </SecondaryButton>
                                 <button
-                                    type="button" 
+                                    type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                                     onClick={openUpdateModal}
                                 >
                                     Update
                                 </button>
                             </div>
-                            {/* Confirm Update Modal */}
-                            <Modal
-                                show={confirmUpdate}
-                                onClose={() => setConfirmUpdate(false)}
-                            >
-                                <div className="p-6 text-gray-900 dark:text-gray-100">
-                                    <h2 className="text-base font-bold">
-                                        Confirm Update
-                                    </h2>
-                                    <p className="mt-4">
-                                        Are you sure you want to Update this
-                                        Article?
-                                    </p>
-                                    <div className="mt-4 flex justify-end gap-2">
-                                        <SecondaryButton
-                                            onClick={() =>
-                                                setConfirmUpdate(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </SecondaryButton>
-                                        <button
-                                            type="button" 
-                                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                                            onClick={handleConfirmUpdate}
-                                        >
-                                            Confirm
-                                        </button>
-                                    </div>
-                                </div>
-                            </Modal>
                         </form>
                     </div>
                 </div>
             </div>
+            {/* Confirm Update Modal */}
+            <Modal show={confirmUpdate} onClose={() => setConfirmUpdate(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Update</h2>
+                    <p className="mt-4">
+                        Are you sure you want to Update this Article?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmUpdate(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleConfirmUpdate}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </AdminAuthenticatedLayout>
     );
 }

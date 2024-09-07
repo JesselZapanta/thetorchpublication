@@ -1,33 +1,44 @@
 import Checkbox from "@/Components/Checkbox";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Create({ auth, categories, activeAy }) {
     const { data, setData, post, errors } = useForm({
         category_id: "",
-        academic_year_id: "",//todo
-        author: "",//todo
+        academic_year_id: "",
+        author: "",
         title: "",
-        excerpt: "",//todo
+        excerpt: "",
         body: "",
         status: "",
         caption: "",
         article_image_path: "",
-        is_featured: "",//todo
-        is_anonymous: "",//todo
-        published_date: ""//todo
+        is_featured: "",
+        is_anonymous: "",
+        published_date: ""
     });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
+    const onSubmit = () => {
         post(route("admin-article.store", data));
+    };
+
+    const [confirmSubmit, setConfirmSubmit] = useState(false);
+
+    const openSubmitModal = () => {
+        setConfirmSubmit(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        setConfirmSubmit(false);
+        onSubmit();
     };
 
     return (
@@ -222,7 +233,9 @@ export default function Create({ auth, categories, activeAy }) {
                                         }
                                     >
                                         <option value="pending">Pending</option>
-                                        <option value="rejected">Rejected</option>
+                                        <option value="rejected">
+                                            Rejected
+                                        </option>
                                         <option value="edited">Edited</option>
                                         <option value="revision">
                                             Revision
@@ -413,10 +426,16 @@ export default function Create({ auth, categories, activeAy }) {
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("admin-article.index")}>
+                                <SecondaryButton
+                                    href={route("admin-article.index")}
+                                >
                                     Cancel
                                 </SecondaryButton>
-                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                    onClick={openSubmitModal}
+                                >
                                     Submit
                                 </button>
                             </div>
@@ -424,6 +443,29 @@ export default function Create({ auth, categories, activeAy }) {
                     </div>
                 </div>
             </div>
+            {/* Confirm Submit Modal */}
+            <Modal show={confirmSubmit} onClose={() => setConfirmSubmit(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Submit</h2>
+                    <p className="mt-4">
+                        Are you sure you want to Submit this Article?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmSubmit(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleConfirmSubmit}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </AdminAuthenticatedLayout>
     );
 }
