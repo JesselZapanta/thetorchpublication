@@ -116,6 +116,7 @@ export default function FreedomWallEntries({
                         </p> */}
                         <Link
                             href={route("freedom-wall.show", entry.id)}
+                            preserveScroll
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"
                             } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-105 origin-bottom-right`}

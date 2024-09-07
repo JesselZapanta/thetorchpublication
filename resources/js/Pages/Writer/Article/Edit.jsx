@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ export default function Edit({ auth, article, categories }) {
     });
 
     const onSubmit = () => {
-        post(route("student-article.update", article.id));
+        post(route("writer-article.update", article.id));
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -39,7 +39,7 @@ export default function Edit({ auth, article, categories }) {
     };
 
     return (
-        <StudentAuthenticatedLayout
+        <WriterAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -343,7 +343,7 @@ export default function Edit({ auth, article, categories }) {
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("student-article.index")}
+                                    href={route("writer-article.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -382,6 +382,6 @@ export default function Edit({ auth, article, categories }) {
                     </div>
                 </div>
             </Modal>
-        </StudentAuthenticatedLayout>
+        </WriterAuthenticatedLayout>
     );
 }

@@ -48,7 +48,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('student.dashboard');
         }  elseif ($request->user()->role === 'editor') {
             return redirect()->route('editor.dashboard');
-        } 
+        } elseif ($request->user()->role === 'writer') {
+            return redirect()->route('writer.dashboard');
+        }
         
         // Optionally, handle other roles or provide a default redirect
         return redirect()->route('login')->with('error', 'Invalid credentials.');

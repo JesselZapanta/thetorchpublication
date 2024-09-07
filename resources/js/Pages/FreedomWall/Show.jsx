@@ -3,7 +3,10 @@ import { Head, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Show({ auth, categories, freedomWall }) {
-    // const entry = freedomWall?.data?.[0] || null;
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (entry) => {

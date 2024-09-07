@@ -20,6 +20,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Writer\WriterArticleController;
+use App\Http\Controllers\Writer\WriterDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -98,6 +100,13 @@ Route::middleware(['auth', 'student'])->group(function() {
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::resource('editor-article', EditorArticleController::class);
+});
+
+
+// for Writer
+Route::middleware(['auth', 'writer'])->group(function() {
+    Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
+    Route::resource('writer-article', WriterArticleController::class);
 });
 
 

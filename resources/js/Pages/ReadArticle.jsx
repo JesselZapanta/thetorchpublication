@@ -9,9 +9,12 @@ export default function ReadArticle({
     auth,
     article,
     categories,
-    userRating,
     comments,
 }) {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+    
     // Check if user is authenticated
     const isAuthenticated = !!auth.user;
 

@@ -37,7 +37,7 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                 // Keep modal open on error
                 setCreateModalOpen(true);
             },
-            preserveScroll: true,
+            // preserveScroll: true,
         });
     };
 
