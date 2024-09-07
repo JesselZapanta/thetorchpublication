@@ -17,6 +17,18 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             ? WriterAuthenticatedLayout
             : StudentAuthenticatedLayout;
 
+    // const Layout =
+    //     auth.user.role === "admin"
+    //         ? AdminAuthenticatedLayout
+    //         : auth.user.role === "editor"
+    //         ? EditorAuthenticatedLayout
+    //         : auth.user.role === "writer"
+    //         ? WriterAuthenticatedLayout
+    //         : auth.user.role === "designer"
+    //         ? DesignerAuthenticatedLayout
+    //         : StudentAuthenticatedLayout;
+
+
     return (
         <Layout
             user={auth.user}

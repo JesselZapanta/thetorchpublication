@@ -52,7 +52,10 @@ export default function ArticleCard({ article }) {
                     {article.category.name}
                 </Link>
                 {/* star */}
-                <p className="text-amber-600 text-2xl">★</p>
+                <div className="flex justify-center items-center gap-1">
+                    <p className="text-gray-800 text-md">{article.average_rating}</p>
+                    <p className="text-amber-600 text-2xl">★</p>
+                </div>
             </div>
             <div className="text-gray-800 dark:text-gray-400 ">
                 <Link

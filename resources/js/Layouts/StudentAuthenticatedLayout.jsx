@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function StudentAuthenticatedLayout({ user, header, children }) {
+export default function ingStudentAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 

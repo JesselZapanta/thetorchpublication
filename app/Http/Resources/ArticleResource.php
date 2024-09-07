@@ -17,6 +17,9 @@ class ArticleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Calculate average rating
+        $averageRating = $this->ratings->avg('rating');
+
         return[
             'id' => $this->id,
 
@@ -52,6 +55,9 @@ class ArticleResource extends JsonResource
 
             'is_anonymous' => $this->is_anonymous,
             'is_featured' => $this->is_featured,
+
+            // 'average_rating' => $averageRating ? round($averageRating, 2) : null,
+            'average_rating' => $averageRating ? round($averageRating) : 0,
         ];
     }
 }
