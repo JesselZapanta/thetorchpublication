@@ -73,12 +73,14 @@ class FreedomWallController extends Controller
         }
 
         // Get the filtered results
-        $freedomWallEntries = $query->paginate(15);
+        $freedomWallEntries = $query->where('visibility', 'visible')->paginate(15);
         // $freedomWallEntries = $query->get();
 
         return inertia('FreedomWall/Index', [
             'categories' => CategoryResource::collection($categories),
             'freedomWallEntries' => FreedomWallResource::collection($freedomWallEntries),
+            'success' => session('success'),
+            'error' => session('error'),
         ]);
     }
 
@@ -132,8 +134,9 @@ class FreedomWallController extends Controller
 
         return inertia('FreedomWall/Show', [
             // 'freedomWall' => $freedomWall,
-            'freedomWall' => new FreedomWallResource($freedomWall),
+            'entry' => new FreedomWallResource($freedomWall),
             'categories' => CategoryResource::collection($categories),
+            'success' => session('success'),
         ]);
     }
 
@@ -150,14 +153,58 @@ class FreedomWallController extends Controller
      */
     public function update(UpdateFreedomWallRequest $request, FreedomWall $freedomWall)
     {
-        //
+
+        $data = $request->validated();
+
+        //todo check entry limitation
+
+         // Build the Trie
+        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+        
+        $ahoCorasick->buildFailureLinks();
+
+        // Check if the article body contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['body']))) {
+            return redirect()->back()->withErrors(['body' => 'The message contains inappropriate content.']);
+        }
+
+        $data['user_id'] = auth()->id();
+
+        // FreedomWall::create($data);
+        $freedomWall->update($data);
+
+        return back()->with('success', 'Freedom Wall Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FreedomWall $freedomWall)
+    public function destroy($id)
     {
-        //
+        $freedomWall = FreedomWall::find($id); // Use find instead of findOrFail
+
+        if(!$freedomWall){
+            return to_route('freedom-wall.index')->with('error', 'Freedom Wall Not Found');
+        }
+
+        $freedomWall->delete();
+        return to_route('freedom-wall.index')->with('success', 'Deleted Successfully');
+    }
+
+    public function hide($id)
+    {
+        $freedomWall = FreedomWall::find($id); // Use find instead of findOrFail
+
+        if(!$freedomWall){
+            return to_route('freedom-wall.index')->with('error', 'Freedom Wall Not Found');
+        }
+
+        $freedomWall->update(['visibility' => 'hidden']);
+
+        return to_route('freedom-wall.index')->with('success', 'Soft Delete Successfully');
     }
 }

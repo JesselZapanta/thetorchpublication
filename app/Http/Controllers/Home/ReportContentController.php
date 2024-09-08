@@ -16,7 +16,8 @@ class ReportContentController extends Controller
         $freedomwall = FreedomWall::findOrFail($id);
         $freedomwall->increment('report_count');
 
-        return response()->json(['success' => 'Content Reported Successfully']);
+        // return to_route('freedom-wall.index')->with('success', 'Content Reported Successfully');
+        return redirect()->back()->with('success', 'Content Reported Successfully');
     }
     public function reportComment($id)
     {

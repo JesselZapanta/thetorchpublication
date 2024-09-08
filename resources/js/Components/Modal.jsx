@@ -53,9 +53,11 @@ export default function Modal({
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <Dialog.Panel
-                        className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all w-full sm:w-full ${maxWidthClass} my-8 sm:mt-0`}
+                        className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all w-full sm:w-full ${maxWidthClass} my-8 sm:mt-0 max-h-screen`}
                     >
-                        {children}
+                        <div className="overflow-y-auto max-h-[80vh] p-4">
+                            {children}
+                        </div>
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>

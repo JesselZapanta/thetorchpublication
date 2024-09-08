@@ -1,15 +1,17 @@
-import { Link, router } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import Dropdown from "./../Components/Dropdown";
 import Modal from "./Modal";
-import SecondaryButton from "./SecondaryButton";
-import AlertSuccess from "./AlertSuccess";
 
 export default function FreedomWallEntries({
     auth,
     freedomWallEntries,
     handleLike,
     handleDislike,
+    openEditModal,
+    openDeleteModal,
+    openHideModal,
+    openReportModal,
 }) {
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
@@ -31,7 +33,7 @@ export default function FreedomWallEntries({
 
             // Set the current speaking entry ID and start speaking
             setIsSpeaking(entry.id);
-        speechSynthesis.speak(utterance);
+            speechSynthesis.speak(utterance);
         }
     };
 
@@ -43,7 +45,7 @@ export default function FreedomWallEntries({
         };
 
         // Add event listener for beforeunload
-        window.addEventListener("beforeunload", stopSpeech); 
+        window.addEventListener("beforeunload", stopSpeech);
 
         // Cleanup function
         return () => {
@@ -52,8 +54,8 @@ export default function FreedomWallEntries({
         };
     }, [speechSynthesis]);
 
-	//Colors
-	const emotionColors = {
+    //Colors
+    const emotionColors = {
         happy: "bg-yellow-700",
         sad: "bg-blue-800",
         annoyed: "bg-red-700",
@@ -66,31 +68,34 @@ export default function FreedomWallEntries({
         down: "bg-gray-600",
     };
 
-    //report
-    const [alert, setAlert] = useState("");
-
-    const onSubmit = async (entry) => {
-        const response = await axios.post(`/freedom-wall/${entry.id}/report`, {
-            params: { preserveScroll: true },
-        });
-
-        if (response.data.success) {
-            setAlert(response.data.success);
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
         }
+        return text;
     };
 
-    const [confirmReport, setConfirmReport] = useState(false);
-    const [currentEntry, setCurrentEntry] = useState(null);
+    // //state for modal
+    // const [showFreedomWall, setShowFreedomWall] = useState(false);
 
-    const openReportModal = (entry) => {
-        setCurrentEntry(entry);
-        setConfirmReport(true);
-    };
+    // // Modal
+    // const showFreedomWallModal = () => {
+    //     setShowFreedomWall(true);
+    // };
 
-    const handleReport = () => {
-        setConfirmReport(false);
-        onSubmit(currentEntry);
-    };
+    // const closeFreedomWallModal = () => {
+    //     setShowFreedomWall(false);
+    // };
+
+    // const { get } = useForm(); // Use the `get` method from useForm
+
+    // const handleShow = (entry) => {
+    //     get(route("freedom-wall.show", entry.id), {
+    //         preserveScroll: true,
+    //     });
+    // };
+
 
     // alert(auth.user.id);
     return (
@@ -98,7 +103,8 @@ export default function FreedomWallEntries({
             {/* <pre className="text-white">
                 {JSON.stringify(freedomWallEntries, null, 2)}
             </pre> */}
-            {alert && <AlertSuccess message={alert} />}
+            {/* {alert && <AlertSuccess message={alert} />} */}
+
             {freedomWallEntries.data.length === 0 && (
                 <div className="text-center text-gray-400 lg:col-span-3">
                     No freedom wall entries found.
@@ -127,22 +133,86 @@ export default function FreedomWallEntries({
                                 </p>
                             </div>
                         </div>
-                        <button onClick={() => openReportModal(entry)}>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6 text-gray-50 dark:text-gray-50 cursor-pointer"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                />
-                            </svg>
-                        </button>
+                        {auth.user && (
+                            <div className="ms-3 relative">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={1.5}
+                                            stroke="currentColor"
+                                            className="size-6 text-gray-50 dark:text-gray-50 cursor-pointer"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                            />
+                                        </svg>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        {/* change later */}
+                                        {auth.user.role !== "student" &&
+                                            auth.user.role !==
+                                                "student_contributor" && (
+                                                <Dropdown.Link
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        openHideModal(entry);
+                                                    }}
+                                                >
+                                                    Soft Delete
+                                                </Dropdown.Link>
+                                            )}
+
+                                        {auth.user.id === entry.user_id && (
+                                            <Dropdown>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    onClick={() =>
+                                                        openDeleteModal(entry)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </Dropdown>
+                                        )}
+                                        {auth.user.id !== entry.user_id &&
+                                            (auth.user.role === "student" ||
+                                                auth.user.role ===
+                                                    "student_contributor") && (
+                                                <Dropdown>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                        onClick={() =>
+                                                            openReportModal(
+                                                                entry
+                                                            )
+                                                        }
+                                                    >
+                                                        Report
+                                                    </button>
+                                                </Dropdown>
+                                            )}
+
+                                        {auth.user.id === entry.user_id && (
+                                            <Dropdown>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    onClick={() =>
+                                                        openEditModal(entry)
+                                                    }
+                                                >
+                                                    Edit
+                                                </button>
+                                            </Dropdown>
+                                        )}
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
+                        )}
                     </div>
                     <div className="relative h-[300px] flex gap-1 items-end justify-end p-2 transition-all duration-300">
                         {/* <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
@@ -150,23 +220,26 @@ export default function FreedomWallEntries({
                         </p> */}
                         <Link
                             href={route("freedom-wall.show", entry.id)}
-                            preserveScroll
+                            className={`${
+                                emotionColors[entry.emotion] || "bg-gray-500"
+                            } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-[1.01] origin-bottom-right`}
+                        >
+                            {truncate(entry.body, 350)}
+                        </Link>
+                        {/* <button
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"
                             } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-105 origin-bottom-right`}
-                            // onClick={handleLinkClick}
+                            onClick={() => handleShow(entry)} // Fix here by using an arrow function
                         >
-                            {entry.body.length > 350
-                                ? `${entry.body.substring(0, 350)}...`
-                                : entry.body}
-                        </Link>
-
+                            {truncate(entry.body, 350)}
+                        </button> */}
                         <div>
                             <button
                                 className={`${
                                     isSpeaking === entry.id
-                                        ? "text-indigo-400 animate-pulse"
-                                        : "text-gray-400"
+                                        ? "text-indigo-900 animate-pulse"
+                                        : "text-gray-800"
                                 }`}
                                 onClick={() => handleSpeak(entry)}
                             >
@@ -250,29 +323,44 @@ export default function FreedomWallEntries({
                 </div>
             ))}
 
-            {/* Confirm Report Modal */}
-            <Modal show={confirmReport} onClose={() => setConfirmReport(false)}>
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Report</h2>
-                    <p className="mt-4">
-                        Are you sure you want to report this content?
-                    </p>
-                    <div className="mt-4 flex justify-end gap-2">
-                        <SecondaryButton
-                            onClick={() => setConfirmReport(false)}
-                        >
-                            Cancel
-                        </SecondaryButton>
+            {/* modal */}
+            {/* <Modal show={showFreedomWall} onClose={closeFreedomWallModal}>
+                <div className="p-6">
+                    <div className="flex justify-between">
+                        <h2 className="text-2xl text-emerald-500 font-bold">
+                            The Torch Freedom Wall Policy
+                        </h2>
                         <button
-                            type="button"
-                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                            onClick={handleReport}
+                            onClick={closeFreedomWallModal}
+                            className="text-gray-400 cursor-pointer"
                         >
-                            Confirm
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <p>Test</p>
+                    <div className="w-full flex">
+                        <button
+                            onClick={closeFreedomWallModal}
+                            className="ml-auto px-4 py-2 bg-emerald-600 text-white transition-all rounded hover:bg-emerald-700"
+                        >
+                            Close
                         </button>
                     </div>
                 </div>
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

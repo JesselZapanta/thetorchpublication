@@ -1,12 +1,21 @@
+import AlertSuccess from "@/Components/AlertSuccess";
+import DangerButton from "@/Components/DangerButton";
+import Dropdown from "@/Components/Dropdown";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-export default function Show({ auth, categories, freedomWall }) {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-    
+export default function Show({ auth, categories, entry, success }) {
+    // useEffect(() => {
+    //     window.scrollTo(0, 0);
+    // }, []);
+
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (entry) => {
@@ -92,6 +101,115 @@ export default function Show({ auth, categories, freedomWall }) {
         down: "bg-gray-600",
     };
 
+    const [freedomWall, setFreedomWall] = useState(null); // For storing the freedomWall to edit/delete
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
+        body: "",
+        emotion: "",
+    });
+
+    //
+
+    // update
+
+    const openEditModal = (freedomWall) => {
+        setFreedomWall(freedomWall);
+        setData({
+            body: freedomWall.body,
+            emotion: freedomWall.emotion,
+        }); // Set the form data with the selected entry's data
+        setIsCreateModalOpen(true);
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if (freedomWall) {
+            // Update existing freedomWall
+            router.put(
+                route("freedom-wall.update", freedomWall.id),
+                {
+                    body: data.body, // Make sure the data is passed properly
+                    emotion: data.emotion,
+                },
+                {
+                    onSuccess: () => {
+                        setIsCreateModalOpen(false);
+                        reset(); // Reset the form after successful submission
+                    },
+                }
+            );
+        }
+    };
+
+    const closeEditModal = () => {
+        setIsCreateModalOpen(false);
+        reset(); // Reset the form when closing the modal
+        clearErrors(); // Clear any validation errors
+    };
+
+    //
+
+    const [confirmAction, setConfirmAction] = useState({
+        type: "", // 'delete', 'hide', or 'report'
+        entry: null,
+        show: false,
+    });
+
+    const openActionModal = (entry, actionType) => {
+        setConfirmAction({
+            type: actionType, // 'delete', 'hide', or 'report'
+            entry: entry,
+            show: true,
+        });
+    };
+
+    const handleAction = () => {
+        if (confirmAction.entry) {
+            switch (confirmAction.type) {
+                case "delete":
+                    // alert(entry.data.id);
+                    router.delete(
+                        route(
+                            "freedom-wall.destroy",
+                            confirmAction.entry
+                        ),
+                        {
+                            preserveScroll: true,
+                        }
+                    );
+                    break;
+                case "hide":
+                    post(route("freedom-wall.hide", confirmAction.entry), {
+                        preserveScroll: true,
+                    });
+                    break;
+                case "report":
+                    post(route("freedom-wall.report", confirmAction.entry), {
+                        preserveScroll: true,
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
+        setConfirmAction({ type: "", entry: null, show: false });
+    };
+
+    const openDeleteModal = (entry) => {
+        openActionModal(entry, "delete");
+    };
+
+    const openHideModal = (entry) => {
+        openActionModal(entry, "hide");
+    };
+
+    const openReportModal = (entry) => {
+        openActionModal(entry, "report");
+    };
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -105,13 +223,14 @@ export default function Show({ auth, categories, freedomWall }) {
             }
         >
             <Head title="Freedom Wall" />
+            {success && <AlertSuccess message={success} />}
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"
             >
                 {/* Show Freedom Wall */}
                 {/* <pre className="text-white">
-                    {JSON.stringify(freedomWall, null, 2)}
+                    {JSON.stringify(entry, null, 2)}
                 </pre> */}
                 <div className="max-w-xl py-2 mx-auto w-full">
                     <div className="relative flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
@@ -129,43 +248,119 @@ export default function Show({ auth, categories, freedomWall }) {
                                         Anonymous
                                     </h4>
                                     <p className="text-sm">
-                                        Publish: {freedomWall.data.created_at}
+                                        Publish: {entry.data.created_at}
                                     </p>
                                 </div>
                             </div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="size-6 text-white cursor-pointer"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                />
-                            </svg>
+                            {auth.user && (
+                                <div className="ms-3 relative">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                                className="size-6 text-gray-50 dark:text-gray-50 cursor-pointer"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </Dropdown.Trigger>
+                                        <Dropdown.Content>
+                                            {/* change later */}
+                                            {auth.user.role !== "student" &&
+                                                auth.user.role !==
+                                                    "student_contributor" && (
+                                                    <Dropdown.Link
+                                                        onClick={(event) => {
+                                                            event.preventDefault();
+                                                            openHideModal(
+                                                                entry.data.id
+                                                            );
+                                                        }}
+                                                    >
+                                                        Soft Delete
+                                                    </Dropdown.Link>
+                                                )}
+
+                                            {auth.user.id ===
+                                                entry.data.user_id && (
+                                                <Dropdown>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                        onClick={() =>
+                                                            openDeleteModal(
+                                                                entry.data.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </Dropdown>
+                                            )}
+                                            {auth.user.id !==
+                                                entry.data.user_id &&
+                                                (auth.user.role === "student" ||
+                                                    auth.user.role ===
+                                                        "student_contributor") && (
+                                                    <Dropdown>
+                                                        <button
+                                                            className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                            onClick={() =>
+                                                                openReportModal(
+                                                                    entry.data
+                                                                        .id
+                                                                )
+                                                            }
+                                                        >
+                                                            Report
+                                                        </button>
+                                                    </Dropdown>
+                                                )}
+
+                                            {auth.user.id ===
+                                                entry.data.user_id && (
+                                                <Dropdown>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                        onClick={() =>
+                                                            openEditModal(
+                                                                entry.data
+                                                            )
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                </Dropdown>
+                                            )}
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
+                            )}
                         </div>
                         <div className="relative flex gap-1 items-end justify-end p-2 transition-all duration-300">
                             <p
                                 className={`${
-                                    emotionColors[freedomWall.data.emotion] ||
+                                    emotionColors[entry.data.emotion] ||
                                     "bg-gray-500"
                                 } text-white p-2 rounded-lg max-w-md mt-16 break-words text-justify`}
                             >
-                                {freedomWall.data.body}
+                                {entry.data.body}
                             </p>
 
                             <div>
                                 <button
                                     className={`${
-                                        isSpeaking === freedomWall.data.id
+                                        isSpeaking === entry.data.id
                                             ? "text-indigo-400 animate-pulse"
                                             : "text-gray-400"
                                     }`}
-                                    onClick={() => handleSpeak(freedomWall)}
+                                    onClick={() => handleSpeak(entry)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -184,22 +379,20 @@ export default function Show({ auth, categories, freedomWall }) {
                             <div className="flex gap-4">
                                 <span
                                     className={`${
-                                        freedomWall.data.user_has_liked
+                                        entry.data.user_has_liked
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
                                 >
-                                    {freedomWall.data.likes_count}
+                                    {entry.data.likes_count}
                                 </span>
                                 <button
                                     className={`${
-                                        freedomWall.data.user_has_liked
+                                        entry.data.user_has_liked
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
-                                    onClick={() =>
-                                        handleLike(freedomWall.data.id)
-                                    }
+                                    onClick={() => handleLike(entry.data.id)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -212,22 +405,20 @@ export default function Show({ auth, categories, freedomWall }) {
                                 </button>
                                 <span
                                     className={`${
-                                        freedomWall.data.user_has_disliked
+                                        entry.data.user_has_disliked
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
                                 >
-                                    {freedomWall.data.dislikes_count}
+                                    {entry.data.dislikes_count}
                                 </span>
                                 <button
                                     className={`${
-                                        freedomWall.user_has_disliked
+                                        entry.user_has_disliked
                                             ? "text-indigo-400"
                                             : "text-gray-400"
                                     }`}
-                                    onClick={() =>
-                                        handleDislike(freedomWall.data.id)
-                                    }
+                                    onClick={() => handleDislike(entry.data.id)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -243,15 +434,152 @@ export default function Show({ auth, categories, freedomWall }) {
                                 <h2>
                                     Feeling{" "}
                                     <span className="capitalize">
-                                        {freedomWall.data.emotion}
+                                        {entry.data.emotion}
                                     </span>
                                 </h2>
                             </div>
                         </div>
                     </div>
-                    <div></div>
                 </div>
             </div>
+            {/* Create/Edit Modal */}
+            <Modal show={isCreateModalOpen} onClose={closeEditModal}>
+                <div className="p-6">
+                    <div className="flex justify-between">
+                        <h2 className="text-2xl text-indigo-600 font-bold">
+                            Edit Freedom Wall Entries
+                        </h2>
+                        <button
+                            onClick={closeEditModal}
+                            className="text-gray-400 cursor-pointer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <form onSubmit={onSubmit}>
+                        {/* body */}
+                        <div className="mt-2 w-full">
+                            <InputLabel htmlFor="body" value="Message" />
+
+                            <TextAreaInput
+                                id="body"
+                                type="text"
+                                name="body"
+                                value={data.body}
+                                className="mt-2 block w-full min-h-44 resize-none"
+                                onChange={(e) =>
+                                    setData("body", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.body}
+                                className="mt-2"
+                            />
+                        </div>
+                        {/* Emotion */}
+                        <div className="mt-2 w-full">
+                            <InputLabel
+                                htmlFor="emotion"
+                                value="Message Emotion"
+                            />
+
+                            <SelectInput
+                                name="emotion"
+                                id="emotion"
+                                value={data.emotion}
+                                className="mt-1 block w-full"
+                                onChange={(e) =>
+                                    setData("emotion", e.target.value)
+                                }
+                            >
+                                <option value="">How are you feeling?</option>
+                                <option value="happy">Happy</option>
+                                <option value="sad">Sad</option>
+                                <option value="annoyed">Annoyed</option>
+                                <option value="proud">Proud</option>
+                                <option value="drained">Drained</option>
+                                <option value="inlove">Inlove</option>
+                                <option value="calm">Calm</option>
+                                <option value="excited">Excited</option>
+                                <option value="angry">Angry</option>
+                                <option value="down">Down</option>
+                            </SelectInput>
+
+                            <InputError
+                                message={errors.emotion}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div className="w-full flex mt-4">
+                            <button
+                                // onClick={closeEditModal}
+                                className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
+                                type="submit"
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
+            {/* Action */}
+            <Modal
+                show={confirmAction.show}
+                onClose={() =>
+                    setConfirmAction({ ...confirmAction, show: false })
+                }
+            >
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">
+                        {confirmAction.type === "delete"
+                            ? "Confirm Delete"
+                            : confirmAction.type === "report"
+                            ? "Confirm Report"
+                            : "Confirm Soft Delete"}
+                    </h2>
+                    <p className="mt-4">
+                        {confirmAction.type === "delete"
+                            ? "Are you sure you want to delete this entry?"
+                            : confirmAction.type === "report"
+                            ? "Are you sure you want to report this entry?"
+                            : "Are you sure you want to soft delete this entry?"}
+                    </p>
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton
+                            onClick={() =>
+                                setConfirmAction({
+                                    ...confirmAction,
+                                    show: false,
+                                })
+                            }
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <DangerButton onClick={handleAction} className="ml-2">
+                            {confirmAction.type === "delete"
+                                ? "Delete"
+                                : confirmAction.type === "report"
+                                ? "Report"
+                                : "Soft Delete"}
+                        </DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </UnauthenticatedLayout>
     );
 }

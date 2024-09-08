@@ -1,8 +1,12 @@
+import AlertError from "@/Components/AlertError";
+import AlertSuccess from "@/Components/AlertSuccess";
 import ArticlePagination from "@/Components/ArticlePagination";
+import DangerButton from "@/Components/DangerButton";
 import FreedomWallEntries from "@/Components/FreedomWallEntries";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
@@ -10,35 +14,66 @@ import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head, router, useForm } from "@inertiajs/react";
 import React, { useState } from "react";
 
-export default function Index({ auth, categories, freedomWallEntries }) {
+export default function Index({ auth, categories, freedomWallEntries, success, error }) {
     // Infinite Scroll Logic
-    
+
     //state for modal create and policy
     const [policyModalOpen, setPolicyModalOpen] = useState(false);
-    const [createModalOpen, setCreateModalOpen] = useState(false);
 
-    //create freedom wall entry
-    const { data, setData, post, errors, reset, clearErrors, processing } =
-        useForm({
-            body: "",
-            emotion: "",
-        });
+    const [freedomWall, setFreedomWall] = useState(null); // For storing the freedomWall to edit/delete
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
+        body: "",
+        emotion: "",
+    });
+
+    //Create and update
+
+    // Open modal for creating a new freedomWall
+    const openCreateModal = () => {
+        reset(); // Reset the form to clear previous data
+        setFreedomWall(null); // Clear the selected freedomWall for editing
+        setIsCreateModalOpen(true);
+    };
+
+    // Open modal for editing an existing freedomWall
+    const openEditModal = (freedomWall) => {
+        setFreedomWall(freedomWall);
+        setData({
+            body: freedomWall.body,
+            emotion: freedomWall.emotion,
+        }); // Set the form data with the selected freedomWall's data
+        setIsCreateModalOpen(true);
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        post(route("freedom-wall.store"), {
-            data,
-            onSuccess: () => {
-                setCreateModalOpen(false); // Close the modal on success
-                reset();
-            },
-            onError: () => {
-                // Keep modal open on error
-                setCreateModalOpen(true);
-            },
-            // preserveScroll: true,
-        });
+        if (freedomWall) {
+            // Update existing freedomWall
+            put(route("freedom-wall.update", freedomWall.id), {
+                onSuccess: () => {
+                    setIsCreateModalOpen(false);
+                    reset(); // Reset the form after successful submission
+                },
+            });
+        } else {
+            // Create new freedomWall
+            post(route("freedom-wall.store"), {
+                onSuccess: () => {
+                    setIsCreateModalOpen(false);
+                    reset(); // Reset the form after successful submission
+                },
+            });
+        }
+    };
+
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+        reset(); // Reset the form when closing the modal
+        clearErrors(); // Clear any validation errors
     };
 
     //policy Modal
@@ -48,17 +83,6 @@ export default function Index({ auth, categories, freedomWallEntries }) {
 
     const closePolicyModal = () => {
         setPolicyModalOpen(false);
-    };
-
-    //Create Modal
-    const openCreateModal = () => {
-        setCreateModalOpen(true);
-    };
-
-    const closeCreateModal = () => {
-        reset();
-        clearErrors();
-        setCreateModalOpen(false);
     };
 
     // Like and Dislike
@@ -156,6 +180,69 @@ export default function Index({ auth, categories, freedomWallEntries }) {
         }
     };
 
+
+    const [confirmAction, setConfirmAction] = useState({
+        type: "", // 'delete', 'hide', or 'report'
+        entry: null,
+        show: false,
+    });
+
+    const openActionModal = (entry, actionType) => {
+        setConfirmAction({
+            type: actionType, // 'delete', 'hide', or 'report'
+            entry: entry,
+            show: true,
+        });
+    };
+
+    const handleAction = () => {
+        if (confirmAction.entry) {
+            switch (confirmAction.type) {
+                case "delete":
+                    router.delete(
+                        route("freedom-wall.destroy", confirmAction.entry.id),
+                        {
+                            preserveScroll: true,
+                        }
+                    );
+                    break;
+                case "hide":
+                    post(
+                        route("freedom-wall.hide", confirmAction.entry.id),
+                        {
+                            preserveScroll: true,
+                        }
+                    );
+                    break;
+                case "report":
+                    post(
+                        route("freedom-wall.report", confirmAction.entry.id),
+                        {
+                            preserveScroll: true,
+                        }
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+        setConfirmAction({ type: "", entry: null, show: false });
+    };
+
+
+    const openDeleteModal = (entry) => {
+        openActionModal(entry, "delete");
+    };
+
+    const openHideModal = (entry) => {
+        openActionModal(entry, "hide");
+    };
+
+    const openReportModal = (entry) => {
+        openActionModal(entry, "report");
+    };
+
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -169,6 +256,8 @@ export default function Index({ auth, categories, freedomWallEntries }) {
             }
         >
             <Head title="Freedom Wall" />
+            {success && <AlertSuccess message={success} />}
+            {error && <AlertError message={error} />}
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"
@@ -243,6 +332,10 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     freedomWallEntries={freedomWallEntries}
                     handleLike={handleLike}
                     handleDislike={handleDislike}
+                    openHideModal={openHideModal}
+                    openEditModal={openEditModal}
+                    openDeleteModal={openDeleteModal}
+                    openReportModal={openReportModal}
                 />
                 <ArticlePagination
                     links={freedomWallEntries.meta.links}
@@ -316,11 +409,13 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                     </div>
                 </Modal>
                 {/* Create/Edit Modal */}
-                <Modal show={createModalOpen} onClose={closeCreateModal}>
+                <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                     <div className="p-6">
                         <div className="flex justify-between">
                             <h2 className="text-2xl text-indigo-600 font-bold">
-                                Freedom Wall Entry
+                                {freedomWall
+                                    ? "Edit Freedom Wall Entries"
+                                    : "Create New Freedom Wall Entries"}
                             </h2>
                             <button
                                 onClick={closeCreateModal}
@@ -404,16 +499,58 @@ export default function Index({ auth, categories, freedomWallEntries }) {
                                 <button
                                     // onClick={closeCreateModal}
                                     className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
-                                    disabled={processing}
+                                    type="submit"
                                 >
-                                    Submit Entry
+                                    {freedomWall ? "Update" : "Submit"}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </Modal>
             </div>
-            {/* {loading && <p className="text-center">Loading more entries...</p>} */}
+            {/* Confirm Modal */}
+            <Modal
+                show={confirmAction.show}
+                onClose={() =>
+                    setConfirmAction({ ...confirmAction, show: false })
+                }
+            >
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">
+                        {confirmAction.type === "delete"
+                            ? "Confirm Delete"
+                            : confirmAction.type === "report"
+                            ? "Confirm Report"
+                            : "Confirm Soft Delete"}
+                    </h2>
+                    <p className="mt-4">
+                        {confirmAction.type === "delete"
+                            ? "Are you sure you want to delete this entry?"
+                            : confirmAction.type === "report"
+                            ? "Are you sure you want to report this entry?"
+                            : "Are you sure you want to soft delete this entry?"}
+                    </p>
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton
+                            onClick={() =>
+                                setConfirmAction({
+                                    ...confirmAction,
+                                    show: false,
+                                })
+                            }
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <DangerButton onClick={handleAction} className="ml-2">
+                            {confirmAction.type === "delete"
+                                ? "Delete"
+                                : confirmAction.type === "report"
+                                ? "Report"
+                                : "Soft Delete"}
+                        </DangerButton>
+                    </div>
+                </div>
+            </Modal>
         </UnauthenticatedLayout>
     );
 }

@@ -51,7 +51,7 @@ Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->nam
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
 
-Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall']);
+Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');
 Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment']);
 Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle']);
 
@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     //Freedom Wall
 
     route::resource('/freedom-wall', FreedomWallController::class);
+    Route::post('/freedom-wall/{entryId}/hide', [FreedomWallController::class, 'hide'])->name('freedom-wall.hide');
     Route::post('/freedom-wall/{entryId}/like', [FreedomWallLikeController::class, 'toggleLike'])->name('freedom-wall.like');
     Route::post('/freedom-wall/{entryId}/dislike', [FreedomWallLikeController::class, 'toggleDislike'])->name('freedom-wall.dislike');
 });
