@@ -1,3 +1,4 @@
+import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
@@ -8,7 +9,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Show({ auth, categories, entry, success }) {
@@ -210,6 +211,8 @@ export default function Show({ auth, categories, entry, success }) {
         openActionModal(entry, "report");
     };
 
+    const { flash } = usePage().props;
+
     return (
         <UnauthenticatedLayout
             user={auth.user}
@@ -223,7 +226,10 @@ export default function Show({ auth, categories, entry, success }) {
             }
         >
             <Head title="Freedom Wall" />
-            {success && <AlertSuccess message={success} />}
+
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
+
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"

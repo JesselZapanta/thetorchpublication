@@ -11,7 +11,7 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
 
 export default function Index({ auth, categories, freedomWallEntries, success, error }) {
@@ -242,6 +242,7 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
         openActionModal(entry, "report");
     };
 
+    const { flash } = usePage().props;
 
     return (
         <UnauthenticatedLayout
@@ -256,8 +257,10 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
             }
         >
             <Head title="Freedom Wall" />
-            {success && <AlertSuccess message={success} />}
-            {error && <AlertError message={error} />}
+
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
+            
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"

@@ -52,8 +52,8 @@ Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('ar
 Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
 
 Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');
-Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment']);
-Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle']);
+Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment'])->name('comment.report');
+Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle'])->name('article.report');
 
 
 //Get Ratings
@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     
     // Comments
     Route::resource('comments', CommentController::class);
+    Route::post('/comments/{commentId}/hide', [CommentController::class, 'hide'])->name('comments.hide');
     Route::post('/comments/{comment}/like', [CommentLikeController::class, 'toggleLike'])->name('comments.like');
     Route::post('/comments/{comment}/dislike', [CommentLikeController::class, 'toggleDislike'])->name('comments.dislike');
 

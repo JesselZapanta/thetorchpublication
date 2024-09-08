@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-export default function AlertError({ message }) {
+export default function AlertError({ flash }) {
+    const [flashMsg, setFlashMsg] = useState(null);
+    const [visible, setVisible] = useState(false); // State to control visibility transition
+
+    useEffect(() => {
+        if (flash.error) {
+            setFlashMsg(flash.error);
+            setVisible(true); // Show the alert with a fade-in
+
+            // Set a timeout to hide the message after 2 seconds
+            const timer = setTimeout(() => {
+                setVisible(false); // Start the fade-out
+                // Delay removal of flash message after fade-out
+                setTimeout(() => setFlashMsg(null), 300); // Allow transition to complete
+            }, 2000);
+
+            // Cleanup the timeout on component unmount
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
+
+    if (!flashMsg) return null; // Don't render if no message
+
     return (
         <div
-            className="absolute bottom-12 right-12 z-20 bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-3 py-2 shadow-md"
+            className={`fixed bottom-12 right-12 z-20 bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-3 py-2 shadow-md transition-all duration-300 ease-in-out transform ${
+                visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-2"
+            }`}
             role="alert"
         >
             <div className="flex">
@@ -18,7 +44,7 @@ export default function AlertError({ message }) {
                 </div>
                 <div>
                     <p className="font-bold">Error</p>
-                    <p className="text-sm">{message}</p>
+                    <p className="text-sm">{flashMsg}</p>
                 </div>
             </div>
         </div>

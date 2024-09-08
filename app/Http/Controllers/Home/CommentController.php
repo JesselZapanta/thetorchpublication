@@ -77,7 +77,28 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        // dd($request);
+        $data = $request->validated();
+
+         // Build the Trie
+        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+        
+        $ahoCorasick->buildFailureLinks();
+
+        // Check if the article body contains any bad words using Aho-Corasick
+        if ($ahoCorasick->search(strtolower($data['body']))) {
+            return redirect()->back()->withErrors(['body' => 'The comment contains inappropriate content.']);
+        }
+
+        $data['user_id'] = auth()->id();
+        
+        $comment->update($data);
+
+        return back()->with('success', 'Comment is Updated Successfully');
     }
 
     /**
@@ -89,5 +110,19 @@ class CommentController extends Controller
         $comment->delete();
 
         return back()->with('success', 'Comment is Deleted Successfully');
+    }
+
+    public function hide($id)
+    {
+        // dd($id);
+        $comment = Comment::find($id); // Use find instead of findOrFail
+
+        if(!$comment){
+            return back()->with('error', 'Comment Not Found');
+        }
+
+        $comment->update(['visibility' => 'hidden']);
+
+        return back()->with('success', 'Soft Delete Successfully');
     }
 }

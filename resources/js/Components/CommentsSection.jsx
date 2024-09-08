@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "./../Components/Dropdown";
 import { ChevronDownIcon  } from "@heroicons/react/16/solid";
-import { router } from "@inertiajs/react";
+import { router, useForm, usePage } from "@inertiajs/react";
 import Modal from "./Modal";
 import SecondaryButton from "./SecondaryButton";
 import axios from "axios";
 import AlertSuccess from "./AlertSuccess";
+import DangerButton from "./DangerButton";
+import InputLabel from "./InputLabel";
+import TextAreaInput from "./TextAreaInput";
+import InputError from "./InputError";
 
 
 export default function CommentsSection({
     auth,
     comments,
-    handleDelete,
     handleLike,
     handleDislike,
 }) {
@@ -67,37 +70,113 @@ export default function CommentsSection({
         ? comments.data
         : comments.data.slice(0, 3);
 
-    //report
+    //delete report and hide comment
+    const [confirmAction, setConfirmAction] = useState({
+        type: "", // 'delete', 'hide', or 'report'
+        comment: null,
+        show: false,
+    });
 
-    const [alert, setAlert] = useState("");
-
-    const onSubmit = async (comment) => {
-        const response = await axios.post(`/comment/${comment.id}/report`, {
-            params: { preserveScroll: true },
+    const openActionModal = (comment, actionType) => {
+        setConfirmAction({
+            type: actionType, // 'delete', 'hide', or 'report'
+            comment: comment,
+            show: true,
         });
-
-        if (response.data.success) {
-            setAlert(response.data.success);
-        }
     };
-    
 
-    const [confirmReport, setConfirmReport] = useState(false);
-    const [currentComment, setCurrentComment] = useState(null);
+    const { post } = useForm();
+
+    const handleAction = () => {
+        if (confirmAction.comment) {
+            switch (confirmAction.type) {
+                case "delete":
+                    router.delete(
+                        route("comments.destroy", confirmAction.comment.id),
+                        {
+                            preserveScroll: true,
+                        }
+                    );
+                    break;
+                case "hide":
+                    post(route("comments.hide", confirmAction.comment.id), {
+                        preserveScroll: true,
+                    });
+                    break;
+                case "report":
+                    post(route("comment.report", confirmAction.comment.id), {
+                        preserveScroll: true,
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
+        setConfirmAction({ type: "", comment: null, show: false });
+    };
+
+    const openDeleteModal = (comment) => {
+        openActionModal(comment, "delete");
+    };
+
+    const openHideModal = (comment) => {
+        openActionModal(comment, "hide");
+    };
 
     const openReportModal = (comment) => {
-        setCurrentComment(comment);
-        setConfirmReport(true);
+        openActionModal(comment, "report");
     };
 
-    const handleReport = () => {
-        setConfirmReport(false);
-        onSubmit(currentComment);
+    // update comment modal
+    const { data, setData, errors, reset, clearErrors } = useForm({
+        body: "",
+    });
+
+    const [comment, setComment] = useState(null); // For storing the comment to edit/delete
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const openEditModal = (comment) => {
+        setComment(comment);
+        setData({
+            body: comment.body,
+            emotion: comment.emotion,
+        }); // Set the form data with the selected entry's data
+        setIsCreateModalOpen(true);
     };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if (comment) {
+            // Update existing comment
+            router.put(
+                route("comments.update", comment.id),
+                {
+                    body: data.body,
+                },
+                {
+                    onSuccess: () => {
+                        setIsCreateModalOpen(false);
+                        reset();
+                    },
+                    preserveScroll: true,
+                }
+            );
+        }
+    };
+
+    const closeEditModal = () => {
+        setIsCreateModalOpen(false);
+        reset(); // Reset the form when closing the modal
+        clearErrors(); // Clear any validation errors
+    };
+
+    const { flash } = usePage().props;
 
     return (
         <div className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
-            {alert && <AlertSuccess message={alert} duration={2000} />}
+            <AlertSuccess flash={flash} />
+
             {displayedComments.length > 0 && (
                 <div className="flex gap-1">
                     <button
@@ -224,7 +303,7 @@ export default function CommentsSection({
                                 </div>
                             </div>
                         </div>
-                        {auth.user && (
+                        {/* {auth.user && (
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -269,6 +348,86 @@ export default function CommentsSection({
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
+                        )} */}
+                        {auth.user && (
+                            <div className="ms-3 relative">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={1.5}
+                                            stroke="currentColor"
+                                            className="size-6 text-gray-950 dark:text-gray-50 cursor-pointer"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                            />
+                                        </svg>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        {/* change later */}
+                                        {auth.user.role !== "student" &&
+                                            auth.user.role !==
+                                                "student_contributor" && (
+                                                <Dropdown.Link
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        openHideModal(comment);
+                                                    }}
+                                                >
+                                                    Soft Delete
+                                                </Dropdown.Link>
+                                            )}
+
+                                        {auth.user.id === comment.user_id && (
+                                            <Dropdown>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    onClick={() =>
+                                                        openDeleteModal(comment)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </Dropdown>
+                                        )}
+                                        {auth.user.id !== comment.user_id &&
+                                            (auth.user.role === "student" ||
+                                                auth.user.role ===
+                                                    "student_contributor") && (
+                                                <Dropdown>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                        onClick={() =>
+                                                            openReportModal(
+                                                                comment
+                                                            )
+                                                        }
+                                                    >
+                                                        Report
+                                                    </button>
+                                                </Dropdown>
+                                            )}
+
+                                        {auth.user.id === comment.user_id && (
+                                            <Dropdown>
+                                                <button
+                                                    className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                    onClick={() =>
+                                                        openEditModal(comment)
+                                                    }
+                                                >
+                                                    Edit
+                                                </button>
+                                            </Dropdown>
+                                        )}
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
                         )}
                     </div>
                 ))
@@ -277,26 +436,109 @@ export default function CommentsSection({
                     No comments yet.
                 </div>
             )}
-            {/* Confirm Report Modal */}
-            <Modal show={confirmReport} onClose={() => setConfirmReport(false)}>
+            {/* Create/Edit Modal */}
+            <Modal show={isCreateModalOpen} onClose={closeEditModal}>
+                <div className="p-6">
+                    <div className="flex justify-between">
+                        <h2 className="text-2xl text-indigo-600 font-bold">
+                            Edit Comment
+                        </h2>
+                        <button
+                            onClick={closeEditModal}
+                            className="text-gray-400 cursor-pointer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <form onSubmit={onSubmit}>
+                        {/* body */}
+                        <div className="mt-2 w-full">
+                            <InputLabel
+                                htmlFor="body"
+                                value="Write a Comment"
+                            />
+                            <TextAreaInput
+                                id="body"
+                                type="text"
+                                name="body"
+                                placeholder={`Comment as ${auth.user.name}`}
+                                value={data.body}
+                                className="mt-2 block w-full min-h-24 resize-none"
+                                onChange={(e) =>
+                                    setData("body", e.target.value)
+                                }
+                            />
+                            <InputError
+                                message={errors.body}
+                                className="mt-2"
+                            />
+                        </div>
+                        <div className="w-full flex mt-4">
+                            <button
+                                // onClick={closeEditModal}
+                                className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
+                                type="submit"
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
+            {/* Confirm Modal */}
+            <Modal
+                show={confirmAction.show}
+                onClose={() =>
+                    setConfirmAction({ ...confirmAction, show: false })
+                }
+            >
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Report</h2>
+                    <h2 className="text-base font-bold">
+                        {confirmAction.type === "delete"
+                            ? "Confirm Delete"
+                            : confirmAction.type === "report"
+                            ? "Confirm Report"
+                            : "Confirm Soft Delete"}
+                    </h2>
                     <p className="mt-4">
-                        Are you sure you want to report this content?
+                        {confirmAction.type === "delete"
+                            ? "Are you sure you want to delete this entry?"
+                            : confirmAction.type === "report"
+                            ? "Are you sure you want to report this entry?"
+                            : "Are you sure you want to soft delete this entry?"}
                     </p>
-                    <div className="mt-4 flex justify-end gap-2">
+                    <div className="mt-4 flex justify-end">
                         <SecondaryButton
-                            onClick={() => setConfirmReport(false)}
+                            onClick={() =>
+                                setConfirmAction({
+                                    ...confirmAction,
+                                    show: false,
+                                })
+                            }
                         >
                             Cancel
                         </SecondaryButton>
-                        <button
-                            type="button"
-                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                            onClick={handleReport}
-                        >
-                            Confirm
-                        </button>
+                        <DangerButton onClick={handleAction} className="ml-2">
+                            {confirmAction.type === "delete"
+                                ? "Delete"
+                                : confirmAction.type === "report"
+                                ? "Report"
+                                : "Soft Delete"}
+                        </DangerButton>
                     </div>
                 </div>
             </Modal>

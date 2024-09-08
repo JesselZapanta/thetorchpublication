@@ -24,7 +24,9 @@ class ReportContentController extends Controller
         $comment = Comment::findOrFail($id);
         $comment->increment('report_count');
 
-        return response()->json(['success' => 'Content Reported Successfully']);
+        
+        return redirect()->back()->with('success', 'Content Reported Successfully');
+        // return to_route('article.read', $comment->article_id)->with('success', 'Content Reported Successfully');
     }
 
     public function reportArticle($id)
@@ -32,6 +34,7 @@ class ReportContentController extends Controller
         $article = Article::findOrFail($id);
         $article->increment('report_count');
 
-        return response()->json(['success' => 'Content Reported Successfully']);
+        // return response()->json(['success' => 'Content Reported Successfully']);
+        return redirect()->back()->with('success', 'Content Reported Successfully');
     }
 }

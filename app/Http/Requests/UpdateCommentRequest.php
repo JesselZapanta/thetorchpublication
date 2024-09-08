@@ -11,7 +11,7 @@ class UpdateCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => ['required', 'string'],
+            // 'article_id' => ['required', 'exists:articles,id'],
+            // 'user_id' => ['required', 'exists:users,id'],
         ];
     }
 }

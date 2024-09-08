@@ -1,6 +1,6 @@
 import RatingComponent from "@/Components/RatingComponent";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import CommentsSection from "@/Components/CommentsSection";
 import CommentForm from "@/Components/CommentForm ";
@@ -8,6 +8,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import axios from "axios";
 import AlertSuccess from "@/Components/AlertSuccess";
+import AlertError from "@/Components/AlertError";
 
 export default function ReadArticle({ auth, article, categories, comments }) {
     // useEffect(() => {
@@ -120,20 +121,6 @@ export default function ReadArticle({ auth, article, categories, comments }) {
     };
 
     //report
-    const [alert, setAlert] = useState("");
-
-    const onSubmit = async (article) => {
-        const response = await axios.post(`/article/${article.id}/report`, {
-            params: { preserveScroll: true },
-        });
-
-        if (response.data.success) {
-            setAlert(response.data.success);
-        }
-    };
-
-
-
     const [confirmReport, setConfirmReport] = useState(false);
     const [currentArticle, setCurrentArticle] = useState(null);
 
@@ -143,9 +130,22 @@ export default function ReadArticle({ auth, article, categories, comments }) {
     };
 
     const handleReport = () => {
-        setConfirmReport(false);
-        onSubmit(currentArticle);
+        if (currentArticle) {
+            // Close the modal
+            setConfirmReport(false);
+
+            // Send the report request using Inertia router.post
+            router.post(
+                route("article.report", currentArticle.id),
+                {},
+                {
+                    preserveScroll: true,
+                }
+            );
+        }
     };
+
+    const { flash } = usePage().props;
 
     return (
         <UnauthenticatedLayout
@@ -160,16 +160,14 @@ export default function ReadArticle({ auth, article, categories, comments }) {
             }
         >
             <Head title={`Read ${article.title}`} />
-            {alert && <AlertSuccess message={alert}/>}
+
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="relative">
-                            {/* <img
-                                src={article.article_image_path}
-                                alt={article.name}
-                                className="w-full object-cover"
-                            /> */}
                             <img
                                 src={article.article_image_path}
                                 className="w-full h-full object-cover"
