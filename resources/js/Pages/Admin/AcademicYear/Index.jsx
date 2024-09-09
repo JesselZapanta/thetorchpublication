@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -11,6 +11,8 @@ import SelectInput from "@/Components/SelectInput";
 import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import DangerButton from "@/Components/DangerButton";
+import AlertSuccess from "@/Components/AlertSuccess";
+import AlertError from "@/Components/AlertError";
 
 export default function Index({ auth, academicYears, queryParams = null }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -113,6 +115,9 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         setAcademicYear(null);
     };
 
+    //Flash alerts
+    const { flash } = usePage().props;
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -133,6 +138,9 @@ export default function Index({ auth, academicYears, queryParams = null }) {
             }
         >
             <Head title="Academic Years" />
+
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

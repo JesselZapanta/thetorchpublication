@@ -1,3 +1,4 @@
+import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
@@ -7,7 +8,7 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Index({
@@ -90,6 +91,9 @@ export default function Index({
         return text;
     };
 
+    //Flash alerts
+    const { flash } = usePage().props;
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -110,9 +114,8 @@ export default function Index({
             }
         >
             <Head title="Articles" />
-            {/* {<pre>{JSON.stringify(users, null, 2)}</pre>} */}
-            {/* Alert */}
-            {success && <AlertSuccess message={success} />}
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

@@ -49,7 +49,6 @@ class AdminTaskController extends Controller
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
             'categories' => UserResource::collection($categories),
-            'success' => session('success')
         ]);
     }
 

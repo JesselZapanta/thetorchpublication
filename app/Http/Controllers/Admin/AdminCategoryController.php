@@ -38,9 +38,6 @@ class AdminCategoryController extends Controller
         return inertia('Admin/Category/Index', [
             'categories' => CategoryResource::collection($categories),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
-            'delete_success' => session('delete_success'),
-            'delete_error' => session('delete_error'),
         ]);
     }
 
@@ -129,7 +126,7 @@ class AdminCategoryController extends Controller
     {
         // Check if the category has any associated articles
         if ($category->articles()->exists()) {
-            return to_route('category.index')->with('delete_error', 'Unable to delete category because it has associated articles.');
+            return to_route('category.index')->with('error', 'Unable to delete category because it has associated articles.');
         }
 
         // Delete the category image if it exists
@@ -140,6 +137,6 @@ class AdminCategoryController extends Controller
         // Delete the category
         $category->delete();
 
-        return to_route('category.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('category.index')->with('success', 'Deleted Successfully');
     }
 }

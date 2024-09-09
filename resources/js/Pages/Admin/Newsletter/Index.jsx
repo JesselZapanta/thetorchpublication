@@ -8,10 +8,11 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import AlertError from "@/Components/AlertError";
 
 export default function Index({
     auth,
@@ -151,24 +152,20 @@ export default function Index({
     // Handle newsletter distribution
     const handleDistribute = (e) => {
         e.preventDefault();
-        post(
-            route("newsletter.distribute", newsletter.id),
-            {
-                onSuccess: () => {
-                    setConfirmDistribute(false);
-                    reset(); 
-                    alert("Success");
-                },
-                onError: (errors) => {
-                    console.error("Distribution failed:", errors);
-                },
-                onFinish: () => {
-                    console.log("Request finished");
-                },
-            }
-        );
+        post(route("newsletter.distribute", newsletter.id), {
+            onSuccess: () => {
+                setConfirmDistribute(false);
+                reset();
+                alert("Success");
+            },
+            onError: (errors) => {
+                console.error("Distribution failed:", errors);
+            },
+            onFinish: () => {
+                console.log("Request finished");
+            },
+        });
     };
-
 
     // Close distribution modal
     const closeDistributeModal = () => {
@@ -176,6 +173,9 @@ export default function Index({
         reset(); // Reset the form when closing the modal
         clearErrors(); // Clear any validation errors
     };
+
+    //Flash alerts
+    const { flash } = usePage().props;
 
     return (
         <AdminAuthenticatedLayout
@@ -205,11 +205,9 @@ export default function Index({
         >
             <Head title="Newsletters" />
 
-            {/* <pre className="text-white">
-                {JSON.stringify(newsletters, null, 2)}
-            </pre> */}
-            {/* Alerts */}
-            {success && <AlertSuccess message={success} />}
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

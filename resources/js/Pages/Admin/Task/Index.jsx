@@ -10,7 +10,7 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Index({
@@ -134,6 +134,9 @@ export default function Index({
         setTask(null);
     };
 
+    //Flash alerts
+    const { flash } = usePage().props;
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -156,7 +159,8 @@ export default function Index({
             <Head title="Tasks" />
 
             {/* alert */}
-            {success && <AlertSuccess message={success} />}
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -709,7 +713,7 @@ export default function Index({
                             />
                         </div>
 
-                        <div className="mt-4 flex justify-end">
+                        <div className="mt-4 flex justify-end gap-2">
                             <SecondaryButton onClick={closeCreateModal}>
                                 Cancel
                             </SecondaryButton>

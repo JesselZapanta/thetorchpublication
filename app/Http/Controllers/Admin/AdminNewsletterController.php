@@ -171,7 +171,7 @@ class AdminNewsletterController extends Controller
         }
 
 
-        return to_route('newsletter.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('newsletter.index')->with('success', 'Deleted Successfully');
     }
 
     public function distributeNewsletter(Request $request, Newsletter $newsletter)

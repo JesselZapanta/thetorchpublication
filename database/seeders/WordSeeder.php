@@ -67,6 +67,13 @@ class WordSeeder extends Seeder
             ['name' => 'b@w@'],
             ['name' => 'puk*'],
             ['name' => 'b*rkat'],
+            ['name' => 'otin'],
+            ['name' => 'oten'],
+            ['name' => 'uten'],
+            ['name' => '0ten'],
+            ['name' => '0tin'],
+            ['name' => 'ohten'],
+            ['name' => 'ohtin'],
 
             // Tagalog
             ['name' => 'putang ina'],

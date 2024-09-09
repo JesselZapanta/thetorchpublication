@@ -30,8 +30,6 @@ class AdminAcademicYearController extends Controller
         return inertia('Admin/AcademicYear/Index', [
             'academicYears' => AcademicYearResource::collection($academicYears),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
-            'error' => session('error'),
         ]);
     }
 

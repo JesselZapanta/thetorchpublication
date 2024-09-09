@@ -39,8 +39,6 @@ class AdminWordController extends Controller
             'words' => WordResource::collection($words),
             'queryParams' => request()->query() ? : null,
             'success' => session('success'),
-            'delete_success' => session('delete_success'),
-            'delete_error' => session('delete_error'),
         ]);
     }
 
@@ -100,6 +98,6 @@ class AdminWordController extends Controller
         // Delete the Word
         $word->delete();
 
-        return to_route('word.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('word.index')->with('success', 'Deleted Successfully');
     }
 }
