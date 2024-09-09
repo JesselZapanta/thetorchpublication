@@ -1,3 +1,4 @@
+import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
@@ -7,19 +8,16 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Index({
     auth,
     users,
-    success,
-    delete_success,
     queryParams = null,
 }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [user, setUser] = useState(null); // For storing the user to edit/delete
-    // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // Sort and Search
     queryParams = queryParams || {};
@@ -69,6 +67,9 @@ export default function Index({
         setUser(null);
     };
 
+    //Flash alerts
+    const { flash } = usePage().props;
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -91,8 +92,10 @@ export default function Index({
             <Head title="Users" />
             {/* {<pre>{JSON.stringify(users, null, 2)}</pre>} */}
             {/* Alert */}
-            {success && <AlertSuccess message={success} />}
-            {delete_success && <AlertSuccess message={delete_success} />}
+
+            <AlertSuccess flash={flash} />
+            <AlertError flash={flash} />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -290,7 +293,7 @@ export default function Index({
                                                     </td>
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                         <Link
-                                                        // added
+                                                            // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
                                                                 "user.show",

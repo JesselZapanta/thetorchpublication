@@ -86,7 +86,7 @@ class AdminArticleController extends Controller
             'categories' => CategoryResource::collection($categories),
             'academicYears' => AcademicYearResource::collection($academicYears),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
+            // 'success' => session('success'),
         ]);
     }
 

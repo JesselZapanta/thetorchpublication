@@ -43,8 +43,6 @@ class AdminUserController extends Controller
         return inertia('Admin/User/Index',[
             'users' => UserResource::collection($users),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
-            'delete_success' => session('delete_success'),
         ]);
     }
 
@@ -141,6 +139,6 @@ class AdminUserController extends Controller
             Storage::disk('public')->delete($user->profile_image_path);
         }
 
-        return to_route('user.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('user.index')->with('success', 'Deleted Successfully');
     }
 }
