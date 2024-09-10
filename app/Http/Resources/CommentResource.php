@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 
 class CommentResource extends JsonResource
 {
+    public static $wrap = false;
     /**
      * Transform the resource into an array.
      *
@@ -19,6 +20,7 @@ class CommentResource extends JsonResource
             'id' => $this->id,
             'body' => $this->body,
             'user_id' => $this->user_id,
+            'article_id' => $this->article_id,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'commentedBy' => new UserResource($this->commentedBy), // Assuming you have a UserResource
 
@@ -26,6 +28,8 @@ class CommentResource extends JsonResource
             'dislikes_count' => $this->dislikes()->count(),
             'user_has_liked' => $this->likes()->where('user_id', auth()->id())->exists(),
             'user_has_disliked' => $this->dislikes()->where('user_id', auth()->id())->exists(),
+
+            'report_count' => $this->report_count,
         ];
     }
 }

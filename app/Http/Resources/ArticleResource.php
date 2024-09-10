@@ -58,6 +58,8 @@ class ArticleResource extends JsonResource
 
             // 'average_rating' => $averageRating ? round($averageRating, 2) : null,
             'average_rating' => $averageRating ? round($averageRating) : 0,
+            'report_count' => $this->report_count,
+            'visibility' => $this->visibility,
         ];
     }
 }

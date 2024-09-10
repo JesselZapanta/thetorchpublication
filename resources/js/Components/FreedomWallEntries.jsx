@@ -163,7 +163,7 @@ export default function FreedomWallEntries({
                                                         openHideModal(entry);
                                                     }}
                                                 >
-                                                    Soft Delete
+                                                    Hide
                                                 </Dropdown.Link>
                                             )}
 

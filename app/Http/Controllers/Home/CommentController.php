@@ -123,6 +123,6 @@ class CommentController extends Controller
 
         $comment->update(['visibility' => 'hidden']);
 
-        return back()->with('success', 'Soft Delete Successfully');
+        return back()->with('success', 'Hide Successfully');
     }
 }

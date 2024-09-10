@@ -156,7 +156,7 @@ export default function Index({
             onSuccess: () => {
                 setConfirmDistribute(false);
                 reset();
-                alert("Success");
+                // alert("Success");
             },
             onError: (errors) => {
                 console.error("Distribution failed:", errors);
@@ -363,16 +363,19 @@ export default function Index({
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            <button
-                                                                onClick={() =>
-                                                                    openDistributeModal(
-                                                                        newsletter
-                                                                    )
-                                                                }
-                                                                className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline mx-1"
-                                                            >
-                                                                Distribute
-                                                            </button>
+                                                            {newsletter.status !==
+                                                                "distributed" && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        openDistributeModal(
+                                                                            newsletter
+                                                                        )
+                                                                    }
+                                                                    className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline mx-1"
+                                                                >
+                                                                    Distribute
+                                                                </button>
+                                                            )}
                                                             <button
                                                                 onClick={() =>
                                                                     openEditModal(

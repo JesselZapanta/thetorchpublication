@@ -379,7 +379,7 @@ export default function CommentsSection({
                                                         openHideModal(comment);
                                                     }}
                                                 >
-                                                    Soft Delete
+                                                    Hide
                                                 </Dropdown.Link>
                                             )}
 
@@ -512,7 +512,7 @@ export default function CommentsSection({
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Soft Delete"}
+                            : "Confirm Hide"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
@@ -537,7 +537,7 @@ export default function CommentsSection({
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Soft Delete"}
+                                : "Hide"}
                         </DangerButton>
                     </div>
                 </div>

@@ -176,6 +176,7 @@ class AdminNewsletterController extends Controller
 
     public function distributeNewsletter(Request $request, Newsletter $newsletter)
     {
+        // dd($request);
         // Validate the message and password
         $request->validate([
             'message' => 'required|string',

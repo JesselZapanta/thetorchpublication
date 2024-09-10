@@ -290,7 +290,7 @@ export default function Show({ auth, categories, entry, success }) {
                                                             );
                                                         }}
                                                     >
-                                                        Soft Delete
+                                                        Hide
                                                     </Dropdown.Link>
                                                 )}
 
@@ -556,7 +556,7 @@ export default function Show({ auth, categories, entry, success }) {
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Soft Delete"}
+                            : "Confirm Hide"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
@@ -581,7 +581,7 @@ export default function Show({ auth, categories, entry, success }) {
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Soft Delete"}
+                                : "Hide"}
                         </DangerButton>
                     </div>
                 </div>

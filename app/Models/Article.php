@@ -32,6 +32,7 @@ class Article extends Model
         'layout_by',
         'views',
         'visibility',
+        'report_count',
         'is_newsletter'
     ];
 

@@ -12,9 +12,12 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function Index({ auth, categories, freedomWallEntries, success, error }) {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+export default function Index({ auth, categories, freedomWallEntries, flash }) {
     // Infinite Scroll Logic
 
     //state for modal create and policy
@@ -180,7 +183,6 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
         }
     };
 
-
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
         entry: null,
@@ -207,20 +209,14 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
                     );
                     break;
                 case "hide":
-                    post(
-                        route("freedom-wall.hide", confirmAction.entry.id),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
+                    post(route("freedom-wall.hide", confirmAction.entry.id), {
+                        preserveScroll: true,
+                    });
                     break;
                 case "report":
-                    post(
-                        route("freedom-wall.report", confirmAction.entry.id),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
+                    post(route("freedom-wall.report", confirmAction.entry.id), {
+                        preserveScroll: true,
+                    });
                     break;
                 default:
                     break;
@@ -228,7 +224,6 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
         }
         setConfirmAction({ type: "", entry: null, show: false });
     };
-
 
     const openDeleteModal = (entry) => {
         openActionModal(entry, "delete");
@@ -242,7 +237,18 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
         openActionModal(entry, "report");
     };
 
-    const { flash } = usePage().props;
+    // const { flash } = usePage().props;
+
+    // Display flash messages if they exist
+    useEffect(() => {
+        console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
 
     return (
         <UnauthenticatedLayout
@@ -257,10 +263,11 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
             }
         >
             <Head title="Freedom Wall" />
+            <ToastContainer />
 
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
-            
+            {/* <AlertSuccess flash={flash} />
+            <AlertError flash={flash} /> */}
+
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"
@@ -524,7 +531,7 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Soft Delete"}
+                            : "Confirm Hide"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
@@ -549,7 +556,7 @@ export default function Index({ auth, categories, freedomWallEntries, success, e
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Soft Delete"}
+                                : "Hide"}
                         </DangerButton>
                     </div>
                 </div>

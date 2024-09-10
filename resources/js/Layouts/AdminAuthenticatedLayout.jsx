@@ -43,7 +43,9 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 <NavLink
                                     href={route("admin-article.index")}
-                                    active={route().current("admin-article.index")}
+                                    active={route().current(
+                                        "admin-article.index"
+                                    )}
                                 >
                                     Articles
                                 </NavLink>
@@ -72,6 +74,14 @@ export default function Authenticated({ user, header, children }) {
                                     active={route().current("task.index")}
                                 >
                                     Tasks
+                                </NavLink>
+                                <NavLink
+                                    href={route("admin-review-report-article.index")}
+                                    active={route().current(
+                                        "admin-review-report-article.index"
+                                    )}
+                                >
+                                    Review
                                 </NavLink>
                             </div>
                         </div>

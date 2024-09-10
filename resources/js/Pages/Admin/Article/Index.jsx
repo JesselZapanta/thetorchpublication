@@ -20,34 +20,86 @@ export default function Index({
     queryParams = null,
 }) {
     queryParams = queryParams || {};
+    
+    // const searchFieldChanged = (name, value) => {
+    //     if (value === "") {
+    //         delete queryParams[name];
+    //         router.get(route("admin-article.index"), queryParams, {
+    //             preserveState: true,
+    //         });
+    //     }
+    //     if (value) {
+    //         queryParams[name] = value;
+    //         router.get(route("admin-article.index"), queryParams, {
+    //             preserveState: true,
+    //         });
+    //     }
+    // };
+
+    // // Search on Enter key press
+    // const onKeyPressed = (name, e) => {
+    //     const value = e.target.value;
+
+    //     if (e.key === "Enter") {
+    //         e.preventDefault(); // Prevent default form submission
+    //         if (value) {
+    //             queryParams[name] = value; // Update query params if value is provided
+    //         }
+    //         router.get(route("admin-article.index"), queryParams, {
+    //             preserveState: true,
+    //         });
+    //     }
+    // };
+
     const searchFieldChanged = (name, value) => {
         if (value === "") {
-            delete queryParams[name];
-            router.get(route("admin-article.index"), queryParams, {
-                preserveState: true,
-            });
-        }
-        if (value) {
-            queryParams[name] = value;
-            router.get(route("admin-article.index"), queryParams, {
-                preserveState: true,
-            });
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(
+                route("admin-article.index"),
+                queryParams,
+                {
+                    preserveState: true,
+                }
+            ); // Fetch all data when search is empty
+        } else {
+            queryParams[name] = value; // Set query parameter
         }
     };
 
-    // Search on Enter key press
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
         const value = e.target.value;
 
         if (e.key === "Enter") {
             e.preventDefault(); // Prevent default form submission
-            if (value) {
-                queryParams[name] = value; // Update query params if value is provided
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("admin-article.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(
+                    route("admin-article.index"),
+                    queryParams,
+                    {
+                        preserveState: true,
+                    }
+                );
             }
-            router.get(route("admin-article.index"), queryParams, {
-                preserveState: true,
-            });
         }
+    };
+
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("admin-article.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     const sortChanged = (name) => {
@@ -126,7 +178,7 @@ export default function Index({
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <th
-                                                className="px-3 py-3"
+                                                className="px-3 py-3 w-[5%]"
                                                 colSpan="2"
                                             >
                                                 <SelectInput
@@ -135,7 +187,7 @@ export default function Index({
                                                         queryParams.academic_year_id
                                                     }
                                                     onChange={(e) =>
-                                                        searchFieldChanged(
+                                                        handleSelectChange(
                                                             "academic_year_id",
                                                             e.target.value
                                                         )
@@ -155,7 +207,7 @@ export default function Index({
                                                 </SelectInput>
                                             </th>
                                             <th
-                                                className="px-3 py-3"
+                                                className="px-3 py-3 w-[5%]"
                                                 colSpan="1"
                                             >
                                                 <SelectInput
@@ -164,7 +216,7 @@ export default function Index({
                                                         queryParams.myArticle
                                                     }
                                                     onChange={(e) =>
-                                                        searchFieldChanged(
+                                                        handleSelectChange(
                                                             "myArticle",
                                                             e.target.value
                                                         )
@@ -180,14 +232,14 @@ export default function Index({
                                                 </SelectInput>
                                             </th>
 
-                                            <th className="px-3 py-3">
+                                            <th className="px-3 py-3 w-[10%]">
                                                 <SelectInput
                                                     className="w-full"
                                                     defaultValue={
                                                         queryParams.category
                                                     }
                                                     onChange={(e) =>
-                                                        searchFieldChanged(
+                                                        handleSelectChange(
                                                             "category",
                                                             e.target.value
                                                         )
@@ -212,7 +264,7 @@ export default function Index({
                                                     )}
                                                 </SelectInput>
                                             </th>
-                                            <th className="px-3 py-3">
+                                            <th className="px-3 py-3 w-[50%]">
                                                 <TextInput
                                                     className="w-full"
                                                     defaultValue={
@@ -230,14 +282,14 @@ export default function Index({
                                                     }
                                                 />
                                             </th>
-                                            <th className="px-3 py-3">
+                                            <th className="px-3 py-3 w-[10%]">
                                                 <SelectInput
                                                     className="w-full"
                                                     defaultValue={
                                                         queryParams.status
                                                     }
                                                     onChange={(e) =>
-                                                        searchFieldChanged(
+                                                        handleSelectChange(
                                                             "status",
                                                             e.target.value
                                                         )
@@ -254,7 +306,7 @@ export default function Index({
                                                     </option>
                                                 </SelectInput>
                                             </th>
-                                            <th className="px-3 py-3"></th>
+                                            <th className="px-3 py-3 w-[10%]"></th>
                                         </tr>
                                     </thead>
                                     {/* Thhead with sorting */}
@@ -334,10 +386,10 @@ export default function Index({
                                                     className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
                                                     key={article.id}
                                                 >
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap w-[5%]">
                                                         {article.id}
                                                     </td>
-                                                    <th className="px-3 py-2 text-nowrap">
+                                                    <th className="px-3 py-2 text-nowrap w-[5%]">
                                                         <div className="rounded-full overflow-hidden w-10 h-10 border-2 border-indigo-500">
                                                             {article.article_image_path && (
                                                                 <img
@@ -352,17 +404,21 @@ export default function Index({
                                                             )}
                                                         </div>
                                                     </th>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         {article.is_anonymous ===
                                                         "yes"
                                                             ? "Anonymous"
-                                                            : article.createdBy
-                                                                  .name}
+                                                            : truncate(
+                                                                  article
+                                                                      .createdBy
+                                                                      .name,
+                                                                  10
+                                                              )}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         {article.category.name}
                                                     </td>
-                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline w-[50%]">
                                                         <Link
                                                             // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
@@ -377,10 +433,10 @@ export default function Index({
                                                             )}
                                                         </Link>
                                                     </th>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         {article.status}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         <Link
                                                             href={route(
                                                                 "admin-article.edit",
@@ -398,7 +454,7 @@ export default function Index({
                                                             }
                                                             className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                         >
-                                                            Delete
+                                                            Hide
                                                         </button>
                                                     </td>
                                                 </tr>
