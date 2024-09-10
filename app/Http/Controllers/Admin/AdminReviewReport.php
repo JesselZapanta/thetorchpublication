@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminReviewReport extends Controller
 {
@@ -92,6 +93,24 @@ class AdminReviewReport extends Controller
         $article->update(['report_count' => 0]);
 
         return to_route('admin-review-report-article.index')->with(['success' => 'Reject Successfully']);
+    }
+
+    public function destroyArticle($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return back()->with('error', 'Article Not Found');
+        }
+
+        $article->delete();
+
+        if ($article->article_image_path) {
+            // Delete the specific old image file
+            Storage::disk('public')->delete($article->article_image_path);
+        }
+
+        return to_route('admin-review-report-article.index')->with(['success' => 'Delete Successfully']);
     }
 
 

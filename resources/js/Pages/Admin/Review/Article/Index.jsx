@@ -427,6 +427,22 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                                     Reject
                                                                 </button>
                                                             )}
+                                                            {article.visibility !==
+                                                                "visible" &&
+                                                                auth.user
+                                                                    .role ===
+                                                                    "admin" && (
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                article
+                                                                            )
+                                                                        }
+                                                                        className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                )}
                                                         </td>
                                                     </tr>
                                                 )

@@ -379,7 +379,7 @@ export default function CommentsSection({
                                                         openHideModal(comment);
                                                     }}
                                                 >
-                                                    Hide
+                                                    Soft Delete
                                                 </Dropdown.Link>
                                             )}
 
@@ -475,7 +475,11 @@ export default function CommentsSection({
                                 id="body"
                                 type="text"
                                 name="body"
-                                placeholder={`Comment as ${auth.user.name}`}
+                                placeholder={
+                                    auth.user
+                                        ? `Comment as ${auth.user.name}`
+                                        : ""
+                                }
                                 value={data.body}
                                 className="mt-2 block w-full min-h-24 resize-none"
                                 onChange={(e) =>
@@ -512,7 +516,7 @@ export default function CommentsSection({
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Hide"}
+                            : "Confirm Soft Delete"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
@@ -537,7 +541,7 @@ export default function CommentsSection({
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Hide"}
+                                : "Soft Delete"}
                         </DangerButton>
                     </div>
                 </div>
