@@ -120,7 +120,7 @@ export default function Index({ auth, article }) {
                                 </p>
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
-                                <Link
+                                {/* <Link
                                     href={route(
                                         "admin-article.edit",
                                         article.id
@@ -128,7 +128,7 @@ export default function Index({ auth, article }) {
                                     className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Hide TODO
-                                </Link>
+                                </Link> */}
                                 <SecondaryButton
                                     href={route(
                                         "admin-review-report-article.index"

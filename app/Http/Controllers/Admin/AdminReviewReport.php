@@ -19,7 +19,7 @@ class AdminReviewReport extends Controller
     {   
         $query = Article::query();
 
-        $sortField = request('sort_field', 'id');
+        $sortField = request('sort_field', 'report_count');
         $sortDirection = request('sort_direction', 'desc');
         
         // Apply search filters if present
@@ -76,7 +76,7 @@ class AdminReviewReport extends Controller
             return back()->with('error', 'Article Not Found');
         }
 
-        $article->update(['visibility' => 'vissible']);
+        $article->update(['visibility' => 'visible']);
 
         return to_route('admin-review-report-article.index')->with(['success' => 'Restore Successfully']);
     }
@@ -89,7 +89,7 @@ class AdminReviewReport extends Controller
             return back()->with('error', 'Article Not Found');
         }
 
-        $article->update(['visibility' => 'vissible']);
+        $article->update(['visibility' => 'visible']);
         $article->update(['report_count' => 0]);
 
         return to_route('admin-review-report-article.index')->with(['success' => 'Reject Successfully']);

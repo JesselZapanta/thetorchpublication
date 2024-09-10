@@ -388,19 +388,16 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {article.visibility !==
-                                                                "hidden" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openHideModal(
-                                                                            article
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Hide
-                                                                </button>
-                                                            )}
+                                                            <button
+                                                                onClick={() =>
+                                                                    openHideModal(
+                                                                        article
+                                                                    )
+                                                                }
+                                                                className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
+                                                            >
+                                                                Hide
+                                                            </button>
                                                             {article.visibility !==
                                                                 "visible" && (
                                                                 <button
@@ -414,6 +411,7 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                                     Restore
                                                                 </button>
                                                             )}
+
                                                             {article.visibility !==
                                                                 "hidden" && (
                                                                 <button
@@ -427,22 +425,19 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                                     Reject
                                                                 </button>
                                                             )}
-                                                            {article.visibility !==
-                                                                "visible" &&
-                                                                auth.user
-                                                                    .role ===
-                                                                    "admin" && (
-                                                                    <button
-                                                                        onClick={() =>
-                                                                            openDeleteModal(
-                                                                                article
-                                                                            )
-                                                                        }
-                                                                        className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
-                                                                    >
-                                                                        Delete
-                                                                    </button>
-                                                                )}
+                                                            {auth.user.role ===
+                                                                "admin" && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        openDeleteModal(
+                                                                            article
+                                                                        )
+                                                                    }
+                                                                    className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            )}
                                                         </td>
                                                     </tr>
                                                 )
