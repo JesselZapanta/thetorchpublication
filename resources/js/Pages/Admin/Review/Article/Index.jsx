@@ -132,7 +132,7 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
     //     setArticle(null);
     // };
 
-    //delete report and hide article
+    //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
         article: null,
@@ -184,9 +184,9 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                     );
                     break;
                 case "delete":
-                    router.post(
+                    router.delete(
                         route(
-                            "admin-review-report-article.reject",
+                            "admin-review-report-article.destroy",
                             confirmAction.article.id
                         ),
                         {
@@ -214,7 +214,7 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
     };
 
     const openDeleteModal = (article) => {
-        openActionModal(article, "reject");
+        openActionModal(article, "delete");
     };
 
     return (
@@ -243,13 +243,14 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
             }
         >
             <Head title="Reported Articles" />
-            <ToastContainer />
+            <ToastContainer position="bottom-right" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <th
@@ -388,16 +389,19 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            <button
-                                                                onClick={() =>
-                                                                    openHideModal(
-                                                                        article
-                                                                    )
-                                                                }
-                                                                className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-                                                            >
-                                                                Hide
-                                                            </button>
+                                                            {article.visibility !==
+                                                                "hidden" && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        openHideModal(
+                                                                            article
+                                                                        )
+                                                                    }
+                                                                    className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
+                                                                >
+                                                                    Hide
+                                                                </button>
+                                                            )}
                                                             {article.visibility !==
                                                                 "visible" && (
                                                                 <button

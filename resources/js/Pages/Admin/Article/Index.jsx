@@ -454,7 +454,7 @@ export default function Index({
                                                             }
                                                             className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                         >
-                                                            Hide
+                                                            Delete
                                                         </button>
                                                     </td>
                                                 </tr>

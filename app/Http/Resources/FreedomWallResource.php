@@ -29,6 +29,8 @@ class FreedomWallResource extends JsonResource
 
             'user_id' => $this->user_id,
             'report_count' => $this->report_count,
+            
+            'visibility' => $this->visibility
         ];
     }
 }

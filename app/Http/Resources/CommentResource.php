@@ -30,6 +30,7 @@ class CommentResource extends JsonResource
             'user_has_disliked' => $this->dislikes()->where('user_id', auth()->id())->exists(),
 
             'report_count' => $this->report_count,
+            'visibility' => $this->visibility,
         ];
     }
 }

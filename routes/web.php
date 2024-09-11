@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     //Freedom Wall
 
     route::resource('/freedom-wall', FreedomWallController::class);
-    // Route::post('/freedom-wall/{entryId}/hide', [FreedomWallController::class, 'hide'])->name('freedom-wall.hide');
+    Route::post('/freedom-wall/{entryId}/hide', [FreedomWallController::class, 'hide'])->name('freedom-wall.hide');
     Route::post('/freedom-wall/{entryId}/like', [FreedomWallLikeController::class, 'toggleLike'])->name('freedom-wall.like');
     Route::post('/freedom-wall/{entryId}/dislike', [FreedomWallLikeController::class, 'toggleDislike'])->name('freedom-wall.dislike');
 });
@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
 
 
 //Admin Routes
-Route::middleware(['auth','admin' ])->group(function() {
+Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('user', AdminUserController::class);
@@ -100,7 +100,7 @@ Route::middleware(['auth','admin' ])->group(function() {
 
     Route::resource('task', AdminTaskController::class);
 
-    //review Report
+    //review Report article
     Route::get('/admin-review-report-article', [AdminReviewReport::class, 'article'])->name('admin-review-report-article.index');
     Route::get('/admin-review-report-article/{id}/show', [AdminReviewReport::class, 'showArticle'])->name('admin-review-report-article.show');
     Route::post('/admin-review-report-article/{id}/hide', [AdminReviewReport::class, 'hideArticle'])->name('admin-review-report-article.hide');
@@ -110,7 +110,20 @@ Route::middleware(['auth','admin' ])->group(function() {
 
 
     Route::get('/admin-review-report-comment', [AdminReviewReport::class, 'comment'])->name('admin-review-report-comment.index');
+    Route::get('/admin-review-report-comment/{comment_id}/{article_id}/show/', [AdminReviewReport::class, 'showComment'])->name('admin-review-report-comment.show');
+    Route::post('/admin-review-report-comment/{id}/hide', [AdminReviewReport::class, 'hideArticle'])->name('admin-review-report-comment.hide');
+    Route::post('/admin-review-report-comment/{id}/restore', [AdminReviewReport::class, 'restoreArticle'])->name('admin-review-report-comment.restore');
+    Route::post('/admin-review-report-comment/{id}/reject', [AdminReviewReport::class, 'rejectArticleReport'])->name('admin-review-report-comment.reject');
+    Route::delete('/admin-review-report-comment/{id}/destroy', [AdminReviewReport::class, 'destroyArticle'])->name('admin-review-report-comment.destroy');
+
+
     Route::get('/admin-review-report-freedom-wall', [AdminReviewReport::class, 'freedomWall'])->name('admin-review-report-freedom-wall.index');
+    Route::get('/admin-review-report-freedom-wall/{id}/show', [AdminReviewReport::class, 'showFreeomWall'])->name('admin-review-report-freedom-wall.show');
+    Route::post('/admin-review-report-freedom-wall/{id}/hide', [AdminReviewReport::class, 'hideFreedomWall'])->name('admin-review-report-freedom-wall.hide');
+    Route::post('/admin-review-report-freedom-wall/{id}/restore', [AdminReviewReport::class, 'restoreFreedomWall'])->name('admin-review-report-freedom-wall.restore');
+    Route::post('/admin-review-report-freedom-wall/{id}/reject', [AdminReviewReport::class, 'rejectFreedomWallReport'])->name('admin-review-report-freedom-wall.reject');
+    Route::delete('/admin-review-report-freedom-wall/{id}/destroy', [AdminReviewReport::class, 'destroyFreedomWall'])->name('admin-review-report-freedom-wall.destroy');
+
 });
 
 // For Student and Student Contributor

@@ -263,7 +263,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
             }
         >
             <Head title="Freedom Wall" />
-            <ToastContainer />
+            <ToastContainer position="bottom-right" />
 
             {/* <AlertSuccess flash={flash} />
             <AlertError flash={flash} /> */}
