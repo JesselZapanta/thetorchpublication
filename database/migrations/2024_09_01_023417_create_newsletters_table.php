@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('newsletter_file_path');
             $table->string('status')->default('pending');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
+            // $table->tinyText('visibility')->default('visible');//hidden todo might add this to next migtaion
+            $table->timestamps();
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
         });

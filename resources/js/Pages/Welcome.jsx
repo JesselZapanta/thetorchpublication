@@ -1,6 +1,7 @@
 import ArticleCard from "@/Components/ArticleCard";
 import FeaturedArticle from "@/Components/FeaturedArticle";
 import LatestArticles from "@/Components/LatestArticles";
+import NewsletterCard from "@/Components/NewsletterCard";
 import TopArticles from "@/Components/TopArticles";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -11,6 +12,7 @@ export default function Welcome({
     featuredArticle,
     topArticles,
     latestArticles,
+    latestNewsletter,
 }) {
     return (
         <UnauthenticatedLayout user={auth.user} categories={categories}>
@@ -38,6 +40,22 @@ export default function Welcome({
                     {/* <LatestArticles latestArticles={latestArticles} /> */}
                     {latestArticles.data.map((article) => (
                         <ArticleCard key={article.id} article={article} />
+                    ))}
+                </div>
+
+                <div className="w-full h-[2px] bg-indigo-500 mt-2"></div>
+
+                <h5 className="block text-start  text-2xl text-indigo-500 py-2">
+                    Latest Release
+                </h5>
+
+                <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* <LatestArticles latestArticles={latestArticles} /> */}
+                    {latestNewsletter.data.map((newsletter) => (
+                        <NewsletterCard
+                            key={newsletter.id}
+                            newsletter={newsletter}
+                        />
                     ))}
                 </div>
 

@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\NewsletterResource;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -48,11 +50,17 @@ class HomeController extends Controller
                                 ->limit(9)
                                 ->get();
 
+        $latestNewsletter = Newsletter::orderBy('created_at', 'DESC')
+                                // ->where('status', 'published')
+                                ->limit(4)
+                                ->get();
+
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),
             'featuredArticle' => new ArticleResource($featuredArticle),
             'topArticles' => ArticleResource::collection($topArticles),
             'latestArticles' => ArticleResource::collection($latestArticles),
+            'latestNewsletter' => NewsletterResource::collection($latestNewsletter),
         ]);
     }
 
