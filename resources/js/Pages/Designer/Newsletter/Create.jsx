@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react'
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import React, { useState } from 'react'
 import InputLabel from '@/Components/InputLabel';
 import SelectInput from '@/Components/SelectInput';
@@ -33,7 +33,7 @@ export default function Create({ auth }) {
         onSubmit();
     };
     return (
-        <AdminAuthenticatedLayout
+        <DesignerAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -134,7 +134,7 @@ export default function Create({ auth }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("newsletter.index")}
+                                    href={route("designer-newsletter.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -173,6 +173,6 @@ export default function Create({ auth }) {
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

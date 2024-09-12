@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Designer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Designer\DesignerStoreNewsletterRequest;
+use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\NewsletterResource;
 use App\Models\AcademicYear;
@@ -58,9 +60,38 @@ class DesignerNewsletterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DesignerStoreNewsletterRequest $request)
     {
-        //
+        // dd($request);
+        $data = $request->validated();
+
+        $image = $data['newsletter_thumbnail_image_path'];
+        $pdfFile = $data['newsletter_file_path'];
+
+        if ($image) {
+            // Store the image directly under the 'newsletter-thumbnail/' directory and save its path
+            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+        }
+
+        if ($pdfFile) {
+            // Store the image directly under the 'newsletter-file/' directory and save its path
+            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+        }
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+
+        $data['layout_by'] = Auth::user()->id;
+        $data['status'] = 'pending';
+        $data['academic_year_id'] = $activeAy->id;
+
+        Newsletter::create($data);
+
+        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter submitted Successfully']);
     }
 
     /**
