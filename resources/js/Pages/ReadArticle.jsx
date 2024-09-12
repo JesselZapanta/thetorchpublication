@@ -11,9 +11,9 @@ import AlertSuccess from "@/Components/AlertSuccess";
 import AlertError from "@/Components/AlertError";
 
 export default function ReadArticle({ auth, article, categories, comments }) {
-    // useEffect(() => {
-    //     window.scrollTo(0, 0);
-    // }, []);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     // Check if user is authenticated
     const isAuthenticated = !!auth.user;

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminReviewReportedFreedomWall;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
+use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
 use App\Http\Controllers\Home\CommentController;
@@ -109,16 +110,14 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::post('/admin-review-report-article/{id}/restore', [AdminReviewReport::class, 'restoreArticle'])->name('admin-review-report-article.restore');
     Route::post('/admin-review-report-article/{id}/reject', [AdminReviewReport::class, 'rejectArticleReport'])->name('admin-review-report-article.reject');
     Route::delete('/admin-review-report-article/{id}/destroy', [AdminReviewReport::class, 'destroyArticle'])->name('admin-review-report-article.destroy');
-
-
+     //review Report comment
     Route::get('/admin-review-report-comment', [AdminReviewReport::class, 'comment'])->name('admin-review-report-comment.index');
     Route::get('/admin-review-report-comment/{comment_id}/{article_id}/show/', [AdminReviewReport::class, 'showComment'])->name('admin-review-report-comment.show');
     Route::post('/admin-review-report-comment/{id}/hide', [AdminReviewReport::class, 'hideArticle'])->name('admin-review-report-comment.hide');
     Route::post('/admin-review-report-comment/{id}/restore', [AdminReviewReport::class, 'restoreArticle'])->name('admin-review-report-comment.restore');
     Route::post('/admin-review-report-comment/{id}/reject', [AdminReviewReport::class, 'rejectArticleReport'])->name('admin-review-report-comment.reject');
     Route::delete('/admin-review-report-comment/{id}/destroy', [AdminReviewReport::class, 'destroyArticle'])->name('admin-review-report-comment.destroy');
-
-
+     //review Report report-freedom-wall
     Route::get('/admin-review-report-freedom-wall', [AdminReviewReport::class, 'freedomWall'])->name('admin-review-report-freedom-wall.index');
     Route::get('/admin-review-report-freedom-wall/{id}/show', [AdminReviewReport::class, 'showFreedomWall'])->name('admin-review-report-freedom-wall.show');
     Route::post('/admin-review-report-freedom-wall/{id}/hide', [AdminReviewReport::class, 'hideFreedomWall'])->name('admin-review-report-freedom-wall.hide');
@@ -136,7 +135,7 @@ Route::middleware(['auth', 'student'])->group(function() {
 
 // for editor
 Route::middleware(['auth', 'editor'])->group(function() {
-    Route::get('/editor/dashboard', [EditorDashboardController::class, 'index'])->name('editor.dashboard');
+    Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::resource('editor-article', EditorArticleController::class);
 });
 
@@ -145,6 +144,12 @@ Route::middleware(['auth', 'editor'])->group(function() {
 Route::middleware(['auth', 'writer'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
     Route::resource('writer-article', WriterArticleController::class);
+});
+
+// for Designer
+Route::middleware(['auth', 'designer'])->group(function() {
+    Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
+    // Route::resource('writer-article', WriterArticleController::class);
 });
 
 

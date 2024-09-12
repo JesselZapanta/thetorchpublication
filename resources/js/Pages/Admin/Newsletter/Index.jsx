@@ -1,4 +1,3 @@
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
@@ -8,40 +7,47 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
-import AlertError from "@/Components/AlertError";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function Index({
     auth,
     newsletters,
     activeAy,
-    success,
     queryParams = null,
+    flash
 }) {
+
+    // Display flash messages if they exist
+    useEffect(() => {
+        // console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
+
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [confirmDistribute, setConfirmDistribute] = useState(false);
     const [newsletter, setNewsletter] = useState(null); // Storing newsletter to edit/delete/distribute
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const {
-        data,
-        setData,
-        post,
-        errors,
-        reset,
-        clearErrors,
-        progress,
-        processing,
-    } = useForm({
-        academic_year_id: "",
-        description: "",
-        newsletter_thumbnail_image_path: "",
-        newsletter_file_path: "",
-        status: "",
-    });
+    const { data, setData, post, errors, reset, clearErrors, processing } =
+        useForm({
+            academic_year_id: "",
+            description: "",
+            newsletter_thumbnail_image_path: "",
+            newsletter_file_path: "",
+            status: "",
+        });
 
     // for tables sorting and searching
     queryParams = queryParams || {};
@@ -193,9 +199,6 @@ export default function Index({
         clearErrors(); // Clear any validation errors
     };
 
-    //Flash alerts
-    const { flash } = usePage().props;
-
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -224,8 +227,7 @@ export default function Index({
         >
             <Head title="Newsletters" />
 
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
+            <ToastContainer position="bottom-right" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

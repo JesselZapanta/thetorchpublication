@@ -6,8 +6,10 @@ import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import { Head } from "@inertiajs/react";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
+
     const Layout =
         auth.user.role === "admin"
             ? AdminAuthenticatedLayout
@@ -15,18 +17,9 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             ? EditorAuthenticatedLayout
             : auth.user.role === "writer"
             ? WriterAuthenticatedLayout
+            : auth.user.role === "designer"
+            ? DesignerAuthenticatedLayout
             : StudentAuthenticatedLayout;
-
-    // const Layout =
-    //     auth.user.role === "admin"
-    //         ? AdminAuthenticatedLayout
-    //         : auth.user.role === "editor"
-    //         ? EditorAuthenticatedLayout
-    //         : auth.user.role === "writer"
-    //         ? WriterAuthenticatedLayout
-    //         : auth.user.role === "designer"
-    //         ? DesignerAuthenticatedLayout
-    //         : StudentAuthenticatedLayout;
 
 
     return (

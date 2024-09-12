@@ -86,6 +86,12 @@ export default function UnauthenticatedLayout({
                                         >
                                             Dashboard
                                         </NavLink>
+                                    ) : user.role === "designer" ? (
+                                        <NavLink
+                                            href={route("designer.dashboard")}
+                                        >
+                                            Dashboard
+                                        </NavLink>
                                     ) : null
                                 ) : (
                                     <>

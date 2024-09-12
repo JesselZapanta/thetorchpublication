@@ -9,7 +9,6 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\JobResource;
 use App\Http\Resources\NewsletterResource;
 use App\Jobs\SendNewsletterEmail;
-use App\Mail\NewsletterMail;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
@@ -19,12 +18,9 @@ use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Requests\UpdateNewsletterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Bus;
 
 
 class AdminNewsletterController extends Controller
@@ -50,8 +46,7 @@ class AdminNewsletterController extends Controller
 
         $newsletters = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
-        // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
-        $activeAy = AcademicYear::all();//for admin
+        $activeAy = AcademicYear::all();
 
         if (!$activeAy) {
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
@@ -61,8 +56,7 @@ class AdminNewsletterController extends Controller
         return inertia('Admin/Newsletter/Index', [
             'newsletters' => NewsletterResource::collection($newsletters),
             'queryParams' => request()->query() ? : null,
-            // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
-            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
+            'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
 }
 
@@ -98,7 +92,7 @@ class AdminNewsletterController extends Controller
 
         Newsletter::create($data);
 
-        return to_route('newsletter.index')->with('success', 'Newsletter submitted Successfully');
+        return to_route('newsletter.index')->with(['success' => 'Newsletter submitted Successfully']);
     }
 
     /**
@@ -114,7 +108,7 @@ class AdminNewsletterController extends Controller
      */
     public function edit(Newsletter $newsletter)
     {
-        //
+        //todo
     }
 
     /**
@@ -154,7 +148,7 @@ class AdminNewsletterController extends Controller
 
         $newsletter->update($data);
 
-        return to_route('newsletter.index')->with('success', 'Newsletter Updated Successfully');
+        return to_route('newsletter.index')->with(['success' => 'Newsletter Updated Successfully']);
     }
 
     /**
@@ -175,7 +169,7 @@ class AdminNewsletterController extends Controller
         }
 
 
-        return to_route('newsletter.index')->with('success', 'Deleted Successfully');
+        return to_route('newsletter.index')->with(['success' => 'Deleted Successfully']);
     }
 
     public function distributeNewsletter(Request $request, Newsletter $newsletter)
@@ -200,7 +194,7 @@ class AdminNewsletterController extends Controller
             SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
         }
 
-        return redirect()->back()->with('success', 'Newsletter has been sent to all users.');
+        return redirect()->back()->with(['success' => 'Newsletter queued successfully. Distribution will begin shortly.']);
     }
 
     public function jobIndex()

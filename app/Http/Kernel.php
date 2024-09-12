@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'student' => \App\Http\Middleware\Student::class,
         'editor' => \App\Http\Middleware\Editor::class,
         'writer' => \App\Http\Middleware\Writer::class,
+        'designer' => \App\Http\Middleware\Designer::class,
     ];
 }

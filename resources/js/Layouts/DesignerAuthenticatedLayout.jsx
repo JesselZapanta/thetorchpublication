@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function StudentAuthenticatedLayout({ user, header, children }) {
+export default function DesignerAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -33,14 +33,14 @@ export default function StudentAuthenticatedLayout({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink
+                                {/* <NavLink
                                     href={route("student-article.index")}
                                     active={route().current(
                                         "student-article.index"
                                     )}
                                 >
                                     Articles
-                                </NavLink>
+                                </NavLink> */}
                             </div>
                         </div>
 
@@ -129,12 +129,12 @@ export default function StudentAuthenticatedLayout({ user, header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
+                        {/* <ResponsiveNavLink
                             href={route("student-article.index")}
                             active={route().current("student-article.index")}
                         >
                             Articles
-                        </ResponsiveNavLink>
+                        </ResponsiveNavLink> */}
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
