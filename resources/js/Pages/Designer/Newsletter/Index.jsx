@@ -6,7 +6,7 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import SelectInput from "@/Components/SelectInput";
@@ -141,7 +141,7 @@ export default function Index({
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <DesignerAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -151,13 +151,7 @@ export default function Index({
 
                     <div className="flex gap-4">
                         <Link
-                            href={route("jobs.index")}
-                            className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
-                        >
-                            Queue
-                        </Link>
-                        <Link
-                            href={route("newsletter.create")}
+                            href={route("designer-newsletter.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
@@ -201,7 +195,7 @@ export default function Index({
                                     href={route("newsletter.articles")}
                                     className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
-                                    Select Articles
+                                    View Articles
                                 </Link>
                             </div>
                             <div className="overflow-auto mt-2">
@@ -321,19 +315,6 @@ export default function Index({
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.status !==
-                                                                "distributed" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openDistributeModal(
-                                                                            newsletter
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline mx-1"
-                                                                >
-                                                                    Distribute
-                                                                </button>
-                                                            )}
                                                             <Link
                                                                 href={route(
                                                                     "newsletter.edit",
@@ -463,6 +444,6 @@ export default function Index({
                     </form>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

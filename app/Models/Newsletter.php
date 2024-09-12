@@ -15,7 +15,8 @@ class Newsletter extends Model
         'newsletter_file_path',
         'status',
         'layout_by',
-        'academic_year_id'
+        'academic_year_id',
+        'revision_message'
     ];
 
     // todo relattion

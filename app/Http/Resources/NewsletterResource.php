@@ -26,6 +26,7 @@ class NewsletterResource extends JsonResource
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
             'academic_year_id' => $this->academic_year_id,
+            'revision_message' => $this->revision_message,
         ];
     }
 }

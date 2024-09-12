@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
+use App\Http\Controllers\Designer\DesignerNewsletterController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
 use App\Http\Controllers\Home\CommentController;
@@ -150,6 +151,9 @@ Route::middleware(['auth', 'writer'])->group(function() {
 Route::middleware(['auth', 'designer'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     // Route::resource('writer-article', WriterArticleController::class);
+
+    Route::resource('designer-newsletter', DesignerNewsletterController::class);
+
 });
 
 

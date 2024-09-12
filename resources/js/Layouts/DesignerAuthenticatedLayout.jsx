@@ -25,22 +25,22 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
 
                             <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
-                                    href={route("student.dashboard")}
+                                    href={route("designer.dashboard")}
                                     active={route().current(
-                                        "student.dashboard"
+                                        "designer.dashboard"
                                     )}
                                 >
                                     Dashboard
                                 </NavLink>
 
-                                {/* <NavLink
-                                    href={route("student-article.index")}
+                                <NavLink
+                                    href={route("designer-newsletter.index")}
                                     active={route().current(
-                                        "student-article.index"
+                                        "designer-newsletter.index"
                                     )}
                                 >
-                                    Articles
-                                </NavLink> */}
+                                    Newsletters
+                                </NavLink>
                             </div>
                         </div>
 
@@ -124,17 +124,17 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
                 >
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            href={route("student.dashboard")}
-                            active={route().current("student.dashboard")}
+                            href={route("designer.dashboard")}
+                            active={route().current("designer.dashboard")}
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        {/* <ResponsiveNavLink
-                            href={route("student-article.index")}
-                            active={route().current("student-article.index")}
+                        <ResponsiveNavLink
+                            href={route("designer-newsletter.index")}
+                            active={route().current("designer-newsletter.index")}
                         >
-                            Articles
-                        </ResponsiveNavLink> */}
+                            Newsletters
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

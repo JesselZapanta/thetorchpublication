@@ -46,26 +46,21 @@ class AdminNewsletterController extends Controller
 
         $newsletters = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
-        $activeAy = AcademicYear::all();
-
-        if (!$activeAy) {
-            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
-        }
-
-
         return inertia('Admin/Newsletter/Index', [
             'newsletters' => NewsletterResource::collection($newsletters),
             'queryParams' => request()->query() ? : null,
-            'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
-}
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $activeAy = AcademicYear::all();
+        return inertia('Admin/Newsletter/Create', [
+            'activeAy' => AcademicYearResource::collection($activeAy),
+        ]);
     }
 
     /**
@@ -100,7 +95,7 @@ class AdminNewsletterController extends Controller
      */
     public function show(Newsletter $newsletter)
     {
-        //
+        
     }
 
     /**
@@ -108,7 +103,11 @@ class AdminNewsletterController extends Controller
      */
     public function edit(Newsletter $newsletter)
     {
-        //todo
+        $activeAy = AcademicYear::all();
+        return inertia('Admin/Newsletter/Edit', [
+            'newsletter' => new NewsletterResource($newsletter),
+            'activeAy' => AcademicYearResource::collection($activeAy),
+        ]);
     }
 
     /**

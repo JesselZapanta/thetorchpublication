@@ -31,6 +31,7 @@ class UpdateNewsletterRequest extends FormRequest
             'status' => ['required',
                 Rule::in(['pending','revision', 'approved'])
             ],
+            'revision_message' => ['nullable', 'string', 'required_if:status,revision'],
         ];
     }
 }
