@@ -70,7 +70,7 @@ class AdminUserController extends Controller
 
         User::create($data);
 
-        return to_route('user.index')->with('success', 'User was Created');
+        return to_route('user.index')->with(['success' => 'User was Created']);
     }
 
     /**
@@ -124,7 +124,7 @@ class AdminUserController extends Controller
 
         $user->update($data);
 
-        return to_route('user.index')->with('success', 'User was Updated');
+        return to_route('user.index')->with(['success' => 'User was Updated']);
     }
 
     /**
@@ -139,6 +139,6 @@ class AdminUserController extends Controller
             Storage::disk('public')->delete($user->profile_image_path);
         }
 
-        return to_route('user.index')->with('success', 'Deleted Successfully');
+        return to_route('user.index')->with(['success' => 'Deleted Successfully']);
     }
 }

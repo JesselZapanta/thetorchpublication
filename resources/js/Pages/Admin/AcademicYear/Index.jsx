@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
@@ -6,15 +6,15 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import SecondaryButton from "@/Components/SecondaryButton";
-import Checkbox from "@/Components/Checkbox";
 import SelectInput from "@/Components/SelectInput";
 import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
 import DangerButton from "@/Components/DangerButton";
-import AlertSuccess from "@/Components/AlertSuccess";
-import AlertError from "@/Components/AlertError";
 
-export default function Index({ auth, academicYears, queryParams = null }) {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+export default function Index({ auth, academicYears, queryParams = null,flash }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [academicYear, setAcademicYear] = useState(null); // For storing the academicYear to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -24,23 +24,54 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         description: "",
         status: "",
     });
+
+    // Display flash messages if they exist
+    useEffect(() => {
+        // console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
     // for tables sorting and searching
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
-        if (value) {
-            queryParams[name] = value;
+        if (value === "") {
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(route("academic-year.index"), queryParams, {
+                preserveState: true,
+            }); // Fetch all data when search is empty
         } else {
-            delete queryParams[name];
+            queryParams[name] = value; // Set query parameter
         }
-
-        router.get(route("academic-year.index"), queryParams);
     };
 
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("academic-year.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(route("academic-year.index"), queryParams, {
+                    preserveState: true,
+                });
+            }
+        }
     };
 
     const sortChanged = (name) => {
@@ -54,21 +85,21 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         router.get(route("academic-year.index"), queryParams);
     };
 
-    // Open modal for creating a new word
+    // Open modal for creating a new academic-year
     const openCreateModal = () => {
         reset(); // Reset the form to clear previous data
-        setAcademicYear(null); // Clear the selected word for editing
+        setAcademicYear(null); // Clear the selected academic-year for editing
         setIsCreateModalOpen(true);
     };
 
-    // Open modal for editing an existing word
+    // Open modal for editing an existing academic-year
     const openEditModal = (academicYear) => {
         setAcademicYear(academicYear);
         setData({
             code: academicYear.code,
             description: academicYear.description,
             status: academicYear.status,
-        }); // Set the form data with the selected word's data
+        }); // Set the form data with the selected academic-year's data
         setIsCreateModalOpen(true);
     };
 
@@ -115,8 +146,6 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         setAcademicYear(null);
     };
 
-    //Flash alerts
-    const { flash } = usePage().props;
 
     return (
         <AdminAuthenticatedLayout
@@ -139,49 +168,30 @@ export default function Index({ auth, academicYears, queryParams = null }) {
         >
             <Head title="Academic Years" />
 
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
+            <ToastContainer position="bottom-right" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="w-full lg:w-[50%] gap-2">
+                                <TextInput
+                                    className="w-full"
+                                    defaultValue={queryParams.description}
+                                    placeholder="Search Academic Year"
+                                    onChange={(e) =>
+                                        searchFieldChanged(
+                                            "description",
+                                            e.target.value
+                                        )
+                                    }
+                                    onKeyPress={(e) =>
+                                        onKeyPressed("description", e)
+                                    }
+                                />
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* thead with search */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.description
-                                                    }
-                                                    placeholder="Search Academic Year"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "description",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "description",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                        </tr>
-                                    </thead>
                                     {/* thead with sort */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">

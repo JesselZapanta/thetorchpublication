@@ -56,7 +56,7 @@ class AdminAcademicYearController extends Controller
 
         AcademicYear::create($data);
 
-        return to_route('academic-year.index')->with('success', 'Academic Year is Added Succssfully');
+        return to_route('academic-year.index')->with(['success' => 'Academic Year is Added Succssfully']);
     }
 
     /**
@@ -90,7 +90,7 @@ class AdminAcademicYearController extends Controller
 
         $academicYear->update($data);
 
-        return to_route('academic-year.index')->with('success', 'Academic Year is Updated Succssfully');
+        return to_route('academic-year.index')->with(['success' => 'Academic Year is Updated Succssfully']);
     }
 
     /**
@@ -100,11 +100,11 @@ class AdminAcademicYearController extends Controller
     {
         // Check if the academicYear has any associated articles
         if ($academicYear->articles()->exists()) {
-            return to_route('academic-year.index')->with('error', 'Unable to delete Academic Year because it has associated articles.');
+            return to_route('academic-year.index')->with(['error' => 'Unable to delete Academic Year because it has associated articles.']);
         }
 
         $academicYear->delete();
 
-        return to_route('academic-year.index')->with('success', 'Academic Year Deleted Successfully');
+        return to_route('academic-year.index')->with(['success' => 'Academic Year Deleted Successfully']);
     }
 }

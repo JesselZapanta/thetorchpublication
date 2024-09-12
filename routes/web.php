@@ -93,8 +93,10 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::resource('word', AdminWordController::class);
     Route::resource('academic-year', AdminAcademicYearController::class);
     
-    Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])
-    ->name('newsletter.distribute');
+    Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
+    Route::post('/newsletter-articles/{id}/add-article', [AdminNewsletterController::class, 'addArticle'])->name('newsletter.add-article');
+    Route::post('/newsletter-articles/{id}/remove-article', [AdminNewsletterController::class, 'removeArticle'])->name('newsletter.remove-article');
+    Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])->name('newsletter.distribute');
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
     Route::resource('newsletter', AdminNewsletterController::class);
 
@@ -118,7 +120,7 @@ Route::middleware(['auth','admin', ])->group(function() {
 
 
     Route::get('/admin-review-report-freedom-wall', [AdminReviewReport::class, 'freedomWall'])->name('admin-review-report-freedom-wall.index');
-    Route::get('/admin-review-report-freedom-wall/{id}/show', [AdminReviewReport::class, 'showFreeomWall'])->name('admin-review-report-freedom-wall.show');
+    Route::get('/admin-review-report-freedom-wall/{id}/show', [AdminReviewReport::class, 'showFreedomWall'])->name('admin-review-report-freedom-wall.show');
     Route::post('/admin-review-report-freedom-wall/{id}/hide', [AdminReviewReport::class, 'hideFreedomWall'])->name('admin-review-report-freedom-wall.hide');
     Route::post('/admin-review-report-freedom-wall/{id}/restore', [AdminReviewReport::class, 'restoreFreedomWall'])->name('admin-review-report-freedom-wall.restore');
     Route::post('/admin-review-report-freedom-wall/{id}/reject', [AdminReviewReport::class, 'rejectFreedomWallReport'])->name('admin-review-report-freedom-wall.reject');

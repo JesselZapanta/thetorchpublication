@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\JobResource;
 use App\Http\Resources\NewsletterResource;
 use App\Jobs\SendNewsletterEmail;
 use App\Mail\NewsletterMail;
 use App\Models\AcademicYear;
+use App\Models\Article;
+use App\Models\Category;
 use App\Models\Job;
 use App\Models\Newsletter;
 use App\Http\Requests\StoreNewsletterRequest;
@@ -209,5 +213,79 @@ class AdminNewsletterController extends Controller
             'jobs' => JobResource::collection($jobs),
         ]);
     }
-}
+    
+    public function SelectArticles()
+    {
+        $query = Article::query();
+        $categories = Category::all();
+        $academicYears = AcademicYear::all();
 
+        $sortField = request('sort_field', 'published_date');
+        $sortDirection = request('sort_direction', 'desc');
+        
+        
+        if(request('title')){
+            $query->where('title', 'like', '%'. request('title') . '%');
+        }
+
+        if(request('is_newsletter')){
+            $query->where('is_newsletter', 'like', '%'. request('is_newsletter') . '%');
+        }
+
+        //category
+        if (request('category')) {
+            // Join with the users table to search by name
+            $query->whereHas('category', function ($q) {
+                $q->where('name', 'like', '%' . request('category') . '%');
+            });
+        }
+
+        // academic_year_id sort
+        if (request('academic_year_id')) {
+            // Join with the academicYear table to search by name
+            $query->whereHas('academicYear', function ($q) {
+                $q->where('code', 'like', '%' . request('academic_year_id') . '%');
+            });
+        }
+
+    
+        $articles = $query->orderBy($sortField, $sortDirection)
+                        ->where('status', 'published')
+                        ->where('visibility', 'visible')
+                        ->paginate(10)
+                        ->onEachSide(1);
+
+        return inertia('Admin/Newsletter/Article', [
+            'articles' => ArticleResource::collection($articles),
+            'categories' => CategoryResource::collection($categories),
+            'academicYears' => AcademicYearResource::collection($academicYears),
+            'queryParams' => request()->query() ? : null,
+        ]);
+    }
+
+    public function addArticle($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        $article->update(['is_newsletter' => 'yes']);
+
+        return to_route('newsletter.articles')->with(['success' => 'Article is added to Newsletter']);
+    }
+    public function removeArticle($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        $article->update(['is_newsletter' => 'no']);
+
+        return to_route('newsletter.articles')->with(['success' => 'Article is remove to Newsletter']);
+    }
+
+}

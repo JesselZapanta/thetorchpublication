@@ -47,19 +47,38 @@ export default function Index({
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
-        if (value) {
-            queryParams[name] = value;
+        if (value === "") {
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(route("newsletter.index"), queryParams, {
+                preserveState: true,
+            }); // Fetch all data when search is empty
         } else {
-            delete queryParams[name];
+            queryParams[name] = value; // Set query parameter
         }
-
-        router.get(route("newsletter.index"), queryParams);
     };
 
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("newsletter.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(route("newsletter.index"), queryParams, {
+                    preserveState: true,
+                });
+            }
+        }
     };
 
     const sortChanged = (name) => {
@@ -212,42 +231,32 @@ export default function Index({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="flex justify-between gap-2">
+                                <div className="w-full lg:w-[50%] gap-2">
+                                    <TextInput
+                                        className="w-full"
+                                        defaultValue={queryParams.description}
+                                        placeholder="Search Newsletter"
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "description",
+                                                e.target.value
+                                            )
+                                        }
+                                        onKeyPress={(e) =>
+                                            onKeyPressed("description", e)
+                                        }
+                                    />
+                                </div>
+                                <Link
+                                    href={route("newsletter.articles")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Select Articles
+                                </Link>
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.description
-                                                    }
-                                                    placeholder="Search Newsletter"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "description",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "description",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                        </tr>
-                                    </thead>
                                     {/* Thead with sorting*/}
                                     {/* added */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -426,7 +435,7 @@ export default function Index({
             <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
-                        {newsletter ? "Edit Wewsletter" : "Add New Wewsletter"}
+                        {newsletter ? "Edit Newsletter" : "Add New Newsletter"}
                     </h2>
 
                     <form onSubmit={onSubmit} className="mt-4">

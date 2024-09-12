@@ -115,23 +115,6 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
         }
     };
 
-    // const [confirmDelete, setConfirmDelete] = useState(false);
-
-    // const [article, setArticle] = useState(null); // For storing the article to edit/delete
-    // const openDeleteModal = (article) => {
-    //     setArticle(article);
-    //     setConfirmDelete(true);
-    // };
-
-    // Handle delete and close modal
-    // const handleDelete = () => {
-    //     if (article) {
-    //         router.post(route("admin-review-report-article.hide", article.id));
-    //     }
-    //     setConfirmDelete(false);
-    //     setArticle(null);
-    // };
-
     //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
@@ -248,64 +231,42 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="w-full flex gap-2">
+                                <div className="w-full">
+                                    <TextInput
+                                        className="w-full"
+                                        defaultValue={queryParams.title}
+                                        placeholder="Search Article Title"
+                                        onKeyPress={(e) =>
+                                            onKeyPressed("title", e)
+                                        } // Trigger search on Enter key
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "title",
+                                                e.target.value
+                                            )
+                                        } // Clear or update query param
+                                    />
+                                </div>
+                                <div className="w-[40%]">
+                                    <SelectInput
+                                        className="w-full"
+                                        defaultValue={queryParams.visibility}
+                                        onChange={(e) =>
+                                            handleSelectChange(
+                                                "visibility",
+                                                e.target.value
+                                            )
+                                        } // Trigger request on visibility change
+                                    >
+                                        <option value="">Visibility</option>
+                                        <option value="visible">Visible</option>
+                                        <option value="hidden">Hidden</option>
+                                    </SelectInput>
+                                </div>
+                            </div>
+                            <div className="overflow-auto mt-3">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3 w-[70%]"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.title
-                                                    }
-                                                    placeholder="Search Article Title"
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("title", e)
-                                                    } // Trigger search on Enter key
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "title",
-                                                            e.target.value
-                                                        )
-                                                    } // Clear or update query param
-                                                />
-                                            </th>
-
-                                            <th
-                                                className="px-3 py-3 w-[30%]"
-                                                colSpan="3"
-                                            >
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.visibility
-                                                    }
-                                                    onChange={(e) =>
-                                                        handleSelectChange(
-                                                            "visibility",
-                                                            e.target.value
-                                                        )
-                                                    } // Trigger request on visibility change
-                                                >
-                                                    <option value="">
-                                                        Visibility
-                                                    </option>
-                                                    <option value="visible">
-                                                        Visible
-                                                    </option>
-                                                    <option value="hidden">
-                                                        Hidden
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            {/* <th className="px-3 py-3"></th> */}
-                                            {/* <th className="px-3 py-3"></th> */}
-                                        </tr>
-                                    </thead>
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
@@ -467,25 +428,6 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                     </div>
                 </div>
             </div>
-            {/* Confirm Delete Modal */}
-            {/* <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
-                    <p className="mt-4">
-                        Are you sure you want to delete this Article?
-                    </p>
-                    <div className="mt-4 flex justify-end">
-                        <SecondaryButton
-                            onClick={() => setConfirmDelete(false)}
-                        >
-                            Cancel
-                        </SecondaryButton>
-                        <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
-                        </DangerButton>
-                    </div>
-                </div>
-            </Modal> */}
             {/* Confirm Modal */}
             <Modal
                 show={confirmAction.show}

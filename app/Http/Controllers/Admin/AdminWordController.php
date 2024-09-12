@@ -38,7 +38,6 @@ class AdminWordController extends Controller
         return inertia('Admin/Word/Index', [
             'words' => WordResource::collection($words),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
         ]);
     }
 
@@ -59,7 +58,7 @@ class AdminWordController extends Controller
         
         Word::create($data);
 
-        return to_route('word.index')->with('success', 'Word is Added Succssfully');
+        return to_route('word.index')->with(['success' => 'Word is Added Succssfully']);
     }
 
     /**
@@ -87,7 +86,7 @@ class AdminWordController extends Controller
         
         $word->update($data);
 
-        return to_route('word.index')->with('success', 'Word is Updated Succssfully');
+        return to_route('word.index')->with(['success' => 'Word is Updated Succssfully']);
     }
 
     /**
@@ -98,6 +97,6 @@ class AdminWordController extends Controller
         // Delete the Word
         $word->delete();
 
-        return to_route('word.index')->with('success', 'Deleted Successfully');
+        return to_route('word.index')->with(['success' => 'Deleted Successfully']);
     }
 }

@@ -1,6 +1,7 @@
 import AlertError from "@/Components/AlertError";
 import AlertSuccess from "@/Components/AlertSuccess";
-import DangerButton from "@/Components/DangerButton";
+import Checkbox from "@/Components/Checkbox";
+import ConfirmButton from "@/Components/ConfirmButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -38,7 +39,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("admin-article.index"), queryParams, {
+            router.get(route("newsletter.articles"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -55,7 +56,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("admin-article.index"),
+                    route("newsletter.articles"),
                     {},
                     {
                         preserveState: true,
@@ -63,7 +64,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("admin-article.index"), queryParams, {
+                router.get(route("newsletter.articles"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -73,7 +74,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("admin-article.index"), queryParams, {
+        router.get(route("newsletter.articles"), queryParams, {
             preserveState: true,
         });
     };
@@ -89,26 +90,7 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-article.index"), queryParams);
-    };
-
-    // Open modal and set article to delete
-
-    const [confirmDelete, setConfirmDelete] = useState(false);
-
-    const [article, setArticle] = useState(null); // For storing the article to edit/delete
-    const openDeleteModal = (article) => {
-        setArticle(article);
-        setConfirmDelete(true);
-    };
-
-    // Handle delete and close modal
-    const handleDelete = () => {
-        if (article) {
-            router.delete(route("admin-article.destroy", article.id));
-        }
-        setConfirmDelete(false);
-        setArticle(null);
+        router.get(route("newsletter.articles"), queryParams);
     };
 
     //text limit
@@ -117,6 +99,63 @@ export default function Index({
             return text.slice(0, limit) + "...";
         }
         return text;
+    };
+
+    //delete report and removeArticle article and addArticle
+    const [confirmAction, setConfirmAction] = useState({
+        type: "", // 'delete', 'removeArticle', or 'report'
+        article: null,
+        show: false,
+    });
+
+    const openActionModal = (article, actionType) => {
+        setConfirmAction({
+            type: actionType, // 'delete', 'removeArticle', or 'report'
+            article: article,
+            show: true,
+        });
+    };
+
+    const handleAction = () => {
+        if (confirmAction.article) {
+            switch (confirmAction.type) {
+                case "removeArticle":
+                    router.post(
+                        route(
+                            "newsletter.remove-article",
+                            confirmAction.article.id
+                        ),
+                        {
+                            preserveScroll: true,
+                            preserveState: true, 
+                        }
+                    );
+                    break;
+                case "addArticle":
+                    router.post(
+                        route(
+                            "newsletter.add-article",
+                            confirmAction.article.id
+                        ),
+                        {
+                            preserveScroll: true,
+                            preserveState: true, 
+                        }
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+        setConfirmAction({ type: "", article: null, show: false });
+    };
+
+    const removeArticle = (article) => {
+        openActionModal(article, "removeArticle");
+    };
+
+    const isNewsleter = (article) => {
+        openActionModal(article, "addArticle");
     };
 
     return (
@@ -128,12 +167,9 @@ export default function Index({
                         List of Articles
                     </h2>
                     <div className="flex gap-4">
-                        <Link
-                            href={route("admin-article.create")}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                        >
-                            Create New
-                        </Link>
+                        <SecondaryButton href={route("newsletter.index")}>
+                            Back
+                        </SecondaryButton>
                     </div>
                 </div>
             }
@@ -149,23 +185,6 @@ export default function Index({
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
-                                    <div className="w-full">
-                                        <SelectInput
-                                            className="w-full"
-                                            defaultValue={queryParams.myArticle}
-                                            onChange={(e) =>
-                                                handleSelectChange(
-                                                    "myArticle",
-                                                    e.target.value
-                                                )
-                                            }
-                                        >
-                                            <option value="">All</option>
-                                            <option value="myArticle">
-                                                My Article
-                                            </option>
-                                        </SelectInput>
-                                    </div>
                                     <div className="w-full">
                                         <SelectInput
                                             className="w-full"
@@ -215,21 +234,17 @@ export default function Index({
                                     <div className="w-full">
                                         <SelectInput
                                             className="w-full"
-                                            defaultValue={queryParams.status}
+                                            defaultValue={queryParams.category}
                                             onChange={(e) =>
                                                 handleSelectChange(
-                                                    "status",
+                                                    "is_newsletter",
                                                     e.target.value
                                                 )
                                             }
                                         >
-                                            <option value="">Status</option>
-                                            <option value="edited">
-                                                Edited
-                                            </option>
-                                            <option value="published">
-                                                Published
-                                            </option>
+                                            <option value="">Is Newsletter</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
                                         </SelectInput>
                                     </div>
                                 </div>
@@ -252,35 +267,6 @@ export default function Index({
                             </div>
                             <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
-                                    {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            
-                                            
-
-                                           
-                                            <th className="px-3 py-3 w-[50%]">
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.title
-                                                    }
-                                                    placeholder="Search Article Title"
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "title",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("title", e)
-                                                    }
-                                                />
-                                            </th>
-                                           
-                                            <th className="px-3 py-3 w-[10%]"></th>
-                                        </tr>
-                                    </thead> */}
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
@@ -322,18 +308,6 @@ export default function Index({
                                                 Category
                                             </TableHeading>
                                             <TableHeading
-                                                name="status"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Status
-                                            </TableHeading>
-                                            <TableHeading
                                                 name="title"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -345,10 +319,31 @@ export default function Index({
                                             >
                                                 Title
                                             </TableHeading>
+                                            <TableHeading
+                                                name="published_date"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Published Date
+                                            </TableHeading>
 
-                                            <th className="px-3 py-3">
-                                                Action
-                                            </th>
+                                            <TableHeading
+                                                name="is_newsletter"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Is Newsletter
+                                            </TableHeading>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -391,9 +386,7 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         {article.category.name}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
-                                                        {article.status}
-                                                    </td>
+
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline w-[50%]">
                                                         <Link
                                                             // added
@@ -409,27 +402,37 @@ export default function Index({
                                                             )}
                                                         </Link>
                                                     </th>
-
                                                     <td className="px-3 py-2 text-nowrap w-[10%]">
-                                                        <Link
-                                                            href={route(
-                                                                "admin-article.edit",
-                                                                article.id
-                                                            )}
-                                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                                                        >
-                                                            Edit
-                                                        </Link>
-                                                        <button
-                                                            onClick={() =>
-                                                                openDeleteModal(
-                                                                    article
-                                                                )
-                                                            }
-                                                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                        >
-                                                            Delete
-                                                        </button>
+                                                        {article.published_date}
+                                                    </td>
+
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {article.is_newsletter !==
+                                                            "no" && (
+                                                            <button
+                                                                onClick={() =>
+                                                                    removeArticle(
+                                                                        article
+                                                                    )
+                                                                }
+                                                                className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
+                                                            >
+                                                                Yes
+                                                            </button>
+                                                        )}
+                                                        {article.is_newsletter !==
+                                                            "yes" && (
+                                                            <button
+                                                                onClick={() =>
+                                                                    isNewsleter(
+                                                                        article
+                                                                    )
+                                                                }
+                                                                className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
+                                                            >
+                                                                NO
+                                                            </button>
+                                                        )}
                                                     </td>
                                                 </tr>
                                             ))
@@ -454,22 +457,40 @@ export default function Index({
                     </div>
                 </div>
             </div>
-            {/* Confirm Delete Modal */}
-            <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
+            {/* Confirm Modal */}
+            <Modal
+                show={confirmAction.show}
+                onClose={() =>
+                    setConfirmAction({ ...confirmAction, show: false })
+                }
+            >
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">
+                        {confirmAction.type === "removeArticle"
+                            ? "Remove this article to newsletter?"
+                            : "Add this article to newsletter?"}
+                    </h2>
                     <p className="mt-4">
-                        Are you sure you want to delete this Article?
+                        {confirmAction.type === "removeArticle"
+                            ? "Are you sure you want to remove this article?"
+                            : "Are you sure you want to add this article?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
-                            onClick={() => setConfirmDelete(false)}
+                            onClick={() =>
+                                setConfirmAction({
+                                    ...confirmAction,
+                                    show: false,
+                                })
+                            }
                         >
                             Cancel
                         </SecondaryButton>
-                        <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
-                        </DangerButton>
+                        <ConfirmButton onClick={handleAction} className="ml-2">
+                            {confirmAction.type === "removeArticle"
+                                ? "Remove"
+                                : "Add"}
+                        </ConfirmButton>
                     </div>
                 </div>
             </Modal>

@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
@@ -9,32 +7,68 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Index({
-    auth,
-    users,
-    queryParams = null,
-}) {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+export default function Index({ auth, users, queryParams = null, flash }) {
+    // Display flash messages if they exist
+    useEffect(() => {
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [user, setUser] = useState(null); // For storing the user to edit/delete
 
     // Sort and Search
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
-        if (value) {
-            queryParams[name] = value;
+        if (value === "") {
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(route("user.index"), queryParams, {
+                preserveState: true,
+            }); // Fetch all data when search is empty
         } else {
-            delete queryParams[name];
+            queryParams[name] = value; // Set query parameter
         }
-
-        router.get(route("user.index"), queryParams);
     };
 
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("user.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(route("user.index"), queryParams, {
+                    preserveState: true,
+                });
+            }
+        }
+    };
+
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("user.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     const sortChanged = (name) => {
@@ -51,7 +85,7 @@ export default function Index({
         router.get(route("user.index"), queryParams);
     };
 
-    // Open modal and set category to delete
+    // Open modal and set User to delete
     const openDeleteModal = (user) => {
         setUser(user);
         setConfirmDelete(true);
@@ -66,10 +100,6 @@ export default function Index({
         setConfirmDelete(false);
         setUser(null);
     };
-
-    //Flash alerts
-    const { flash } = usePage().props;
-
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -90,123 +120,104 @@ export default function Index({
             }
         >
             <Head title="Users" />
-            {/* {<pre>{JSON.stringify(users, null, 2)}</pre>} */}
-            {/* Alert */}
 
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
+            <ToastContainer position="bottom-right" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            {/* sort and search */}
+                            <div className="w-full grid lg:grid-cols-2 gap-2">
+                                <div className="flex gap-2">
+                                    <div className="w-full">
+                                        <TextInput
+                                            className="w-full"
+                                            defaultValue={
+                                                queryParams.student_id
+                                            }
+                                            placeholder="Search Student ID"
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "student_id",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("student_id", e)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="w-full">
+                                        <TextInput
+                                            className="w-full"
+                                            defaultValue={queryParams.name}
+                                            placeholder="Search Name"
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "name",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("name", e)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="w-full">
+                                        <TextInput
+                                            className="w-full"
+                                            defaultValue={queryParams.email}
+                                            placeholder="Search Email"
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "email",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("email", e)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.role}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "role",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select Role
+                                            </option>
+                                            <option value="student">
+                                                Student
+                                            </option>
+                                            <option value="student_contributor">
+                                                Student Contributor
+                                            </option>
+                                            <option value="admin">Admin</option>
+                                            <option value="editor">
+                                                Editor
+                                            </option>
+                                            <option value="writer">
+                                                Writer
+                                            </option>
+                                            <option value="designer">
+                                                Designer
+                                            </option>
+                                        </SelectInput>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th className="px-3 py-3"></th>
-                                            {/* <th className="px-3 py-3"></th> */}
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.student_id
-                                                    }
-                                                    placeholder="Search Student ID"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "student_id",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "student_id",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.name
-                                                    }
-                                                    placeholder="Search Name"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "name",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("name", e)
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.email
-                                                    }
-                                                    placeholder="Search Email"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "email",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("email", e)
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.role
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "role",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Select Role
-                                                    </option>
-                                                    <option value="student">
-                                                        Student
-                                                    </option>
-                                                    <option value="student_contributor">
-                                                        Student Contributor
-                                                    </option>
-                                                    <option value="admin">
-                                                        Admin
-                                                    </option>
-                                                    <option value="editor">
-                                                        Editor
-                                                    </option>
-                                                    <option value="writer">
-                                                        Writer
-                                                    </option>
-                                                    <option value="designer">
-                                                        Designer
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3"></th>
-                                        </tr>
-                                    </thead>
                                     {/* Thead with sorting*/}
                                     {/* added */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">

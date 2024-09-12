@@ -41,7 +41,9 @@ class ArticleResource extends JsonResource
             'category_id' => $this->category_id,
 
             // 'published_date' => (new Carbon($this->published_date))->format('Y-m-d'),
-            'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : null,
+            // 'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : null,
+            'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('F j, Y') : null,
+
 
             
             'academic_year_id' => $this->academic_year_id,
@@ -60,6 +62,8 @@ class ArticleResource extends JsonResource
             'average_rating' => $averageRating ? round($averageRating) : 0,
             'report_count' => $this->report_count,
             'visibility' => $this->visibility,
+            
+            'is_newsletter' => $this->is_newsletter,
         ];
     }
 }

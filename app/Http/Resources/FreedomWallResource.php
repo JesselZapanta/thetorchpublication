@@ -20,7 +20,8 @@ class FreedomWallResource extends JsonResource
             'id' => $this->id,
             'body' => $this->body,
             'emotion' => $this->emotion,
-            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
+            // 'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
+            'created_at' => (new Carbon($this->created_at))->format('F j, Y'),
 
             'likes_count' => $this->likes()->count(),
             'dislikes_count' => $this->dislikes()->count(),

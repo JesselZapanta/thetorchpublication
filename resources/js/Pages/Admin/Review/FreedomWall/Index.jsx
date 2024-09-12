@@ -243,63 +243,42 @@ export default function Index({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="w-full flex gap-2">
+                                <div className="w-full">
+                                    <TextInput
+                                        className="w-full"
+                                        defaultValue={queryParams.body}
+                                        placeholder="Search Freedom Wall"
+                                        onKeyPress={(e) =>
+                                            onKeyPressed("body", e)
+                                        }
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "body",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div className="w-[40%]">
+                                    <SelectInput
+                                        className="w-full"
+                                        defaultValue={queryParams.visibility}
+                                        onChange={(e) =>
+                                            handleSelectChange(
+                                                "visibility",
+                                                e.target.value
+                                            )
+                                        } 
+                                    >
+                                        <option value="">Visibility</option>
+                                        <option value="visible">Visible</option>
+                                        <option value="hidden">Hidden</option>
+                                    </SelectInput>
+                                </div>
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3 w-[70%]"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.body
-                                                    }
-                                                    placeholder="Search Freedom Wall"
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("body", e)
-                                                    } // Trigger search on Enter key
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "body",
-                                                            e.target.value
-                                                        )
-                                                    } // Clear or update query param
-                                                />
-                                            </th>
-
-                                            <th
-                                                className="px-3 py-3 w-[30%]"
-                                                colSpan="3"
-                                            >
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.visibility
-                                                    }
-                                                    onChange={(e) =>
-                                                        handleSelectChange(
-                                                            "visibility",
-                                                            e.target.value
-                                                        )
-                                                    } // Trigger request on visibility change
-                                                >
-                                                    <option value="">
-                                                        Visibility
-                                                    </option>
-                                                    <option value="visible">
-                                                        Visible
-                                                    </option>
-                                                    <option value="hidden">
-                                                        Hidden
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            {/* <th className="px-3 py-3"></th> */}
-                                            {/* <th className="px-3 py-3"></th> */}
-                                        </tr>
-                                    </thead>
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
