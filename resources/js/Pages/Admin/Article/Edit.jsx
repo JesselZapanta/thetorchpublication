@@ -13,10 +13,10 @@ import { useEffect, useState } from "react";
 export default function Edit({ auth, article, categories, activeAy }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
-        academic_year_id: article.academic_year_id || "", 
-        author: article.author || "", 
+        academic_year_id: article.academic_year_id || "",
+        author: article.author || "",
         title: article.title || "",
-        excerpt: article.excerpt || "", 
+        excerpt: article.excerpt || "",
         body: article.body || "",
         status: article.status || "",
         revision_message: article.revision_message || "",
@@ -25,7 +25,9 @@ export default function Edit({ auth, article, categories, activeAy }) {
         article_image_path: "",
         is_featured: article.is_featured || "",
         is_anonymous: article.is_anonymous || "",
-        published_date: article.published_date || "",
+        published_date: article.published_date
+            ? new Date(article.published_date).toISOString().split("T")[0] // Format date correctly
+            : "",
         _method: "PUT",
     });
 
@@ -36,7 +38,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
             setData("published_date", today);
         }
     }, [data.status, setData]); // Run effect when status changes
-    
+
     const onSubmit = () => {
         post(route("admin-article.update", article.id));
     };

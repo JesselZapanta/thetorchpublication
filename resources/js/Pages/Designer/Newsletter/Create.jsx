@@ -56,7 +56,7 @@ export default function Create({ auth }) {
                                 <InputLabel
                                     htmlFor="description"
                                     value="Newsletter Description"
-                                />
+                                />  
 
                                 <TextInput
                                     id="description"
