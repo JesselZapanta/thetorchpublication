@@ -44,7 +44,20 @@ class AdminNewsletterController extends Controller
             $query->where('status', request('status'));
         }
 
-        $newsletters = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        // $newsletters = $query->orderBy($sortField, $sortDirection)
+        //                     ->whereNot('status', 'revision')
+        //                     ->paginate(10)
+        //                     ->onEachSide(1);
+
+        $newsletters = $query->whereIn('status', ['pending', 'distributed'])
+                                ->where(function($query) {
+                                    $query->where('layout_by', auth()->user()->id)
+                                        ->orWhere('layout_by', '!=', auth()->user()->id);
+                                })
+                                ->orderBy($sortField, $sortDirection)
+                                ->paginate(10)
+                                ->onEachSide(1);
+
 
         return inertia('Admin/Newsletter/Index', [
             'newsletters' => NewsletterResource::collection($newsletters),
@@ -171,9 +184,22 @@ class AdminNewsletterController extends Controller
         return to_route('newsletter.index')->with(['success' => 'Deleted Successfully']);
     }
 
+    public function distributeIndex($id)
+    {
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return to_route('newsletter.index')->with(['error' => 'Article not Found']);
+        }
+
+        return inertia('Admin/Newsletter/Distribute', [
+            'newsletter' => new NewsletterResource($newsletter),
+        ]);
+    }
+
     public function distributeNewsletter(Request $request, Newsletter $newsletter)
     {
-        // dd($request);
+        // dd($newsletter);
         // Validate the message and password
         $request->validate([
             'message' => 'required|string',
@@ -185,6 +211,14 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
         }
 
+        //check if the newsletter status if it is approved
+        // Check if the newsletter status is approved
+        if ($newsletter->status !== 'approved') {
+            return to_route('newsletter.index')->with(['error' => 'Newsletter has not been approved for distribution.']);
+        }
+
+        $newsletter->update(['status' => 'distributed']);
+
          // Get all user emails
         $users = User::pluck('email');
 
@@ -193,7 +227,7 @@ class AdminNewsletterController extends Controller
             SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
         }
 
-        return redirect()->back()->with(['success' => 'Newsletter queued successfully. Distribution will begin shortly.']);
+        return to_route('newsletter.index')->with(['success' => 'Newsletter queued successfully. Distribution will begin shortly.']);
     }
 
     public function jobIndex()
@@ -255,6 +289,20 @@ class AdminNewsletterController extends Controller
             'queryParams' => request()->query() ? : null,
         ]);
     }
+
+    public function articleShow($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        return inertia('Admin/Newsletter/Show', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
 
     public function addArticle($id)
     {

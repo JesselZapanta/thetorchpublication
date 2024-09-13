@@ -266,6 +266,10 @@ export default function Index({
                                             </TableHeading>
 
                                             <th className="px-3 py-3">
+                                                Distritute
+                                            </th>
+
+                                            <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
@@ -321,7 +325,7 @@ export default function Index({
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.status !==
+                                                            {/* {newsletter.status !==
                                                                 "distributed" && (
                                                                 <button
                                                                     onClick={() =>
@@ -333,7 +337,18 @@ export default function Index({
                                                                 >
                                                                     Distribute
                                                                 </button>
-                                                            )}
+                                                            )} */}
+                                                            <Link
+                                                                href={route(
+                                                                    "distribute.index",
+                                                                    newsletter.id
+                                                                )}
+                                                                className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline mx-1"
+                                                            >
+                                                                Distribute
+                                                            </Link>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
                                                             <Link
                                                                 href={route(
                                                                     "newsletter.edit",

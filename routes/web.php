@@ -96,8 +96,10 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::resource('academic-year', AdminAcademicYearController::class);
     
     Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
+    Route::get('/newsletter-articles/{id}/show', [AdminNewsletterController::class, 'articleShow'])->name('admin-newsletter.article-show');
     Route::post('/newsletter-articles/{id}/add-article', [AdminNewsletterController::class, 'addArticle'])->name('newsletter.add-article');
     Route::post('/newsletter-articles/{id}/remove-article', [AdminNewsletterController::class, 'removeArticle'])->name('newsletter.remove-article');
+    Route::get('/newsletter-distribute/{id}/', [AdminNewsletterController::class, 'distributeIndex'])->name('distribute.index');
     Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])->name('newsletter.distribute');
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
     Route::resource('newsletter', AdminNewsletterController::class);
@@ -152,8 +154,11 @@ Route::middleware(['auth', 'designer'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     // Route::resource('writer-article', WriterArticleController::class);
 
+    Route::get('/designer-newsletter-articles/{id}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
+    Route::post('/designer-newsletter-articles/{id}/is-layout', [DesignerNewsletterController::class, 'isLayout'])->name('designer-newsletter.is-layout');
+    Route::post('/designer-newsletter-articles/{id}/not-layout', [DesignerNewsletterController::class, 'notLayout'])->name('designer-newsletter.not-layout');
+    Route::get('/designer-newsletter-articles', [DesignerNewsletterController::class, 'SelectArticles'])->name('designer-newsletter.articles');
     Route::resource('designer-newsletter', DesignerNewsletterController::class);
-
 });
 
 

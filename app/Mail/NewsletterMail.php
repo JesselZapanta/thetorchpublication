@@ -43,13 +43,13 @@ class NewsletterMail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath(storage_path('app/public/' . $this->newsletter->newsletter_file_path))
-                ->as('newsletter.pdf')
-                ->withMime('application/pdf'),
+            // Attachment::fromPath(storage_path('app/public/' . $this->newsletter->newsletter_file_path))
+            //     ->as('newsletter.pdf')
+            //     ->withMime('application/pdf'),
 
-            Attachment::fromPath(storage_path('app/public/' . $this->newsletter->newsletter_thumbnail_image_path))
-                ->as('newsletter_thumbnail.jpg')
-                ->withMime('image/jpeg'),
+            // Attachment::fromPath(storage_path('app/public/' . $this->newsletter->newsletter_thumbnail_image_path))
+            //     ->as('newsletter_thumbnail.jpg')
+            //     ->withMime('image/jpeg'),
         ];
     }
 }

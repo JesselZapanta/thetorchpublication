@@ -246,16 +246,18 @@ export default function ReadArticle({ auth, article, categories, comments }) {
                                         articleId={article.id}
                                         isAuthenticated={isAuthenticated}
                                     />
-                                    <div className="mt-4">
-                                        <button
-                                            className="px-2 bg-rose-400 text-white transition-all duration-300 rounded hover:bg-rose-500"
-                                            onClick={() =>
-                                                openReportModal(article)
-                                            }
-                                        >
-                                            Report
-                                        </button>
-                                    </div>
+                                    {auth.user && (
+                                        <div className="mt-4">
+                                            <button
+                                                className="px-2 bg-rose-400 text-white transition-all duration-300 rounded hover:bg-rose-500"
+                                                onClick={() =>
+                                                    openReportModal(article)
+                                                }
+                                            >
+                                                Report
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="w-full h-[2px] bg-indigo-400 my-8"></div>

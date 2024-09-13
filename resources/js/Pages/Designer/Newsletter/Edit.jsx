@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react'
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import React, { useState } from 'react'
 import InputLabel from '@/Components/InputLabel';
 import SelectInput from '@/Components/SelectInput';
@@ -9,9 +9,8 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 import TextAreaInput from '@/Components/TextAreaInput';
 
-export default function Edit({ auth, activeAy, newsletter }) {
+export default function Edit({ auth, newsletter }) {
     const { data, setData, post, errors } = useForm({
-        academic_year_id: newsletter.academic_year_id || "",
         description: newsletter.description || "",
         newsletter_thumbnail_image_path: "",
         newsletter_file_path: "",
@@ -21,7 +20,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
     });
 
     const onSubmit = () => {
-        post(route("newsletter.update", newsletter.id));
+        post(route("designer-newsletter.update", newsletter.id));
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -36,7 +35,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <DesignerAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -47,6 +46,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
             }
         >
             <Head title="Edit Newsletter" />
+
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {newsletter.revision_message && (
@@ -75,6 +75,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
                             </div>
                         </div>
                     )}
+
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {newsletter.newsletter_file_path && (
                             <div className="w-full h-[400px]">
@@ -89,104 +90,6 @@ export default function Edit({ auth, activeAy, newsletter }) {
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
                         >
-                            <div className="flex gap-2">
-                                {/* AY */}
-                                <div className="w-full">
-                                    <InputLabel
-                                        htmlFor="academic_year_id"
-                                        value="Select Academic Year"
-                                    />
-
-                                    <SelectInput
-                                        name="academic_year_id"
-                                        id="academic_year_id"
-                                        value={data.academic_year_id}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData(
-                                                "academic_year_id",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a Academic Year
-                                        </option>
-                                        {activeAy.data.map((ay) => (
-                                            <option key={ay.id} value={ay.id}>
-                                                {ay.description}
-                                            </option>
-                                        ))}
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.academic_year_id}
-                                        className="mt-2"
-                                    />
-                                </div>
-                                {/* Status */}
-                                <div className="w-full">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Category status"
-                                    />
-
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a status
-                                        </option>
-                                        <option value="pending">Pending</option>
-                                        <option value="revision">
-                                            Revision
-                                        </option>
-                                        <option value="approved">
-                                            Approved
-                                        </option>
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* revision_message */}
-                            {data.status === "revision" && (
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="revision_message"
-                                        value="Revision Message"
-                                    />
-
-                                    <TextAreaInput
-                                        id="revision_message"
-                                        type="text"
-                                        name="revision_message"
-                                        value={data.revision_message}
-                                        className="mt-2 block w-full min-h-24"
-                                        onChange={(e) =>
-                                            setData(
-                                                "revision_message",
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.revision_message}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
                             {/* description */}
                             <div className="mt-4">
                                 <InputLabel
@@ -270,7 +173,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("newsletter.index")}
+                                    href={route("designer-newsletter.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -309,6 +212,6 @@ export default function Edit({ auth, activeAy, newsletter }) {
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

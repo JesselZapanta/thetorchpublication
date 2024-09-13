@@ -14,7 +14,7 @@ export default function RatingComponent({ articleId, isAuthenticated }) {
         hoverColor: "gold",
         ratedColor: "green",
         averageColor: "blue",
-        unauthenticatedColor: "red",
+        unauthenticatedColor: "indigo",
         defaultColor: "gray",
     };
 

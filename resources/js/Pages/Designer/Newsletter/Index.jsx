@@ -192,7 +192,7 @@ export default function Index({
                                     />
                                 </div>
                                 <Link
-                                    href={route("newsletter.articles")}
+                                    href={route("designer-newsletter.articles")}
                                     className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     View Articles
@@ -317,7 +317,7 @@ export default function Index({
                                                         <td className="px-3 py-2 text-nowrap">
                                                             <Link
                                                                 href={route(
-                                                                    "newsletter.edit",
+                                                                    "designer-newsletter.edit",
                                                                     newsletter.id
                                                                 )}
                                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"

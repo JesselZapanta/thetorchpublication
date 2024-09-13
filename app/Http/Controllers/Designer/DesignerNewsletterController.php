@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Designer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Designer\DesignerStoreNewsletterRequest;
+use App\Http\Requests\Designer\DesignerUpdateNewsletterRequest;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Resources\AcademicYearResource;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\NewsletterResource;
 use App\Models\AcademicYear;
+use App\Models\Article;
+use App\Models\Category;
 use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DesignerNewsletterController extends Controller
 {
@@ -105,17 +111,53 @@ class DesignerNewsletterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Newsletter $designer_newsletter)
     {
-        //
+        return inertia('Designer/Newsletter/Edit', [
+            'newsletter' => new NewsletterResource($designer_newsletter)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DesignerUpdateNewsletterRequest $request, Newsletter $designer_newsletter)
     {
-        //
+        $data = $request->validated();
+
+        // dd($data['newsletter_file_path']);
+        $image = $data['newsletter_thumbnail_image_path'];
+        $pdfFile = $data['newsletter_file_path'];
+
+        if ($image) {
+            // Delete the old image file if a new one is uploaded
+            if ($designer_newsletter->newsletter_thumbnail_image_path) {
+                Storage::disk('public')->delete($designer_newsletter->newsletter_thumbnail_image_path);
+            }
+            // Store the new image directly under the 'newsletter/' directory
+            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+        } else {
+            // If no new image is uploaded, keep the existing image
+            $data['newsletter_thumbnail_image_path'] = $designer_newsletter->newsletter_thumbnail_image_path;
+        }
+
+        if ($pdfFile) {
+            // Delete the old pdfFile file if a new one is uploaded
+            if ($designer_newsletter->newsletter_file_path) {
+                Storage::disk('public')->delete($designer_newsletter->newsletter_file_path);
+            }
+            // Store the new pdfFile directly under the 'newsletter/' directory
+            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+        } else {
+            // If no new pdfFile is uploaded, keep the existing pdfFile
+            $data['newsletter_file_path'] = $designer_newsletter->newsletter_file_path;
+        }
+
+        $data['status'] = 'pending';
+
+        $designer_newsletter->update($data);
+
+        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter Updated Successfully']);
     }
 
     /**
@@ -125,4 +167,98 @@ class DesignerNewsletterController extends Controller
     {
         //
     }
+
+    public function SelectArticles()
+    {
+        $query = Article::query();
+        $categories = Category::all();
+        $academicYears = AcademicYear::all();
+
+        $sortField = request('sort_field', 'is_newsletter');
+        $sortDirection = request('sort_direction', 'desc');
+        
+        
+        if(request('title')){
+            $query->where('title', 'like', '%'. request('title') . '%');
+        }
+
+        //category
+        if (request('category')) {
+            // Join with the users table to search by name
+            $query->whereHas('category', function ($q) {
+                $q->where('name', 'like', '%' . request('category') . '%');
+            });
+        }
+
+        // academic_year_id sort
+        if (request('academic_year_id')) {
+            // Join with the academicYear table to search by name
+            $query->whereHas('academicYear', function ($q) {
+                $q->where('code', 'like', '%' . request('academic_year_id') . '%');
+            });
+        }
+
+    
+        // Apply filters and ordering
+        $articles = $query->where(function($query) {
+            $query->where('status', 'published')
+                ->where(function($query) {
+                    $query->where('is_newsletter', 'yes')
+                            ->orWhere('is_newsletter', 'added');
+                })
+                ->where('visibility', 'visible');
+        })
+        ->orderBy($sortField, $sortDirection)
+        ->paginate(10)
+        ->onEachSide(1);
+
+        return inertia('Designer/Newsletter/Article', [
+            'articles' => ArticleResource::collection($articles),
+            'categories' => CategoryResource::collection($categories),
+            'academicYears' => AcademicYearResource::collection($academicYears),
+            'queryParams' => request()->query() ? : null,
+        ]);
+    }
+
+    public function articleShow($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        return inertia('Designer/Newsletter/Show', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+
+    public function notLayout($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        $article->update(['is_newsletter' => 'yes']);
+
+        return to_route('designer-newsletter.articles')->with('success', 'The article has not been laid out yet.');
+    }
+
+    public function isLayout($id)
+    {
+        $article = Article::findOrFail($id);
+
+        if(!$article){
+            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+        }
+
+        $article->update(['is_newsletter' => 'added']);
+
+        return to_route('designer-newsletter.articles')->with(['success' => 'The article has been successfully laid out in the newsletter.']);
+    }
 }
+
+
