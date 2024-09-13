@@ -68,7 +68,6 @@ class WriterArticleController extends Controller
             'categories' => CategoryResource::collection($categories),
             'academicYears' => AcademicYearResource::collection($academicYears),
             'queryParams' => request()->query() ? : null,
-            'success' => session('success'),
         ]);
     }
 
@@ -140,7 +139,7 @@ class WriterArticleController extends Controller
 
         Article::create($data);
 
-        return to_route('writer-article.index')->with('success', 'Article submitted Successfully');
+        return to_route('writer-article.index')->with(['success' => 'Article submitted Successfully']);
     }
 
     /**
@@ -229,7 +228,7 @@ class WriterArticleController extends Controller
             $writer_article->update($data);
         }
 
-        return to_route('writer-article.index')->with('success', 'Article Edited Successfully');
+        return to_route('writer-article.index')->with(['success' => 'Article Edited Successfully']);
     }
 
     /**
@@ -244,6 +243,6 @@ class WriterArticleController extends Controller
             // Delete the specific old image file
             Storage::disk('public')->delete($writer_article->article_image_path);
         }
-        return to_route('writer-article.index')->with('success', 'Deleted Successfully');
+        return to_route('writer-article.index')->with(['success' => 'Deleted Successfully']);
     }
 }

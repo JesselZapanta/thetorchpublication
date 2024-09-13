@@ -8,16 +8,30 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function Index({
     auth,
     articles,
     categories,
     academicYears,
-    success,
     queryParams = null,
+    flash,
 }) {
+    // Display flash messages if they exist
+    useEffect(() => {
+        // console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -32,9 +46,8 @@ export default function Index({
             router.get(route("editor-article.index"), queryParams, {
                 preserveState: true,
             });
-        } 
+        }
     };
-    
 
     // Search on Enter key press
     const onKeyPressed = (name, e) => {
@@ -112,9 +125,9 @@ export default function Index({
             }
         >
             <Head title="Articles" />
-            {/* {<pre>{JSON.stringify(articles, null, 2)}</pre>} */}
-            {/* Alert */}
-            {success && <AlertSuccess message={success} />}
+
+            <ToastContainer position="bottom-right" />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

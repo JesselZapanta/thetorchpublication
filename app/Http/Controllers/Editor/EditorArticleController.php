@@ -160,7 +160,7 @@ class EditorArticleController extends Controller
 
         Article::create($data);
 
-        return to_route('editor-article.index')->with('success', 'Article submitted Successfully');
+        return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
     }
 
     /**
@@ -255,7 +255,7 @@ class EditorArticleController extends Controller
 
         $editor_article->update($data);
 
-        return to_route('editor-article.index')->with('success', 'Article Edited Successfully');
+        return to_route('editor-article.index')->with(['success' => 'Article Edited Successfully']);
     }
 
     /**
@@ -270,6 +270,6 @@ class EditorArticleController extends Controller
             // Delete the specific old image file
             Storage::disk('public')->delete($editor_article->article_image_path);
         }
-        return to_route('editor-article.index')->with('delete_success', 'Deleted Successfully');
+        return to_route('editor-article.index')->with(['delete_success' => 'Deleted Successfully']);
     }
 }
