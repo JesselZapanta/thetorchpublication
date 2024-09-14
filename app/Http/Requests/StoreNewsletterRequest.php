@@ -29,7 +29,7 @@ class StoreNewsletterRequest extends FormRequest
             'newsletter_thumbnail_image_path' => ['required','image','mimes:jpg,png,jpeg'],//todo
             'newsletter_file_path' => ['required','file','mimes:pdf'], //todo
             'status' => ['required',
-                Rule::in(['pending','revision', 'approved'])
+                Rule::in(['pending', 'approved'])
             ],
         ];
     }

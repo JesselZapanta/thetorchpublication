@@ -97,6 +97,13 @@ export default function Edit({ auth, article, categories, activeAy }) {
                         </div>
                     )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        {article.article_image_path && (
+                            <img
+                                src={article.article_image_path}
+                                alt={article.name}
+                                className="w-full object-cover"
+                            />
+                        )}
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "

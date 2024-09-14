@@ -89,11 +89,11 @@ export default function ByCategory({
                         className="w-full h-full object-cover"
                         onError={(e) => {
                             e.target.onError = null;
-                            e.target.src = "/images/default/category.jpg";
+                            e.target.src = "/images/default/category.png";
                         }}
                         alt={currentCategory.name}
                     />
-                    <p className="absolute font-semibold text-5xl dark:text-gray-200 leading-tight text-justify uppercase">
+                    <p className="absolute font-semibold text-5xl text-gray-50 dark:text-gray-200 leading-tight text-justify uppercase">
                         {currentCategory.name}
                     </p>
                 </div>

@@ -28,7 +28,6 @@ class UserFactory extends Factory
             'username' => fake()->userName(), 
             'role' => 'student',
             'position' => 'none',
-            'profile_image_path' => fake()->imageUrl(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

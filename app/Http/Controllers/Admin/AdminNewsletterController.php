@@ -44,21 +44,22 @@ class AdminNewsletterController extends Controller
             $query->where('status', request('status'));
         }
 
-        // $newsletters = $query->orderBy($sortField, $sortDirection)
-        //                     ->whereNot('status', 'revision')
-        //                     ->paginate(10)
-        //                     ->onEachSide(1);
+        $id = Auth::user()->id;
 
-        $newsletters = $query->whereIn('status', ['pending', 'distributed'])
-                                ->where(function($query) {
-                                    $query->where('layout_by', auth()->user()->id)
-                                        ->orWhere('layout_by', '!=', auth()->user()->id);
+        $newsletters = $query->orderBy($sortField, $sortDirection)
+                                ->where(function ($query) use ($id) {
+                                    // Get all newsletters if auth user is the layout_by, regardless of status
+                                    $query->where('layout_by', $id);
                                 })
-                                ->orderBy($sortField, $sortDirection)
+                                ->orWhere(function ($query) use ($id) {
+                                    // Get all newsletters where auth user is NOT layout_by, but status is pending or approved
+                                    $query->where('layout_by', '!=', $id)
+                                        ->whereIn('status', ['pending', 'approved']);
+                                })
                                 ->paginate(10)
                                 ->onEachSide(1);
 
-
+        
         return inertia('Admin/Newsletter/Index', [
             'newsletters' => NewsletterResource::collection($newsletters),
             'queryParams' => request()->query() ? : null,
@@ -211,7 +212,6 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
         }
 
-        //check if the newsletter status if it is approved
         // Check if the newsletter status is approved
         if ($newsletter->status !== 'approved') {
             return to_route('newsletter.index')->with(['error' => 'Newsletter has not been approved for distribution.']);

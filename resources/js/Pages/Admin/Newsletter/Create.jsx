@@ -106,14 +106,8 @@ export default function Create({ auth, activeAy }) {
                                             Select a status
                                         </option>
                                         <option value="pending">Pending</option>
-                                        <option value="revision">
-                                            Revision
-                                        </option>
                                         <option value="approved">
                                             Approved
-                                        </option>
-                                        <option value="distributed">
-                                            Distributed
                                         </option>
                                     </SelectInput>
 

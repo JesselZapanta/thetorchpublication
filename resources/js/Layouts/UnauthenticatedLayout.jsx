@@ -96,7 +96,7 @@ export default function UnauthenticatedLayout({
                                 ) : (
                                     <>
                                         <NavLink href={route("login")}>
-                                            LOGIN
+                                            Log in
                                         </NavLink>
                                     </>
                                 )}
