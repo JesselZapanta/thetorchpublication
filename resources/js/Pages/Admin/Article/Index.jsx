@@ -105,7 +105,9 @@ export default function Index({
     // Handle delete and close modal
     const handleDelete = () => {
         if (article) {
-            router.delete(route("admin-article.destroy", article.id));
+            router.delete(route("admin-article.destroy", article.id), {
+                preserveScroll : true,
+            });
         }
         setConfirmDelete(false);
         setArticle(null);

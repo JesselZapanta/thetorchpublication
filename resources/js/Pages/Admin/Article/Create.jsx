@@ -27,8 +27,11 @@ export default function Create({ auth, categories, activeAy }) {
     });
 
     const onSubmit = () => {
-        post(route("admin-article.store", data));
+        post(route("admin-article.store", data), {
+            preserveScroll: true,
+        });
     };
+
 
     const [confirmSubmit, setConfirmSubmit] = useState(false);
 

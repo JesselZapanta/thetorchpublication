@@ -117,32 +117,44 @@ class AdminArticleController extends Controller
     {
         $data = $request->validated();
 
-        // Build the Trie
-        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
         $ahoCorasick->buildFailureLinks();
 
-        // Check if the article title contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['title']))) {
-            return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the article title contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['title']));
+        if (!empty($detectedWords)) {
+            $errors['title'] = 'The title contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article excerpt contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
-            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        // Check if the article excerpt contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['excerpt']));
+        if (!empty($detectedWords)) {
+            $errors['excerpt'] = 'The excerpt contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article body contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['body']))) {
-            return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
+        // Check if the article body contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        if (!empty($detectedWords)) {
+            $errors['body'] = 'The body contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article body contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['caption']))) {
-            return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
+        // Check if the article caption contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['caption']));
+        if (!empty($detectedWords)) {
+            $errors['caption'] = 'The caption contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
         }
 
 
@@ -165,8 +177,6 @@ class AdminArticleController extends Controller
             // Set all existing is_featured status to 'no'
             Article::query()->update(['is_featured' => "no"]);
         }
-
-
 
         Article::create($data);
 
@@ -212,33 +222,46 @@ class AdminArticleController extends Controller
     {
         $data = $request->validated();
 
-        // Build the Trie
-        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
         $ahoCorasick->buildFailureLinks();
 
-        // Check if the article title contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['title']))) {
-            return redirect()->back()->withErrors(['title' => 'The title contains inappropriate content.']);
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the article title contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['title']));
+        if (!empty($detectedWords)) {
+            $errors['title'] = 'The title contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article excerpt contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['excerpt']))) {
-            return redirect()->back()->withErrors(['excerpt' => 'The excerpt contains inappropriate content.']);
+        // Check if the article excerpt contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['excerpt']));
+        if (!empty($detectedWords)) {
+            $errors['excerpt'] = 'The excerpt contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article body contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['body']))) {
-            return redirect()->back()->withErrors(['body' => 'The body contains inappropriate content.']);
+        // Check if the article body contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        if (!empty($detectedWords)) {
+            $errors['body'] = 'The body contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
-        // Check if the article caption contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['caption']))) {
-            return redirect()->back()->withErrors(['caption' => 'The caption contains inappropriate content.']);
+        // Check if the article caption contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['caption']));
+        if (!empty($detectedWords)) {
+            $errors['caption'] = 'The caption contains inappropriate content: ' . implode(', ', $detectedWords);
         }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
+
         
         $image = $data['article_image_path'];
         $data['slug'] = Str::slug($request->title);

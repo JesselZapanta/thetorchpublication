@@ -40,7 +40,9 @@ export default function Edit({ auth, article, categories, activeAy }) {
     }, [data.status, setData]); // Run effect when status changes
 
     const onSubmit = () => {
-        post(route("admin-article.update", article.id));
+        post(route("admin-article.update", article.id), {
+            preserveScroll: true,
+        });
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);

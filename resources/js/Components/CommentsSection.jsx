@@ -128,12 +128,12 @@ export default function CommentsSection({
     };
 
     // update comment modal
-    const { data, setData, errors, reset, clearErrors } = useForm({
+    const { data, setData, errors, put, reset, clearErrors } = useForm({
         body: "",
     });
 
     const [comment, setComment] = useState(null); // For storing the comment to edit/delete
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
     const openEditModal = (comment) => {
         setComment(comment);
@@ -141,7 +141,7 @@ export default function CommentsSection({
             body: comment.body,
             emotion: comment.emotion,
         }); // Set the form data with the selected entry's data
-        setIsCreateModalOpen(true);
+        setIsUpdateModalOpen(true);
     };
 
     const onSubmit = (e) => {
@@ -149,24 +149,19 @@ export default function CommentsSection({
 
         if (comment) {
             // Update existing comment
-            router.put(
-                route("comments.update", comment.id),
-                {
-                    body: data.body,
+            put(route("comments.update", comment.id), {
+                preserveScroll: true, // Correctly placed preserveScroll
+                onSuccess: () => {
+                    setIsUpdateModalOpen(false);
+                    reset(); // Reset the form after successful submission
                 },
-                {
-                    onSuccess: () => {
-                        setIsCreateModalOpen(false);
-                        reset();
-                    },
-                    preserveScroll: true,
-                }
-            );
+            });
         }
     };
 
+
     const closeEditModal = () => {
-        setIsCreateModalOpen(false);
+        setIsUpdateModalOpen(false);
         reset(); // Reset the form when closing the modal
         clearErrors(); // Clear any validation errors
     };
@@ -437,7 +432,7 @@ export default function CommentsSection({
                 </div>
             )}
             {/* Create/Edit Modal */}
-            <Modal show={isCreateModalOpen} onClose={closeEditModal}>
+            <Modal show={isUpdateModalOpen} onClose={closeEditModal}>
                 <div className="p-6">
                     <div className="flex justify-between">
                         <h2 className="text-2xl text-indigo-600 font-bold">

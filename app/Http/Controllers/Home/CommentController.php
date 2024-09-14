@@ -35,18 +35,26 @@ class CommentController extends Controller
     {
         $data = $request->validated();
 
-         // Build the Trie
-        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+        // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
-        
         $ahoCorasick->buildFailureLinks();
 
-        // Check if the article body contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['body']))) {
-            return redirect()->back()->withErrors(['body' => 'The comment contains inappropriate content.']);
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the message body contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        if (!empty($detectedWords)) {
+            $errors['body'] = 'The comment contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
         }
 
         $data['user_id'] = auth()->id();
