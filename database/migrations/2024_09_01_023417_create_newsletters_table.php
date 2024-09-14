@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('newsletters', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->string('message')->nullable();//todo remove this one
             $table->string('revision_message')->nullable();
             $table->string('newsletter_thumbnail_image_path');
             $table->string('newsletter_file_path');
             $table->string('status')->default('pending');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
-            // $table->tinyText('visibility')->default('visible');//hidden todo might add this to next migtaion
-            $table->timestamps();
+            $table->tinyText('visibility')->default('visible');//hidden todo might add this to next migtaion
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
         });

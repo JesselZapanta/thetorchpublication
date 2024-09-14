@@ -16,28 +16,6 @@ class UserSeeder extends Seeder
     {
         //
         $users = [
-            [
-                'student_id' => '123456',
-                'username' => 'thetorchpubpress',
-                'name' => 'thetorchpubpress',
-                'role' => 'admin',
-                'position' => 'adviser',
-                // 'profile_image_path' => 'profile.png',
-                'email' => 'jeszapanta9@gmail.com',
-                'password' => Hash::make('password'),
-            ],
-
-            [   
-                'student_id' => '123369',
-                'username' => 'jesselzapanta',
-                'name' => 'jesselzapanta',
-                'role' => 'student',
-                'position' => 'none',
-                // 'profile_image_path' => 'profile.png',
-                'email' => 'jesselzapanta9@gmail.com',
-                'password' => Hash::make('password'),
-            ],
-
             [   
                 'student_id' => '000000',
                 'username' => 'torchadmin',
@@ -46,7 +24,7 @@ class UserSeeder extends Seeder
                 'position' => 'none',
                 // 'profile_image_path' => 'profile.png',
                 'email' => 'torchadmin@gmail.com',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('1'),
             ],
 
             [   
@@ -57,7 +35,29 @@ class UserSeeder extends Seeder
                 'position' => 'none',
                 // 'profile_image_path' => 'profile.png',
                 'email' => 'torcheditor@gmail.com',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('1'),
+            ],
+
+            [   
+                'student_id' => '595469',
+                'username' => 'torchwriter',
+                'name' => 'torchwriter',
+                'role' => 'writer',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'torchwriter@gmail.com',
+                'password' => Hash::make('1'),
+            ],
+
+            [   
+                'student_id' => '546564',
+                'username' => 'torchdesigner',
+                'name' => 'torchdesigner',
+                'role' => 'designer',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'torchdesigner@gmail.com',
+                'password' => Hash::make('1'),
             ],
 
             [   
@@ -68,7 +68,29 @@ class UserSeeder extends Seeder
                 'position' => 'none',
                 // 'profile_image_path' => 'profile.png',
                 'email' => 'torchstudent@gmail.com',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('1'),
+            ],
+
+            [
+                'student_id' => '123456',
+                'username' => 'thetorchpubpress',
+                'name' => 'thetorchpubpress',
+                'role' => 'admin',
+                'position' => 'adviser',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'jeszapanta9@gmail.com',
+                'password' => Hash::make('1'),
+            ],
+
+            [   
+                'student_id' => '123369',
+                'username' => 'jesselzapanta',
+                'name' => 'jesselzapanta',
+                'role' => 'student',
+                'position' => 'none',
+                // 'profile_image_path' => 'profile.png',
+                'email' => 'jesselzapanta9@gmail.com',
+                'password' => Hash::make('1'),
             ],
         ];
         
