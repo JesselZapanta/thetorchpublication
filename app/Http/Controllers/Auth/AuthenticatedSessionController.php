@@ -40,7 +40,8 @@ class AuthenticatedSessionController extends Controller
         // return redirect(route('dashboard'));//todo redirect to specific route
 
         // return redirect()->intended(RouteServiceProvider::HOME);
-
+        
+        //todo  change all the dashboard route to a controller
          // Redirect to the dashboard based on the user's role
         if ($request->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');

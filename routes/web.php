@@ -6,13 +6,12 @@ use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminReviewReport;
-use App\Http\Controllers\Admin\AdminReviewReportedComment;
-use App\Http\Controllers\Admin\AdminReviewReportedFreedomWall;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Designer\DesignerNewsletterController;
+use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
 use App\Http\Controllers\Home\CommentController;
@@ -23,7 +22,6 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReportContentController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QueueController;
 use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Writer\WriterArticleController;
@@ -50,6 +48,8 @@ use Illuminate\Support\Facades\Route;
 //     ]);
 // });
 
+//route to verify student
+Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 'validateStudent']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
@@ -131,7 +131,7 @@ Route::middleware(['auth','admin', ])->group(function() {
 });
 
 // For Student and Student Contributor
-Route::middleware(['auth', 'student'])->group(function() {
+Route::middleware(['auth', 'student','verified'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
     Route::resource('student-article', StudentArticleController::class);
 });

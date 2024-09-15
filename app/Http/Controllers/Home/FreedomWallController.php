@@ -101,14 +101,14 @@ class FreedomWallController extends Controller
         // dd($request);
         $data = $request->validated();
 
-        // // Check for entry limitation (one entry per day)
-        // $existingEntry = FreedomWall::where('user_id', auth()->id())
-        //                     ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
-        //                     ->first();
+        // Check for entry limitation (one entry per day)
+        $existingEntry = FreedomWall::where('user_id', auth()->id())
+                            ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
+                            ->first();
 
-        // if ($existingEntry) {
-        //     return redirect()->back()->withErrors(['body' => 'You can only post one entry per day.']);
-        // }
+        if ($existingEntry) {
+            return redirect()->back()->withErrors(['body' => 'You can only post one entry per day.']);
+        }
 
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes

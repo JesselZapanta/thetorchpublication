@@ -20,12 +20,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
-            CategorySeeder::class,
-            WordSeeder::class,
-            AcademicYearSeeder::class,
-            ArticleSeeder::class,
-            FreedomWallSeeder::class,
+            EnrolledStudentSeeder::class,
+            // UserSeeder::class,
+            // CategorySeeder::class,
+            // WordSeeder::class,
+            // AcademicYearSeeder::class,
+            // ArticleSeeder::class,
+            // FreedomWallSeeder::class,
+            // FreedomWallSeeder::class,
         ]);
     }
 }

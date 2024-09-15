@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect } from "react";
+import GuestLayout from "@/Layouts/GuestLayout";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -19,15 +19,30 @@ export default function Register() {
 
     useEffect(() => {
         return () => {
-            reset('password', 'password_confirmation');
+            reset("password", "password_confirmation");
         };
     }, []);
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        // Validate student_id
+        fetch(`/validate-student/${data.student_id}`)
+            .then((response) => response.json()) // This will parse the response as JSON
+            .then((isValidStudent) => {
+                if (isValidStudent) {
+                    // If true, make the post request
+                    post(route("register"));
+                } else {
+                    // If false, show an alert
+                    alert("Student not found");
+                }
+            })
+            .catch((error) => {
+                console.error("An error occurred during validation:", error);
+            });
     };
+
 
     return (
         <GuestLayout>
@@ -43,7 +58,6 @@ export default function Register() {
                         value={data.student_id}
                         className="mt-1 block w-full"
                         autoComplete="student_id"
-                        isFocused={true}
                         onChange={(e) => setData("student_id", e.target.value)}
                         required
                     />
@@ -59,7 +73,6 @@ export default function Register() {
                         value={data.username}
                         className="mt-1 block w-full"
                         autoComplete="username"
-                        isFocused={true}
                         onChange={(e) => setData("username", e.target.value)}
                         required
                     />
@@ -75,7 +88,6 @@ export default function Register() {
                         value={data.name}
                         className="mt-1 block w-full"
                         autoComplete="name"
-                        isFocused={true}
                         onChange={(e) => setData("name", e.target.value)}
                         required
                     />

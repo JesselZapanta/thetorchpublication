@@ -1,16 +1,27 @@
 import RatingComponent from "@/Components/RatingComponent";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import CommentsSection from "@/Components/CommentsSection";
 import CommentForm from "@/Components/CommentForm ";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
-import axios from "axios";
-import AlertSuccess from "@/Components/AlertSuccess";
-import AlertError from "@/Components/AlertError";
 
-export default function ReadArticle({ auth, article, categories, comments }) {
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+export default function ReadArticle({ auth, article, categories, comments, flash }) {
+    // Display flash messages if they exist
+    useEffect(() => {
+        // console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -145,8 +156,6 @@ export default function ReadArticle({ auth, article, categories, comments }) {
         }
     };
 
-    const { flash } = usePage().props;
-
     return (
         <UnauthenticatedLayout
             categories={categories}
@@ -161,8 +170,7 @@ export default function ReadArticle({ auth, article, categories, comments }) {
         >
             <Head title={`Read ${article.title}`} />
 
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
+            <ToastContainer position="bottom-right" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

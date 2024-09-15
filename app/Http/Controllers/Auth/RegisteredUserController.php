@@ -46,8 +46,6 @@ class RegisteredUserController extends Controller
         if ($request->hasFile('profile_image_path')) {
             $data['profile_image_path'] = $request->file('profile_image_path')->store('profile/' . Str::random(10), 'public');
         }
-
-        //todo has password
         
         // Create the user with the validated data
         $user = User::create($data);
@@ -59,7 +57,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirect to the dashboard
-        return redirect(route('student.dashboard'));//todo redirect to specific route
+        return redirect(route('student.dashboard'));//todo change all the dashboard route to a controller
 
         // Redirect to the dashboard
         // if($request->user()->role == 'admin'){

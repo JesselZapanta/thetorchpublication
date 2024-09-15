@@ -17,7 +17,19 @@ export default function CommentsSection({
     comments,
     handleLike,
     handleDislike,
+    flash//todo fix this error later
 }) {
+    // Display flash messages if they exist
+    // useEffect(() => {
+    //     // console.log(flash);
+    //     if (flash.message.success) {
+    //         toast.success(flash.message.success);
+    //     }
+    //     if (flash.message.error) {
+    //         toast.error(flash.message.error);
+    //     }
+    // }, [flash]);
+    
     //tts
     const [isSpeaking, setIsSpeaking] = useState(null);
     const handleSpeak = (comment) => {
@@ -159,18 +171,17 @@ export default function CommentsSection({
         }
     };
 
-
     const closeEditModal = () => {
         setIsUpdateModalOpen(false);
         reset(); // Reset the form when closing the modal
         clearErrors(); // Clear any validation errors
     };
 
-    const { flash } = usePage().props;
+    // const { flash } = usePage().props;
 
     return (
         <div className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4">
-            <AlertSuccess flash={flash} />
+            {/* <AlertSuccess flash={flash} /> */}
 
             {displayedComments.length > 0 && (
                 <div className="flex gap-1">

@@ -61,7 +61,8 @@ class CommentController extends Controller
         
         Comment::create($data);
 
-        return back()->with('success', 'Comment is Added Successfully');
+        return back()->with(['success' => 'Comment is Added Successfully']);
+        // todo, redirect to the read article route
     }
 
     /**
@@ -88,25 +89,36 @@ class CommentController extends Controller
         // dd($request);
         $data = $request->validated();
 
-         // Build the Trie
-        $badWords = Word::pluck('name')->toArray();//todo might change to word insted of name
+         // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
-        
         $ahoCorasick->buildFailureLinks();
 
-        // Check if the article body contains any bad words using Aho-Corasick
-        if ($ahoCorasick->search(strtolower($data['body']))) {
-            return redirect()->back()->withErrors(['body' => 'The comment contains inappropriate content.']);
+        // Initialize an array to collect errors
+        $errors = [];
+
+         // Check if the article body contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        if (!empty($detectedWords)) {
+            $errors['body'] = 'The comment body contains inappropriate content: ' . implode(', ', $detectedWords);
         }
+
+
+         // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
+
 
         $data['user_id'] = auth()->id();
         
         $comment->update($data);
 
-        return back()->with('success', 'Comment is Updated Successfully');
+        return back()->with(['success' => 'Comment is Updated Successfully']);
+          // todo, redirect to the read article route
     }
 
     /**
@@ -117,7 +129,7 @@ class CommentController extends Controller
         // dd($comment);
         $comment->delete();
 
-        return back()->with('success', 'Comment is Deleted Successfully');
+        return back()->with(['success' => 'Comment is Deleted Successfully']);
     }
 
     public function hide($id)
@@ -126,11 +138,11 @@ class CommentController extends Controller
         $comment = Comment::find($id); // Use find instead of findOrFail
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with(['error' =>'Comment Not Found']);
         }
 
         $comment->update(['visibility' => 'hidden']);
 
-        return back()->with('success', 'Hide Successfully');
+        return back()->with(['success' => 'Hide Successfully']);
     }
 }
