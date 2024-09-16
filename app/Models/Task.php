@@ -11,15 +11,33 @@ class Task extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'category_id',
+
         'layout_by',
         'assigned_by',
-        'description',
+
+        'title',
+        'excerpt',
         'body',
-        'message',
-        'priority',
+        'caption',
+
         'status',
+        'priority',
+        'draft',
+
+        'revision_message',
+        'image_revision_message',
+
+        'assigned_date',
+        'content_submitted_date',
+        'layout_date',
+        'revision_date',
+        'image_submitted_date',
+        'image_revision_date',
+        'task_completed_date',
         'due_date',
+        
         'task_image_path',
     ];
 

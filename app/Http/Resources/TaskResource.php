@@ -19,7 +19,9 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
             'category_id' => $this->category_id,
+            'category' => new CategoryResource($this->category),
 
             'layoutBy' => new UserResource($this->layoutBy),//for the forin ID/ display table/in model
             'layout_by' => $this->layout_by,//for edit page
@@ -27,12 +29,27 @@ class TaskResource extends JsonResource
             'assignedBy' => new UserResource($this->assignedBy),//for the forin ID/ display table/in model
             'assigned_by' => $this->assigned_by,//for edit page
 
-            'description' => $this->description,
+            
+            'title' => $this->title,
+            'excerpt' => $this->excerpt,
             'body' => $this->body,
-            'message' => $this->message,
+            'caption' => $this->caption,
+
+            'revision_message' => $this->revision_message,
+            'image_revision_message' => $this->image_revision_message,
+
             'priority' => $this->priority,
             'status' => $this->status,
+            'draft' => $this->draft,
+
+            'assigned_date' => (new Carbon($this->assigned_date))->format('Y-m-d'),
+            'content_submitted_date' => (new Carbon($this->content_submitted_date))->format('Y-m-d'),
+            'layout_date' => (new Carbon($this->layout_date))->format('Y-m-d'),
+            'revision_date' => (new Carbon($this->revision_date))->format('Y-m-d'),
+            'image_submitted_date' => (new Carbon($this->image_submitted_date))->format('Y-m-d'),
+            'task_completed_date' => (new Carbon($this->task_completed_date))->format('Y-m-d'),
             'due_date' => (new Carbon($this->due_date))->format('Y-m-d'),
+            
             'task_image_path' => $this->task_image_path,
         ];
     }

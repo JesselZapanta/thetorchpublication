@@ -70,8 +70,8 @@ export default function Authenticated({ user, header, children }) {
                                     Newsletters
                                 </NavLink>
                                 <NavLink
-                                    href={route("task.index")}
-                                    active={route().current("task.index")}
+                                    href={route("admin-task.index")}
+                                    active={route().current("admin-task.index")}
                                 >
                                     Tasks
                                 </NavLink>
@@ -196,8 +196,8 @@ export default function Authenticated({ user, header, children }) {
                             Word
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route("task.index")}
-                            active={route().current("task.index")}
+                            href={route("admin-task.index")}
+                            active={route().current("admin-task.index")}
                         >
                             Task
                         </ResponsiveNavLink>

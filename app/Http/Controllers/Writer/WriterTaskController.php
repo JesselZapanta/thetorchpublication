@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Writer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Writer\WriterUpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Models\Category;
@@ -10,9 +11,10 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
+use Auth;
 use Illuminate\Support\Facades\Storage;
 
-class AdminTaskController extends Controller
+class WriterTaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,6 +23,7 @@ class AdminTaskController extends Controller
     {
         // $tasks = Task::all();
         $query = Task::query();
+        $id = Auth::user()->id;
 
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
@@ -54,11 +57,21 @@ class AdminTaskController extends Controller
             });
         }
 
-        $tasks = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        $tasks = $query->where('assigned_by', $id)
+                        ->orderBy($sortField, $sortDirection) 
+                        ->paginate(10)
+                        ->onEachSide(1);
+
+        $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
+        $categories = Category::all();
+        $designers = User::where('role', 'designer')->get();
     
-        return inertia('Admin/Task/Index', [
+        return inertia('Writer/Task/Index', [
             'queryParams' => request()->query() ? : null,
             'tasks' => TaskResource::collection($tasks),
+            'users' => UserResource::collection($users),
+            'designers' => UserResource::collection($designers),
+            'categories' => UserResource::collection($categories),
         ]);
     }
 
@@ -68,11 +81,11 @@ class AdminTaskController extends Controller
     public function create()
     {
         
-        $users = User::whereIn('role', ['editor', 'writer'])->get();
+        $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
         $categories = Category::all();
         $designers = User::where('role', 'designer')->get();
 
-        return inertia('Admin/Task/Create', [
+        return inertia('Writer/Task/Create', [
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
             'categories' => UserResource::collection($categories),
@@ -88,7 +101,7 @@ class AdminTaskController extends Controller
 
         Task::create($data);
 
-        return to_route('admin-task.index')->with(['success' => 'Task Assigned Successfully']);
+        return to_route('writer-task.index')->with(['success' => 'Task Assigned Successfully']);
     }
 
     /**
@@ -102,41 +115,42 @@ class AdminTaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $admin_task)
+    public function edit(Task $writer_task)
     {
-        $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
-        $categories = Category::all();
-        $designers = User::where('role', 'designer')->get();
-
-        return inertia('Admin/Task/Edit', [
-            'task' => new TaskResource($admin_task),
-            'users' => UserResource::collection($users),
-            'designers' => UserResource::collection($designers),
-            'categories' => UserResource::collection($categories),
+        return inertia('Writer/Task/Edit', [
+            'task' => new TaskResource($writer_task),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $admin_task)
+    public function update(WriterUpdateTaskRequest $request, Task $writer_task)
     {
-        $data = $request->validated();
-        
-        $admin_task->update($data);
 
-        return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
+        $data = $request->validated();
+        if($data['draft'] === 'no'){
+            $data['status'] = 'approval';
+        }
+
+        $writer_task->update($data);
+
+        if($data['draft'] === 'yes'){
+            return to_route('writer-task.index')->with(['success' => 'Task Save as Draft']);
+        }
+
+        return to_route('writer-task.index')->with(['success' => 'Task Submitted Successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $admin_task)
+    public function destroy(Task $writer_task)
     {
-        $admin_task->delete();
-        if($admin_task->task_image_path){
-            Storage::disk('public')->deleteDirectory(dirname($admin_task->task_image_path));
+        $writer_task->delete();
+        if($writer_task->task_image_path){
+            Storage::disk('public')->deleteDirectory(dirname($writer_task->task_image_path));
         }
-        return to_route('admin-task.index')->with(['success' => 'Deleted Successfully']);
+        return to_route('writer-task.index')->with(['success' => 'Deleted Successfully']);
     }
 }

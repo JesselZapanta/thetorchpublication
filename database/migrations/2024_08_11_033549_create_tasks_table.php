@@ -25,9 +25,21 @@ return new class extends Migration
             $table->longText('body')->nullable();//new
             $table->text('caption')->nullable();//new
 
-            $table->string('priority')->nullable();
-            $table->string('status')->default('pending');
+            $table->tinyText('priority')->nullable();
+            $table->tinyText('status')->default('pending');
+            $table->tinyText('draft')->default('no');//new
 
+            $table->text('revision_message')->nullable();//new
+            $table->text('image_revision_message')->nullable();//new
+
+            $table->timestamp('assigned_date')->nullable();//new
+            $table->timestamp('content_submitted_date')->nullable();//new
+            $table->timestamp('layout_date')->nullable();//new
+            $table->timestamp('revision_date')->nullable();//new
+            $table->timestamp('image_submitted_date')->nullable();//new
+            $table->timestamp('image_revision_date')->nullable();//new
+            $table->timestamp('task_completed_date')->nullable();//new
+            
             $table->timestamp('due_date')->nullable();
             $table->string('task_image_path')->nullable();
             $table->timestamps();

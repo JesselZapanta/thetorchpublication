@@ -261,7 +261,7 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {word.id}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="px-3 py-2 text-nowrap blur-sm hover:blur-none transition-all">
                                                         {word.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">

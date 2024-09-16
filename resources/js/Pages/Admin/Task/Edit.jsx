@@ -24,7 +24,7 @@ export default function Edit({ auth, task, users, categories, designers }) {
     });
 
     const onSubmit = () => {
-        post(route("task.update", task.id), {
+        post(route("admin-task.update", task.id), {
             preserveScroll: true,
         });
     };
@@ -339,7 +339,7 @@ export default function Edit({ auth, task, users, categories, designers }) {
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("task.index")}>
+                                <SecondaryButton href={route("admin-task.index")}>
                                     Cancel
                                 </SecondaryButton>
                                 <button

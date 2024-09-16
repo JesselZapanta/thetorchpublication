@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -30,15 +30,12 @@ export default function Index({
         }
     }, [flash]);
 
-    const [confirmDelete, setConfirmDelete] = useState(false);
-    const [task, setTask] = useState(null); // For storing the task to edit/delete
-
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("admin-task.index"), queryParams, {
+            router.get(route("writer-task.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -55,7 +52,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("admin-task.index"),
+                    route("writer-task.index"),
                     {},
                     {
                         preserveState: true,
@@ -63,7 +60,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("admin-task.index"), queryParams, {
+                router.get(route("writer-task.index"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -73,7 +70,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("admin-task.index"), queryParams, {
+        router.get(route("writer-task.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -89,28 +86,11 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-task.index"), queryParams);
-    };
-
-
-    // Open modal and set task to delete
-    const openDeleteModal = (task) => {
-        setTask(task);
-        setConfirmDelete(true);
-    };
-
-    // Handle delete and close modal
-    const handleDelete = () => {
-        if (task) {
-            // alert(task.id);
-            router.delete(route("admin-task.destroy", task.id));
-        }
-        setConfirmDelete(false);
-        setTask(null);
+        router.get(route("writer-task.index"), queryParams);
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <WriterAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -119,7 +99,7 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("admin-task.create")}
+                            href={route("writer-task.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Assign New
@@ -234,30 +214,6 @@ export default function Index({
                                                 Task Name
                                             </TableHeading>
                                             <TableHeading
-                                                name="assigned_by"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Assignee
-                                            </TableHeading>
-                                            <TableHeading
-                                                name="layout_by"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Designer
-                                            </TableHeading>
-                                            <TableHeading
                                                 name="due_date"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -291,7 +247,7 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Status
+                                                Priority
                                             </TableHeading>
                                             <th className="px-3 py-3">
                                                 Action
@@ -313,12 +269,6 @@ export default function Index({
                                                         {task.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {task.assignedBy.name}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {task.layoutBy.name}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-nowrap">
                                                         {task.due_date}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
@@ -330,23 +280,13 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
-                                                                "admin-task.edit",
+                                                                "writer-task.edit",
                                                                 task.id
                                                             )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                                         >
-                                                            Edit
+                                                            View
                                                         </Link>
-                                                        <button
-                                                            onClick={() =>
-                                                                openDeleteModal(
-                                                                    task
-                                                                )
-                                                            }
-                                                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                        >
-                                                            Delete
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))
@@ -371,26 +311,6 @@ export default function Index({
                     </div>
                 </div>
             </div>
-
-            {/* Confirm Delete Modal */}
-            <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
-                    <p className="mt-4">
-                        Are you sure you want to delete "{task?.name}" Task?
-                    </p>
-                    <div className="mt-4 flex justify-end">
-                        <SecondaryButton
-                            onClick={() => setConfirmDelete(false)}
-                        >
-                            Cancel
-                        </SecondaryButton>
-                        <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
-                        </DangerButton>
-                    </div>
-                </div>
-            </Modal>
-        </AdminAuthenticatedLayout>
+        </WriterAuthenticatedLayout>
     );
 }

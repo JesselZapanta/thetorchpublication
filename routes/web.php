@@ -26,6 +26,7 @@ use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
+use App\Http\Controllers\Writer\WriterTaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,7 +105,7 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
     Route::resource('newsletter', AdminNewsletterController::class);
 
-    Route::resource('task', AdminTaskController::class);
+    Route::resource('admin-task', AdminTaskController::class);
 
     //review Report article
     Route::get('/admin-review-report-article', [AdminReviewReport::class, 'article'])->name('admin-review-report-article.index');
@@ -147,6 +148,9 @@ Route::middleware(['auth', 'editor'])->group(function() {
 Route::middleware(['auth', 'writer'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
     Route::resource('writer-article', WriterArticleController::class);
+
+
+    Route::resource('writer-task', WriterTaskController::class);
 });
 
 // for Designer

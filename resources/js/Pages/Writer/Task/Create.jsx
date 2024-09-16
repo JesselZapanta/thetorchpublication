@@ -6,7 +6,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -28,7 +28,7 @@ export default function Create({
     });
 
     const onSubmit = () => {
-        post(route("admin-task.store", data), {
+        post(route("writer-task.store", data), {
             preserveScroll: true,
         });
     };
@@ -45,7 +45,7 @@ export default function Create({
     };
 
     return (
-        <AdminAuthenticatedLayout
+        <WriterAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -310,7 +310,7 @@ export default function Create({
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("admin-task.index")}>
+                                <SecondaryButton href={route("writer-task.index")}>
                                     Cancel
                                 </SecondaryButton>
                                 <button
@@ -348,6 +348,6 @@ export default function Create({
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </WriterAuthenticatedLayout>
     );
 }

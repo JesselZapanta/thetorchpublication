@@ -41,6 +41,15 @@ export default function WriterAuthenticatedLayout({ user, header, children }) {
                                 >
                                     Articles
                                 </NavLink>
+                                
+                                <NavLink
+                                    href={route("writer-task.index")}
+                                    active={route().current(
+                                        "writer-task.index"
+                                    )}
+                                >
+                                    Task
+                                </NavLink>
                             </div>
                         </div>
 
