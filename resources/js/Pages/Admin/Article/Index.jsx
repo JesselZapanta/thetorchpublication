@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
@@ -8,7 +6,7 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";

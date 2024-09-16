@@ -36,7 +36,7 @@ export default function Welcome({
                     The Latest
                 </h5>
 
-                <div className="w-full grid lg:grid-cols-3 gap-4">
+                <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {/* <LatestArticles latestArticles={latestArticles} /> */}
                     {latestArticles.data.map((article) => (
                         <ArticleCard key={article.id} article={article} />

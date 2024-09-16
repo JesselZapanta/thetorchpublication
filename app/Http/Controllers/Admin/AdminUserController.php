@@ -27,6 +27,7 @@ class AdminUserController extends Controller
         if(request('student_id')){
             $query->where('student_id', 'like', '%'. request('student_id') . '%');
         }
+        
         if(request('name')){
             $query->where('name', 'like', '%'. request('name') . '%');
         }

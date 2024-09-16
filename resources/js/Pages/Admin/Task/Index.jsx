@@ -1,8 +1,4 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -11,47 +7,75 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function Index({
     auth,
     tasks,
-    users,
-    categories,
-    designers,
-    success,
     queryParams = null,
+    flash
 }) {
+    // Display flash messages if they exist
+    useEffect(() => {
+        // console.log(flash);
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [task, setTask] = useState(null); // For storing the task to edit/delete
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-    const { data, setData, post, put, errors, reset } = useForm({
-        name: "",
-        description: "",
-        assigned_by: "",
-        layout_by: "",
-        category_id: "",
-        status: "",
-        priority: "",
-        due_date: "",
-    });
 
     queryParams = queryParams || {};
-    const searchFieldChanged = (name, value) => {
-        if (value) {
-            queryParams[name] = value;
-        } else {
-            delete queryParams[name];
-        }
 
-        router.get(route("task.index"), queryParams);
+    const searchFieldChanged = (name, value) => {
+        if (value === "") {
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(route("task.index"), queryParams, {
+                preserveState: true,
+            }); // Fetch all data when search is empty
+        } else {
+            queryParams[name] = value; // Set query parameter
+        }
     };
 
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
-        if (e.key !== "Enter") return;
+        const value = e.target.value;
 
-        searchFieldChanged(name, e.target.value);
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("task.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(route("task.index"), queryParams, {
+                    preserveState: true,
+                });
+            }
+        }
+    };
+
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("task.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     const sortChanged = (name) => {
@@ -68,55 +92,6 @@ export default function Index({
         router.get(route("task.index"), queryParams);
     };
 
-    // Open modal for creating a new task
-    const openCreateModal = () => {
-        reset(); // Reset the form to clear previous data
-        setTask(null); // Clear the selected task for editing
-        setIsCreateModalOpen(true);
-    };
-
-    // Open modal for editing an existing task
-    const openEditModal = (task) => {
-        setTask(task);
-        setData({
-            name: task.name || "", // Set name
-            description: task.description || "", // Set description
-            assigned_by: task.assigned_by || "", // Set assigned_by
-            layout_by: task.layout_by || "", // Set layout_by
-            category_id: task.category_id || "", // Set category_id
-            status: task.status || "", // Set status
-            priority: task.priority || "", // Set priority
-            due_date: task.due_date || "", // Set due_date
-        }); // Set the form data with the selected task's data
-        setIsCreateModalOpen(true);
-    };
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-
-        if (task) {
-            // Update existing task
-            put(route("task.update", task.id), {
-                onSuccess: () => {
-                    setIsCreateModalOpen(false);
-                    reset(); // Reset the form after successful submission
-                },
-            });
-        } else {
-            // Create new task
-            post(route("task.store"), {
-                onSuccess: () => {
-                    setIsCreateModalOpen(false);
-                    reset(); // Reset the form after successful submission
-                },
-            });
-        }
-    };
-
-    const closeCreateModal = () => {
-        setIsCreateModalOpen(false);
-        reset(); // Reset the form when closing the modal
-    };
 
     // Open modal and set task to delete
     const openDeleteModal = (task) => {
@@ -134,9 +109,6 @@ export default function Index({
         setTask(null);
     };
 
-    //Flash alerts
-    const { flash } = usePage().props;
-
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -146,160 +118,93 @@ export default function Index({
                         List of Tasks
                     </h2>
                     <div className="flex gap-4">
-                        <button
-                            onClick={openCreateModal}
+                        <Link
+                            href={route("task.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
-                            Create New
-                        </button>
+                            Assign New
+                        </Link>
                     </div>
                 </div>
             }
         >
             <Head title="Tasks" />
 
-            {/* alert */}
-            <AlertSuccess flash={flash} />
-            <AlertError flash={flash} />
+            <ToastContainer position="bottom-right" />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="w-full grid lg:grid-cols-2 gap-2">
+                                <div className="flex gap-2">
+                                    <div className="w-full">
+                                        <TextInput
+                                            className="w-full"
+                                            defaultValue={queryParams.name}
+                                            placeholder="Task Name"
+                                            onBlur={(e) =>
+                                                searchFieldChanged(
+                                                    "name",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("name", e)
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.status}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Status</option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                            <option value="revision">
+                                                Need Revision
+                                            </option>
+                                            <option value="approved">
+                                                Approved
+                                            </option>
+                                            <option value="published">
+                                                Published
+                                            </option>
+                                        </SelectInput>
+                                    </div>
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.priority}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "priority",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Priority</option>
+                                            <option value="low">Low</option>
+                                            <option value="medium">
+                                                Medium
+                                            </option>
+                                            <option value="high">High</option>
+                                        </SelectInput>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="2"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.assigned_by
-                                                    }
-                                                    placeholder="Assignee"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "assigned_by",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "assigned_by",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th>
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="1"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.layout_by
-                                                    }
-                                                    placeholder="Designer"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "layout_by",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed(
-                                                            "layout_by",
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                            </th>
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="1"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.name
-                                                    }
-                                                    placeholder="Task Name"
-                                                    onBlur={(e) =>
-                                                        searchFieldChanged(
-                                                            "name",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("name", e)
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3">
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.status
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "status",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Status
-                                                    </option>
-                                                    <option value="pending">
-                                                        Pending
-                                                    </option>
-                                                    <option value="revision">
-                                                        Need Revision
-                                                    </option>
-                                                    <option value="approved">
-                                                        Approved
-                                                    </option>
-                                                    <option value="published">
-                                                        Published
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.priority
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "priority",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Priority
-                                                    </option>
-                                                    <option value="low">
-                                                        Low
-                                                    </option>
-                                                    <option value="medium">
-                                                        Medium
-                                                    </option>
-                                                    <option value="high">
-                                                        High
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                        </tr>
-                                    </thead>
                                     {/* Thead with sorting*/}
                                     {/* added */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -315,6 +220,18 @@ export default function Index({
                                                 sortChanged={sortChanged}
                                             >
                                                 ID
+                                            </TableHeading>
+                                            <TableHeading
+                                                name="name"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Task Name
                                             </TableHeading>
                                             <TableHeading
                                                 name="assigned_by"
@@ -339,18 +256,6 @@ export default function Index({
                                                 sortChanged={sortChanged}
                                             >
                                                 Designer
-                                            </TableHeading>
-                                            <TableHeading
-                                                name="name"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Task Name
                                             </TableHeading>
                                             <TableHeading
                                                 name="due_date"
@@ -405,13 +310,13 @@ export default function Index({
                                                         {task.id}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
+                                                        {task.name}
+                                                    </td>
+                                                    <td className="px-3 py-2 text-nowrap">
                                                         {task.assignedBy.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {task.layoutBy.name}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {task.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {task.due_date}
@@ -423,16 +328,15 @@ export default function Index({
                                                         {task.priority}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        <button
-                                                            onClick={() =>
-                                                                openEditModal(
-                                                                    task
-                                                                )
-                                                            }
+                                                        <Link
+                                                            href={route(
+                                                                "task.edit",
+                                                                task.id
+                                                            )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                                         >
                                                             Edit
-                                                        </button>
+                                                        </Link>
                                                         <button
                                                             onClick={() =>
                                                                 openDeleteModal(
@@ -467,266 +371,6 @@ export default function Index({
                     </div>
                 </div>
             </div>
-
-            {/* Create/Edit Modal */}
-            <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">
-                        {task ? "Edit Task" : "Add New Task"}
-                    </h2>
-
-                    <form onSubmit={onSubmit} className="mt-4">
-                        {/* Name */}
-                        <div className="w-full">
-                            <InputLabel htmlFor="name" value="Task Name" />
-
-                            <TextInput
-                                id="name"
-                                type="text"
-                                name="name"
-                                value={data.name}
-                                className="mt-2 block w-full"
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.name}
-                                className="mt-2"
-                            />
-                        </div>
-                        {/* Description */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="description"
-                                value="Task Description"
-                            />
-
-                            <TextInput
-                                id="description"
-                                type="text"
-                                name="description"
-                                value={data.description}
-                                className="mt-2 block w-full"
-                                onChange={(e) =>
-                                    setData("description", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.description}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* assigned_by */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="assigned_by"
-                                value="Select Assignee"
-                            />
-
-                            <SelectInput
-                                name="assigned_by"
-                                id="assigned_by"
-                                value={data.assigned_by}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("assigned_by", e.target.value)
-                                }
-                            >
-                                {users.data.length > 0 ? (
-                                    <>
-                                        <option value="">
-                                            Select an Assignee
-                                        </option>
-                                        {users.data.map((user) => (
-                                            <option
-                                                key={user.id}
-                                                value={user.id}
-                                            >
-                                                {user.name}
-                                            </option>
-                                        ))}
-                                    </>
-                                ) : (
-                                    <option value="">No user found</option>
-                                )}
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.assigned_by}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* layout_by */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="layout_by"
-                                value="Select Desinger"
-                            />
-
-                            <SelectInput
-                                name="layout_by"
-                                id="layout_by"
-                                value={data.layout_by}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("layout_by", e.target.value)
-                                }
-                            >
-                                {designers.data.length > 0 ? (
-                                    <>
-                                        <option value="">
-                                            Select Desinger
-                                        </option>
-                                        {designers.data.map((designer) => (
-                                            <option
-                                                key={designer.id}
-                                                value={designer.id}
-                                            >
-                                                {designer.name}
-                                            </option>
-                                        ))}
-                                    </>
-                                ) : (
-                                    <option value="">No designer found</option>
-                                )}
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.layout_by}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* Category */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="category_id"
-                                value="Select Category"
-                            />
-
-                            <SelectInput
-                                name="category_id"
-                                id="category_id"
-                                value={data.category_id}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("category_id", e.target.value)
-                                }
-                            >
-                                <option value="">Select a category</option>
-                                {categories.data.map((category) => (
-                                    <option
-                                        key={category.id}
-                                        value={category.id}
-                                    >
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.category_id}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* Status */}
-                        <div className="mt-4 w-full">
-                            <InputLabel htmlFor="status" value="Task status" />
-
-                            <SelectInput
-                                name="status"
-                                id="status"
-                                value={data.status}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("status", e.target.value)
-                                }
-                            >
-                                <option value="">Select a status</option>
-                                <option value="pending">Pending</option>
-                                <option value="revision">Need Revisio</option>
-                                <option value="approved">Approved</option>
-                                <option value="published">Published</option>
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.status}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* priority */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="priority"
-                                value="Task priority"
-                            />
-
-                            <SelectInput
-                                name="priority"
-                                id="priority"
-                                value={data.priority}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("priority", e.target.value)
-                                }
-                            >
-                                <option value="">Select Priority</option>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </SelectInput>
-
-                            <InputError
-                                message={errors.priority}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        {/* due_date */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="due_date"
-                                value="Task Due Date"
-                            />
-
-                            <TextInput
-                                id="due_date"
-                                type="date"
-                                name="due_date"
-                                value={data.due_date}
-                                className="mt-2 block w-full"
-                                onChange={(e) =>
-                                    setData("due_date", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.due_date}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4 flex justify-end gap-2">
-                            <SecondaryButton onClick={closeCreateModal}>
-                                Cancel
-                            </SecondaryButton>
-                            <button
-                                type="submit"
-                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                            >
-                                {task ? "Update" : "Assign Task"}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </Modal>
 
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>

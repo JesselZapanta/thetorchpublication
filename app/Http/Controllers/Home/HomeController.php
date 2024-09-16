@@ -47,7 +47,7 @@ class HomeController extends Controller
                                 ->where('status', 'published')
                                 ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
-                                ->limit(9)
+                                ->limit(12)
                                 ->get();
 
         $latestNewsletter = Newsletter::orderBy('created_at', 'DESC')
@@ -123,7 +123,7 @@ class HomeController extends Controller
 
         //Apply search filter
         if($request->has('search') && !empty($request->search)){
-            $query->where('body', 'like', "%{$request->search}%");
+            $query->where('title', 'like', "%{$request->search}%");
         }
 
         $categoryarticles = $query->paginate(15);

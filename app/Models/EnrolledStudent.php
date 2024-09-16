@@ -12,7 +12,7 @@ class EnrolledStudent extends Model
     protected $fillable = [
             'student_id',
             'firstname',
-            'middelname', 
+            'middlename', 
             'lastname'
         ];
 }

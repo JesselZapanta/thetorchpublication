@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('student_id');
             $table->string(column: 'firstname');
-            $table->string(column: 'middelname');//todo next migration
+            $table->string(column: 'middlename');//todo next migration
             $table->string(column: 'lastname');
             $table->timestamps();
         });

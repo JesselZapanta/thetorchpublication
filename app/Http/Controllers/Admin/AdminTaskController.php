@@ -38,11 +38,28 @@ class AdminTaskController extends Controller
             $query->where('priority', request('priority'));
         }
 
+        //assignedBy
+        if (request('assigned_by')) {
+            // Join with the users table to search by name
+            $query->whereHas('assignedBy', function ($q) {
+                $q->where('name', 'like', '%' . request('assigned_by') . '%');
+            });
+        }
+
+        //layoutBy
+        if (request('layout_by')) {
+            // Join with the users table to search by name
+            $query->whereHas('layoutBy', function ($q) {
+                $q->where('name', 'like', '%' . request('layout_by') . '%');
+            });
+        }
+
         $tasks = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
         $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
         $categories = Category::all();
         $designers = User::where('role', 'designer')->get();
+    
         return inertia('Admin/Task/Index', [
             'queryParams' => request()->query() ? : null,
             'tasks' => TaskResource::collection($tasks),
@@ -57,7 +74,16 @@ class AdminTaskController extends Controller
      */
     public function create()
     {
-        //
+        
+        $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
+        $categories = Category::all();
+        $designers = User::where('role', 'designer')->get();
+
+        return inertia('Admin/Task/Create', [
+            'users' => UserResource::collection($users),
+            'designers' => UserResource::collection($designers),
+            'categories' => UserResource::collection($categories),
+        ]);
     }
 
     /**
@@ -69,7 +95,7 @@ class AdminTaskController extends Controller
 
         Task::create($data);
 
-        return to_route('task.index')->with('success', 'Task Assigned Successfully');
+        return to_route('task.index')->with(['success' => 'Task Assigned Successfully']);
     }
 
     /**
@@ -85,7 +111,16 @@ class AdminTaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
+        $categories = Category::all();
+        $designers = User::where('role', 'designer')->get();
+
+        return inertia('Admin/Task/Edit', [
+            'task' => new TaskResource($task),
+            'users' => UserResource::collection($users),
+            'designers' => UserResource::collection($designers),
+            'categories' => UserResource::collection($categories),
+        ]);
     }
 
     /**
@@ -97,7 +132,7 @@ class AdminTaskController extends Controller
         
         $task->update($data);
 
-        return to_route('task.index')->with('success', 'Task Updated Successfully');
+        return to_route('task.index')->with(['success' => 'Task Updated Successfully']);
     }
 
     /**
@@ -109,6 +144,6 @@ class AdminTaskController extends Controller
         if($task->task_image_path){
             Storage::disk('public')->deleteDirectory(dirname($task->task_image_path));
         }
-        return to_route('task.index')->with('success', 'Deleted Successfully');
+        return to_route('task.index')->with(['success' => 'Deleted Successfully']);
     }
 }
