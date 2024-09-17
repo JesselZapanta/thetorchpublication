@@ -6,7 +6,8 @@ export const TASK_STATUS_CLASS_MAP = {
     approval: "bg-blue-500",
     approved: "bg-indigo-500",
     content_revision: "bg-rose-500",
-    review: "bg-indigo-500",
+    review: "bg-violet-500",
+    image_revision: "bg-rose-500",
     completed: "bg-green-500",
 };
 export const TASK_STATUS_TEXT_MAP = {
@@ -16,6 +17,7 @@ export const TASK_STATUS_TEXT_MAP = {
     approved: "Approved",
     content_revision: "Content Revision",
     review: "For Review",
+    image_revision: "Image Revision",
     completed: "Completed",
 };
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSubmittedTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
@@ -186,16 +187,62 @@ class AdminTaskController extends Controller
             $data['content_approved_date'] = null;
         }
 
+        //task status set to approved status date
         if($data['status'] === 'approved'){
             $data['content_approved_date'] = now();
+        }
+
+        //task status set to image revision status date
+        if($data['status'] === 'image_revision'){
+            $data['image_revision_date'] = now();
+        }
+
+        //task completed date
+        if($data['status'] === 'completed'){
+            $data['task_completed_date'] = now();
         }
 
         // Update the task
         $task->update($data);
 
+        // dd($task);
+        //todo
+        //if task status is completed then put the task data to articles data
+        //add the academic year
+
+        
+
+        if($data['status'] === 'completed'){
+            
+            $article = new Article();
+
+             // Map task data to article fields
+            $article->category_id = $task->category_id;
+            $article->academic_year_id = '1';
+            $article->title = $task->title;
+            $article->excerpt = $task->excerpt;
+            $article->body = $task->body;
+            $article->status = 'published'; // Set article status to published
+            $article->published_date = now();
+            $article->is_anonymous = 'no';
+            $article->caption = $task->caption;
+            $article->article_image_path = $task->task_image_path;
+            $article->layout_by = $task->layout_by;
+            $article->created_by = $task->assigned_by;
+
+            // Save the new article
+            $article->save();
+
+            return to_route('admin-task.index')->with(['success' => 'The tast is completed and published.']);
+        }
+
         // Check the status after update and redirect with appropriate message
         if($data['status'] === 'content_revision'){
-            return to_route('admin-task.index')->with(['success' => 'The task Needed Revision.']);
+            return to_route('admin-task.index')->with(['success' => 'The task needed revision.']);
+        }
+
+        if($data['status'] === 'image_revision'){
+            return to_route('admin-task.index')->with(['success' => 'The image task needed revision.']);
         }
 
         return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);

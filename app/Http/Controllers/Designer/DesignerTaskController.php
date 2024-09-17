@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Designer;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Designer\DesignerUpdateTaskRequest;
 use App\Http\Requests\Writer\WriterUpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -20,8 +21,8 @@ class DesignerTaskController extends Controller
         $query = Task::query();
         $id = Auth::user()->id;
 
-        $sortField = request('sort_field', 'created_at');
-        $sortDirection = request('sort_direction', 'desc');
+        $sortField = request('sort_field', 'status');
+        $sortDirection = request('sort_direction', 'asc');
         
 
         if(request('name')){
@@ -36,10 +37,16 @@ class DesignerTaskController extends Controller
             $query->where('priority', request('priority'));
         }
 
-        $tasks = $query->where('assigned_by', $id)
-                        ->orderBy($sortField, $sortDirection) 
+        $tasks = $query->where('layout_by', $id)
+                        ->where(function ($query) {
+                            $query->where('status', 'approved')
+                                    ->orWhere('status', 'image_revision')
+                                    ->orWhere('status', 'review');
+                        })
+                        ->orderBy($sortField, $sortDirection)
                         ->paginate(10)
                         ->onEachSide(1);
+
 
         return inertia('Designer/Task/Index', [
             'queryParams' => request()->query() ? : null,
@@ -58,6 +65,10 @@ class DesignerTaskController extends Controller
             return to_route('designer-task.index')->with(['error' => 'Task not found']);
         }
 
+        // if($task->status !== 'approved' && $task->status !== 'image_revision'){
+        //     return to_route('designer-task.index')->with(['error' => 'The task status is still in ' . $task->status]);
+        // }
+
         return inertia('Designer/Task/Show', [
             'task' => new TaskResource($task),
         ]);
@@ -66,7 +77,7 @@ class DesignerTaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(WriterUpdateTaskRequest $request, $id)
+    public function update(DesignerUpdateTaskRequest $request, $id)
     {
         $task = Task::find($id);
 
@@ -74,27 +85,32 @@ class DesignerTaskController extends Controller
             return to_route('designer-task.index')->with(['error' => 'Task not found']);
         }
 
-        if($task->status !== 'pending' && $task->status !== 'content_revision' && $task->status !== 'progress'){
+        if($task->status !== 'approved' && $task->status !== 'image_revision' && $task->status !== 'review'){
             return to_route('designer-task.index')->with(['error' => 'The task can no longer be modified.']);
         }
 
         $data = $request->validated();
 
-        if($data['draft'] === 'no'){
-            $data['status'] = 'approval';
-            $data['content_submitted_date'] = now();
-        }
+        $image = $data['task_image_path'];
+
+        if ($image) {
+                // Delete the old image file if a new one is uploaded
+                if ($task->task_image_path) {
+                    Storage::disk('public')->delete($task->task_image_path);
+                }
+                // Store the new image under the 'task/' directory
+                $data['task_image_path'] = $image->store('task', 'public');
+                $data['image_submitted_date'] = now();
+                $data['status'] = 'review';
+            } else {
+                // Keep the existing image
+                $data['task_image_path'] = $task->task_image_path;
+            }
+
 
         $task->update($data);
 
-        if($data['draft'] === 'yes'){
-            $data['status'] = 'progress';
-            $data['content_submitted_date'] = null;
-            $task->update($data);
-            return to_route('designer-task.index')->with(['success' => 'Task Save as Draft']);
-        }
-
-        return to_route('designer-task.index')->with(['success' => 'Task Submitted Successfully']);
+        return to_route('designer-task.index')->with(['success' => 'Image Submitted Successfully']);
     }
 
 }

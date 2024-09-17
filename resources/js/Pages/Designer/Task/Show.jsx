@@ -16,15 +16,7 @@ import { useState } from "react";
 
 export default function Show({ auth, task }) {
     const { data, setData, post, errors } = useForm({
-        name: task.name || "",
-        description: task.description || "",
-        category: task.category || "",
-        title: task.title || "",
-        excerpt: task.excerpt || "",
-        body: task.body || "",
-        content_revision_message: task.content_revision_message || "",
-        caption: task.caption || "",
-        draft: task.draft || "yes",
+        task_image_path: "",
         _method: "PUT",
     });
 
@@ -61,7 +53,7 @@ export default function Show({ auth, task }) {
             {/* <pre className="text-gray-900">{JSON.stringify(task, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {task.content_revision_message && (
+                    {task.image_revision_message && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
@@ -81,7 +73,7 @@ export default function Show({ auth, task }) {
                                         Revision Message:
                                     </p>
                                     <p className="text-sm">
-                                        {task.content_revision_message}
+                                        {task.image_revision_message}
                                     </p>
                                 </div>
                             </div>
@@ -129,119 +121,73 @@ export default function Show({ auth, task }) {
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
-                        {/* {article.article_image_path && (
+                        {task.task_image_path && (
                             <img
-                                src={article.article_image_path}
-                                alt={article.name}
+                                src={task.task_image_path}
+                                alt={task.name}
                                 className="w-full object-cover"
                             />
-                        )} */}
+                        )}
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
                         >
                             {/* title */}
                             <div className="w-full">
-                                <InputLabel htmlFor="title" value="Title" />
-
-                                <TextInput
-                                    id="title"
-                                    type="text"
-                                    name="title"
-                                    value={data.title}
-                                    className="mt-2 block w-full"
-                                    onChange={(e) =>
-                                        setData("title", e.target.value)
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.title}
-                                    className="mt-2"
-                                />
+                                <h2 className="font-bold">Title</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.title}
+                                </p>
                             </div>
+
                             {/* excerpt */}
-                            <div className="mt-4 w-full">
-                                <InputLabel htmlFor="excerpt" value="Excerpt" />
-
-                                <TextAreaInput
-                                    id="excerpt"
-                                    type="text"
-                                    name="excerpt"
-                                    value={data.excerpt}
-                                    className="mt-2 block w-full min-h-24"
-                                    onChange={(e) =>
-                                        setData("excerpt", e.target.value)
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.excerpt}
-                                    className="mt-2"
-                                />
+                            <div className="w-full">
+                                <h2 className="font-bold">Excerpt</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.excerpt}
+                                </p>
                             </div>
 
                             {/* body */}
-                            <div className="mt-4 w-full">
-                                <InputLabel htmlFor="body" value="Body" />
-
-                                <TextAreaInput
-                                    id="body"
-                                    type="text"
-                                    name="body"
-                                    value={data.body}
-                                    className="mt-2 block w-full min-h-24"
-                                    onChange={(e) =>
-                                        setData("body", e.target.value)
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.body}
-                                    className="mt-2"
-                                />
+                            <div className="w-full">
+                                <h2 className="font-bold">Body</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.body}
+                                </p>
                             </div>
 
                             {/* image caption */}
-                            <div className="mt-4 w-full">
+                            <div className="w-full">
+                                <h2 className="font-bold">Imaage Caption</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.caption}
+                                </p>
+                            </div>
+
+                            {/* image path */}
+                            <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="caption"
-                                    value="Image Caption"
+                                    htmlFor="task_image_path"
+                                    value="Upload Image or Infographics"
                                 />
 
                                 <TextInput
-                                    id="caption"
-                                    type="text"
-                                    name="caption"
-                                    value={data.caption}
-                                    className="mt-2 block w-full"
+                                    id="task_image_path"
+                                    type="file"
+                                    name="task_image_path"
+                                    className="mt-2 block w-full cursor-pointer"
                                     onChange={(e) =>
-                                        setData("caption", e.target.value)
+                                        setData(
+                                            "task_image_path",
+                                            e.target.files[0]
+                                        )
                                     }
                                 />
 
                                 <InputError
-                                    message={errors.caption}
+                                    message={errors.task_image_path}
                                     className="mt-2"
                                 />
-                            </div>
-
-                            <div className="block mt-4">
-                                <label className="flex items-center">
-                                    <Checkbox
-                                        name="draft"
-                                        checked={data.draft === "yes"}
-                                        onChange={(e) =>
-                                            setData(
-                                                "draft",
-                                                e.target.checked ? "yes" : "no"
-                                            )
-                                        }
-                                    />
-                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                        Save as Draft
-                                    </span>
-                                </label>
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">

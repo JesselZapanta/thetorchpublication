@@ -6,7 +6,7 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
-import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -32,7 +32,7 @@ export default function Index({
     }, [flash]);
 
     useEffect(() => {
-        router.get(route("writer-task.index"), queryParams, {
+        router.get(route("designer-task.index"), queryParams, {
             preserveState: true,
         });
     }, []);
@@ -42,7 +42,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("writer-task.index"), queryParams, {
+            router.get(route("designer-task.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -59,7 +59,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("writer-task.index"),
+                    route("designer-task.index"),
                     {},
                     {
                         preserveState: true,
@@ -67,7 +67,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("writer-task.index"), queryParams, {
+                router.get(route("designer-task.index"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -77,7 +77,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("writer-task.index"), queryParams, {
+        router.get(route("designer-task.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -93,11 +93,11 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("writer-task.index"), queryParams);
+        router.get(route("designer-task.index"), queryParams);
     };
 
     return (
-        <WriterAuthenticatedLayout
+        <DesignerAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -307,7 +307,7 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
-                                                                "writer-task.show",
+                                                                "designer-task.show",
                                                                 task.id
                                                             )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
@@ -338,6 +338,6 @@ export default function Index({
                     </div>
                 </div>
             </div>
-        </WriterAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }
