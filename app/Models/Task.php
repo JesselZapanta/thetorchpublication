@@ -26,15 +26,19 @@ class Task extends Model
         'priority',
         'draft',
 
-        'revision_message',
-        'image_revision_message',
+        'assigned_date',//
 
-        'assigned_date',
-        'content_submitted_date',
-        'layout_date',
-        'revision_date',
+        'content_submitted_date',//
+
+        'content_revision_message',
+        'content_revision_date',//
+
+        'content_approved_date',
+        
         'image_submitted_date',
+        'image_revision_message',
         'image_revision_date',
+
         'task_completed_date',
         'due_date',
         

@@ -6,56 +6,59 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
-import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import {
+    TASK_PRIORITY_CLASS_MAP,
+    TASK_PRIORITY_TEXT_MAP,
+
+} from "@/constants";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Edit({ auth, task }) {
+export default function Show({ auth, task }) {
     const { data, setData, post, errors } = useForm({
-        name: task.name || "",
-        description: task.description || "",
-        category: task.category || "",
         title: task.title || "",
         excerpt: task.excerpt || "",
         body: task.body || "",
         caption: task.caption || "",
-        draft: task.draft || "no",
+        status: task.status || "",
+        content_revision_message: task.content_revision_message || "",
         _method: "PUT",
     });
 
     const onSubmit = () => {
-        post(route("writer-task.update", task.id), {
+        post(route("admin.updateSubmittedTask", task.id), {
             preserveScroll: true,
         });
     };
 
-    const [confirmUpdate, setConfirmUpdate] = useState(false);
+    const [confirmSubmit, setConfirmSubmit] = useState(false);
 
-    const openUpdateModal = () => {
-        setConfirmUpdate(true);
+    const openSubmitModal = () => {
+        setConfirmSubmit(true);
     };
 
     const handleConfirmUpdate = () => {
-        setConfirmUpdate(false);
+        setConfirmSubmit(false);
         onSubmit();
     };
 
     return (
-        <WriterAuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Edit Task <span className="italic ">"{task.name}"</span>
+                        Task : {task.name}
                     </h2>
                 </div>
             }
         >
-            <Head title={`Edit ${task.name}`} />
+            <Head title={task.name} />
             {/* <pre className="text-gray-900">{JSON.stringify(task, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {/* {article.revision_message && (
+                    {task.content_revision_message && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
@@ -75,13 +78,54 @@ export default function Edit({ auth, task }) {
                                         Revision Message:
                                     </p>
                                     <p className="text-sm">
-                                        {article.revision_message}
+                                        {task.content_revision_message}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    )} */}
+                    )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="w-full p-4 sm:p8">
+                            <div className="w-full">
+                                <h2 className="font-bold">Task Name</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.name}
+                                </p>
+                            </div>
+                            <div className="w-full mt-2">
+                                <h2 className="font-bold">Task Description</h2>
+                                <p className="p-2 bg-gray-100 rounded-sm">
+                                    {task.description}
+                                </p>
+                            </div>
+                            <div className="flex w-full mt-2">
+                                <div className="w-full">
+                                    <h2 className="font-bold">Task Category</h2>
+                                    <p>{task.category.name}</p>
+                                </div>
+                                <div className="w-full">
+                                    <h2 className="font-bold">Task Priority</h2>
+                                    <p>
+                                        <span
+                                            className={
+                                                "px-2 py-1 rounded text-white " +
+                                                TASK_PRIORITY_CLASS_MAP[
+                                                    task.priority
+                                                ]
+                                            }
+                                        >
+                                            {
+                                                TASK_PRIORITY_TEXT_MAP[
+                                                    task.priority
+                                                ]
+                                            }
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
                         {/* {article.article_image_path && (
                             <img
                                 src={article.article_image_path}
@@ -89,21 +133,6 @@ export default function Edit({ auth, task }) {
                                 className="w-full object-cover"
                             />
                         )} */}
-                        <div className="w-full p-4 sm:p8 flex bg-gray-300 justify-between">
-                            <div>
-                                <h2>Task Name</h2>
-                                <p>{data.name}</p>
-                            </div>
-                            <div>
-                                <h2>Task Description</h2>
-                                <p>{data.description}</p>
-                            </div>
-                            <div>
-                                <h2>Task Category</h2>
-                                <p>{data.category.name}</p>
-                            </div>
-                        </div>
-
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
@@ -194,36 +223,79 @@ export default function Edit({ auth, task }) {
                                 />
                             </div>
 
-                            <div className="block mt-4">
-                                <label className="flex items-center">
-                                    <Checkbox
-                                        name="draft"
-                                        checked={data.draft === "yes"}
+                            {/* Status */}
+                            <div className="mt-4 w-full">
+                                <InputLabel
+                                    htmlFor="status"
+                                    value="Article status"
+                                />
+
+                                <SelectInput
+                                    name="status"
+                                    id="status"
+                                    value={data.status}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
+                                >
+                                    <option value="">
+                                        Select Status
+                                    </option>
+                                    <option value="approved">
+                                        Approved Content
+                                    </option>
+                                    <option value="content_revision">
+                                        Content Revision
+                                    </option>
+                                </SelectInput>
+
+                                <InputError
+                                    message={errors.status}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            {data.status === "content_revision" && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="content_revision_message"
+                                        value="Revision Message"
+                                    />
+
+                                    <TextAreaInput
+                                        id="content_revision_message"
+                                        type="text"
+                                        name="content_revision_message"
+                                        value={data.content_revision_message}
+                                        className="mt-2 block w-full min-h-24"
                                         onChange={(e) =>
                                             setData(
-                                                "draft",
-                                                e.target.checked ? "yes" : "no"
+                                                "content_revision_message",
+                                                e.target.value
                                             )
                                         }
                                     />
-                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                        Save as Draft
-                                    </span>
-                                </label>
-                            </div>
+
+                                    <InputError
+                                        message={errors.content_revision_message}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("writer-task.index")}
+                                    href={route("admin-task.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                                    onClick={openUpdateModal}
+                                    onClick={openSubmitModal}
                                 >
-                                    Update
+                                    Save
                                 </button>
                             </div>
                         </form>
@@ -231,15 +303,15 @@ export default function Edit({ auth, task }) {
                 </div>
             </div>
             {/* Confirm Update Modal */}
-            <Modal show={confirmUpdate} onClose={() => setConfirmUpdate(false)}>
+            <Modal show={confirmSubmit} onClose={() => setConfirmSubmit(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Update</h2>
+                    <h2 className="text-base font-bold">Confirm Save</h2>
                     <p className="mt-4">
-                        Are you sure you want to Update this Task?
+                        Are you sure you want to save the changes to this task?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton
-                            onClick={() => setConfirmUpdate(false)}
+                            onClick={() => setConfirmSubmit(false)}
                         >
                             Cancel
                         </SecondaryButton>
@@ -253,6 +325,6 @@ export default function Edit({ auth, task }) {
                     </div>
                 </div>
             </Modal>
-        </WriterAuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

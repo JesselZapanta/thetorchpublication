@@ -22,14 +22,13 @@ class UpdateTaskRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'name' => ['required', 'string'],
+            'description' => ['required' , 'string'],
             'category_id' => ['required','exists:categories,id'],
             'layout_by' => ['required','exists:users,id'],
             'assigned_by' => ['required','exists:users,id'],
-            'description' => ['required' , 'string'],
-            'body' => ['nullable'],
-            'message' => ['nullable'],
             'priority' => ['required',
                 Rule::in(['low', 'medium', 'high'])
             ],

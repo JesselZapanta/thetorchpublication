@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Writer;
+namespace App\Http\Controllers\Designer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Writer\WriterUpdateTaskRequest;
@@ -9,7 +9,7 @@ use App\Models\Task;
 use Auth;
 use Illuminate\Support\Facades\Storage;
 
-class WriterTaskController extends Controller
+class DesignerTaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,7 +41,7 @@ class WriterTaskController extends Controller
                         ->paginate(10)
                         ->onEachSide(1);
 
-        return inertia('Writer/Task/Index', [
+        return inertia('Designer/Task/Index', [
             'queryParams' => request()->query() ? : null,
             'tasks' => TaskResource::collection($tasks),
         ]);
@@ -55,10 +55,10 @@ class WriterTaskController extends Controller
         $task = Task::find($id);
 
         if(!$task){
-            return to_route('writer-task.index')->with(['error' => 'Task not found']);
+            return to_route('designer-task.index')->with(['error' => 'Task not found']);
         }
 
-        return inertia('Writer/Task/Show', [
+        return inertia('Designer/Task/Show', [
             'task' => new TaskResource($task),
         ]);
     }
@@ -71,11 +71,11 @@ class WriterTaskController extends Controller
         $task = Task::find($id);
 
         if(!$task){
-            return to_route('writer-task.index')->with(['error' => 'Task not found']);
+            return to_route('designer-task.index')->with(['error' => 'Task not found']);
         }
 
         if($task->status !== 'pending' && $task->status !== 'content_revision' && $task->status !== 'progress'){
-            return to_route('writer-task.index')->with(['error' => 'The task can no longer be modified.']);
+            return to_route('designer-task.index')->with(['error' => 'The task can no longer be modified.']);
         }
 
         $data = $request->validated();
@@ -91,10 +91,10 @@ class WriterTaskController extends Controller
             $data['status'] = 'progress';
             $data['content_submitted_date'] = null;
             $task->update($data);
-            return to_route('writer-task.index')->with(['success' => 'Task Save as Draft']);
+            return to_route('designer-task.index')->with(['success' => 'Task Save as Draft']);
         }
 
-        return to_route('writer-task.index')->with(['success' => 'Task Submitted Successfully']);
+        return to_route('designer-task.index')->with(['success' => 'Task Submitted Successfully']);
     }
 
 }

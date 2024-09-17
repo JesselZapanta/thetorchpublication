@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateSubmittedTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Models\Category;
@@ -86,6 +87,8 @@ class AdminTaskController extends Controller
     {
         $data = $request->validated();
 
+        $data['assigned_date'] = now();
+
         Task::create($data);
 
         return to_route('admin-task.index')->with(['success' => 'Task Assigned Successfully']);
@@ -94,22 +97,49 @@ class AdminTaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show($id)
     {
-        //
+        $task = Task::find($id);
+
+        if(!$task){
+            return to_route('admin-task.index')->with(['error' => 'Task not found']);
+        }
+
+        if($task->status === 'pending'){
+            return to_route('admin-task.index')->with(['error' => 'Task is still pending']);
+        }
+
+        if($task->status === 'progress'){
+            return to_route('admin-task.index')->with(['error' => 'Task is still in Progress']);
+        }
+
+
+        return inertia('Admin/Task/Show', [
+            'task' => new TaskResource($task),
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $admin_task)
+    public function edit($id)
     {
+        $task = Task::find($id);
+
+        if(!$task){
+            return to_route('admin-task.index')->with(['error' => 'Task not found']);
+        }
+
+        if($task->status !== 'pending'){
+            return to_route('admin-task.index')->with(['error' => 'The task can no longer be modified.']);
+        }
+
         $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
         $categories = Category::all();
         $designers = User::where('role', 'designer')->get();
 
         return inertia('Admin/Task/Edit', [
-            'task' => new TaskResource($admin_task),
+            'task' => new TaskResource($task),
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
             'categories' => UserResource::collection($categories),
@@ -119,14 +149,58 @@ class AdminTaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $admin_task)
+    public function update(UpdateTaskRequest $request,$id)
     {
-        $data = $request->validated();
+        $task = Task::find($id);
         
-        $admin_task->update($data);
+        $data = $request->validated();
+
+        if($task->status !== 'pending'){
+            return to_route('admin-task.index')->with(['error' => 'The task can no longer be modified.']);
+        }
+        
+        $task->update($data);
 
         return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
     }
+
+    /**
+     * Approved the task
+     */
+    public function updateSubmittedTask(UpdateSubmittedTaskRequest $request, $id)
+    {
+        // Find the task
+        $task = Task::find($id);
+
+        // Check if task exists
+        if(!$task){
+            return to_route('admin-task.index')->with(['error' => 'Task Not Found.']);
+        }
+
+        // Get the validated data
+        $data = $request->validated();
+
+        // Set content_revision_date or content_approved_date based on the new status
+        if($data['status'] === 'content_revision'){
+            $data['content_revision_date'] = now();
+            $data['content_approved_date'] = null;
+        }
+
+        if($data['status'] === 'approved'){
+            $data['content_approved_date'] = now();
+        }
+
+        // Update the task
+        $task->update($data);
+
+        // Check the status after update and redirect with appropriate message
+        if($data['status'] === 'content_revision'){
+            return to_route('admin-task.index')->with(['success' => 'The task Needed Revision.']);
+        }
+
+        return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
+    }
+
 
     /**
      * Remove the specified resource from storage.

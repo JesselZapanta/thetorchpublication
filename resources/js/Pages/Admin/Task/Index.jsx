@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -29,6 +30,12 @@ export default function Index({
             toast.error(flash.message.error);
         }
     }, [flash]);
+
+    useEffect(() => {
+        router.get(route("admin-task.index"), queryParams, {
+            preserveState: true,
+        });
+    }, []);
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [task, setTask] = useState(null); // For storing the task to edit/delete
@@ -143,7 +150,7 @@ export default function Index({
                                             className="w-full"
                                             defaultValue={queryParams.name}
                                             placeholder="Task Name"
-                                            onBlur={(e) =>
+                                            onChange={(e) =>
                                                 searchFieldChanged(
                                                     "name",
                                                     e.target.value
@@ -322,12 +329,49 @@ export default function Index({
                                                         {task.due_date}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {task.status}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                TASK_STATUS_CLASS_MAP[
+                                                                    task.status
+                                                                ]
+                                                            }
+                                                        >
+                                                            {
+                                                                TASK_STATUS_TEXT_MAP[
+                                                                    task.status
+                                                                ]
+                                                            }
+                                                        </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {task.priority}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                TASK_PRIORITY_CLASS_MAP[
+                                                                    task
+                                                                        .priority
+                                                                ]
+                                                            }
+                                                        >
+                                                            {
+                                                                TASK_PRIORITY_TEXT_MAP[
+                                                                    task
+                                                                        .priority
+                                                                ]
+                                                            }
+                                                        </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
+                                                        <Link
+                                                            href={route(
+                                                                "admin-task.show",
+                                                                task.id
+                                                            )}
+                                                            className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline mx-1"
+                                                        >
+                                                            View
+                                                        </Link>
                                                         <Link
                                                             href={route(
                                                                 "admin-task.edit",

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Designer\DesignerNewsletterController;
+use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
@@ -105,7 +106,9 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
     Route::resource('newsletter', AdminNewsletterController::class);
 
+    // Task route
     Route::resource('admin-task', AdminTaskController::class);
+    Route::put('admin-task/{id}/updateSubmittedTask', [AdminTaskController::class, 'updateSubmittedTask'])->name('admin.updateSubmittedTask');
 
     //review Report article
     Route::get('/admin-review-report-article', [AdminReviewReport::class, 'article'])->name('admin-review-report-article.index');
@@ -150,7 +153,10 @@ Route::middleware(['auth', 'writer'])->group(function() {
     Route::resource('writer-article', WriterArticleController::class);
 
 
-    Route::resource('writer-task', WriterTaskController::class);
+    Route::get('writer-task', [WriterTaskController::class, 'index'])->name('writer-task.index');
+    Route::get('writer-task-getData', [WriterTaskController::class, 'getData'])->name('writer-task.getData');
+    Route::get('writer-task/{id}/show', [WriterTaskController::class, 'show'])->name('writer-task.show');
+    Route::put('writer-task/{id}/update', [WriterTaskController::class, 'update'])->name('writer-task.update');
 });
 
 // for Designer
@@ -163,6 +169,12 @@ Route::middleware(['auth', 'designer'])->group(function() {
     Route::post('/designer-newsletter-articles/{id}/not-layout', [DesignerNewsletterController::class, 'notLayout'])->name('designer-newsletter.not-layout');
     Route::get('/designer-newsletter-articles', [DesignerNewsletterController::class, 'SelectArticles'])->name('designer-newsletter.articles');
     Route::resource('designer-newsletter', DesignerNewsletterController::class);
+
+    // task
+    Route::get('designer-task', [DesignerTaskController::class, 'index'])->name('designer-task.index');
+    Route::get('designer-task-getData', [DesignerTaskController::class, 'getData'])->name('designer-task.getData');
+    Route::get('designer-task/{id}/show', [DesignerTaskController::class, 'show'])->name('designer-task.show');
+    Route::put('designer-task/{id}/update', [DesignerTaskController::class, 'update'])->name('designer-task.update');
 });
 
 

@@ -109,208 +109,236 @@ export default function Create({
                                 />
                             </div>
 
-                            {/* assigned_by */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="assigned_by"
-                                    value="Select Assignee"
-                                />
+                            <div className="flex gap-2">
+                                {/* assigned_by */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="assigned_by"
+                                        value="Select Assignee"
+                                    />
 
-                                <SelectInput
-                                    name="assigned_by"
-                                    id="assigned_by"
-                                    value={data.assigned_by}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("assigned_by", e.target.value)
-                                    }
-                                >
-                                    {users.data.length > 0 ? (
-                                        <>
-                                            <option value="">
-                                                Select an Assignee
-                                            </option>
-                                            {users.data.map((user) => (
-                                                <option
-                                                    key={user.id}
-                                                    value={user.id}
-                                                >
-                                                    {user.name}
+                                    <SelectInput
+                                        name="assigned_by"
+                                        id="assigned_by"
+                                        value={data.assigned_by}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData(
+                                                "assigned_by",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        {users.data.length > 0 ? (
+                                            <>
+                                                <option value="">
+                                                    Select an Assignee
                                                 </option>
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <option value="">No user found</option>
-                                    )}
-                                </SelectInput>
+                                                {users.data.map((user) => (
+                                                    <option
+                                                        key={user.id}
+                                                        value={user.id}
+                                                    >
+                                                        {user.name}
+                                                    </option>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <option value="">
+                                                No user found
+                                            </option>
+                                        )}
+                                    </SelectInput>
 
-                                <InputError
-                                    message={errors.assigned_by}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.assigned_by}
+                                        className="mt-2"
+                                    />
+                                </div>
+
+                                {/* layout_by */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="layout_by"
+                                        value="Select Desinger"
+                                    />
+
+                                    <SelectInput
+                                        name="layout_by"
+                                        id="layout_by"
+                                        value={data.layout_by}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData("layout_by", e.target.value)
+                                        }
+                                    >
+                                        {designers.data.length > 0 ? (
+                                            <>
+                                                <option value="">
+                                                    Select Desinger
+                                                </option>
+                                                {designers.data.map(
+                                                    (designer) => (
+                                                        <option
+                                                            key={designer.id}
+                                                            value={designer.id}
+                                                        >
+                                                            {designer.name}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </>
+                                        ) : (
+                                            <option value="">
+                                                No designer found
+                                            </option>
+                                        )}
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.layout_by}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
-                            {/* layout_by */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="layout_by"
-                                    value="Select Desinger"
-                                />
+                            <div className="flex gap-2">
+                                {/* Category */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="category_id"
+                                        value="Select Category"
+                                    />
 
-                                <SelectInput
-                                    name="layout_by"
-                                    id="layout_by"
-                                    value={data.layout_by}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("layout_by", e.target.value)
-                                    }
-                                >
-                                    {designers.data.length > 0 ? (
-                                        <>
-                                            <option value="">
-                                                Select Desinger
-                                            </option>
-                                            {designers.data.map((designer) => (
-                                                <option
-                                                    key={designer.id}
-                                                    value={designer.id}
-                                                >
-                                                    {designer.name}
-                                                </option>
-                                            ))}
-                                        </>
-                                    ) : (
+                                    <SelectInput
+                                        name="category_id"
+                                        id="category_id"
+                                        value={data.category_id}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData(
+                                                "category_id",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
                                         <option value="">
-                                            No designer found
+                                            Select a category
                                         </option>
-                                    )}
-                                </SelectInput>
+                                        {categories.data.map((category) => (
+                                            <option
+                                                key={category.id}
+                                                value={category.id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
 
-                                <InputError
-                                    message={errors.layout_by}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.category_id}
+                                        className="mt-2"
+                                    />
+                                </div>
+
+                                {/* due_date */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="due_date"
+                                        value="Task Due Date"
+                                    />
+
+                                    <TextInput
+                                        id="due_date"
+                                        type="date"
+                                        name="due_date"
+                                        value={data.due_date}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("due_date", e.target.value)
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.due_date}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
-                            {/* Category */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="category_id"
-                                    value="Select Category"
-                                />
+                            <div className="flex gap-2">
+                                {/* Status */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Task status"
+                                    />
 
-                                <SelectInput
-                                    name="category_id"
-                                    id="category_id"
-                                    value={data.category_id}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("category_id", e.target.value)
-                                    }
-                                >
-                                    <option value="">Select a category</option>
-                                    {categories.data.map((category) => (
-                                        <option
-                                            key={category.id}
-                                            value={category.id}
-                                        >
-                                            {category.name}
+                                    <SelectInput
+                                        name="status"
+                                        id="status"
+                                        value={data.status}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select a status
                                         </option>
-                                    ))}
-                                </SelectInput>
+                                        <option value="pending">Pending</option>
+                                        <option value="revision">
+                                            Need Revisio
+                                        </option>
+                                        <option value="approved">
+                                            Approved
+                                        </option>
+                                        <option value="published">
+                                            Published
+                                        </option>
+                                    </SelectInput>
 
-                                <InputError
-                                    message={errors.category_id}
-                                    className="mt-2"
-                                />
-                            </div>
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            {/* Status */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="status"
-                                    value="Task status"
-                                />
+                                {/* priority */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="priority"
+                                        value="Task priority"
+                                    />
 
-                                <SelectInput
-                                    name="status"
-                                    id="status"
-                                    value={data.status}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("status", e.target.value)
-                                    }
-                                >
-                                    <option value="">Select a status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="revision">
-                                        Need Revisio
-                                    </option>
-                                    <option value="approved">Approved</option>
-                                    <option value="published">Published</option>
-                                </SelectInput>
+                                    <SelectInput
+                                        name="priority"
+                                        id="priority"
+                                        value={data.priority}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData("priority", e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select Priority
+                                        </option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </SelectInput>
 
-                                <InputError
-                                    message={errors.status}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            {/* priority */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="priority"
-                                    value="Task priority"
-                                />
-
-                                <SelectInput
-                                    name="priority"
-                                    id="priority"
-                                    value={data.priority}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("priority", e.target.value)
-                                    }
-                                >
-                                    <option value="">Select Priority</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </SelectInput>
-
-                                <InputError
-                                    message={errors.priority}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            {/* due_date */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="due_date"
-                                    value="Task Due Date"
-                                />
-
-                                <TextInput
-                                    id="due_date"
-                                    type="date"
-                                    name="due_date"
-                                    value={data.due_date}
-                                    className="mt-2 block w-full"
-                                    onChange={(e) =>
-                                        setData("due_date", e.target.value)
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.due_date}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.priority}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton href={route("admin-task.index")}>
+                                <SecondaryButton
+                                    href={route("admin-task.index")}
+                                >
                                     Cancel
                                 </SecondaryButton>
                                 <button

@@ -41,6 +41,15 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
                                 >
                                     Newsletters
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("designer-task.index")}
+                                    active={route().current(
+                                        "designer-task.index"
+                                    )}
+                                >
+                                    Task
+                                </NavLink>
                             </div>
                         </div>
 
