@@ -1,28 +1,20 @@
-import Checkbox from "@/Components/Checkbox";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
-import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Create({
-    auth,
-    users,
-    categories,
-    designers,
-}) {
+export default function Create({ auth, users, categories, designers, activeAy }) {
     const { data, setData, post, errors } = useForm({
         name: "",
         description: "",
         assigned_by: "",
         layout_by: "",
         category_id: "",
-        status: "",
         priority: "",
         due_date: "",
     });
@@ -121,7 +113,7 @@ export default function Create({
                                         name="assigned_by"
                                         id="assigned_by"
                                         value={data.assigned_by}
-                                        className="mt-1 block w-full"
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData(
                                                 "assigned_by",
@@ -167,7 +159,7 @@ export default function Create({
                                         name="layout_by"
                                         id="layout_by"
                                         value={data.layout_by}
-                                        className="mt-1 block w-full"
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData("layout_by", e.target.value)
                                         }
@@ -214,7 +206,7 @@ export default function Create({
                                         name="category_id"
                                         id="category_id"
                                         value={data.category_id}
-                                        className="mt-1 block w-full"
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData(
                                                 "category_id",
@@ -267,39 +259,38 @@ export default function Create({
                             </div>
 
                             <div className="flex gap-2">
-                                {/* Status */}
+
+                                {/* AY */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="status"
-                                        value="Task status"
+                                        htmlFor="academic_year_id"
+                                        value="Select Academic Year"
                                     />
 
                                     <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-1 block w-full"
+                                        name="academic_year_id"
+                                        id="academic_year_id"
+                                        value={data.academic_year_id}
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
-                                            setData("status", e.target.value)
+                                            setData(
+                                                "academic_year_id",
+                                                e.target.value
+                                            )
                                         }
                                     >
                                         <option value="">
-                                            Select a status
+                                            Select a Academic Year
                                         </option>
-                                        <option value="pending">Pending</option>
-                                        <option value="revision">
-                                            Need Revisio
-                                        </option>
-                                        <option value="approved">
-                                            Approved
-                                        </option>
-                                        <option value="published">
-                                            Published
-                                        </option>
+                                        {activeAy.data.map((ay) => (
+                                            <option key={ay.id} value={ay.id}>
+                                                {ay.description}
+                                            </option>
+                                        ))}
                                     </SelectInput>
 
                                     <InputError
-                                        message={errors.status}
+                                        message={errors.academic_year_id}
                                         className="mt-2"
                                     />
                                 </div>
@@ -315,7 +306,7 @@ export default function Create({
                                         name="priority"
                                         id="priority"
                                         value={data.priority}
-                                        className="mt-1 block w-full"
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData("priority", e.target.value)
                                         }

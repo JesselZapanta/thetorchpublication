@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSubmittedTaskRequest;
+use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
+use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Task;
@@ -74,10 +76,18 @@ class AdminTaskController extends Controller
         $categories = Category::all();
         $designers = User::where('role', 'designer')->get();
 
+         // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
+        $activeAy = AcademicYear::all();//for admin
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
         return inertia('Admin/Task/Create', [
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
             'categories' => UserResource::collection($categories),
+            'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
 
@@ -86,6 +96,7 @@ class AdminTaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        // dd($request);
         $data = $request->validated();
 
         $data['assigned_date'] = now();
@@ -218,7 +229,7 @@ class AdminTaskController extends Controller
 
              // Map task data to article fields
             $article->category_id = $task->category_id;
-            $article->academic_year_id = '1';
+            $article->academic_year_id = $task->academic_year_id;
             $article->title = $task->title;
             $article->excerpt = $task->excerpt;
             $article->body = $task->body;

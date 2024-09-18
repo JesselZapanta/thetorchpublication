@@ -13,6 +13,7 @@ class Task extends Model
         'name',
         'description',
         'category_id',
+        'academic_year_id',
 
         'layout_by',
         'assigned_by',
@@ -56,5 +57,10 @@ class Task extends Model
     public function layoutBy()
     {
         return $this->belongsTo(User::class, 'layout_by');
+    }
+    //academic year
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 }

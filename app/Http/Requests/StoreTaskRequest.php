@@ -25,6 +25,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'category_id' => ['required','exists:categories,id'],
+            'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['required','exists:users,id'],
             'assigned_by' => ['required','exists:users,id'],
             'description' => ['required' , 'string'],
@@ -32,9 +33,6 @@ class StoreTaskRequest extends FormRequest
             'message' => ['nullable'],
             'priority' => ['required',
                 Rule::in(['low', 'medium', 'high'])
-            ],
-            'status' => ['required',
-                Rule::in(['pending', 'revision', 'approved', 'published'])
             ],
             'due_date' => ['required', 'date', 'after:today'], 
             'task_image_path' => ['nullable'],

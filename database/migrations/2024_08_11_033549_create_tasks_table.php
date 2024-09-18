@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
 
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('assigned_by')->nullable()->constrained('users')->onDelete('cascade');
-                        
+
             $table->longText('title')->nullable();//new
             $table->text('excerpt')->nullable();//new
             $table->longText('body')->nullable();//new
