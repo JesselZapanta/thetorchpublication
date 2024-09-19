@@ -44,3 +44,7 @@ php artisan make:model Newsletter -m
 
 <!-- controler with resource and requests -->
 php artisan make:controller Admin/NewsletterController --model=Newsletter --requests --resource
+
+<!-- for makaing notf -->
+
+php artisan make:notification TaskAssigned

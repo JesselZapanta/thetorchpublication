@@ -27,14 +27,14 @@ class StoreTaskRequest extends FormRequest
             'category_id' => ['required','exists:categories,id'],
             'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['required','exists:users,id'],
-            'assigned_by' => ['required','exists:users,id'],
+            'assigned_to' => ['required','exists:users,id'],
             'description' => ['required' , 'string'],
             'body' => ['nullable'],
             'message' => ['nullable'],
             'priority' => ['required',
                 Rule::in(['low', 'medium', 'high'])
             ],
-            'due_date' => ['required', 'date', 'after:today'], 
+            'due_date' => ['required', 'date', 'after_or_equal:today'],
             'task_image_path' => ['nullable'],
         ];
     }

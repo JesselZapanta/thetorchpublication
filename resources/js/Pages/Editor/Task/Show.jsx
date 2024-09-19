@@ -10,7 +10,7 @@ import {
     TASK_PRIORITY_TEXT_MAP,
 
 } from "@/constants";
-import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ export default function Show({ auth, task }) {
     });
 
     const onSubmit = () => {
-        post(route("writer-task.update", task.id), {
+        post(route("editor-task.update", task.id), {
             preserveScroll: true,
         });
     };
@@ -46,7 +46,7 @@ export default function Show({ auth, task }) {
     };
 
     return (
-        <WriterAuthenticatedLayout
+        <EditorAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -129,14 +129,13 @@ export default function Show({ auth, task }) {
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
-                        {task.status === "completed" &&
-                            task.task_image_path && (
-                                <img
-                                    src={task.task_image_path}
-                                    alt={task.name}
-                                    className="w-full object-cover"
-                                />
-                            )}
+                        {task.status === 'completed' && task.task_image_path && (
+                            <img
+                                src={task.task_image_path}
+                                alt={task.name}
+                                className="w-full object-cover"
+                            />
+                        )}
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
@@ -247,7 +246,7 @@ export default function Show({ auth, task }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("writer-task.index")}
+                                    href={route("editor-task.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -286,6 +285,6 @@ export default function Show({ auth, task }) {
                     </div>
                 </div>
             </Modal>
-        </WriterAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

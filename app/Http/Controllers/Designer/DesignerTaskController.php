@@ -41,7 +41,8 @@ class DesignerTaskController extends Controller
                         ->where(function ($query) {
                             $query->where('status', 'approved')
                                     ->orWhere('status', 'image_revision')
-                                    ->orWhere('status', 'review');
+                                    ->orWhere('status', 'review')
+                                    ->orWhere('status', 'completed');
                         })
                         ->orderBy($sortField, $sortDirection)
                         ->paginate(10)
@@ -111,6 +112,16 @@ class DesignerTaskController extends Controller
         $task->update($data);
 
         return to_route('designer-task.index')->with(['success' => 'Image Submitted Successfully']);
+    }
+
+    
+    public function timeLine($id)
+    {
+        $task = Task::find($id);
+
+        return inertia('Designer/Task/Timeline', [
+            'task' => new TaskResource($task),
+        ]);
     }
 
 }

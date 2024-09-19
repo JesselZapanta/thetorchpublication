@@ -28,6 +28,17 @@ class UserSeeder extends Seeder
             ],
 
             [   
+                'student_id' => '111111',
+                'username' => 'assistantadviser',
+                'name' => 'assistantadviser',
+                'role' => 'admin',
+                'position' => 'none',
+                'email_verified_at' => now(),
+                'email' => 'assistantadviser@gmail.com',
+                'password' => Hash::make('1'),
+            ],
+
+            [   
                 'student_id' => '543369',
                 'username' => 'torcheditor',
                 'name' => 'torcheditor',

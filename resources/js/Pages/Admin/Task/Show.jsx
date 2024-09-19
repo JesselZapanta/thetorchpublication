@@ -128,13 +128,16 @@ export default function Show({ auth, task }) {
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
-                        {task.task_image_path && (
-                            <img
-                                src={task.task_image_path}
-                                alt={task.name}
-                                className="w-full object-cover"
-                            />
-                        )}
+                        {task.status === "review" &&
+                            task.status === "image_revision" &&
+                            task.status === "completed" &&
+                            task.task_image_path && (
+                                <img
+                                    src={task.task_image_path}
+                                    alt={task.name}
+                                    className="w-full object-cover"
+                                />
+                            )}
                         <form
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
@@ -568,7 +571,6 @@ export default function Show({ auth, task }) {
                                 </li>
                             </ol>
                         </div> */}
-
                     </div>
                 </div>
             </div>

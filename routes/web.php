@@ -15,6 +15,7 @@ use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
+use App\Http\Controllers\Editor\EditorTaskController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
 use App\Http\Controllers\Home\FreedomWallController;
@@ -145,6 +146,12 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::resource('editor-article', EditorArticleController::class);
+
+    Route::get('editor-task', [EditorTaskController::class, 'index'])->name('editor-task.index');
+    Route::get('editor-task-getData', [EditorTaskController::class, 'getData'])->name('editor-task.getData');
+    Route::get('editor-task/{id}/show', [EditorTaskController::class, 'show'])->name('editor-task.show');
+    Route::put('editor-task/{id}/update', [EditorTaskController::class, 'update'])->name('editor-task.update');
+    Route::get('editor-task/{id}/timeline', [EditorTaskController::class, 'timeLine'])->name('editor-task.timeline');
 });
 
 
@@ -158,6 +165,7 @@ Route::middleware(['auth', 'writer'])->group(function() {
     Route::get('writer-task-getData', [WriterTaskController::class, 'getData'])->name('writer-task.getData');
     Route::get('writer-task/{id}/show', [WriterTaskController::class, 'show'])->name('writer-task.show');
     Route::put('writer-task/{id}/update', [WriterTaskController::class, 'update'])->name('writer-task.update');
+    Route::get('writer-task/{id}/timeline', [WriterTaskController::class, 'timeLine'])->name('writer-task.timeline');
 });
 
 // for Designer
@@ -176,6 +184,8 @@ Route::middleware(['auth', 'designer'])->group(function() {
     Route::get('designer-task-getData', [DesignerTaskController::class, 'getData'])->name('designer-task.getData');
     Route::get('designer-task/{id}/show', [DesignerTaskController::class, 'show'])->name('designer-task.show');
     Route::put('designer-task/{id}/update', [DesignerTaskController::class, 'update'])->name('designer-task.update');
+    Route::get('designer-task/{id}/timeline', [DesignerTaskController::class, 'timeLine'])->name('designer-task.timeline');
+
 });
 
 

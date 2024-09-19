@@ -10,14 +10,14 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function Edit({ auth, task, users, categories, designers }) {
+export default function Edit({ auth, task, users, categories, designers, activeAy }) {
     const { data, setData, post, errors } = useForm({
         name: task.name || "", // Set name
         description: task.description || "", // Set description
-        assigned_by: task.assigned_by || "", // Set assigned_by
+        assigned_to: task.assigned_to || "", // Set assigned_to
         layout_by: task.layout_by || "", // Set layout_by
         category_id: task.category_id || "", // Set category_id
-        status: task.status || "", // Set status
+        academic_year_id: task.academic_year_id || "", // Set academic_year_id
         priority: task.priority || "", // Set priority
         due_date: task.due_date || "", // Set due_date
         _method: "PUT",
@@ -138,21 +138,21 @@ export default function Edit({ auth, task, users, categories, designers }) {
                             </div>
 
                             <div className="flex gap-2">
-                                {/* assigned_by */}
+                                {/* assigned_to */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="assigned_by"
+                                        htmlFor="assigned_to"
                                         value="Select Assignee"
                                     />
 
                                     <SelectInput
-                                        name="assigned_by"
-                                        id="assigned_by"
-                                        value={data.assigned_by}
+                                        name="assigned_to"
+                                        id="assigned_to"
+                                        value={data.assigned_to}
                                         className="mt-1 block w-full"
                                         onChange={(e) =>
                                             setData(
-                                                "assigned_by",
+                                                "assigned_to",
                                                 e.target.value
                                             )
                                         }
@@ -179,7 +179,7 @@ export default function Edit({ auth, task, users, categories, designers }) {
                                     </SelectInput>
 
                                     <InputError
-                                        message={errors.assigned_by}
+                                        message={errors.assigned_to}
                                         className="mt-2"
                                     />
                                 </div>
@@ -295,39 +295,37 @@ export default function Edit({ auth, task, users, categories, designers }) {
                             </div>
 
                             <div className="flex gap-2">
-                                {/* Status */}
+                                {/* AY */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="status"
-                                        value="Task status"
+                                        htmlFor="academic_year_id"
+                                        value="Select Academic Year"
                                     />
 
                                     <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-1 block w-full"
+                                        name="academic_year_id"
+                                        id="academic_year_id"
+                                        value={data.academic_year_id}
+                                        className="mt-2 block w-full"
                                         onChange={(e) =>
-                                            setData("status", e.target.value)
+                                            setData(
+                                                "academic_year_id",
+                                                e.target.value
+                                            )
                                         }
                                     >
                                         <option value="">
-                                            Select a status
+                                            Select a Academic Year
                                         </option>
-                                        <option value="pending">Pending</option>
-                                        <option value="revision">
-                                            Need Revisio
-                                        </option>
-                                        <option value="approved">
-                                            Approved
-                                        </option>
-                                        <option value="published">
-                                            Published
-                                        </option>
+                                        {activeAy.data.map((ay) => (
+                                            <option key={ay.id} value={ay.id}>
+                                                {ay.description}
+                                            </option>
+                                        ))}
                                     </SelectInput>
 
                                     <InputError
-                                        message={errors.status}
+                                        message={errors.academic_year_id}
                                         className="mt-2"
                                     />
                                 </div>

@@ -14,7 +14,10 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TaskAssigned;
 
 class AdminTaskController extends Controller
 {
@@ -42,11 +45,11 @@ class AdminTaskController extends Controller
             $query->where('priority', request('priority'));
         }
 
-        //assignedBy
-        if (request('assigned_by')) {
+        //assigned To
+        if (request('assigned_to')) {
             // Join with the users table to search by name
-            $query->whereHas('assignedBy', function ($q) {
-                $q->where('name', 'like', '%' . request('assigned_by') . '%');
+            $query->whereHas('assignedTo', function ($q) {
+                $q->where('name', 'like', '%' . request('assigned_to') . '%');
             });
         }
 
@@ -58,7 +61,10 @@ class AdminTaskController extends Controller
             });
         }
 
-        $tasks = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        $tasks = $query->orderBy($sortField, $sortDirection)
+                    ->where('assigned_by', Auth::user()->id)
+                    ->paginate(10)
+                    ->onEachSide(1);
     
         return inertia('Admin/Task/Index', [
             'queryParams' => request()->query() ? : null,
@@ -96,15 +102,39 @@ class AdminTaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        // dd($request);
         $data = $request->validated();
+        $id = Auth::user()->id;
 
-        $data['assigned_date'] = now();
+        $data['assigned_by'] = $id; // who assigns the task
+        $data['assigned_date'] = now(); // date the task is assigned
 
-        Task::create($data);
+        $task = Task::create($data);
+
+        // ========== Send Email =============//
+        // // Get the user assigned to the task
+        // $assignedToUser = User::find($data['assigned_to']);
+
+        // // Get the role of the assigned user
+        // $userRole = $assignedToUser->role; 
+
+        // // Prepare task details for the notification
+        // $taskDetails = [
+        //     'task_id' => $task->id,
+        //     'task_name' => $task->name, 
+        //     'assigned_by_name' => Auth::user()->name,
+        //     'due_date' => $data['due_date'], 
+        // ];
+
+        // // Customize the message based on the task status
+        // $customMessage = 'You have been assigned a new task.'; // Change this as needed
+        // // $customMessage = 'The task has been submitted for review.';
+
+        // // Send the email notification, passing the task details, the role, and the custom message
+        // Notification::send($assignedToUser, new TaskAssigned($taskDetails, $userRole, $customMessage));
 
         return to_route('admin-task.index')->with(['success' => 'Task Assigned Successfully']);
     }
+
 
     /**
      * Display the specified resource.
@@ -162,11 +192,19 @@ class AdminTaskController extends Controller
         $categories = Category::all();
         $designers = User::where('role', 'designer')->get();
 
+         // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
+        $activeAy = AcademicYear::all();//for admin
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
         return inertia('Admin/Task/Edit', [
             'task' => new TaskResource($task),
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
             'categories' => UserResource::collection($categories),
+            'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
     }
 
@@ -184,6 +222,7 @@ class AdminTaskController extends Controller
         }
         
         $task->update($data);
+
 
         return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
     }

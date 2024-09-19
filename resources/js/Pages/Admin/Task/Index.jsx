@@ -185,14 +185,26 @@ export default function Index({
                                             <option value="pending">
                                                 Pending
                                             </option>
-                                            <option value="revision">
-                                                Need Revision
+                                            <option value="progress">
+                                                In Progress
+                                            </option>
+                                            <option value="approval">
+                                                For Approval
                                             </option>
                                             <option value="approved">
                                                 Approved
                                             </option>
-                                            <option value="published">
-                                                Published
+                                            <option value="content_revision">
+                                                Content Revision
+                                            </option>
+                                            <option value="review">
+                                                For Review
+                                            </option>
+                                            <option value="image_revision">
+                                                Image Revision
+                                            </option>
+                                            <option value="completed">
+                                                Completed
                                             </option>
                                         </SelectInput>
                                     </div>
@@ -247,8 +259,20 @@ export default function Index({
                                             >
                                                 Task Name
                                             </TableHeading>
-                                            <TableHeading
+                                            {/* <TableHeading
                                                 name="assigned_by"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Assign By
+                                            </TableHeading> */}
+                                            <TableHeading
+                                                name="assigned_to"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -281,7 +305,7 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Due Data
+                                                Due Date
                                             </TableHeading>
                                             <TableHeading
                                                 name="status"
@@ -325,7 +349,7 @@ export default function Index({
                                                     </td>
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                         <Link
-                                                        className="text-md text-gray-900 dark:text-gray-300"
+                                                            className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
                                                                 "admin-task.timeline",
                                                                 task.id
@@ -337,8 +361,11 @@ export default function Index({
                                                             )}
                                                         </Link>
                                                     </th>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         {task.assignedBy.name}
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {task.assignedTo.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {task.layoutBy.name}

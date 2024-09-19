@@ -1,12 +1,12 @@
 import SecondaryButton from "@/Components/SecondaryButton";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
 export default function Timeline({ auth, task }) {
 
     return (
-        <AdminAuthenticatedLayout
+        <DesignerAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -14,7 +14,7 @@ export default function Timeline({ auth, task }) {
                         Timeline : {task.name}
                     </h2>
                     <div className="flex gap-4">
-                        <SecondaryButton href={route("admin-task.index")}>
+                        <SecondaryButton href={route("designer-task.index")}>
                             Back
                         </SecondaryButton>
                     </div>
@@ -257,6 +257,6 @@ export default function Timeline({ auth, task }) {
                     </div>
                 </div>
             </div>
-        </AdminAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

@@ -27,15 +27,13 @@ class UpdateTaskRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['required' , 'string'],
             'category_id' => ['required','exists:categories,id'],
+            'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['required','exists:users,id'],
-            'assigned_by' => ['required','exists:users,id'],
+            'assigned_to' => ['required','exists:users,id'],
             'priority' => ['required',
                 Rule::in(['low', 'medium', 'high'])
             ],
-            'status' => ['required',
-                Rule::in(['pending', 'revision', 'approved', 'published'])
-            ],
-            'due_date' => ['required', 'date', 'after:today'], 
+            'due_date' => ['required', 'date', 'after_or_equal:today'],
             'task_image_path' => ['nullable'],
         ];
     }

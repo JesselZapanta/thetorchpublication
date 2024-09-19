@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Writer;
+namespace App\Http\Controllers\Editor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Writer\WriterUpdateTaskRequest;
@@ -8,11 +8,9 @@ use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
 use Auth;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\TaskAssigned;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
-class WriterTaskController extends Controller
+class EditorTaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -44,7 +42,7 @@ class WriterTaskController extends Controller
                         ->paginate(10)
                         ->onEachSide(1);
 
-        return inertia('Writer/Task/Index', [
+        return inertia('Editor/Task/Index', [
             'queryParams' => request()->query() ? : null,
             'tasks' => TaskResource::collection($tasks),
         ]);
@@ -58,14 +56,14 @@ class WriterTaskController extends Controller
         $task = Task::find($id);
 
         if(!$task){
-            return to_route('writer-task.index')->with(['error' => 'Task not found']);
+            return to_route('editor-task.index')->with(['error' => 'Task not found']);
         }
 
         // if($task->status !== 'pending' && $task->status !== 'content_revision' && $task->status !== 'progress' && $task->status !== 'approval'){
-        //     return to_route('writer-task.index')->with(['error' => 'The task can no longer be modified.']);
+        //     return to_route('editor-task.index')->with(['error' => 'The task can no longer be modified.']);
         // }
 
-        return inertia('Writer/Task/Show', [
+        return inertia('Editor/Task/Show', [
             'task' => new TaskResource($task),
         ]);
     }
@@ -78,11 +76,11 @@ class WriterTaskController extends Controller
         $task = Task::find($id);
 
         if(!$task){
-            return to_route('writer-task.index')->with(['error' => 'Task not found']);
+            return to_route('editor-task.index')->with(['error' => 'Task not found']);
         }
 
         if($task->status !== 'pending' && $task->status !== 'content_revision' && $task->status !== 'progress' && $task->status !== 'approval'){
-            return to_route('writer-task.index')->with(['error' => 'The task can no longer be modified.']);
+            return to_route('editor-task.index')->with(['error' => 'The task can no longer be modified.']);
         }
 
         $data = $request->validated();
@@ -98,19 +96,19 @@ class WriterTaskController extends Controller
             $data['status'] = 'progress';
             $data['content_submitted_date'] = null;
             $task->update($data);
-            return to_route('writer-task.index')->with(['success' => 'Task Save as Draft']);
+            return to_route('editor-task.index')->with(['success' => 'Task Save as Draft']);
         }
 
         // ========== Send Email =============//
 
-        return to_route('writer-task.index')->with(['success' => 'Task Submitted Successfully']);
+        return to_route('editor-task.index')->with(['success' => 'Task Submitted Successfully']);
     }
 
     public function timeLine($id)
     {
         $task = Task::find($id);
 
-        return inertia('Writer/Task/Timeline', [
+        return inertia('Editor/Task/Timeline', [
             'task' => new TaskResource($task),
         ]);
     }

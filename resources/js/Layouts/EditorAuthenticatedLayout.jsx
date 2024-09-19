@@ -39,6 +39,15 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                                 >
                                     Articles
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("editor-task.index")}
+                                    active={route().current(
+                                        "editor-task.index"
+                                    )}
+                                >
+                                    Task
+                                </NavLink>
                             </div>
                         </div>
 

@@ -12,9 +12,10 @@ export default function Create({ auth, users, categories, designers, activeAy })
     const { data, setData, post, errors } = useForm({
         name: "",
         description: "",
-        assigned_by: "",
+        assigned_to: "",
         layout_by: "",
         category_id: "",
+        academic_year_id: "",
         priority: "",
         due_date: "",
     });
@@ -102,21 +103,21 @@ export default function Create({ auth, users, categories, designers, activeAy })
                             </div>
 
                             <div className="flex gap-2">
-                                {/* assigned_by */}
+                                {/* assigned_to */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="assigned_by"
+                                        htmlFor="assigned_to"
                                         value="Select Assignee"
                                     />
 
                                     <SelectInput
-                                        name="assigned_by"
-                                        id="assigned_by"
-                                        value={data.assigned_by}
+                                        name="assigned_to"
+                                        id="assigned_to"
+                                        value={data.assigned_to}
                                         className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData(
-                                                "assigned_by",
+                                                "assigned_to",
                                                 e.target.value
                                             )
                                         }
@@ -143,7 +144,7 @@ export default function Create({ auth, users, categories, designers, activeAy })
                                     </SelectInput>
 
                                     <InputError
-                                        message={errors.assigned_by}
+                                        message={errors.assigned_to}
                                         className="mt-2"
                                     />
                                 </div>
