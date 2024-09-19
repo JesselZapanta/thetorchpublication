@@ -99,7 +99,6 @@ export default function Index({
         router.get(route("admin-task.index"), queryParams);
     };
 
-
     // Open modal and set task to delete
     const openDeleteModal = (task) => {
         setTask(task);
@@ -114,6 +113,14 @@ export default function Index({
         }
         setConfirmDelete(false);
         setTask(null);
+    };
+
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
     };
 
     return (
@@ -316,9 +323,20 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {task.id}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {task.name}
-                                                    </td>
+                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                        <Link
+                                                        className="text-md text-gray-900 dark:text-gray-300"
+                                                            href={route(
+                                                                "admin-task.timeline",
+                                                                task.id
+                                                            )}
+                                                        >
+                                                            {truncate(
+                                                                task.name,
+                                                                15
+                                                            )}
+                                                        </Link>
+                                                    </th>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {task.assignedBy.name}
                                                     </td>
