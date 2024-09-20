@@ -108,32 +108,32 @@ class AdminTaskController extends Controller
         $data['assigned_by'] = $id; // who assigns the task
         $data['assigned_date'] = now(); // date the task is assigned
 
+        // Create the task
         $task = Task::create($data);
 
-        // ========== Send Email =============//
-        // // Get the user assigned to the task
-        // $assignedToUser = User::find($data['assigned_to']);
+        // ==============send email notif ==================//
 
-        // // Get the role of the assigned user
-        // $userRole = $assignedToUser->role; 
+        // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+        $assignedUser = User::find($data['assigned_to']);
 
-        // // Prepare task details for the notification
-        // $taskDetails = [
-        //     'task_id' => $task->id,
-        //     'task_name' => $task->name, 
-        //     'assigned_by_name' => Auth::user()->name,
-        //     'due_date' => $data['due_date'], 
-        // ];
+        // Prepare task details for the notification
+        $taskDetails = [
+            'task_id' => $task->id,
+            'task_name' => $task->name,
+            'assigned_by_name' => $task->assignedBy->name,
+            'due_date' => $data['due_date'],
+            'priority' => $task->priority,
+        ];
 
-        // // Customize the message based on the task status
-        // $customMessage = 'You have been assigned a new task.'; // Change this as needed
-        // // $customMessage = 'The task has been submitted for review.';
+        // Customize the message based on the task status
+        $customMessage = 'You have been assigned a new task.';
 
-        // // Send the email notification, passing the task details, the role, and the custom message
-        // Notification::send($assignedToUser, new TaskAssigned($taskDetails, $userRole, $customMessage));
+        // Send the email notification to the assigned user
+        Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
 
         return to_route('admin-task.index')->with(['success' => 'Task Assigned Successfully']);
     }
+
 
 
     /**
@@ -223,6 +223,26 @@ class AdminTaskController extends Controller
         
         $task->update($data);
 
+         // ==============send email notif ==================//
+
+        // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+        $assignedUser = User::find($data['assigned_to']);
+
+        // Prepare task details for the notification
+        $taskDetails = [
+            'task_id' => $task->id,
+            'task_name' => $task->name,
+            'assigned_by_name' => $task->assignedBy->name,
+            'due_date' => $data['due_date'],
+            'priority' => $task->priority,
+        ];
+
+        // Customize the message based on the task status
+        $customMessage = 'The task has been modified.';
+
+        // Send the email notification to the assigned user
+        Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
+
 
         return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
     }
@@ -247,30 +267,111 @@ class AdminTaskController extends Controller
         if($data['status'] === 'content_revision'){
             $data['content_revision_date'] = now();
             $data['content_approved_date'] = null;
+
+            // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->assigned_to);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = 'The task content needed revision.';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
+
         }
 
         //task status set to approved status date
         if($data['status'] === 'approved'){
             $data['content_approved_date'] = now();
+
+            // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->assigned_to);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = 'The task content is approved.';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
         //task status set to image revision status date
         if($data['status'] === 'image_revision'){
             $data['image_revision_date'] = now();
+
+             // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->layout_by);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = 'The submitted image needed revision.';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
         //task completed date
         if($data['status'] === 'completed'){
             $data['task_completed_date'] = now();
+
+
+            // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->layout_by);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = 'The tast is completed and published.';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
         // Update the task
         $task->update($data);
 
         // dd($task);
-        //todo
-        //if task status is completed then put the task data to articles data
-        //add the academic year
+        
+
 
         
 

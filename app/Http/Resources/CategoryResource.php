@@ -21,7 +21,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'status' => $this->status,
-            'category_image_path' => $this->category_image_path ? Storage::url($this->category_image_path) : '/images/default/article.png',
+            'category_image_path' => $this->category_image_path ? Storage::url($this->category_image_path) : '/images/default/category.png',
         ];
     }
 }

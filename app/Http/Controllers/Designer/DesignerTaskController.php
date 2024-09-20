@@ -7,8 +7,11 @@ use App\Http\Requests\Designer\DesignerUpdateTaskRequest;
 use App\Http\Requests\Writer\WriterUpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TaskAssigned;
 
 class DesignerTaskController extends Controller
 {
@@ -103,6 +106,28 @@ class DesignerTaskController extends Controller
                 $data['task_image_path'] = $image->store('task', 'public');
                 $data['image_submitted_date'] = now();
                 $data['status'] = 'review';
+
+                 // ==============send email notif ==================//
+
+                // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+                $assignedUser = User::find($task->assigned_by);
+                $assignedTo = User::find($task->layout_by);
+
+                // Prepare task details for the notification
+                $taskDetails = [
+                    'task_id' => $task->id,
+                    'task_name' => $task->name,
+                    'assigned_by_name' => $task->assignedBy->name,
+                    'due_date' =>  $task->due_date,
+                    'priority' => $task->priority,
+                ];
+
+                // Customize the message based on the task status
+                $customMessage = $assignedTo->name . ' submitted an image for the task.';
+
+                // Send the email notification to the assigned user
+                Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
+
             } else {
                 // Keep the existing image
                 $data['task_image_path'] = $task->task_image_path;

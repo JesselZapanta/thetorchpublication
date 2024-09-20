@@ -27,10 +27,11 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
-        body: "",
-        emotion: "",
-    });
+    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+        useForm({
+            body: "",
+            emotion: "",
+        });
 
     //Create and update
 
@@ -510,8 +511,8 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                                     // onClick={closeCreateModal}
                                     className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
                                     type="submit"
-                                >
-                                    {freedomWall ? "Update" : "Submit"}
+                                    disabled={processing}
+                                    >{freedomWall ? "Update" : "Submit"}
                                 </button>
                             </div>
                         </form>

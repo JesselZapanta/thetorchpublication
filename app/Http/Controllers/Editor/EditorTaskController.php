@@ -8,6 +8,8 @@ use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TaskAssigned;
 use Illuminate\Http\Request;
 
 class EditorTaskController extends Controller
@@ -88,6 +90,27 @@ class EditorTaskController extends Controller
         if($data['draft'] === 'no'){
             $data['status'] = 'approval';
             $data['content_submitted_date'] = now();
+
+            // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->assigned_by);
+            $assignedTo = User::find($task->assigned_to);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = $assignedTo->name . ' submitted a content for the task';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
         $task->update($data);
@@ -98,8 +121,6 @@ class EditorTaskController extends Controller
             $task->update($data);
             return to_route('editor-task.index')->with(['success' => 'Task Save as Draft']);
         }
-
-        // ========== Send Email =============//
 
         return to_route('editor-task.index')->with(['success' => 'Task Submitted Successfully']);
     }

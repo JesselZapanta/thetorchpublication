@@ -371,7 +371,7 @@ export default function Index({
                                                         {task.layoutBy.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {task.due_date}
+                                                        {task.dueDate}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <span

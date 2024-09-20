@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('description')->nullable();
+            $table->text('name')->nullable();
+            $table->text('description')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
 

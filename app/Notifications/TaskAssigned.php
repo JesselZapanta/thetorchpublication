@@ -7,25 +7,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskAssigned extends Notification
+class TaskAssigned extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $taskDetails;
-    protected $role;
     protected $customMessage;
 
     /**
      * Create a new notification instance.
      *
      * @param array $taskDetails
-     * @param string $role
      * @param string $customMessage
      */
-    public function __construct(array $taskDetails, string $role, string $customMessage)
+    public function __construct(array $taskDetails, string $customMessage)
     {
         $this->taskDetails = $taskDetails;
-        $this->role = $role;
         $this->customMessage = $customMessage;
     }
 
@@ -44,22 +41,7 @@ class TaskAssigned extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        // Dynamically set the URL based on the user's role
-        switch ($this->role) {
-            case 'admin':
-                $taskUrl = url('/admin-task/' . $this->taskDetails['task_id'] . '/show');
-                break;
-            case 'editor':
-                $taskUrl = url('/editor-task/' . $this->taskDetails['task_id'] . '/show');
-                break;
-            case 'designer':
-                $taskUrl = url('/designer-task/' . $this->taskDetails['task_id'] . '/show');
-                break;
-            case 'writer':
-            default: // Default to writer if no specific case matches
-                $taskUrl = url('/writer-task/' . $this->taskDetails['task_id'] . '/show');
-                break;
-        }
+        $url = config('app.url');
 
         return (new MailMessage)
                     ->subject('Task Update: ' . $this->taskDetails['task_name'])
@@ -68,7 +50,8 @@ class TaskAssigned extends Notification
                     ->line('Task: ' . $this->taskDetails['task_name'])
                     ->line('Assigned By: ' . $this->taskDetails['assigned_by_name'])
                     ->line('Due Date: ' . $this->taskDetails['due_date'])
-                    ->action('View Task', $taskUrl)
+                    ->line('Priority: ' . $this->taskDetails['priority'])
+                    ->action('Visit Torch Publication', $url)
                     ->line('Thank you for your hard work!');
     }
 
@@ -84,6 +67,7 @@ class TaskAssigned extends Notification
             'task_name' => $this->taskDetails['task_name'],
             'assigned_by' => $this->taskDetails['assigned_by_name'],
             'due_date' => $this->taskDetails['due_date'],
+            'priority' => $this->taskDetails['priority'],
         ];
     }
 }

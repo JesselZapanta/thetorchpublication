@@ -128,9 +128,9 @@ export default function Show({ auth, task }) {
                         </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
-                        {task.status === "review" &&
-                            task.status === "image_revision" &&
-                            task.status === "completed" &&
+                        {(task.status === "review" ||
+                            task.status === "image_revision" ||
+                            task.status === "completed") &&
                             task.task_image_path && (
                                 <img
                                     src={task.task_image_path}
