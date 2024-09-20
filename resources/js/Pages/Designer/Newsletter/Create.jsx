@@ -9,7 +9,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 
 export default function Create({ auth }) {
-    const { data, setData, post, errors, } =
+    const { data, setData, post, errors, processing } =
         useForm({
             // academic_year_id: "",
             description: "",
@@ -56,7 +56,7 @@ export default function Create({ auth }) {
                                 <InputLabel
                                     htmlFor="description"
                                     value="Newsletter Description"
-                                />  
+                                />
 
                                 <TextInput
                                     id="description"
@@ -167,8 +167,9 @@ export default function Create({ auth }) {
                             type="button"
                             className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             onClick={handleConfirmSubmit}
+                            disabled={processing}
                         >
-                            Confirm
+                            {processing ? "Processing" : "Submit"}
                         </button>
                     </div>
                 </div>

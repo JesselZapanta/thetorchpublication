@@ -332,7 +332,7 @@ export default function Index({ auth, reportedArticle, queryParams = null, flash
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
                                                                     "admin-review-report-article.show",
-                                                                    article.slug
+                                                                    article.id
                                                                 )}
                                                             >
                                                                 {truncate(

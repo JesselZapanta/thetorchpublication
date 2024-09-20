@@ -423,4 +423,21 @@ class AdminTaskController extends Controller
         }
         return to_route('admin-task.index')->with(['success' => 'Deleted Successfully']);
     }
+
+
+    // tasl calendar
+
+    public function calendar()
+    {
+        $tasks = Task::where('status', 'completed')
+                            ->whereNotNull('task_completed_date')
+                            ->get(['id','name', 'status', 'task_completed_date']);
+
+        // $tasks = Task::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // Render the calendar page with tasks passed as props
+        return inertia('Admin/Task/MyCalendar', [
+            'tasks' => $tasks
+        ]);
+    }
 }

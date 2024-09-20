@@ -97,7 +97,7 @@ export default function CommentsSection({
         });
     };
 
-    const { post } = useForm();
+    const { post, processing } = useForm();
 
     const handleAction = () => {
         if (confirmAction.comment) {
@@ -140,7 +140,15 @@ export default function CommentsSection({
     };
 
     // update comment modal
-    const { data, setData, errors, put, reset, clearErrors } = useForm({
+    const {
+        data,
+        setData,
+        errors,
+        put,
+        reset,
+        clearErrors,
+        processing: updateProcessing,
+    } = useForm({
         body: "",
     });
 
@@ -502,8 +510,9 @@ export default function CommentsSection({
                                 // onClick={closeEditModal}
                                 className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
                                 type="submit"
+                                disabled={updateProcessing}
                             >
-                                Update
+                                {updateProcessing ? "Updating..." : "Update"}
                             </button>
                         </div>
                     </form>
@@ -542,7 +551,11 @@ export default function CommentsSection({
                         >
                             Cancel
                         </SecondaryButton>
-                        <DangerButton onClick={handleAction} className="ml-2">
+                        <DangerButton
+                            onClick={handleAction}
+                            disabled={processing}
+                            className="ml-2"
+                        >
                             {confirmAction.type === "delete"
                                 ? "Delete"
                                 : confirmAction.type === "report"

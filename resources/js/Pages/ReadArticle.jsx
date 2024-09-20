@@ -74,7 +74,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
     }, [speechSynthesis]);
 
     // Write Comment
-    const { data, setData, post, reset, errors } = useForm({
+    const { data, setData, post, reset, errors, processing } = useForm({
         article_id: article.id,
         body: "",
     });
@@ -134,6 +134,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
     //report
     const [confirmReport, setConfirmReport] = useState(false);
     const [currentArticle, setCurrentArticle] = useState(null);
+    const [reportProcessing, setReportProcessing] = useState(false); // Added reportProcessing state
 
     const openReportModal = (article) => {
         setCurrentArticle(article);
@@ -143,6 +144,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
     const handleReport = () => {
         if (currentArticle) {
             // Close the modal
+            setReportProcessing(true);
             setConfirmReport(false);
 
             // Send the report request using Inertia router.post
@@ -151,6 +153,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                 {},
                 {
                     preserveScroll: true,
+                    onFinish: () => setReportProcessing(false),
                 }
             );
         }
@@ -302,6 +305,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                         setData={setData}
                         handleSubmit={handleSubmit}
                         errors={errors}
+                        processing={processing}
                     />
                     {/* <pre className="text-white">
                         {JSON.stringify(comments, undefined, 2)}
@@ -333,8 +337,9 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                             type="button"
                             className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             onClick={handleReport}
+                            disabled={reportProcessing}
                         >
-                            Confirm
+                            {reportProcessing ? "Processing..." : "Confirm"}
                         </button>
                     </div>
                 </div>

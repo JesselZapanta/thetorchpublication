@@ -19,11 +19,12 @@ export default function Index({ auth, academicYears, queryParams = null,flash })
     const [academicYear, setAcademicYear] = useState(null); // For storing the academicYear to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
-        code: "",
-        description: "",
-        status: "",
-    });
+    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+        useForm({
+            code: "",
+            description: "",
+            status: "",
+        });
 
     // Display flash messages if they exist
     useEffect(() => {
@@ -446,6 +447,7 @@ export default function Index({ auth, academicYears, queryParams = null,flash })
                             </SecondaryButton>
                             <button
                                 type="submit"
+                                disabled={processing}
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
                                 {academicYear ? "Update" : "Create"}

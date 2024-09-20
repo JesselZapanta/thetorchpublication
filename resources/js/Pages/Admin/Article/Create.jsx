@@ -11,7 +11,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Create({ auth, categories, activeAy }) {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         category_id: "",
         academic_year_id: "",
         author: "",
@@ -23,7 +23,7 @@ export default function Create({ auth, categories, activeAy }) {
         article_image_path: "",
         is_featured: "",
         is_anonymous: "",
-        published_date: ""
+        published_date: "",
     });
 
     const onSubmit = () => {
@@ -463,8 +463,9 @@ export default function Create({ auth, categories, activeAy }) {
                             type="button"
                             className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             onClick={handleConfirmSubmit}
+                            disabled={processing}
                         >
-                            Confirm
+                            {processing ? "Processing" : "Confirm"}
                         </button>
                     </div>
                 </div>

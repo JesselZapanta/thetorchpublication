@@ -11,7 +11,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Create({ auth, categories }) {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         category_id: "",
         title: "",
         excerpt: "",
@@ -283,8 +283,9 @@ export default function Create({ auth, categories }) {
                             type="button"
                             className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             onClick={handleConfirmSubmit}
+                            disabled={processing}
                         >
-                            Confirm
+                            {processing ? "Processing" : "Submit"}
                         </button>
                     </div>
                 </div>

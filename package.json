@@ -20,6 +20,10 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@fullcalendar/common": "^5.11.5",
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/react": "^6.1.15",
         "@heroicons/react": "^2.1.5",
         "react-toastify": "^10.0.5"
     }

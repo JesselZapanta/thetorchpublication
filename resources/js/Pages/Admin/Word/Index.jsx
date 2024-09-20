@@ -37,9 +37,10 @@ export default function Index({
     const [word, setWord] = useState(null); // For storing the word to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
-        name: "",
-    });
+    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+        useForm({
+            name: "",
+        });
 
     // for tables sorting and searching
     queryParams = queryParams || {};
@@ -356,6 +357,7 @@ export default function Index({
                             </SecondaryButton>
                             <button
                                 type="submit"
+                                disabled={processing}
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
                                 {word ? "Update" : "Submit"}

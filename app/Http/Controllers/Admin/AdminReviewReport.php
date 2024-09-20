@@ -49,9 +49,9 @@ class AdminReviewReport extends Controller
         ]);
     }
     
-    public function showArticle($slug)
+    public function showArticle($id)
     {
-        $article = Article::where('slug', $slug)->firstOrFail();
+        $article = Article::find($id);
 
         return inertia('Admin/Review/Article/Show', [
             'article' => new ArticleResource($article),

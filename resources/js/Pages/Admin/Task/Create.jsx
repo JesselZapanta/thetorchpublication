@@ -9,7 +9,7 @@ import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Create({ auth, users, categories, designers, activeAy }) {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         name: "",
         description: "",
         assigned_to: "",
@@ -260,7 +260,6 @@ export default function Create({ auth, users, categories, designers, activeAy })
                             </div>
 
                             <div className="flex gap-2">
-
                                 {/* AY */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
@@ -362,8 +361,9 @@ export default function Create({ auth, users, categories, designers, activeAy })
                             type="button"
                             className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             onClick={handleConfirmSubmit}
+                            disabled={processing}
                         >
-                            Confirm
+                            {processing ? "Processing" : "Confirm"}
                         </button>
                     </div>
                 </div>

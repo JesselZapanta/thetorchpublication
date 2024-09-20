@@ -10,6 +10,7 @@ export default function CommentForm({
     setData,
     handleSubmit,
     errors,
+    processing,
 }) {
     return (
         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg my-4 p-4">
@@ -31,9 +32,10 @@ export default function CommentForm({
                     </div>
                     <button
                         type="submit"
+                        disabled={processing}
                         className="mt-4 px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                     >
-                        Comment
+                        {processing ? "Submitting..." : "Submit"}
                     </button>
                 </form>
             ) : (

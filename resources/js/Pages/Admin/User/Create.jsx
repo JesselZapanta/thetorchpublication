@@ -7,7 +7,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         student_id: "",
         username: "",
         name: "",
@@ -255,8 +255,11 @@ export default function Create({ auth }) {
                                 <SecondaryButton href={route("user.index")}>
                                     Cancel
                                 </SecondaryButton>
-                                <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
-                                    Submit
+                                <button
+                                    disabled={processing}
+                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                >
+                                    {processing ? "Processing" : "Submit"}
                                 </button>
                             </div>
                         </form>
