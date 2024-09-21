@@ -153,7 +153,7 @@ export default function Create({ auth, users, categories, designers, activeAy })
                                 <div className="mt-4 w-full">
                                     <InputLabel
                                         htmlFor="layout_by"
-                                        value="Select Desinger"
+                                        value="Select Designer"
                                     />
 
                                     <SelectInput
@@ -168,7 +168,7 @@ export default function Create({ auth, users, categories, designers, activeAy })
                                         {designers.data.length > 0 ? (
                                             <>
                                                 <option value="">
-                                                    Select Desinger
+                                                    Select Designer
                                                 </option>
                                                 {designers.data.map(
                                                     (designer) => (

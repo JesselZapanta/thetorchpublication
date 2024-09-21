@@ -115,6 +115,7 @@ class AdminArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
+        // dd($request);
         $data = $request->validated();
 
         // Build the Trie with bad words
@@ -157,16 +158,13 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
-
         // 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
 
-        $data['slug'] = Str::slug($request->title);
-
-        //  'slug' => Str::slug($req->title),
+        $data['slug'] = Str::slug($request->title);//might remoce later
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
@@ -180,7 +178,11 @@ class AdminArticleController extends Controller
 
         Article::create($data);
 
-        return to_route('admin-article.index')->with(['success' => 'Article Created Successfully']);
+        if ($data['status'] === 'draft') {
+            return to_route('admin-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        return to_route('admin-article.index')->with(['success' => 'Article Created Successfully.']);
     }
 
     /**
@@ -269,16 +271,31 @@ class AdminArticleController extends Controller
         //the revision or reject message message 
         $data['revision_message'] = $request->input('revision_message');
         
-        $status = $data['status'];
-        
-        if($status == 'published'){
-            $data['revision_message'] = null;
-            $data['rejection_message'] = null;
+
+        // if($status == 'published'){
+        //     $data['revision_message'] = null;
+        //     $data['rejection_message'] = null;
+        // }
+
+        // If the article is already published, retain the existing published date
+        if($admin_article->status === 'published'){
+            $data['published_date'] = $admin_article->published_date;
         }
 
-        if($status !== 'published'){
+        // If the article is being published for the first time, set the published date
+        elseif ($data['status'] === 'published' && $admin_article->status !== 'published') {
+            $data['published_date'] = now();
+        }
+
+        if($data['status'] !== 'published'){
             $data['published_date'] = null;
         }
+
+        if($data['status'] === 'revision'){
+            $data['revision_at'] = now();
+        }
+
+        
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
@@ -299,11 +316,23 @@ class AdminArticleController extends Controller
             Article::query()->update(['is_featured' => "no"]);
         }
 
+
         // Update the specific article with the provided data
         $admin_article->update($data);
 
+        if ($data['status'] === 'draft') {
+            return to_route('admin-article.index')->with(['success' => 'Article saved as draft.']);
+        }
 
-        return to_route('admin-article.index')->with([ 'success' => 'Article Updated Successfully']);
+        if ($data['status'] === 'published') {
+            return to_route('admin-article.index')->with(['success' => 'Article published succesfullly.']);
+        }
+
+        if ($data['status'] === 'revision') {
+            return to_route('admin-article.index')->with(['success' => 'Article needed revision.']);
+        }
+
+        return to_route('admin-article.index')->with([ 'success' => 'Article updated successfully']);
     }
 
     /**

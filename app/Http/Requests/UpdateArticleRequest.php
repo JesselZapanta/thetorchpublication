@@ -34,13 +34,14 @@ class UpdateArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['edited', 'revision', 'published'])
+                Rule::in(['draft','revision', 'published'])
             ],
             'revision_message' => ['nullable', 'string', 'required_if:status,revision'],
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             'is_featured' => ['nullable', Rule::in(['no','yes',])],
             'is_anonymous' => ['nullable', Rule::in(['no','yes',])],
             'published_date' => ['nullable','required_if:status,published', 'date'],
+            // 'draft'  => ['required', Rule::in(['no', 'yes'])],
         ];
     }
 }

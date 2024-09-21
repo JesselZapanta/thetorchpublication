@@ -37,6 +37,17 @@ export default function Index({
         });
     }, []);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = await axios.get(route("admin-task.index"), {
+    //             params: queryParams, // Attach query parameters
+    //         });
+
+    //     };
+
+    //     fetchData(); // Call the async function
+    // }, [queryParams]); // Add queryParams as a dependency if needed
+
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [task, setTask] = useState(null); // For storing the task to edit/delete
 

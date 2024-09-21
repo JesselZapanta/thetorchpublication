@@ -224,6 +224,9 @@ export default function Index({
                                             }
                                         >
                                             <option value="">Status</option>
+                                            <option value="draft">
+                                                Draft
+                                            </option>
                                             <option value="edited">
                                                 Edited
                                             </option>

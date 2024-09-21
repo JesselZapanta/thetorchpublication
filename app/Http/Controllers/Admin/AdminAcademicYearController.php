@@ -78,10 +78,20 @@ class AdminAcademicYearController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAcademicYearRequest $request, AcademicYear $academicYear)
+    public function update(UpdateAcademicYearRequest $request, $id)
     {
+        $academicYear = AcademicYear::find($id);
+
+        if(!$academicYear){
+            return to_route('academic-year.index')->with(['error' => 'Academic Year is not found.']);
+        }
+
         // dd($request);
         $data = $request->validated();
+
+        if($academicYear->status === 'active'){
+            return to_route('academic-year.index')->with(['error' => 'There should be one active academic year.']);
+        }
 
         if($data['status'] === 'active'){
             // Set all existing academic years' status to 'inactive'

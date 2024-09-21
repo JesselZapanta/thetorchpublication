@@ -1,3 +1,4 @@
+import Checkbox from "@/Components/Checkbox";
 import DangerButton from "@/Components/DangerButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -28,6 +29,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
         published_date: article.published_date
             ? new Date(article.published_date).toISOString().split("T")[0] // Format date correctly
             : "",
+        // draft: article.draft || "no",
         _method: "PUT",
     });
 
@@ -276,13 +278,29 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         <option value="">
                                             Select a status
                                         </option>
-                                        <option value="edited">Edited</option>
-                                        <option value="revision">
-                                            Need Revision
-                                        </option>
+                                        {auth.user.id ===
+                                            article.createdBy.id && (
+                                            <option value="draft">
+                                                Save as Draft
+                                            </option>
+                                        )}
                                         <option value="published">
                                             Published
                                         </option>
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="edited">
+                                                Edited
+                                            </option>
+                                        )}
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="revision">
+                                                Need Revision
+                                            </option>
+                                        )}
                                     </SelectInput>
 
                                     <InputError
@@ -292,7 +310,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                 </div>
 
                                 {/* Published Date */}
-                                <div className="w-full mt-4">
+                                {/* <div className="w-full mt-4">
                                     <InputLabel
                                         htmlFor="published_date"
                                         value="Published Date"
@@ -317,7 +335,7 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                         message={errors.published_date}
                                         className="mt-2"
                                     />
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* author if no acc */}
@@ -493,6 +511,24 @@ export default function Edit({ auth, article, categories, activeAy }) {
                                     className="mt-2"
                                 />
                             </div>
+                            {/* save as draft
+                            <div className="block mt-4">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="draft"
+                                        checked={data.draft === "yes"}
+                                        onChange={(e) =>
+                                            setData(
+                                                "draft",
+                                                e.target.checked ? "yes" : "no"
+                                            )
+                                        }
+                                    />
+                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
+                                        Save as Draft
+                                    </span>
+                                </label>
+                            </div> */}
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
                                     href={route("admin-article.index")}

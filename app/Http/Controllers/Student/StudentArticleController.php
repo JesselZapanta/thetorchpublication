@@ -138,6 +138,7 @@ class StudentArticleController extends Controller
 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
+        $data['submitted_at'] =now();
         $data['academic_year_id'] = $activeAy->id;
 
         $data['slug'] = Str::slug($request->title);

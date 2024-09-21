@@ -34,12 +34,13 @@ class StoreArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['pending','rejected','edited', 'revision', 'published'])
+                Rule::in(['draft','published'])
             ],
             'article_image_path' => ['required','image','mimes:jpg,png,jpeg'],
             'is_featured' => ['required', Rule::in(['no','yes',])],
             'is_anonymous' => ['required', Rule::in(['no','yes',])],
             'published_date' => ['required', 'date'],//added
+            // 'draft'  => ['required', Rule::in(['no', 'yes'])],
         ];
     }
 }

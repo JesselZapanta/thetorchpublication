@@ -10,30 +10,41 @@ class Article extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'category_id',
-        'academic_year_id',
         'author',
+        'created_by',
+        'academic_year_id',
+        'category_id',
+        'edited_by',
+        'layout_by',
+
+        'slug',
 
         'title',
         'excerpt',
         'body',
+        'caption',
+        'article_image_path',
+
         'status',
+        'draft',
+        'visibility',
+
         'rejection_message',
         'revision_message',
-        'published_date',
-        'is_anonymous',
+
         'is_featured',
-        'article_image_path',
-        'caption',
-        
-        'slug',
-        'created_by',
-        'edited_by',
-        'layout_by',
-        'views',
-        'visibility',
+        'is_anonymous',
+        'is_newsletter',
+
+        'submitted_at',//
+        'rejected_at',//
+        'edited_at',//
+        'revision_at',//
+        'published_date',//
+
         'report_count',
-        'is_newsletter'
+        'views',
+
     ];
 
     //for category

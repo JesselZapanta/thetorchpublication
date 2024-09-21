@@ -35,20 +35,16 @@ return new class extends Migration
 
             $table->timestamp('content_submitted_date')->nullable();
 
-            // $table->foreignId('content_revision_by')->nullable()->constrained('users')->onDelete('cascade');// todo who set the revsion status and messege
             $table->text('content_revision_message')->nullable();
             $table->timestamp('content_revision_date')->nullable();
 
-            // $table->foreignId('content_approved_by')->nullable()->constrained('users')->onDelete('cascade');// todo who aproved the content
             $table->timestamp('content_approved_date')->nullable();
             
             $table->timestamp('image_submitted_date')->nullable();
-            
-            // $table->foreignId('image_revision_by')->nullable()->constrained('users')->onDelete('cascade');// todo who set the image revsion status and messege
+
             $table->text('image_revision_message')->nullable();
             $table->timestamp('image_revision_date')->nullable();
-            
-            // $table->foreignId('approved_published_by')->nullable()->constrained('users')->onDelete('cascade');// todo who approved and published the task
+
             $table->timestamp('task_completed_date')->nullable();
             
             $table->timestamp('due_date')->nullable();

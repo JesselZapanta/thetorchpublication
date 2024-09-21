@@ -40,11 +40,14 @@ class ArticleResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,
 
-            // 'published_date' => (new Carbon($this->published_date))->format('Y-m-d'),
             // 'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : null,
-            'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('F j, Y') : null,
 
-
+            'submitted_at' => $this->submitted_at ? (new Carbon ($this->submitted_at))->format('F j, Y') : null,
+            'rejected_at' => $this->rejected_at ? (new Carbon ($this->rejected_at))->format('F j, Y') : null,
+            'edited_at' => $this->edited_at ? (new Carbon ($this->edited_at))->format('F j, Y') : null,
+            'revision_at' => $this->revision_at ? (new Carbon ($this->revision_at))->format('F j, Y') : null,
+            'published_date' => $this->published_date ? (new Carbon ($this->published_date))->format('F j, Y') : null,//for form
+            'publishedDate' => $this->published_date ? (new Carbon ($this->published_date))->format('Y-m-d') : null,
             
             'academic_year_id' => $this->academic_year_id,
 
@@ -64,6 +67,7 @@ class ArticleResource extends JsonResource
             'visibility' => $this->visibility,
             
             'is_newsletter' => $this->is_newsletter,
+            'draft' => $this->draft,
         ];
     }
 }

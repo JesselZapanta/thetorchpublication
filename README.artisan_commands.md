@@ -48,3 +48,8 @@ php artisan make:controller Admin/NewsletterController --model=Newsletter --requ
 <!-- for makaing notf -->
 
 php artisan make:notification TaskAssigned
+
+<!--  -->
+
+php artisan vendor:publish --tag=laravel-notifications
+php artisan vendor:publish --tag=laravel-mail

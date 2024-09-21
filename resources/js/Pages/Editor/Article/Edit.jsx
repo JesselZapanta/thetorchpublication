@@ -162,7 +162,7 @@ export default function Edit({ auth, article, categories }) {
                                 </div>
 
                                 {/* Check if the article is created by the authenticated user */}
-                                {article.createdBy.id === auth.user.id ? (
+                                {article.createdBy.id === auth.user.id && (
                                     <>
                                         {/* is_anonymous */}
                                         <div className="w-full">
@@ -195,51 +195,64 @@ export default function Edit({ auth, article, categories }) {
                                             />
                                         </div>
                                     </>
-                                ) : (
-                                    <>
-                                        {/* Status */}
-                                        <div className="w-full">
-                                            <InputLabel
-                                                htmlFor="status"
-                                                value="Article status"
-                                            />
-                                            <SelectInput
-                                                name="status"
-                                                id="status"
-                                                value={data.status}
-                                                className="mt-2 block w-full"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "status",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            >
-                                                <option value="">
-                                                    Select a status
-                                                </option>
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-                                                <option value="rejected">
-                                                    Rejected
-                                                </option>
-                                                <option value="edited">
-                                                    Edited
-                                                </option>
-                                                <option value="revision">
-                                                    Revision
-                                                </option>
-                                            </SelectInput>
-
-                                            <InputError
-                                                message={errors.status}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                    </>
                                 )}
                             </div>
+
+                            {/* Status */}
+                            {article.status !== "published" && (
+                                <div className="w-full mt-4">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Article status"
+                                    />
+                                    <SelectInput
+                                        name="status"
+                                        id="status"
+                                        value={data.status}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select a status
+                                        </option>
+                                        {auth.user.id ===
+                                            article.createdBy.id && (
+                                            <option value="draft">
+                                                Save as Draft
+                                            </option>
+                                        )}
+
+                                        <option value="edited">Edited</option>
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                        )}
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="rejected">
+                                                Rejected
+                                            </option>
+                                        )}
+
+                                        {article.status === "published" && (
+                                            <option value="published">
+                                                Published
+                                            </option>
+                                        )}
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
 
                             {/* rejection_message */}
                             {data.status === "rejected" && (

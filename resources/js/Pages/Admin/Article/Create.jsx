@@ -24,6 +24,7 @@ export default function Create({ auth, categories, activeAy }) {
         is_featured: "",
         is_anonymous: "",
         published_date: "",
+        // draft: "",
     });
 
     const onSubmit = () => {
@@ -235,13 +236,11 @@ export default function Create({ auth, categories, activeAy }) {
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="rejected">
-                                            Rejected
+                                        <option value="">
+                                            Select Status
                                         </option>
-                                        <option value="edited">Edited</option>
-                                        <option value="revision">
-                                            Revision
+                                        <option value="draft">
+                                            Save as Draft
                                         </option>
                                         <option value="published">
                                             Published
@@ -427,6 +426,24 @@ export default function Create({ auth, categories, activeAy }) {
                                     className="mt-2"
                                 />
                             </div>
+                            {/* save as draft
+                            <div className="block mt-4">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="draft"
+                                        checked={data.draft === "yes"}
+                                        onChange={(e) =>
+                                            setData(
+                                                "draft",
+                                                e.target.checked ? "yes" : "no"
+                                            )
+                                        }
+                                    />
+                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
+                                        Save as Draft
+                                    </span>
+                                </label>
+                            </div> */}
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton

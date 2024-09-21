@@ -68,7 +68,8 @@ class EditorArticleController extends Controller
                     $query->where('created_by', $id) // Auth user's articles
                             ->orWhere(function ($query) use ($id) {
                                 $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['pending', 'revision']); 
+                                        ->whereIn('status', ['pending', 'revision', 'published'])
+                                        ->whereIn('draft', ['no']);
                             });
                     });
                 break;
@@ -160,7 +161,7 @@ class EditorArticleController extends Controller
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['academic_year_id'] = $activeAy->id;
-        $data['status'] = 'edited';
+        // $data['status'] = 'edited';
 
         $data['slug'] = Str::slug($request->title);
 
@@ -171,6 +172,10 @@ class EditorArticleController extends Controller
         }
 
         Article::create($data);
+
+        if ($data['status'] === 'draft') {
+            return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
+        }
 
         return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
     }
@@ -265,7 +270,27 @@ class EditorArticleController extends Controller
 
          //the reject message message 
         $data['rejection_message'] = $request->input('rejection_message');
+
+        if($data['status'] !== 'rejected'){
+            $data['rejected_at'] = now();
+        }
         
+        if($data['status'] !== 'rejected'){
+            $data['rejected_at'] = now();
+        }
+        
+        if($data['status'] !== 'edited'){
+            $data['edited_at'] = now();
+        }
+
+        
+        $status = $data['status'];
+        $editorId = Auth::user()->id;
+
+        //wako kasabot para asa ni nga code hHAHAHAHA
+        if ($status === 'revision' && $editorId === $editor_article->created_by){
+            $data['status'] = 'edited';
+        }
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
@@ -283,6 +308,19 @@ class EditorArticleController extends Controller
         }
 
         $editor_article->update($data);
+
+
+        if ($data['status'] === 'draft') {
+            return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        if ($data['status'] === 'edited') {
+            return to_route('editor-article.index')->with(['success' => 'Article edited succesfullly.']);
+        }
+
+        if ($data['status'] === 'rejected') {
+            return to_route('editor-article.index')->with(['success' => 'Article rejected successfully.']);
+        }
 
         return to_route('editor-article.index')->with(['success' => 'Article Edited Successfully']);
     }

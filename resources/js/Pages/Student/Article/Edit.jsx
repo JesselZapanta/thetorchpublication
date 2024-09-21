@@ -20,6 +20,7 @@ export default function Edit({ auth, article, categories }) {
         caption: article.caption || "",
         article_image_path: "",
         is_anonymous: article.is_anonymous || "", 
+        status: article.status || "", 
         _method: "PUT",
     });
 
@@ -172,6 +173,45 @@ export default function Edit({ auth, article, categories }) {
                                     />
                                 </div>
                             </div>
+
+                            {/* Status */}
+                            {article.status === "draft" ||
+                                (article.status === "pending" && (
+                                    <div className="mt-4 w-full">
+                                        <InputLabel
+                                            htmlFor="status"
+                                            value="Article status"
+                                        />
+
+                                        <SelectInput
+                                            name="status"
+                                            id="status"
+                                            value={data.status}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select Status
+                                            </option>
+                                            <option value="draft">
+                                                Save as Draft
+                                            </option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                        </SelectInput>
+
+                                        <InputError
+                                            message={errors.status}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                ))}
 
                             {/* title */}
                             <div className="mt-4 w-full">

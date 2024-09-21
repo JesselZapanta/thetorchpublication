@@ -19,6 +19,7 @@ export default function Create({ auth, categories }) {
         caption: "",
         article_image_path: "",
         is_anonymous: "",
+        status: "",
     });
 
     const onSubmit = () => {
@@ -125,6 +126,33 @@ export default function Create({ auth, categories }) {
                                         className="mt-2"
                                     />
                                 </div>
+                            </div>
+
+                            {/* Status */}
+                            <div className="mt-4 w-full">
+                                <InputLabel
+                                    htmlFor="status"
+                                    value="Article status"
+                                />
+
+                                <SelectInput
+                                    name="status"
+                                    id="status"
+                                    value={data.status}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
+                                >
+                                    <option value="">Select Status</option>
+                                    <option value="draft">Save as Draft</option>
+                                    <option value="pending">Pending</option>
+                                </SelectInput>
+
+                                <InputError
+                                    message={errors.status}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* title */}
