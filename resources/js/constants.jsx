@@ -1,3 +1,20 @@
+// arti Status
+export const ARTICLE_STATUS_CLASS_MAP = {
+    draft: "bg-gray-500",
+    pending: "bg-amber-500",
+    edited: "bg-blue-500",
+    rejected: "bg-red-500",
+    revision: "bg-rose-500",
+    published: "bg-green-500",
+};
+export const ARTICLE_STATUS_TEXT_MAP = {
+    draft: "Draft",
+    pending: "Pending",
+    edited: "Edited",
+    rejected: "Rejected",
+    revision: "Revision",
+    published: "Published",
+};
 
 // Task Status
 export const TASK_STATUS_CLASS_MAP = {
@@ -20,7 +37,6 @@ export const TASK_STATUS_TEXT_MAP = {
     image_revision: "Image Revision",
     completed: "Completed",
 };
-
 
 // Task Priority
 export const TASK_PRIORITY_CLASS_MAP = {

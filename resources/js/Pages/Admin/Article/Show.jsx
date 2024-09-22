@@ -126,6 +126,15 @@ export default function Index({ auth, article }) {
                                 >
                                     Edit Article
                                 </Link>
+                                <Link
+                                    href={route(
+                                        "admin-article.timeline",
+                                        article.id
+                                    )}
+                                    className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    View Timeline
+                                </Link>
                                 <SecondaryButton
                                     href={route("admin-article.index")}
                                 >

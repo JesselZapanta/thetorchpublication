@@ -196,6 +196,19 @@ class AdminArticleController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function timeLine($id)
+    {
+        $article = Article::find($id);
+        // dd($article);
+        return inertia('Admin/Article/Timeline', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Article $admin_article)
@@ -348,5 +361,20 @@ class AdminArticleController extends Controller
             Storage::disk('public')->delete($admin_article->article_image_path);
         }
         return to_route('admin-article.index')->with(['success' => 'Deleted Successfully']);
+    }
+
+
+    public function calendar()
+    {
+        $articles = Article::where('status', operator: 'published')
+                            ->whereNotNull('published_date')
+                            ->get(['id','title', 'status', 'published_date']);
+
+        // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // Render the calendar page with article passed as props
+        return inertia('Admin/Article/MyCalendar', [
+            'articles' => $articles
+        ]);
     }
 }

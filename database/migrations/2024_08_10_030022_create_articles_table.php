@@ -23,6 +23,8 @@ return new class extends Migration
 
             $table->foreignId('edited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('layout_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('revision_by')->nullable()->constrained('users')->onDelete('set null');//new ====
+            $table->foreignId('published_by')->nullable()->constrained('users')->onDelete('set null');//new =====
 
             $table->text('slug')->nullable();
 

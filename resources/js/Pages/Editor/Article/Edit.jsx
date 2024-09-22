@@ -234,11 +234,21 @@ export default function Edit({ auth, article, categories }) {
                                                 </option>
                                             ))} */}
 
-                                        {article.status === "pending" && (
-                                            <option value="pending">
-                                                Pending
-                                            </option>
-                                        )}
+                                        {/* {article.status === "pending" ||
+                                            (article.status === "edited" && (
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                            ))} */}
+
+                                        {(article.status === "pending" ||
+                                            article.status === "edited") &&
+                                            auth.user.id !==
+                                                article.createdBy.id && (
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                            )}
 
                                         {article.status === "revision" && (
                                             <option value="revision">

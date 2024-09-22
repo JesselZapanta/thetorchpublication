@@ -77,7 +77,7 @@ class EditorArticleController extends Controller
                                     $q->where('status', 'published');
                                 })
                                 ->orWhere(function ($query) use ($id) {
-                                    $query->whereIn('status', ['pending', 'revision']) 
+                                    $query->whereIn('status', ['pending', 'revision', 'edited']) 
                                         ->where('draft', 'no')
                                         ->where(function ($query) use ($id) {
                                             $query->whereNull('edited_by')  // Include records where edited_by is NULL

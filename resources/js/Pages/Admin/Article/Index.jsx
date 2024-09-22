@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { ARTICLE_STATUS_CLASS_MAP, ARTICLE_STATUS_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -129,6 +130,12 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
+                            href={route("admin-article.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
+                        <Link
                             href={route("admin-article.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
@@ -224,9 +231,7 @@ export default function Index({
                                             }
                                         >
                                             <option value="">Status</option>
-                                            <option value="draft">
-                                                Draft
-                                            </option>
+                                            <option value="draft">Draft</option>
                                             <option value="edited">
                                                 Edited
                                             </option>
@@ -395,7 +400,23 @@ export default function Index({
                                                         {article.category.name}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap w-[10%]">
-                                                        {article.status}
+                                                        {/* {article.status} */}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                ARTICLE_STATUS_CLASS_MAP[
+                                                                    article
+                                                                        .status
+                                                                ]
+                                                            }
+                                                        >
+                                                            {
+                                                                ARTICLE_STATUS_TEXT_MAP[
+                                                                    article
+                                                                        .status
+                                                                ]
+                                                            }
+                                                        </span>
                                                     </td>
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline w-[50%]">
                                                         <Link

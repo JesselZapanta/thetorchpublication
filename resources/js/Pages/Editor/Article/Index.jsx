@@ -6,6 +6,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { ARTICLE_STATUS_CLASS_MAP, ARTICLE_STATUS_TEXT_MAP } from "@/constants";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -224,9 +225,7 @@ export default function Index({
                                             }
                                         >
                                             <option value="">Status</option>
-                                            <option value="draft">
-                                                Draft
-                                            </option>
+                                            <option value="draft">Draft</option>
                                             <option value="pending">
                                                 Pending
                                             </option>
@@ -379,7 +378,23 @@ export default function Index({
                                                         </Link>
                                                     </th>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {article.status}
+                                                        {/* {article.status} */}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                ARTICLE_STATUS_CLASS_MAP[
+                                                                    article
+                                                                        .status
+                                                                ]
+                                                            }
+                                                        >
+                                                            {
+                                                                ARTICLE_STATUS_TEXT_MAP[
+                                                                    article
+                                                                        .status
+                                                                ]
+                                                            }
+                                                        </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
