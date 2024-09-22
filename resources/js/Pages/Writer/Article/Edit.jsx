@@ -14,17 +14,22 @@ export default function Edit({ auth, article, categories }) {
         category_id: article.category_id || "",
 
         title: article.title || "",
-        excerpt: article.excerpt || "", 
+        excerpt: article.excerpt || "",
         body: article.body || "",
         status: article.status || "",
         caption: article.caption || "",
         article_image_path: "",
-        is_anonymous: article.is_anonymous || "", 
+        is_anonymous: article.is_anonymous || "",
+        status: article.status == "rejected" ? "pending" : article.status,
         _method: "PUT",
     });
 
     const onSubmit = () => {
-        post(route("writer-article.update", article.id));
+        post(route("writer-article.update", article.id), {
+            preserveScroll: true
+        });
+
+        // console.log(data);
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -105,12 +110,14 @@ export default function Edit({ auth, article, categories }) {
                                         id="category_id"
                                         value={data.category_id}
                                         className={`mt-2 block w-full ${
+                                            article.status !== "draft" &&
                                             article.status !== "pending" &&
                                             article.status !== "rejected"
                                                 ? "cursor-not-allowed bg-gray-200"
                                                 : ""
                                         }`}
                                         disabled={
+                                            article.status !== "draft" &&
                                             article.status !== "pending" &&
                                             article.status !== "rejected"
                                                 ? true
@@ -173,6 +180,39 @@ export default function Edit({ auth, article, categories }) {
                                 </div>
                             </div>
 
+                            {/* Status */}
+                            {(article.status === "draft" ||
+                                article.status === "pending" ||
+                                article.status === "rejected") && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Article status"
+                                    />
+
+                                    <SelectInput
+                                        name="status"
+                                        id="status"
+                                        value={data.status}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    >
+                                        <option value="">Select Status</option>
+                                        <option value="draft">
+                                            Save as Draft
+                                        </option>
+                                        <option value="pending">Pending</option>
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
+
                             {/* title */}
                             <div className="mt-4 w-full">
                                 <InputLabel
@@ -186,12 +226,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="title"
                                     value={data.title}
                                     className={`mt-2 block w-full ${
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : ""
                                     }`}
                                     disabled={
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? true
@@ -221,12 +263,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="excerpt"
                                     value={data.excerpt}
                                     className={`mt-2 block w-full min-h-24 ${
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : ""
                                     }`}
                                     disabled={
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? true
@@ -256,12 +300,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="body"
                                     value={data.body}
                                     className={`mt-2 block w-full min-h-64 ${
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : ""
                                     }`}
                                     disabled={
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? true
@@ -291,12 +337,14 @@ export default function Edit({ auth, article, categories }) {
                                     name="caption"
                                     value={data.caption}
                                     className={`mt-2 block w-full ${
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : ""
                                     }`}
                                     disabled={
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? true
@@ -324,12 +372,14 @@ export default function Edit({ auth, article, categories }) {
                                     type="file"
                                     name="article_image_path"
                                     className={`mt-2 block w-full ${
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? "cursor-not-allowed bg-gray-200"
                                             : ""
                                     }`}
                                     disabled={
+                                        article.status !== "draft" &&
                                         article.status !== "pending" &&
                                         article.status !== "rejected"
                                             ? true

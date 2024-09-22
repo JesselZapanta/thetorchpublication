@@ -36,32 +36,45 @@ export default function Index({
 
     const searchFieldChanged = (name, value) => {
         if (value === "") {
-            delete queryParams[name];
-            router.get(route("writer-article.index"), queryParams, {
+            delete queryParams[name]; // Remove the query parameter if input is empty
+            router.get(route("student-article.index"), queryParams, {
                 preserveState: true,
-            });
-        }
-        if (value) {
-            queryParams[name] = value;
-            router.get(route("writer-article.index"), queryParams, {
-                preserveState: true,
-            });
+            }); // Fetch all data when search is empty
+        } else {
+            queryParams[name] = value; // Set query parameter
         }
     };
 
-    // Search on Enter key press
+    // Trigger search on Enter key press
     const onKeyPressed = (name, e) => {
         const value = e.target.value;
 
         if (e.key === "Enter") {
             e.preventDefault(); // Prevent default form submission
-            if (value) {
-                queryParams[name] = value; // Update query params if value is provided
+            if (value.trim() === "") {
+                delete queryParams[name]; // Remove query parameter if search is empty
+                router.get(
+                    route("writer-article.index"),
+                    {},
+                    {
+                        preserveState: true,
+                    }
+                ); // Fetch all data if search input is empty
+            } else {
+                queryParams[name] = value; // Set query parameter for search
+                router.get(route("writer-article.index"), queryParams, {
+                    preserveState: true,
+                });
             }
-            router.get(route("writer-article.index"), queryParams, {
-                preserveState: true,
-            });
         }
+    };
+
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("writer-article.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     const sortChanged = (name) => {
@@ -127,127 +140,110 @@ export default function Index({
             <Head title="Articles" />
 
             <ToastContainer position="bottom-right" />
-            
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            {/* sort and search */}
+                            <div className="w-full grid lg:grid-cols-2 gap-2">
+                                <div className="flex gap-2">
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={
+                                                queryParams.academic_year_id
+                                            }
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "academic_year_id",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">AY</option>
+                                            {academicYears.data.map((ay) => (
+                                                <option
+                                                    key={ay.id}
+                                                    value={ay.code}
+                                                >
+                                                    {ay.description}
+                                                </option>
+                                            ))}
+                                        </SelectInput>
+                                    </div>
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.category}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "category",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Category</option>
+                                            {categories.data.map((category) => (
+                                                <option
+                                                    key={category.id}
+                                                    value={category.name}
+                                                >
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                        </SelectInput>
+                                    </div>
+                                    <div className="w-full">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.status}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Status</option>
+                                            <option value="draft">Draft</option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                            <option value="edited">
+                                                Edited
+                                            </option>
+                                            <option value="rejected">
+                                                Rejected
+                                            </option>
+                                            <option value="revision">
+                                                Revision
+                                            </option>
+                                            <option value="published">
+                                                Published
+                                            </option>
+                                        </SelectInput>
+                                    </div>
+                                </div>
+                                <div>
+                                    <TextInput
+                                        className="w-full"
+                                        defaultValue={queryParams.title}
+                                        placeholder="Search Article Title"
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "title",
+                                                e.target.value
+                                            )
+                                        }
+                                        onKeyPress={(e) =>
+                                            onKeyPressed("title", e)
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thead with search */}
-                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
-                                        <tr text-text-nowrap="true">
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="2"
-                                            >
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.academic_year_id
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "academic_year_id",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">AY</option>
-                                                    {academicYears.data.map(
-                                                        (ay) => (
-                                                            <option
-                                                                key={ay.id}
-                                                                value={ay.code}
-                                                            >
-                                                                {ay.code}
-                                                            </option>
-                                                        )
-                                                    )}
-                                                </SelectInput>
-                                            </th>
-                                            <th className="px-3 py-3">
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.category
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "category",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Category
-                                                    </option>
-                                                    {categories.data.map(
-                                                        (category) => (
-                                                            <option
-                                                                key={
-                                                                    category.id
-                                                                }
-                                                                value={
-                                                                    category.name
-                                                                }
-                                                            >
-                                                                {category.name}
-                                                            </option>
-                                                        )
-                                                    )}
-                                                </SelectInput>
-                                            </th>
-
-                                            <th
-                                                className="px-3 py-3"
-                                                colSpan="1"
-                                            >
-                                                <TextInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.title
-                                                    }
-                                                    placeholder="Search Article Title"
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "title",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onKeyPress={(e) =>
-                                                        onKeyPressed("title", e)
-                                                    }
-                                                />
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                            <th className="px-3 py-3">
-                                                <SelectInput
-                                                    className="w-full"
-                                                    defaultValue={
-                                                        queryParams.status
-                                                    }
-                                                    onChange={(e) =>
-                                                        searchFieldChanged(
-                                                            "status",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Status
-                                                    </option>
-                                                    <option value="pending">
-                                                        Pending
-                                                    </option>
-                                                    <option value="published">
-                                                        Published
-                                                    </option>
-                                                </SelectInput>
-                                            </th>
-                                            <th className="px-3 py-3"></th>
-                                        </tr>
-                                    </thead>
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">

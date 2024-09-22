@@ -31,6 +31,12 @@ export default function Index({
         }
     }, [flash]);
 
+    useEffect(() => {
+        router.get(route("student-article.index"), queryParams, {
+            preserveState: true,
+        });
+    }, []);
+
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {

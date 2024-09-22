@@ -151,7 +151,11 @@ class StudentArticleController extends Controller
 
         Article::create($data);
 
-        return to_route('student-article.index')->with(['success' => 'Article submitted Successfully']);
+        if($data['status'] === 'draft'){
+            return to_route('student-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        return to_route('student-article.index')->with(['success' => 'Article submitted successfully']);
     }
 
     /**
@@ -255,8 +259,11 @@ class StudentArticleController extends Controller
 
             $student_article->update($data);
         }
+        if($data['status'] === 'draft'){
+            return to_route('student-article.index')->with(['success' => 'Article saved as draft.']);
+        }
 
-        return to_route('student-article.index')->with(['success' => 'Article Edited Successfully']);
+        return to_route('student-article.index')->with(['success' => 'Article updated successfully']);
     }
 
 

@@ -138,6 +138,7 @@ class WriterArticleController extends Controller
 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
+        $data['submitted_at'] =now();
         $data['academic_year_id'] = $activeAy->id;
 
         $data['slug'] = Str::slug($request->title);
@@ -181,6 +182,7 @@ class WriterArticleController extends Controller
      */
     public function update(StudentUpdateArticleRequest $request, Article $writer_article)
     {
+        // dd($request);
         $data = $request->validated();
 
         // Build the Trie with bad words
@@ -229,13 +231,15 @@ class WriterArticleController extends Controller
         if (in_array($status, ['edited', 'revision', 'published'])) {
             // Only update the 'is_anonymous' field
             $writer_article->update(['is_anonymous' => $data['is_anonymous']]);
-        } else if (in_array($status, ['pending', 'rejected'])) {
+        } else if (in_array($status, ['draft','pending', 'rejected'])) {
             // Update all fields
 
-            $image = $data['article_image_path'] ?? null;
+            $image = $data['article_image_path'];
             $data['created_by'] = Auth::user()->id;
-            $data['status'] = 'pending'; // Always set to 'pending'
-            $data['slug'] = Str::slug($data['title']);
+            $data['submitted_at'] =now();
+
+            $data['slug'] = Str::slug($request->title);
+            
 
             if ($image) {
                 // Delete the old image file if a new one is uploaded
@@ -253,6 +257,11 @@ class WriterArticleController extends Controller
 
             $writer_article->update($data);
         }
+
+        if($data['status'] === 'draft'){
+            return to_route('writer-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
 
         return to_route('writer-article.index')->with(['success' => 'Article Edited Successfully']);
     }

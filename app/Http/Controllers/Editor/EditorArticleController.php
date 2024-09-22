@@ -63,15 +63,31 @@ class EditorArticleController extends Controller
                 break;
 
             default:
-                // Show all articles created by the authenticated user and pending/rejected articles from others
+
+                 //do now show the article in the table if edited_by !== editor_id
+                //ang naa sa table is tanan arti status pending, revision basta wapa na edit(null) or siya ang ga edit,
+                // og maka edit siya na published na arti pero di ma change ang editeb_by[in update func] = to avoid exploiting in making acc report
+
                 $query->where(function ($query) use ($id) {
                     $query->where('created_by', $id) // Auth user's articles
-                            ->orWhere(function ($query) use ($id) {
-                                $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['pending', 'revision', 'published'])
-                                        ->whereIn('draft', ['no']);
-                            });
-                    });
+                        ->orWhere(function ($query) use ($id) {
+                            $query->where('created_by', '!=', $id)
+                                ->where(function ($q) {
+                                    // Include all published articles
+                                    $q->where('status', 'published');
+                                })
+                                ->orWhere(function ($query) use ($id) {
+                                    $query->whereIn('status', ['pending', 'revision']) 
+                                        ->where('draft', 'no')
+                                        ->where(function ($query) use ($id) {
+                                            $query->whereNull('edited_by')  // Include records where edited_by is NULL
+                                                ->orWhere('edited_by', $id); // Include records where edited_by equals the user ID
+                                        });
+                                });
+                        });
+                });
+
+
                 break;
         }
         // Sorting the results
@@ -161,6 +177,7 @@ class EditorArticleController extends Controller
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['academic_year_id'] = $activeAy->id;
+        $data['submitted_at'] =now();
         // $data['status'] = 'edited';
 
         $data['slug'] = Str::slug($request->title);
@@ -268,9 +285,17 @@ class EditorArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['slug'] = Str::slug($request->title);
 
+        //if ge edit but published na as is ang edited_by[i mention in index func]
+        if($editor_article->status !== 'published'){
+            $data['edited_by'] = Auth::user()->id;
+        }elseif($editor_article->status === 'published'){
+            $data['edited_by'] = $editor_article->edited_by;
+        }
+
          //the reject message message 
         $data['rejection_message'] = $request->input('rejection_message');
 
+        // dates
         if($data['status'] !== 'rejected'){
             $data['rejected_at'] = now();
         }
@@ -279,18 +304,26 @@ class EditorArticleController extends Controller
             $data['rejected_at'] = now();
         }
         
+         //if edited put the date
         if($data['status'] !== 'edited'){
             $data['edited_at'] = now();
         }
 
+        //if rejected put the date
+        if($data['status'] === 'rejected'){
+            $data['rejected_at'] = now();
+        }
+
+
         
-        $status = $data['status'];
-        $editorId = Auth::user()->id;
+        // $status = $data['status'];
+        // $editorId = Auth::user()->id;
 
         //wako kasabot para asa ni nga code hHAHAHAHA
-        if ($status === 'revision' && $editorId === $editor_article->created_by){
-            $data['status'] = 'edited';
-        }
+        //og kinsa nag edit??? limot ko gagi
+        // if ($status === 'revision' && $editorId === $editor_article->created_by){
+        //     $data['status'] = 'edited';
+        // }
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
