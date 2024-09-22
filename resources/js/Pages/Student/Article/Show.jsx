@@ -110,7 +110,7 @@ export default function Index({ auth, article }) {
                                         : "No Editor"}
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
-                                {article.rejection_message && (
+                                {/* {article.rejection_message && (
                                     <div
                                         className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                         role="alert"
@@ -135,7 +135,7 @@ export default function Index({ auth, article }) {
                                             </div>
                                         </div>
                                     </div>
-                                )}
+                                )} */}
                             </div>
                             {/* Body */}
                             <div className="mt-8">
@@ -154,7 +154,7 @@ export default function Index({ auth, article }) {
                                     <Link
                                         href={route("admin-article.index")}
                                         className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
-                                    >
+                                    >   
                                         Back
                                     </Link>
                                 </div>
@@ -168,6 +168,15 @@ export default function Index({ auth, article }) {
                                     className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Edit Article
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "student-article.timeline",
+                                        article.id
+                                    )}
+                                    className="px-4 py-2 bg-lime-600 text-white transition-all duration-300 rounded hover:bg-lime-700"
+                                >
+                                    View Timeline
                                 </Link>
                                 <SecondaryButton
                                     href={route("student-article.index")}

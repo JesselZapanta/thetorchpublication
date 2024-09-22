@@ -296,14 +296,7 @@ class EditorArticleController extends Controller
         $data['rejection_message'] = $request->input('rejection_message');
 
         // dates
-        if($data['status'] !== 'rejected'){
-            $data['rejected_at'] = now();
-        }
-        
-        if($data['status'] !== 'rejected'){
-            $data['rejected_at'] = now();
-        }
-        
+
          //if edited put the date
         if($data['status'] !== 'edited'){
             $data['edited_at'] = now();
@@ -371,5 +364,21 @@ class EditorArticleController extends Controller
             Storage::disk('public')->delete($editor_article->article_image_path);
         }
         return to_route('editor-article.index')->with(['delete_success' => 'Deleted Successfully']);
+    }
+
+
+    public function calendar()
+    {
+        $articles = Article::where('status', operator: 'published')
+                            ->where('created_by' , Auth::user()->id)
+                            ->whereNotNull('published_date')
+                            ->get(['id','title', 'status', 'published_date']);
+
+        // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // Render the calendar page with article passed as props
+        return inertia('Editor/Article/MyCalendar', [
+            'articles' => $articles
+        ]);
     }
 }

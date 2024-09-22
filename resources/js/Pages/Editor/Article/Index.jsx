@@ -130,6 +130,12 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
+                            href={route("editor-article.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
+                        <Link
                             href={route("editor-article.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >

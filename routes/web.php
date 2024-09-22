@@ -145,12 +145,17 @@ Route::middleware(['auth','admin', ])->group(function() {
 // For Student and Student Contributor
 Route::middleware(['auth', 'student','verified'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+
+    Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
+    Route::get('student-article/{id}/imeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
     Route::resource('student-article', StudentArticleController::class);
 });
 
 // for editor
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
+    
+    Route::get('editor-article/calendar', [EditorArticleController::class, 'calendar'])->name('editor-article.calendar');
     Route::resource('editor-article', EditorArticleController::class);
 
     Route::get('editor-task', [EditorTaskController::class, 'index'])->name('editor-task.index');
@@ -164,6 +169,8 @@ Route::middleware(['auth', 'editor'])->group(function() {
 // for Writer
 Route::middleware(['auth', 'writer'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
+
+    Route::get('writer-article/calendar', [WriterArticleController::class, 'calendar'])->name('writer-article.calendar');
     Route::resource('writer-article', WriterArticleController::class);
 
 

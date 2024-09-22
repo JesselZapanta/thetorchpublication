@@ -168,6 +168,16 @@ class StudentArticleController extends Controller
         ]);
     }
 
+    public function timeLine($id)
+    {
+        $article = Article::find($id);
+        // dd($article);
+        return inertia('Student/Article/Timeline', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -280,5 +290,22 @@ class StudentArticleController extends Controller
             Storage::disk('public')->delete($student_article->article_image_path);
         }
         return to_route('student-article.index')->with(['success' => 'Deleted Successfully']);
+    }
+
+
+    
+    public function calendar()
+    {
+        $articles = Article::where('status', operator: 'published')
+                            ->where('created_by' , Auth::user()->id)
+                            ->whereNotNull('published_date')
+                            ->get(['id','title', 'status', 'published_date']);
+
+        // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // Render the calendar page with article passed as props
+        return inertia('Student/Article/MyCalendar', [
+            'articles' => $articles
+        ]);
     }
 }

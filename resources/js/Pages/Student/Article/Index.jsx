@@ -134,6 +134,12 @@ export default function Index({
                     </h2>
                     <div className="flex gap-4">
                         <Link
+                            href={route("student-article.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
+                        <Link
                             href={route("student-article.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
@@ -372,13 +378,15 @@ export default function Index({
                                                             className={
                                                                 "px-2 py-1 rounded text-white " +
                                                                 ARTICLE_STATUS_CLASS_MAP[
-                                                                    article.status
+                                                                    article
+                                                                        .status
                                                                 ]
                                                             }
                                                         >
                                                             {
                                                                 ARTICLE_STATUS_TEXT_MAP[
-                                                                    article.status
+                                                                    article
+                                                                        .status
                                                                 ]
                                                             }
                                                         </span>
