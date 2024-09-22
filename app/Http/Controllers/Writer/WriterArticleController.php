@@ -86,6 +86,7 @@ class WriterArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    //student req AHAHA bala basta mo gana | same validation ra sa student
     public function store(StudentStoreArticleRequest $request)
     {
         $data = $request->validated();
@@ -164,6 +165,17 @@ class WriterArticleController extends Controller
         ]);
     }
 
+    public function timeLine($id)
+    {
+        $article = Article::find($id);
+        // dd($article);
+        return inertia('Writer/Article/Timeline', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -180,6 +192,7 @@ class WriterArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
+     //student req AHAHA bala basta mo gana | same validation ra sa student
     public function update(StudentUpdateArticleRequest $request, Article $writer_article)
     {
         // dd($request);

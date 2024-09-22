@@ -34,7 +34,7 @@ class StudentUpdateArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' ],
             'status' => ['required',
-                Rule::in(['draft','pending'])
+                Rule::in(['draft','pending', 'revision', 'edited','rejected' ,'published'])
             ],
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             // 'is_featured' => ['required', Rule::in(['no','yes',])],

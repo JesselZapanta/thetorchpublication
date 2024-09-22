@@ -39,13 +39,35 @@ class UserSeeder extends Seeder
             ],
 
             [   
-                'student_id' => '543369',
+                'student_id' => '543189',
                 'username' => 'torcheditor',
                 'name' => 'torcheditor',
                 'role' => 'editor',
                 'position' => 'none',
                 'email_verified_at' => now(),
                 'email' => 'torcheditor@gmail.com',
+                'password' => Hash::make('1'),
+            ],
+
+            [   
+                'student_id' => '542369',
+                'username' => 'torcheditor2',
+                'name' => 'torcheditor2',
+                'role' => 'editor',
+                'position' => 'none',
+                'email_verified_at' => now(),
+                'email' => 'torcheditor2@gmail.com',
+                'password' => Hash::make('1'),
+            ],
+
+            [   
+                'student_id' => '544369',
+                'username' => 'torcheditor3',
+                'name' => 'torcheditor3',
+                'role' => 'editor',
+                'position' => 'none',
+                'email_verified_at' => now(),
+                'email' => 'torcheditor3@gmail.com',
                 'password' => Hash::make('1'),
             ],
 

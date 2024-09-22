@@ -39,7 +39,7 @@ export default function Timeline({ auth, article }) {
                                                     article.createdBy
                                                         .profile_image_path
                                                 }
-                                                alt="Bonnie image"
+                                                alt={article.createdBy.name}
                                             />
                                         </span>
                                         <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
@@ -99,7 +99,7 @@ export default function Timeline({ auth, article }) {
                                                     article.editedBy
                                                         .profile_image_path
                                                 }
-                                                alt="Bonnie image"
+                                                alt={article.editedBy.name}
                                             />
                                         </span>
                                         <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
@@ -125,10 +125,10 @@ export default function Timeline({ auth, article }) {
                                             <img
                                                 className="rounded-full shadow-lg"
                                                 src={
-                                                    article.editedBy
+                                                    article.revisionBy
                                                         .profile_image_path
                                                 }
-                                                alt={article.editedBy.name}
+                                                alt={article.revisionBy.name}
                                             />
                                         </span>
                                         <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
@@ -138,8 +138,10 @@ export default function Timeline({ auth, article }) {
                                                 </time>
                                                 <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                                                     <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                        {/* {article.editedBy.name} */}
-                                                        Torchadmin
+                                                        {
+                                                            article.revisionBy
+                                                                .name
+                                                        }
                                                     </span>{" "}
                                                     set the article status to{" "}
                                                     <span className="font-semibold text-indigo-600 dark:text-indigo-500">
@@ -160,10 +162,10 @@ export default function Timeline({ auth, article }) {
                                             <img
                                                 className="rounded-full shadow-lg"
                                                 src={
-                                                    article.editedBy
+                                                    article.publishedBy
                                                         .profile_image_path
                                                 }
-                                                alt="Bonnie image"
+                                                alt={article.publishedBy.name}
                                             />
                                         </span>
                                         <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
@@ -172,8 +174,7 @@ export default function Timeline({ auth, article }) {
                                             </time>
                                             <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                                                 <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {/* {article.editedBy.name} */}
-                                                    Torchadmin
+                                                    {article.publishedBy.name}
                                                 </span>{" "}
                                                 set the article status to{" "}
                                                 <span className="font-semibold text-indigo-600 dark:text-indigo-500">
@@ -183,140 +184,6 @@ export default function Timeline({ auth, article }) {
                                         </div>
                                     </li>
                                 )}
-
-                                {/* {article.content_approved_date && (
-                                    <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
-                                            <img
-                                                className="rounded-full shadow-lg"
-                                                src={
-                                                    article.assignedBy
-                                                        .profile_image_path
-                                                }
-                                                alt={article.assignedBy.name}
-                                            />
-                                        </span>
-                                        <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                            <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                {article.content_approved_date}
-                                            </time>
-                                            <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.assignedBy.name}
-                                                </span>{" "}
-                                                sets the submitted content to{" "}
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    approved
-                                                </span>{" "}
-                                                after which the content is
-                                                forwarded to{" "}
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.layoutBy.name}
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                )} */}
-
-                                {/* {article.image_submitted_date && (
-                                    <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
-                                            <img
-                                                className="rounded-full shadow-lg"
-                                                src={
-                                                    article.layoutBy
-                                                        .profile_image_path
-                                                }
-                                                alt={article.layoutBy.name}
-                                            />
-                                        </span>
-                                        <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                            <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                {article.image_submitted_date}
-                                            </time>
-                                            <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.layoutBy.name}
-                                                </span>{" "}
-                                                submit the infographics or image
-                                                for the content after which the
-                                                image is forwarded to{" "}
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.assignedBy.name}
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                )} */}
-
-                                {/* {article.image_revision_date && (
-                                    <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
-                                            <img
-                                                className="rounded-full shadow-lg"
-                                                src={
-                                                    article.assignedBy
-                                                        .profile_image_path
-                                                }
-                                                alt={article.assignedBy.name}
-                                            />
-                                        </span>
-                                        <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
-                                            <div className="items-center justify-between mb-3 sm:flex">
-                                                <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                    {
-                                                        article.image_revision_date
-                                                    }
-                                                </time>
-                                                <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                                                    <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                        {
-                                                            article.assignedBy
-                                                                .name
-                                                        }
-                                                    </span>{" "}
-                                                    set the article status to{" "}
-                                                    <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                        image needed revision
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div className="p-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
-                                                {article.image_revision_message}
-                                            </div>
-                                        </div>
-                                    </li>
-                                )} */}
-
-                                {/* {article.article_completed_date && (
-                                    <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
-                                            <img
-                                                className="rounded-full shadow-lg"
-                                                src={
-                                                    article.assignedBy
-                                                        .profile_image_path
-                                                }
-                                                alt={article.assignedBy.name}
-                                            />
-                                        </span>
-                                        <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                            <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                {article.article_completed_date}
-                                            </time>
-                                            <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.assignedBy.name}
-                                                </span>{" "}
-                                                approved and published the
-                                                article, the article is now{" "}
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    completed
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                )} */}
                             </ol>
                         </div>
                     </div>

@@ -163,6 +163,10 @@ class AdminArticleController extends Controller
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
+        $data['published_by'] = Auth::user()->id;
+        $data['submitted_at'] = now();
+        $data['edited_at'] = now();
+        
 
         $data['slug'] = Str::slug($request->title);//might remoce later
 
@@ -298,6 +302,7 @@ class AdminArticleController extends Controller
         // If the article is being published for the first time, set the published date
         elseif ($data['status'] === 'published' && $admin_article->status !== 'published') {
             $data['published_date'] = now();
+            $data['published_by'] = Auth::user()->id;
         }
 
         if($data['status'] !== 'published'){
@@ -306,6 +311,7 @@ class AdminArticleController extends Controller
 
         if($data['status'] === 'revision'){
             $data['revision_at'] = now();
+            $data['revision_by'] = Auth::user()->id;
         }
 
         

@@ -54,6 +54,8 @@ class ArticleResource extends JsonResource
             'createdBy' => new UserResource($this->createdBy),
             'editedBy' => new UserResource($this->editedBy),
             'layoutBy' => new UserResource($this->layoutBy),
+            'revisionBy' => new UserResource($this->revisionBy),
+            'publishedBy' => new UserResource($this->publishedBy),
 
             'article_image_path' => $this->article_image_path ? Storage::url($this->article_image_path) : '/images/default/article.png',
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),

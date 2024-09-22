@@ -56,7 +56,7 @@ export default function Edit({ auth, article, categories }) {
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {article.status === "pending" &&
+                    {article.status === "pending" ||
                         article.rejection_message && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"

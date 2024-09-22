@@ -14,13 +14,13 @@ export default function Edit({ auth, article, categories }) {
         category_id: article.category_id || "",
 
         title: article.title || "",
-        excerpt: article.excerpt || "", 
+        excerpt: article.excerpt || "",
         body: article.body || "",
         status: article.status || "",
         caption: article.caption || "",
         article_image_path: "",
-        is_anonymous: article.is_anonymous || "", 
-        status: article.status || "", 
+        is_anonymous: article.is_anonymous || "",
+        status: article.status == "rejected" ? "pending" : article.status || "",
         _method: "PUT",
     });
 
@@ -56,6 +56,7 @@ export default function Edit({ auth, article, categories }) {
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.rejection_message &&
+                        article.status === "rejected" &&
                         article.status !== "published" && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"

@@ -16,6 +16,8 @@ class Article extends Model
         'category_id',
         'edited_by',
         'layout_by',
+        'revision_by',
+        'published_by',
 
         'slug',
 
@@ -70,6 +72,17 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'layout_by');
     }
+
+    public function revisionBy()
+    {
+        return $this->belongsTo(User::class, 'revision_by');
+    }
+
+    public function publishedBy()
+    {
+        return $this->belongsTo(User::class, 'published_by');
+    }
+
      //for ratings
     public function ratings()
     {

@@ -21,15 +21,19 @@ class ArticleFactory extends Factory
             'created_by' => fake()->numberBetween(1, 15),
             'academic_year_id' => 1,
             'category_id' => fake()->numberBetween(1, 5),
-            'edited_by' => 1,
-            'layout_by' => 1,
+            'edited_by' => fake()->numberBetween(3, 5),
+            'layout_by' => fake()->numberBetween(1, 15),
+            'published_by' => fake()->numberBetween(1, 2),
             'slug' => Str::slug(fake()->unique()->sentence) . '-' . fake()->unique()->numberBetween(1, 10000),
             'title' => fake()->realText(fake()->numberBetween(10, 100)),
             'excerpt' => fake()->realText(fake()->numberBetween(10, 1000)),
             'body' => fake()->realText(fake()->numberBetween(10, 10000)),
             'caption' => fake()->realText(fake()->numberBetween(10, 300)),
             'status' => 'published',
-            'published_date' => now(),
+            
+            'submitted_at' => fake()->dateTimeBetween('-3 week', '-2 week'), 
+            'edited_at' => fake()->dateTimeBetween('-2 week', '-1 week'), 
+            'published_date' => fake()->dateTimeBetween('-1 week', 'now'), 
         ];
     }
 }

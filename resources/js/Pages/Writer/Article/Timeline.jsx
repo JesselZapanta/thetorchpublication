@@ -1,12 +1,12 @@
 import SecondaryButton from "@/Components/SecondaryButton";
-import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
 export default function Timeline({ auth, article }) {
 
     return (
-        <StudentAuthenticatedLayout
+        <WriterAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -14,7 +14,7 @@ export default function Timeline({ auth, article }) {
                         Timeline : {article.title}
                     </h2>
                     <div className="flex gap-4">
-                        <SecondaryButton href={route("student-article.index")}>
+                        <SecondaryButton href={route("writer-article.index")}>
                             Back
                         </SecondaryButton>
                     </div>
@@ -189,6 +189,6 @@ export default function Timeline({ auth, article }) {
                     </div>
                 </div>
             </div>
-        </StudentAuthenticatedLayout>
+        </WriterAuthenticatedLayout>
     );
 }

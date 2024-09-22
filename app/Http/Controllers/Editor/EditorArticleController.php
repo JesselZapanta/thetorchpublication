@@ -218,6 +218,16 @@ class EditorArticleController extends Controller
         ]);
     }
     
+    public function timeLine($id)
+    {
+        $article = Article::find($id);
+        // dd($article);
+        return inertia('Editor/Article/Timeline', [
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+
 
 
     /**
