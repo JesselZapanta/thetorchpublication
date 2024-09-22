@@ -4,6 +4,7 @@ import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { NEWSLETTER_PRIORITY_CLASS_MAP, NEWSLETTER_PRIORITY_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, newsletters, queryParams = null, flash, badgeCount }) {
+export default function Index({ auth, newsletters, queryParams = null, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -91,7 +92,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, ba
     };
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -261,7 +262,23 @@ export default function Index({ auth, newsletters, queryParams = null, flash, ba
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.status}
+                                                            {/* {newsletter.status} */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    NEWSLETTER_PRIORITY_CLASS_MAP[
+                                                                        newsletter
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    NEWSLETTER_PRIORITY_TEXT_MAP[
+                                                                        newsletter
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {

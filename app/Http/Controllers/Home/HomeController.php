@@ -55,7 +55,7 @@ class HomeController extends Controller
                                 ->get();
 
         $latestNewsletter = Newsletter::orderBy('created_at', 'DESC')
-                                // ->where('status', 'published')
+                                ->where('status', 'distributed')
                                 ->limit(4)
                                 ->get();
 

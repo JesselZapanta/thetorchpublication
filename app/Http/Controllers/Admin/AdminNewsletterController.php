@@ -54,7 +54,7 @@ class AdminNewsletterController extends Controller
                                 ->orWhere(function ($query) use ($id) {
                                     // Get all newsletters where auth user is NOT layout_by, but status is pending or approved
                                     $query->where('layout_by', '!=', $id)
-                                        ->whereIn('status', ['pending', 'approved']);
+                                        ->whereIn('status', ['pending', 'approved', 'distributed']);
                                 })
                                 ->paginate(10)
                                 ->onEachSide(1);

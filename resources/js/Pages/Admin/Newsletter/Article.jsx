@@ -22,7 +22,7 @@ export default function Index({
     academicYears,
     queryParams = null,
     flash,
-    badgeCount,
+    AdminBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -161,7 +161,7 @@ export default function Index({
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

@@ -14,7 +14,7 @@ import DangerButton from "@/Components/DangerButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, academicYears, queryParams = null, flash, badgeCount }) {
+export default function Index({ auth, academicYears, queryParams = null, flash, AdminBadgeCount }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [academicYear, setAcademicYear] = useState(null); // For storing the academicYear to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -149,7 +149,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

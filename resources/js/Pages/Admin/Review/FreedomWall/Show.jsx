@@ -3,7 +3,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-export default function Show({ auth, entry, badgeCount }) {
+export default function Show({ auth, entry, AdminBadgeCount }) {
     // useEffect(() => {
     //     window.scrollTo(0, 0);
     // }, []);
@@ -94,7 +94,7 @@ export default function Show({ auth, entry, badgeCount }) {
     };
 
     return (
-        <AdminAuthenticatedLayout user={auth.user} badgeCount={badgeCount}>
+        <AdminAuthenticatedLayout user={auth.user} AdminBadgeCount={AdminBadgeCount}>
             <Head title="Freedom Wall" />
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4

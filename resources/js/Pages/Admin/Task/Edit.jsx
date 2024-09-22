@@ -17,7 +17,7 @@ export default function Edit({
     categories,
     designers,
     activeAy,
-    badgeCount,
+    AdminBadgeCount,
 }) {
     const { data, setData, post, errors } = useForm({
         name: task.name || "", // Set name
@@ -50,7 +50,7 @@ export default function Edit({
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

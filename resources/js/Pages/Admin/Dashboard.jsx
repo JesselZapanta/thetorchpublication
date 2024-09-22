@@ -12,7 +12,7 @@ export default function Dashboard({
     tasks,
     reportedContent,
     timePeriod,
-    badgeCount,
+    AdminBadgeCount,
 }) {
     const [selectedPeriod, setSelectedPeriod] = useState(timePeriod);
 
@@ -30,7 +30,7 @@ export default function Dashboard({
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function Authenticated({ user, header, children, badgeCount }) {
+export default function Authenticated({ user, header, children, AdminBadgeCount }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -23,7 +23,10 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                                 </Link>
                             </div>
 
-                            {/* <div>totol edited: {badgeCount.editedCount}</div> */}
+                            {/* <div>
+                                totol edited:{" "}
+                                {AdminBadgeCount.totalArticleReportCount}
+                            </div> */}
 
                             <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
@@ -51,14 +54,15 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                                     )}
                                 >
                                     Articles{" "}
-                                    {badgeCount.editedCount &&
-                                        badgeCount.editedCount > 0 && (
-                                            <>
-                                                <span className=" flex justify-center items-center w-5 h-5 -mt-5 rounded-full  p-1 bg-red-400">
-                                                    {badgeCount.editedCount}
-                                                </span>
-                                            </>
-                                        )}
+                                    {AdminBadgeCount.editedCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.editedCount > 9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.editedCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                                 <NavLink
                                     href={route("word.index")}
@@ -79,12 +83,33 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                                     active={route().current("newsletter.index")}
                                 >
                                     Newsletters
+                                    {AdminBadgeCount.newsletterPendingCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.newsletterPendingCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.newsletterPendingCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                                 <NavLink
                                     href={route("admin-task.index")}
                                     active={route().current("admin-task.index")}
                                 >
                                     Tasks
+                                    {AdminBadgeCount.totalTaskCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalTaskCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                                 <NavLink
                                     href={route(
@@ -95,6 +120,16 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                                     )}
                                 >
                                     Review
+                                    {AdminBadgeCount.totalReportCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalReportCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                             </div>
                         </div>
@@ -201,14 +236,15 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                             active={route().current("admin-article.index")}
                         >
                             Article
-                            {badgeCount.editedCount &&
-                                badgeCount.editedCount > 0 && (
-                                    <>
-                                        <span className=" flex justify-center items-center w-5 h-5 rounded-full  p-1 bg-red-400">
-                                            {badgeCount.editedCount}
-                                        </span>
-                                    </>
-                                )}
+                            {AdminBadgeCount.editedCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {AdminBadgeCount.editedCount > 9
+                                            ? "9+"
+                                            : AdminBadgeCount.editedCount}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("word.index")}
@@ -217,10 +253,58 @@ export default function Authenticated({ user, header, children, badgeCount }) {
                             Word
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            href={route("academic-year.index")}
+                            active={route().current("academic-year.index")}
+                        >
+                            Academic Years
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("newsletter.index")}
+                            active={route().current("newsletter.index")}
+                        >
+                            Newsletters
+                            {AdminBadgeCount.newsletterPendingCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {AdminBadgeCount.newsletterPendingCount >
+                                        9
+                                            ? "9+"
+                                            : AdminBadgeCount.newsletterPendingCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
                             href={route("admin-task.index")}
                             active={route().current("admin-task.index")}
                         >
                             Task
+                            {AdminBadgeCount.totalTaskCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {AdminBadgeCount.totalTaskCount > 9
+                                            ? "9+"
+                                            : AdminBadgeCount.totalTaskCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("admin-review-report-article.index")}
+                            active={route().current(
+                                "admin-review-report-article.index"
+                            )}
+                        >
+                            Review
+                            {AdminBadgeCount.totalReportCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {AdminBadgeCount.totalReportCount > 9
+                                            ? "9+"
+                                            : AdminBadgeCount.totalReportCount}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
                     </div>
 

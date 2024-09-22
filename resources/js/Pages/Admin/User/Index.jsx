@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, users, queryParams = null, flash, badgeCount }) {
+export default function Index({ auth, users, queryParams = null, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         if (flash.message.success) {
@@ -102,7 +102,7 @@ export default function Index({ auth, users, queryParams = null, flash, badgeCou
     };
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

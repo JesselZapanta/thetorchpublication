@@ -50,3 +50,18 @@ export const TASK_PRIORITY_TEXT_MAP = {
     medium: "Medium",
     high: "High",
 };
+
+// Newsletter  Status
+export const NEWSLETTER_PRIORITY_CLASS_MAP = {
+    pending: "bg-amber-600",
+    revision: "bg-red-600",
+    approved: "bg-teal-600",
+    distributed: "bg-green-600",
+};
+
+export const NEWSLETTER_PRIORITY_TEXT_MAP = {
+    pending: "Pending",
+    revision: "Revision",
+    approved: "Approved",
+    distributed: "Distributed",
+};

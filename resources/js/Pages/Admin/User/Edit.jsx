@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Edit({ auth, user, badgeCount }) {
+export default function Edit({ auth, user, AdminBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         student_id: user.student_id || "",
         username: user.username || "",
@@ -28,7 +28,7 @@ export default function Edit({ auth, user, badgeCount }) {
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

@@ -8,7 +8,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Create({ auth, users, categories, designers, activeAy, badgeCount }) {
+export default function Create({ auth, users, categories, designers, activeAy, AdminBadgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         name: "",
         description: "",
@@ -39,7 +39,7 @@ export default function Create({ auth, users, categories, designers, activeAy, b
 
     return (
         <AdminAuthenticatedLayout
-            badgeCount={badgeCount}
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
