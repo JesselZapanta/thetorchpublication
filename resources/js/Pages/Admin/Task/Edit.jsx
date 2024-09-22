@@ -10,7 +10,15 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function Edit({ auth, task, users, categories, designers, activeAy }) {
+export default function Edit({
+    auth,
+    task,
+    users,
+    categories,
+    designers,
+    activeAy,
+    badgeCount,
+}) {
     const { data, setData, post, errors } = useForm({
         name: task.name || "", // Set name
         description: task.description || "", // Set description
@@ -42,6 +50,7 @@ export default function Edit({ auth, task, users, categories, designers, activeA
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

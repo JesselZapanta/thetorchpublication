@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
 use App\Models\FreedomWall;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,9 +25,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // todo
-        // Relation::enforceMorphMap([
-        //     'freedom_wall' => FreedomWall::class,
-        // ]);
+         // Conditionally share data only for admin routes
+        Inertia::share('editedCount', function () {
+            return Article::where('status', 'edited')->count();
+        });
+
+        Inertia::share('badgeCount', function () {
+            $userCount = User::count();    // Get the user count
+            $editedCount = Article::where('status', 'edited')->count();
+
+            return [
+                'user' => $userCount,
+                'editedCount' => $editedCount,
+            ];
+        });
+
     }
 }

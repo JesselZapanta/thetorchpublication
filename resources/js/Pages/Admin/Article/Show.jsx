@@ -2,9 +2,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, article }) {
+export default function Index({ auth, article, badgeCount }) {
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">
@@ -48,13 +49,15 @@ export default function Index({ auth, article }) {
                                                 src={
                                                     article.author
                                                         ? "/images/default/profile.jpg"
-                                                        : article.is_anonymous === "yes"
-                                                            ? "/images/default/profile.jpg"
-                                                            : article.article_image_path
+                                                        : article.is_anonymous ===
+                                                          "yes"
+                                                        ? "/images/default/profile.jpg"
+                                                        : article.article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
                                                 alt={
-                                                    article.is_anonymous === "yes"
+                                                    article.is_anonymous ===
+                                                    "yes"
                                                         ? "Default image"
                                                         : article.createdBy.name
                                                 }
@@ -68,7 +71,8 @@ export default function Index({ auth, article }) {
                                             <span className="font-bold">
                                                 {article.author
                                                     ? article.author
-                                                    : article.is_anonymous === "yes"
+                                                    : article.is_anonymous ===
+                                                      "yes"
                                                     ? "Anonymous"
                                                     : article.createdBy.name}
                                             </span>

@@ -10,7 +10,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Create({ auth, categories, activeAy }) {
+export default function Create({ auth, categories, activeAy, badgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         category_id: "",
         academic_year_id: "",
@@ -33,7 +33,6 @@ export default function Create({ auth, categories, activeAy }) {
         });
     };
 
-
     const [confirmSubmit, setConfirmSubmit] = useState(false);
 
     const openSubmitModal = () => {
@@ -47,6 +46,7 @@ export default function Create({ auth, categories, activeAy }) {
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -236,9 +236,7 @@ export default function Create({ auth, categories, activeAy }) {
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option value="">
-                                            Select Status
-                                        </option>
+                                        <option value="">Select Status</option>
                                         <option value="draft">
                                             Save as Draft
                                         </option>

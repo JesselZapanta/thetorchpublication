@@ -20,6 +20,7 @@ export default function Index({
     reportedFreedomWall,
     queryParams = null,
     flash,
+    badgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -215,6 +216,7 @@ export default function Index({
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -269,7 +271,7 @@ export default function Index({
                                                 "visibility",
                                                 e.target.value
                                             )
-                                        } 
+                                        }
                                     >
                                         <option value="">Visibility</option>
                                         <option value="visible">Visible</option>

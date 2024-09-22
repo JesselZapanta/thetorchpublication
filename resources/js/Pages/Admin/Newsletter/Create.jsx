@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput';
 import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 
-export default function Create({ auth, activeAy }) {
+export default function Create({ auth, activeAy, badgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         academic_year_id: "",
         description: "",
@@ -33,6 +33,7 @@ export default function Create({ auth, activeAy }) {
     };
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

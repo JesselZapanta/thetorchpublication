@@ -5,7 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function MyCalendar({ auth, tasks }) {
+export default function MyCalendar({ auth, tasks, badgeCount }) {
     // Map tasks to FullCalendar events
     const events = tasks.map((task) => ({
         // title: "[" + task.status + "] " + task.name,
@@ -18,9 +18,9 @@ export default function MyCalendar({ auth, tasks }) {
         url: route("admin-task.show", task.id),
     }));
 
-
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

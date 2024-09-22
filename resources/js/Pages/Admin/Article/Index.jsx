@@ -19,7 +19,8 @@ export default function Index({
     categories,
     academicYears,
     queryParams = null,
-    flash
+    flash,
+    badgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -105,7 +106,7 @@ export default function Index({
     const handleDelete = () => {
         if (article) {
             router.delete(route("admin-article.destroy", article.id), {
-                preserveScroll : true,
+                preserveScroll: true,
             });
         }
         setConfirmDelete(false);
@@ -122,6 +123,7 @@ export default function Index({
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -148,6 +150,10 @@ export default function Index({
             <Head title="Articles" />
 
             <ToastContainer position="bottom-right" />
+
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(badgeCount, null, 2)}
+            </pre> */}
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

@@ -7,8 +7,9 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+export default function Authenticated({ user, header, children, badgeCount }) {
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
 
     return (
         <div className="min-h-screen bg-gray-200 dark:bg-gray-900">
@@ -21,6 +22,8 @@ export default function Authenticated({ user, header, children }) {
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
                             </div>
+
+                            {/* <div>totol edited: {badgeCount.editedCount}</div> */}
 
                             <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
@@ -47,7 +50,15 @@ export default function Authenticated({ user, header, children }) {
                                         "admin-article.index"
                                     )}
                                 >
-                                    Articles
+                                    Articles{" "}
+                                    {badgeCount.editedCount &&
+                                        badgeCount.editedCount > 0 && (
+                                            <>
+                                                <span className=" flex justify-center items-center w-5 h-5 -mt-5 rounded-full  p-1 bg-red-400">
+                                                    {badgeCount.editedCount}
+                                                </span>
+                                            </>
+                                        )}
                                 </NavLink>
                                 <NavLink
                                     href={route("word.index")}
@@ -76,7 +87,9 @@ export default function Authenticated({ user, header, children }) {
                                     Tasks
                                 </NavLink>
                                 <NavLink
-                                    href={route("admin-review-report-article.index")}
+                                    href={route(
+                                        "admin-review-report-article.index"
+                                    )}
                                     active={route().current(
                                         "admin-review-report-article.index"
                                     )}
@@ -188,6 +201,14 @@ export default function Authenticated({ user, header, children }) {
                             active={route().current("admin-article.index")}
                         >
                             Article
+                            {badgeCount.editedCount &&
+                                badgeCount.editedCount > 0 && (
+                                    <>
+                                        <span className=" flex justify-center items-center w-5 h-5 rounded-full  p-1 bg-red-400">
+                                            {badgeCount.editedCount}
+                                        </span>
+                                    </>
+                                )}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("word.index")}

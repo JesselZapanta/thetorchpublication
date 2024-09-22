@@ -16,12 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 
-export default function Index({
-    auth,
-    words,
-    queryParams = null,
-    flash
-}) {
+export default function Index({ auth, words, queryParams = null, flash, badgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -79,7 +74,7 @@ export default function Index({
             }
         }
     };
-    
+
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
             if (queryParams.sort_direction === "asc") {
@@ -155,6 +150,7 @@ export default function Index({
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between ">

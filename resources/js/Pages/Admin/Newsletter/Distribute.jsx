@@ -9,7 +9,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import Modal from "@/Components/Modal";
 import TextAreaInput from "@/Components/TextAreaInput";
 
-export default function Edit({ auth, newsletter }) {
+export default function Edit({ auth, newsletter, badgeCount }) {
     const { data, setData, post, errors } = useForm({
         message:
             "Our latest newsletter is packed with highlights, updates, and valuable insights. From exciting events that brought our community together to important announcements shaping our future, there's something for everyone. Whether you're interested in the latest trends, curious about upcoming initiatives, or just want to stay informed, this newsletter has it all. Don't miss out on this detailed recap of the past few months. Download or click the file attached to read our latest newsletter and stay connected with everything that's happening.",
@@ -17,7 +17,7 @@ export default function Edit({ auth, newsletter }) {
     });
 
     const onSubmit = () => {
-        post(route("newsletter.distribute", newsletter.id))
+        post(route("newsletter.distribute", newsletter.id));
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -33,6 +33,7 @@ export default function Edit({ auth, newsletter }) {
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

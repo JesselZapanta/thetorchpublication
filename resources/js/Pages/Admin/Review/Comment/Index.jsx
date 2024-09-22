@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, reportedComments, queryParams , flash }) {
+export default function Index({ auth, reportedComments, queryParams, flash, badgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -82,13 +82,9 @@ export default function Index({ auth, reportedComments, queryParams , flash }) {
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(
-            route("admin-review-report-comment.index"),
-            queryParams,
-            {
-                preserveState: true,
-            }
-        );
+        router.get(route("admin-review-report-comment.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     //sorting
@@ -103,10 +99,7 @@ export default function Index({ auth, reportedComments, queryParams , flash }) {
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(
-            route("admin-review-report-comment.index"),
-            queryParams
-        );
+        router.get(route("admin-review-report-comment.index"), queryParams);
     };
 
     const handleSelectReport = (e) => {
@@ -208,6 +201,7 @@ export default function Index({ auth, reportedComments, queryParams , flash }) {
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -244,13 +238,13 @@ export default function Index({ auth, reportedComments, queryParams , flash }) {
                                         placeholder="Search Freedom Wall"
                                         onKeyPress={(e) =>
                                             onKeyPressed("body", e)
-                                        } 
+                                        }
                                         onChange={(e) =>
                                             searchFieldChanged(
                                                 "body",
                                                 e.target.value
                                             )
-                                        } 
+                                        }
                                     />
                                 </div>
                                 <div className="w-[40%]">

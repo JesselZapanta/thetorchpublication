@@ -11,12 +11,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({
-    auth,
-    newsletters,
-    queryParams = null,
-    flash,
-}) {
+export default function Index({ auth, newsletters, queryParams = null, flash, badgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -96,6 +91,7 @@ export default function Index({
     };
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

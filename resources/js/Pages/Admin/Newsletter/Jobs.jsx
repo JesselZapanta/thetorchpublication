@@ -2,8 +2,7 @@ import Pagination from "@/Components/Pagination";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Jobs({ jobs, auth, queryParams }) {
-
+export default function Jobs({ jobs, auth, queryParams, badgeCount }) {
     function extractEmail(payload) {
         // Regular expression to match email addresses
         const emailPattern = /[\w\.-]+@[\w\.-]+\.\w+/g;
@@ -13,6 +12,7 @@ export default function Jobs({ jobs, auth, queryParams }) {
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

@@ -3,10 +3,10 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
-export default function Timeline({ auth, article }) {
-
+export default function Timeline({ auth, article, badgeCount }) {
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

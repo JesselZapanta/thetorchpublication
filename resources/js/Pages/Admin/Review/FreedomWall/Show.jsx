@@ -3,7 +3,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
-export default function Show({ auth, entry }) {
+export default function Show({ auth, entry, badgeCount }) {
     // useEffect(() => {
     //     window.scrollTo(0, 0);
     // }, []);
@@ -94,7 +94,7 @@ export default function Show({ auth, entry }) {
     };
 
     return (
-        <AdminAuthenticatedLayout user={auth.user}>
+        <AdminAuthenticatedLayout user={auth.user} badgeCount={badgeCount}>
             <Head title="Freedom Wall" />
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
@@ -124,7 +124,6 @@ export default function Show({ auth, entry }) {
                                     </p>
                                 </div>
                             </div>
-                            
                         </div>
                         <div className="relative flex gap-1 items-end justify-end p-2 transition-all duration-300">
                             <p
@@ -234,7 +233,9 @@ export default function Show({ auth, entry }) {
                                     Hide TODO
                                 </Link> */}
                         <SecondaryButton
-                            href={route("admin-review-report-freedom-wall.index")}
+                            href={route(
+                                "admin-review-report-freedom-wall.index"
+                            )}
                         >
                             Back
                         </SecondaryButton>

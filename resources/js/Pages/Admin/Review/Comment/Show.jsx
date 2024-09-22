@@ -4,7 +4,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 
 
-export default function Index({ auth, article, comment }) {
+export default function Index({ auth, article, comment, badgeCount }) {
     const commentRef = useRef(null);
 
     useEffect(() => {
@@ -17,6 +17,7 @@ export default function Index({ auth, article, comment }) {
     }, []);
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">

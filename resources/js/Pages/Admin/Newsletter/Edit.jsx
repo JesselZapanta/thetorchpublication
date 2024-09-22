@@ -9,7 +9,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 import TextAreaInput from '@/Components/TextAreaInput';
 
-export default function Edit({ auth, activeAy, newsletter }) {
+export default function Edit({ auth, activeAy, newsletter, badgeCount }) {
     const { data, setData, post, errors } = useForm({
         academic_year_id: newsletter.academic_year_id || "",
         description: newsletter.description || "",
@@ -37,6 +37,7 @@ export default function Edit({ auth, activeAy, newsletter }) {
 
     return (
         <AdminAuthenticatedLayout
+            badgeCount={badgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
