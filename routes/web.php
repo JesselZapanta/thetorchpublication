@@ -205,9 +205,12 @@ Route::middleware(['auth', 'writer'])->group(function() {
 
     Route::get('writer-task', [WriterTaskController::class, 'index'])->name('writer-task.index');
     Route::get('writer-task-getData', [WriterTaskController::class, 'getData'])->name('writer-task.getData');
+    Route::get('writer-task/calendar', [WriterTaskController::class, 'calendar'])->name('writer-task.calendar');
     Route::get('writer-task/{id}/show', [WriterTaskController::class, 'show'])->name('writer-task.show');
     Route::put('writer-task/{id}/update', [WriterTaskController::class, 'update'])->name('writer-task.update');
     Route::get('writer-task/{id}/timeline', [WriterTaskController::class, 'timeLine'])->name('writer-task.timeline');
+
+    
 });
 
 // for Designer

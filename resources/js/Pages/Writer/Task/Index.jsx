@@ -108,6 +108,14 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Tasks
                     </h2>
+                    <div className="flex gap-4">
+                        <Link
+                            href={route("writer-task.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
+                    </div>
                 </div>
             }
         >

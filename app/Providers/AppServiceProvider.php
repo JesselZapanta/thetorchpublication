@@ -64,12 +64,30 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share('EditorBadgeCount', function () {
             // for article
             $pendingArticleCount = Article::where('status', 'pending')->count();
-            $revisionArticleCount = Article::where('status', 'revision')->where('edited_by', Auth::user()->id)->count();
+
+            $revisionArticleCount = 0;
+            if (Auth::check()) {
+                $revisionArticleCount = Article::where('status', 'revision')
+                    ->where('edited_by', Auth::user()->id)
+                    ->count();
+            }
+
             $articleBadgeCount = $pendingArticleCount + $revisionArticleCount;
 
             // for task
-            $pendingTaskCount = Task::where('status', 'pending')->where('assigned_to', Auth::user()->id)->count();
-            $revisionTaskCount = Task::where('status', 'content_revision')->where('assigned_to', Auth::user()->id)->count();
+            $pendingTaskCount = 0;
+            $revisionTaskCount = 0;
+
+            if (Auth::check()) {
+                $pendingTaskCount = Task::where('status', 'pending')
+                    ->where('assigned_to', Auth::user()->id)
+                    ->count();
+
+                $revisionTaskCount = Task::where('status', 'content_revision')
+                    ->where('assigned_to', Auth::user()->id)
+                    ->count();
+            }
+
             $totalTaskCount = $pendingTaskCount + $revisionTaskCount;
 
 
@@ -97,11 +115,31 @@ class AppServiceProvider extends ServiceProvider
          //writer notif badge count
         Inertia::share('WriterBadgeCount', function () {
             // for article
-            $rejectedArticleCount = Article::where('status', 'rejected')->where('created_by', Auth::user()->id)->count();
+            $rejectedArticleCount = 0;
+
+            if (Auth::check()) {
+                $rejectedArticleCount = Article::where('status', 'rejected')
+                    ->where('created_by', Auth::user()->id)
+                    ->count();
+            }
+
 
             // // for task
-            $pendingTaskCount = Task::where('status', 'pending')->where('assigned_to', Auth::user()->id)->count();
-            $revisionTaskCount = Task::where('status', 'content_revision')->where('assigned_to', Auth::user()->id)->count();
+            $pendingTaskCount = 0;
+            $revisionTaskCount = 0;
+
+            if (Auth::check()) {
+                $userId = Auth::user()->id;
+
+                $pendingTaskCount = Task::where('status', 'pending')
+                    ->where('assigned_to', $userId)
+                    ->count();
+
+                $revisionTaskCount = Task::where('status', 'content_revision')
+                    ->where('assigned_to', $userId)
+                    ->count();
+            }
+
             $totalTaskCount = $pendingTaskCount + $revisionTaskCount;
 
             // for reported Content
