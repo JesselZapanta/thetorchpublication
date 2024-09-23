@@ -403,7 +403,7 @@ export default function Index({
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "editor" && (
+                                                                "admin" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(

@@ -396,7 +396,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "editor" && (
+                                                                "admin" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
