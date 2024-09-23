@@ -7,7 +7,12 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function DesignerAuthenticatedLayout({ user, header, children }) {
+export default function DesignerAuthenticatedLayout({
+    user,
+    header,
+    children,
+    DesignerBadgeCount,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -40,6 +45,17 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
                                     )}
                                 >
                                     Newsletters
+                                    {DesignerBadgeCount.newsletterRevision >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.newsletterRevision >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.newsletterRevision}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
 
                                 <NavLink
@@ -49,6 +65,17 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
                                     )}
                                 >
                                     Task
+                                    {DesignerBadgeCount.totalTaskCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalTaskCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                             </div>
                         </div>
@@ -140,10 +167,41 @@ export default function DesignerAuthenticatedLayout({ user, header, children }) 
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("designer-newsletter.index")}
-                            active={route().current("designer-newsletter.index")}
+                            active={route().current(
+                                "designer-newsletter.index"
+                            )}
                         >
                             Newsletters
+                            {DesignerBadgeCount.newsletterRevision > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5  rounded-full p-1 bg-red-500 text-gray-100">
+                                        {DesignerBadgeCount.newsletterRevision >
+                                        9
+                                            ? "9+"
+                                            : DesignerBadgeCount.newsletterRevision}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                                    href={route("designer-task.index")}
+                                    active={route().current(
+                                        "designer-task.index"
+                                    )}
+                                >
+                                    Task
+                                    {DesignerBadgeCount.totalTaskCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalTaskCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

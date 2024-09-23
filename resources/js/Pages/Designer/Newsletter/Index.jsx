@@ -14,12 +14,14 @@ import TextAreaInput from "@/Components/TextAreaInput";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { NEWSLETTER_PRIORITY_CLASS_MAP, NEWSLETTER_PRIORITY_TEXT_MAP } from "@/constants";
 
 export default function Index({
     auth,
     newsletters,
     queryParams = null,
     flash,
+    DesignerBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -142,6 +144,7 @@ export default function Index({
 
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -150,6 +153,12 @@ export default function Index({
                     </h2>
 
                     <div className="flex gap-4">
+                        <Link
+                            href={route("designer-newsletter.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
                         <Link
                             href={route("designer-newsletter.create")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
@@ -193,9 +202,20 @@ export default function Index({
                                 </div>
                                 <Link
                                     href={route("designer-newsletter.articles")}
-                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     View Articles
+                                    {DesignerBadgeCount.isNewsletter >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.isNewsletter >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.isNewsletter}
+                                            </span>
+                                        </>
+                                    )}
                                 </Link>
                             </div>
                             <div className="overflow-auto mt-2">
@@ -307,7 +327,23 @@ export default function Index({
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.status}
+                                                            {/* {newsletter.status} */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    NEWSLETTER_PRIORITY_CLASS_MAP[
+                                                                        newsletter
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    NEWSLETTER_PRIORITY_TEXT_MAP[
+                                                                        newsletter
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {

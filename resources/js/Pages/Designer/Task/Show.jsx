@@ -14,7 +14,7 @@ import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Show({ auth, task }) {
+export default function Show({ auth, task, DesignerBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         task_image_path: "",
         _method: "PUT",
@@ -39,6 +39,7 @@ export default function Show({ auth, task }) {
 
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

@@ -14,12 +14,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({
-    auth,
-    tasks,
-    queryParams = null,
-    flash
-}) {
+export default function Index({ auth, tasks, queryParams = null, flash, DesignerBadgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -106,12 +101,21 @@ export default function Index({
 
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Tasks
                     </h2>
+                    <div className="flex gap-4">
+                        <Link
+                            href={route("designer-task.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Calendar
+                        </Link>
+                    </div>
                 </div>
             }
         >

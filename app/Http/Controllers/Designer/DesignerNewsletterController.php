@@ -259,6 +259,23 @@ class DesignerNewsletterController extends Controller
 
         return to_route('designer-newsletter.articles')->with(['success' => 'The article has been successfully laid out in the newsletter.']);
     }
+
+    public function calendar()
+    {
+        $newsletters = Newsletter::where('status', 'distributed')
+                            // ->whereNotNull('task_completed_date')
+                            ->get(['id','description', 'status',]);
+
+                            //todo add the dates
+
+        // $newsletter = Task::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // dd($newsletters);
+        // Render the calendar page with newsletter passed as props
+        return inertia('Designer/Newsletter/MyCalendar', [
+            'newsletters' => $newsletters,
+        ]);
+    }
 }
 
 

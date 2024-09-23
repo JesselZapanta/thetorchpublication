@@ -9,7 +9,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 
 export default function Create({ auth }) {
-    const { data, setData, post, errors, processing } =
+    const { data, setData, post, errors, processing, DesignerBadgeCount } =
         useForm({
             // academic_year_id: "",
             description: "",
@@ -34,6 +34,7 @@ export default function Create({ auth }) {
     };
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

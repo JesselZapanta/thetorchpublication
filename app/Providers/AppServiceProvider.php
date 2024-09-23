@@ -162,5 +162,60 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
+         //Designer notif badge count
+        Inertia::share('DesignerBadgeCount', function () {
+
+            // // for task
+            $pendingTaskCount = 0;
+            $revisionTaskCount = 0;
+
+            if (Auth::check()) {
+                $userId = Auth::user()->id;
+
+                $pendingTaskCount = Task::where('status', 'Approved')
+                    ->where('layout_by', $userId)
+                    ->count();
+
+                $revisionTaskCount = Task::where('status', 'image_revision')
+                    ->where('layout_by', $userId)
+                    ->count();
+            }
+
+            $totalTaskCount = $pendingTaskCount + $revisionTaskCount;
+
+            // for reported Content
+            $totalArticleReportCount = Article::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+            $totalCommentReportCount = Comment::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+            $totalFreedomWallReportCount = FreedomWall::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+
+            $totalReportCount = $totalArticleReportCount + $totalCommentReportCount + $totalFreedomWallReportCount;
+
+
+            $isNewsletter = Article::where('is_newsletter', 'yes')->count();
+
+            $newsletterRevision = 0;
+
+            if (Auth::check()) {
+                $userId = Auth::user()->id;
+
+                $newsletterRevision = Newsletter::where('layout_by', $userId)
+                                                    ->where('status', 'revision')
+                                                    ->count();
+            }
+
+            return [
+                'totalTaskCount' => $totalTaskCount,
+                'totalReportCount' => $totalReportCount,
+                'isNewsletter' => $isNewsletter,
+                'newsletterRevision' => $newsletterRevision,
+            ];
+        });
+
     }
 }

@@ -144,7 +144,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                 </div>
                                 <Link
                                     href={route("newsletter.articles")}
-                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
                                 >
                                     Select Articles
                                 </Link>

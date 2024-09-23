@@ -9,7 +9,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 import TextAreaInput from '@/Components/TextAreaInput';
 
-export default function Edit({ auth, newsletter }) {
+export default function Edit({ auth, newsletter, DesignerBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         description: newsletter.description || "",
         newsletter_thumbnail_image_path: "",
@@ -36,6 +36,7 @@ export default function Edit({ auth, newsletter }) {
 
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

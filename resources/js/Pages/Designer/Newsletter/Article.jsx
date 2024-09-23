@@ -21,7 +21,8 @@ export default function Index({
     categories,
     academicYears,
     queryParams = null,
-    flash
+    flash,
+    DesignerBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -167,6 +168,7 @@ export default function Index({
 
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

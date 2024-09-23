@@ -20,4 +20,5 @@ class Newsletter extends Model
     ];
 
     // todo relattion
+    //todo add the facking date
 }

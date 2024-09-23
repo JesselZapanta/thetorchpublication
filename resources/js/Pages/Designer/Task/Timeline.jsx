@@ -3,10 +3,10 @@ import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
-export default function Timeline({ auth, task }) {
-
+export default function Timeline({ auth, task, DesignerBadgeCount }) {
     return (
         <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
