@@ -134,4 +134,20 @@ class EditorTaskController extends Controller
         ]);
     }
 
+
+    public function calendar()
+    {
+        $tasks = Task::where('status', 'completed')
+                            ->where('assigned_to', Auth::user()->id)
+                            ->whereNotNull('task_completed_date')
+                            ->get(['id','name', 'status', 'task_completed_date']);
+
+        // $tasks = Task::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+
+        // Render the calendar page with tasks passed as props
+        return inertia('Editor/Task/MyCalendar', [
+            'tasks' => $tasks
+        ]);
+    }
+
 }

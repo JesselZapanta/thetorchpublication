@@ -15,6 +15,7 @@ use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
+use App\Http\Controllers\Editor\EditorReviewReport;
 use App\Http\Controllers\Editor\EditorTaskController;
 use App\Http\Controllers\Home\CommentController;
 use App\Http\Controllers\Home\CommentLikeController;
@@ -128,10 +129,10 @@ Route::middleware(['auth','admin', ])->group(function() {
      //review Report comment
     Route::get('/admin-review-report-comment', [AdminReviewReport::class, 'comment'])->name('admin-review-report-comment.index');
     Route::get('/admin-review-report-comment/{comment_id}/{article_id}/show/', [AdminReviewReport::class, 'showComment'])->name('admin-review-report-comment.show');
-    Route::post('/admin-review-report-comment/{id}/hide', [AdminReviewReport::class, 'hideArticle'])->name('admin-review-report-comment.hide');
-    Route::post('/admin-review-report-comment/{id}/restore', [AdminReviewReport::class, 'restoreArticle'])->name('admin-review-report-comment.restore');
-    Route::post('/admin-review-report-comment/{id}/reject', [AdminReviewReport::class, 'rejectArticleReport'])->name('admin-review-report-comment.reject');
-    Route::delete('/admin-review-report-comment/{id}/destroy', [AdminReviewReport::class, 'destroyArticle'])->name('admin-review-report-comment.destroy');
+    Route::post('/admin-review-report-comment/{id}/hide', [AdminReviewReport::class, 'hideComment'])->name('admin-review-report-comment.hide');
+    Route::post('/admin-review-report-comment/{id}/restore', [AdminReviewReport::class, 'restoreComment'])->name('admin-review-report-comment.restore');
+    Route::post('/admin-review-report-comment/{id}/reject', [AdminReviewReport::class, 'rejectCommentReport'])->name('admin-review-report-comment.reject');
+    Route::delete('/admin-review-report-comment/{id}/destroy', [AdminReviewReport::class, 'destroyComment'])->name('admin-review-report-comment.destroy');
      //review Report report-freedom-wall
     Route::get('/admin-review-report-freedom-wall', [AdminReviewReport::class, 'freedomWall'])->name('admin-review-report-freedom-wall.index');
     Route::get('/admin-review-report-freedom-wall/{id}/show', [AdminReviewReport::class, 'showFreedomWall'])->name('admin-review-report-freedom-wall.show');
@@ -155,15 +156,41 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     
+    // editor article
     Route::get('editor-article/calendar', [EditorArticleController::class, 'calendar'])->name('editor-article.calendar');
     Route::get('editor-article/{id}/timeline', [EditorArticleController::class, 'timeLine'])->name('editor-article.timeline');
     Route::resource('editor-article', EditorArticleController::class);
 
+
+    // editor task
     Route::get('editor-task', [EditorTaskController::class, 'index'])->name('editor-task.index');
     Route::get('editor-task-getData', [EditorTaskController::class, 'getData'])->name('editor-task.getData');
+    Route::get('editor-task/calendar', [EditorTaskController::class, 'calendar'])->name('editor-task.calendar');
     Route::get('editor-task/{id}/show', [EditorTaskController::class, 'show'])->name('editor-task.show');
     Route::put('editor-task/{id}/update', [EditorTaskController::class, 'update'])->name('editor-task.update');
     Route::get('editor-task/{id}/timeline', [EditorTaskController::class, 'timeLine'])->name('editor-task.timeline');
+
+     //review Report article
+    Route::get('/editor-review-report-article', [EditorReviewReport::class, 'article'])->name('editor-review-report-article.index');
+    Route::get('/editor-review-report-article/{id}/show', [EditorReviewReport::class, 'showArticle'])->name('editor-review-report-article.show');
+    Route::post('/editor-review-report-article/{id}/hide', [EditorReviewReport::class, 'hideArticle'])->name('editor-review-report-article.hide');
+    Route::post('/editor-review-report-article/{id}/restore', [EditorReviewReport::class, 'restoreArticle'])->name('editor-review-report-article.restore');
+    Route::post('/editor-review-report-article/{id}/reject', [EditorReviewReport::class, 'rejectArticleReport'])->name('editor-review-report-article.reject');
+    Route::delete('/editor-review-report-article/{id}/destroy', [EditorReviewReport::class, 'destroyArticle'])->name('editor-review-report-article.destroy');
+     //review Report comment
+    Route::get('/editor-review-report-comment', [EditorReviewReport::class, 'comment'])->name('editor-review-report-comment.index');
+    Route::get('/editor-review-report-comment/{comment_id}/{article_id}/show/', [EditorReviewReport::class, 'showComment'])->name('editor-review-report-comment.show');
+    Route::post('/editor-review-report-comment/{id}/hide', [EditorReviewReport::class, 'hideComment'])->name('editor-review-report-comment.hide');
+    Route::post('/editor-review-report-comment/{id}/restore', [EditorReviewReport::class, 'restoreComment'])->name('editor-review-report-comment.restore');
+    Route::post('/editor-review-report-comment/{id}/reject', [EditorReviewReport::class, 'rejectCommentReport'])->name('editor-review-report-comment.reject');
+    Route::delete('/editor-review-report-comment/{id}/destroy', [EditorReviewReport::class, 'destroyComment'])->name('editor-review-report-comment.destroy');
+     //review Report report-freedom-wall
+    Route::get('/editor-review-report-freedom-wall', [EditorReviewReport::class, 'freedomWall'])->name('editor-review-report-freedom-wall.index');
+    Route::get('/editor-review-report-freedom-wall/{id}/show', [EditorReviewReport::class, 'showFreedomWall'])->name('editor-review-report-freedom-wall.show');
+    Route::post('/editor-review-report-freedom-wall/{id}/hide', [EditorReviewReport::class, 'hideFreedomWall'])->name('editor-review-report-freedom-wall.hide');
+    Route::post('/editor-review-report-freedom-wall/{id}/restore', [EditorReviewReport::class, 'restoreFreedomWall'])->name('editor-review-report-freedom-wall.restore');
+    Route::post('/editor-review-report-freedom-wall/{id}/reject', [EditorReviewReport::class, 'rejectFreedomWallReport'])->name('editor-review-report-freedom-wall.reject');
+    Route::delete('/editor-review-report-freedom-wall/{id}/destroy', [EditorReviewReport::class, 'destroyFreedomWall'])->name('editor-review-report-freedom-wall.destroy');
 });
 
 

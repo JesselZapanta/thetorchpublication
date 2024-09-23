@@ -1,19 +1,25 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
+
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
+import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, reportedComments, queryParams, flash, AdminBadgeCount }) {
+export default function Index({
+    auth,
+    reportedArticle,
+    queryParams = null,
+    flash,
+    EditorBadgeCount,
+}) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -40,7 +46,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("admin-review-report-comment.index"),
+                route("editor-review-report-article.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -60,7 +66,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("editor-review-report-article.index"),
                     {},
                     {
                         preserveState: true,
@@ -69,7 +75,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("editor-review-report-article.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -82,7 +88,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("admin-review-report-comment.index"), queryParams, {
+        router.get(route("editor-review-report-article.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -99,44 +105,45 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-review-report-comment.index"), queryParams);
+        router.get(route("editor-review-report-article.index"), queryParams);
     };
 
+    //select what reported content
     const handleSelectReport = (e) => {
         const value = e.target.value;
 
         if (value === "article") {
-            router.get(route("admin-review-report-article.index"));
+            router.get(route("editor-review-report-article.index"));
         } else if (value === "comment") {
-            router.get(route("admin-review-report-comment.index"));
+            router.get(route("editor-review-report-comment.index"));
         } else if (value === "freedomWall") {
-            router.get(route("admin-review-report-freedom-wall.index"));
+            router.get(route("editor-review-report-freedom-wall.index"));
         }
     };
 
-    //delete, hide, report
+    //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
-        comment: null,
+        article: null,
         show: false,
     });
 
-    const openActionModal = (comment, actionType) => {
+    const openActionModal = (article, actionType) => {
         setConfirmAction({
             type: actionType, // 'delete', 'hide', or 'report'
-            comment: comment,
+            article: article,
             show: true,
         });
     };
 
     const handleAction = () => {
-        if (confirmAction.comment) {
+        if (confirmAction.article) {
             switch (confirmAction.type) {
                 case "hide":
                     router.post(
                         route(
-                            "admin-review-report-comment.hide",
-                            confirmAction.comment.id
+                            "editor-review-report-article.hide",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -146,8 +153,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "restore":
                     router.post(
                         route(
-                            "admin-review-report-comment.restore",
-                            confirmAction.comment.id
+                            "editor-review-report-article.restore",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -157,8 +164,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "reject":
                     router.post(
                         route(
-                            "admin-review-report-comment.reject",
-                            confirmAction.comment.id
+                            "editor-review-report-article.reject",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -168,8 +175,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "delete":
                     router.delete(
                         route(
-                            "admin-review-report-comment.destroy",
-                            confirmAction.comment.id
+                            "editor-review-report-article.destroy",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -180,38 +187,39 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     break;
             }
         }
-        setConfirmAction({ type: "", comment: null, show: false });
+        setConfirmAction({ type: "", article: null, show: false });
     };
 
-    const openHideModal = (comment) => {
-        openActionModal(comment, "hide");
+    const openHideModal = (article) => {
+        openActionModal(article, "hide");
     };
 
-    const openRestoreModal = (comment) => {
-        openActionModal(comment, "restore");
+    const openRestoreModal = (article) => {
+        openActionModal(article, "restore");
     };
 
-    const openRejectModal = (comment) => {
-        openActionModal(comment, "reject");
+    const openRejectModal = (article) => {
+        openActionModal(article, "reject");
     };
 
-    const openDeleteModal = (comment) => {
-        openActionModal(comment, "delete");
+    const openDeleteModal = (article) => {
+        openActionModal(article, "delete");
     };
 
     return (
-        <AdminAuthenticatedLayout
-            AdminBadgeCount={AdminBadgeCount}
+        <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Reported comments
+                        List of Reported Articles
                     </h2>
                     <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
-                            value="comment"
+                            // value="selectedValue"
+                            defaultValue="article"
                             onChange={handleSelectReport}
                         >
                             <option value="article">Reported Article</option>
@@ -224,9 +232,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 </div>
             }
         >
-            <Head title="Reported Comments" />
+            <Head title="Reported Articles" />
             <ToastContainer position="bottom-right" />
-
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -235,17 +242,17 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                 <div className="w-full">
                                     <TextInput
                                         className="w-full"
-                                        defaultValue={queryParams.body}
-                                        placeholder="Search Freedom Wall"
+                                        defaultValue={queryParams.title}
+                                        placeholder="Search Article Title"
                                         onKeyPress={(e) =>
-                                            onKeyPressed("body", e)
-                                        }
+                                            onKeyPressed("title", e)
+                                        } // Trigger search on Enter key
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "body",
+                                                "title",
                                                 e.target.value
                                             )
-                                        }
+                                        } // Clear or update query param
                                     />
                                 </div>
                                 <div className="w-[40%]">
@@ -265,7 +272,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                     </SelectInput>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-3">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -283,7 +290,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                 ID
                                             </TableHeading>
                                             <TableHeading
-                                                name="body"
+                                                name="title"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -292,7 +299,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Comment
+                                                Title
                                             </TableHeading>
                                             <th className="px-3 py-3">
                                                 Visibility
@@ -315,52 +322,47 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {reportedComments.data.length > 0 ? (
-                                            reportedComments.data.map(
-                                                (comment) => (
+                                        {reportedArticle.data.length > 0 ? (
+                                            reportedArticle.data.map(
+                                                (article) => (
                                                     <tr
                                                         //added
                                                         className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                        key={comment.id}
+                                                        key={article.id}
                                                     >
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.id}
+                                                            {article.id}
                                                         </td>
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <Link
                                                                 // added
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
-                                                                    "admin-review-report-comment.show",
-                                                                    {
-                                                                        comment_id:
-                                                                            comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
-                                                                    }
+                                                                    "editor-review-report-article.show",
+                                                                    article.id
                                                                 )}
                                                             >
                                                                 {truncate(
-                                                                    comment.body,
+                                                                    article.title,
                                                                     50
                                                                 )}
                                                             </Link>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility}
+                                                            {article.visibility}
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
-                                                                comment.report_count
+                                                                article.report_count
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility !==
+                                                            {article.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openHideModal(
-                                                                            comment
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
@@ -368,12 +370,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                     Hide
                                                                 </button>
                                                             )}
-                                                            {comment.visibility !==
+                                                            {article.visibility !==
                                                                 "visible" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRestoreModal(
-                                                                            comment
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
@@ -382,12 +384,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                 </button>
                                                             )}
 
-                                                            {comment.visibility !==
+                                                            {article.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRejectModal(
-                                                                            comment
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
@@ -396,11 +398,11 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "admin" && (
+                                                                "editor" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
-                                                                            comment
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
@@ -425,10 +427,15 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                     </tbody>
                                 </table>
                             </div>
+                            <Pagination
+                                links={reportedArticle.meta.links}
+                                queryParams={queryParams}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
+            {/* Confirm Modal */}
             <Modal
                 show={confirmAction.show}
                 onClose={() =>
@@ -447,12 +454,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to hide this Comment?"
+                            ? "Are you sure you want to hide this article?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this hidden Comment?"
+                            ? "Are you sure you want to restore this hidden aricle?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported Comment?"
-                            : "Are you sure you want to delete this reported Comment?"}
+                            ? "Are you sure you want to reject this reported article?"
+                            : "Are you sure you want to delete this reported article?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -477,6 +484,6 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

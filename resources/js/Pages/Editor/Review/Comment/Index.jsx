@@ -6,14 +6,14 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, reportedComments, queryParams, flash, AdminBadgeCount }) {
+export default function Index({ auth, reportedComments, queryParams, flash, EditorBadgeCount }) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -40,7 +40,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("admin-review-report-comment.index"),
+                route("editor-review-report-comment.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -60,7 +60,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("editor-review-report-comment.index"),
                     {},
                     {
                         preserveState: true,
@@ -69,7 +69,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("editor-review-report-comment.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -82,7 +82,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("admin-review-report-comment.index"), queryParams, {
+        router.get(route("editor-review-report-comment.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -99,18 +99,18 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-review-report-comment.index"), queryParams);
+        router.get(route("editor-review-report-comment.index"), queryParams);
     };
 
     const handleSelectReport = (e) => {
         const value = e.target.value;
 
         if (value === "article") {
-            router.get(route("admin-review-report-article.index"));
+            router.get(route("editor-review-report-article.index"));
         } else if (value === "comment") {
-            router.get(route("admin-review-report-comment.index"));
+            router.get(route("editor-review-report-comment.index"));
         } else if (value === "freedomWall") {
-            router.get(route("admin-review-report-freedom-wall.index"));
+            router.get(route("editor-review-report-freedom-wall.index"));
         }
     };
 
@@ -135,7 +135,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "hide":
                     router.post(
                         route(
-                            "admin-review-report-comment.hide",
+                            "editor-review-report-comment.hide",
                             confirmAction.comment.id
                         ),
                         {
@@ -146,7 +146,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "restore":
                     router.post(
                         route(
-                            "admin-review-report-comment.restore",
+                            "editor-review-report-comment.restore",
                             confirmAction.comment.id
                         ),
                         {
@@ -157,7 +157,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "reject":
                     router.post(
                         route(
-                            "admin-review-report-comment.reject",
+                            "editor-review-report-comment.reject",
                             confirmAction.comment.id
                         ),
                         {
@@ -168,7 +168,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "delete":
                     router.delete(
                         route(
-                            "admin-review-report-comment.destroy",
+                            "editor-review-report-comment.destroy",
                             confirmAction.comment.id
                         ),
                         {
@@ -200,8 +200,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
     };
 
     return (
-        <AdminAuthenticatedLayout
-            AdminBadgeCount={AdminBadgeCount}
+        <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -331,7 +331,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                 // added
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
-                                                                    "admin-review-report-comment.show",
+                                                                    "editor-review-report-comment.show",
                                                                     {
                                                                         comment_id:
                                                                             comment.id,
@@ -396,7 +396,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "admin" && (
+                                                                "editor" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
@@ -477,6 +477,6 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </EditorAuthenticatedLayout>
     );
 }

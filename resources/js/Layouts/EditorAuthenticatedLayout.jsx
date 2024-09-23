@@ -73,6 +73,27 @@ export default function EditorAuthenticatedLayout({
                                         </>
                                     )}
                                 </NavLink>
+
+                                <NavLink
+                                    href={route(
+                                        "editor-review-report-article.index"
+                                    )}
+                                    active={route().current(
+                                        "editor-review-report-article.index"
+                                    )}
+                                >
+                                    Review
+                                    {EditorBadgeCount.totalReportCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {EditorBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : EditorBadgeCount.totalReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </NavLink>
                             </div>
                         </div>
 
