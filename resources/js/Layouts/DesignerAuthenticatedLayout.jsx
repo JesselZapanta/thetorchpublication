@@ -65,14 +65,34 @@ export default function DesignerAuthenticatedLayout({
                                     )}
                                 >
                                     Task
-                                    {DesignerBadgeCount.totalTaskCount >
-                                        0 && (
+                                    {DesignerBadgeCount.totalTaskCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                 {DesignerBadgeCount.totalTaskCount >
                                                 9
                                                     ? "9+"
                                                     : DesignerBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </NavLink>
+                                <NavLink
+                                    href={route(
+                                        "designer-review-report-article.index"
+                                    )}
+                                    active={route().current(
+                                        "designer-review-report-article.index"
+                                    )}
+                                >
+                                    Review
+                                    {DesignerBadgeCount.totalReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalReportCount}
                                             </span>
                                         </>
                                     )}
@@ -184,24 +204,37 @@ export default function DesignerAuthenticatedLayout({
                             )}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                                    href={route("designer-task.index")}
-                                    active={route().current(
-                                        "designer-task.index"
-                                    )}
-                                >
-                                    Task
-                                    {DesignerBadgeCount.totalTaskCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {DesignerBadgeCount.totalTaskCount >
-                                                9
-                                                    ? "9+"
-                                                    : DesignerBadgeCount.totalTaskCount}
-                                            </span>
-                                        </>
-                                    )}
-                                </ResponsiveNavLink>
+                            href={route("designer-task.index")}
+                            active={route().current("designer-task.index")}
+                        >
+                            Task
+                            {DesignerBadgeCount.totalTaskCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {DesignerBadgeCount.totalTaskCount > 9
+                                            ? "9+"
+                                            : DesignerBadgeCount.totalTaskCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("designer-review-report-article.index")}
+                            active={route().current(
+                                "designer-review-report-article.index"
+                            )}
+                        >
+                            Review
+                            {DesignerBadgeCount.totalReportCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {DesignerBadgeCount.totalReportCount > 9
+                                            ? "9+"
+                                            : DesignerBadgeCount.totalReportCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

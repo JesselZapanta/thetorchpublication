@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Designer\DesignerNewsletterController;
+use App\Http\Controllers\Designer\DesignerReviewReport;
 use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
@@ -254,6 +255,28 @@ Route::middleware(['auth', 'designer'])->group(function() {
     Route::put('designer-task/{id}/update', [DesignerTaskController::class, 'update'])->name('designer-task.update');
     Route::get('designer-task/{id}/timeline', [DesignerTaskController::class, 'timeLine'])->name('designer-task.timeline');
 
+
+      //review Report article
+    Route::get('/designer-review-report-article', [DesignerReviewReport::class, 'article'])->name('designer-review-report-article.index');
+    Route::get('/designer-review-report-article/{id}/show', [DesignerReviewReport::class, 'showArticle'])->name('designer-review-report-article.show');
+    Route::post('/designer-review-report-article/{id}/hide', [DesignerReviewReport::class, 'hideArticle'])->name('designer-review-report-article.hide');
+    Route::post('/designer-review-report-article/{id}/restore', [DesignerReviewReport::class, 'restoreArticle'])->name('designer-review-report-article.restore');
+    Route::post('/designer-review-report-article/{id}/reject', [DesignerReviewReport::class, 'rejectArticleReport'])->name('designer-review-report-article.reject');
+    Route::delete('/designer-review-report-article/{id}/destroy', [DesignerReviewReport::class, 'destroyArticle'])->name('designer-review-report-article.destroy');
+     //review Report comment
+    Route::get('/designer-review-report-comment', [DesignerReviewReport::class, 'comment'])->name('designer-review-report-comment.index');
+    Route::get('/designer-review-report-comment/{comment_id}/{article_id}/show/', [DesignerReviewReport::class, 'showComment'])->name('designer-review-report-comment.show');
+    Route::post('/designer-review-report-comment/{id}/hide', [DesignerReviewReport::class, 'hideComment'])->name('designer-review-report-comment.hide');
+    Route::post('/designer-review-report-comment/{id}/restore', [DesignerReviewReport::class, 'restoreComment'])->name('designer-review-report-comment.restore');
+    Route::post('/designer-review-report-comment/{id}/reject', [DesignerReviewReport::class, 'rejectCommentReport'])->name('designer-review-report-comment.reject');
+    Route::delete('/designer-review-report-comment/{id}/destroy', [DesignerReviewReport::class, 'destroyComment'])->name('designer-review-report-comment.destroy');
+     //review Report report-freedom-wall
+    Route::get('/designer-review-report-freedom-wall', [DesignerReviewReport::class, 'freedomWall'])->name('designer-review-report-freedom-wall.index');
+    Route::get('/designer-review-report-freedom-wall/{id}/show', [DesignerReviewReport::class, 'showFreedomWall'])->name('designer-review-report-freedom-wall.show');
+    Route::post('/designer-review-report-freedom-wall/{id}/hide', [DesignerReviewReport::class, 'hideFreedomWall'])->name('designer-review-report-freedom-wall.hide');
+    Route::post('/designer-review-report-freedom-wall/{id}/restore', [DesignerReviewReport::class, 'restoreFreedomWall'])->name('designer-review-report-freedom-wall.restore');
+    Route::post('/designer-review-report-freedom-wall/{id}/reject', [DesignerReviewReport::class, 'rejectFreedomWallReport'])->name('designer-review-report-freedom-wall.reject');
+    Route::delete('/designer-review-report-freedom-wall/{id}/destroy', [DesignerReviewReport::class, 'destroyFreedomWall'])->name('designer-review-report-freedom-wall.destroy');
 });
 
 
