@@ -2,9 +2,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, article }) {
+export default function Index({ auth, article, StudentBadgeCount }) {
     return (
         <StudentAuthenticatedLayout
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">

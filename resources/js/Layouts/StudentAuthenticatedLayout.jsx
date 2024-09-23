@@ -7,7 +7,12 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function StudentAuthenticatedLayout({ user, header, children }) {
+export default function StudentAuthenticatedLayout({
+    user,
+    header,
+    children,
+    StudentBadgeCount,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -40,6 +45,16 @@ export default function StudentAuthenticatedLayout({ user, header, children }) {
                                     )}
                                 >
                                     Articles
+                                    {StudentBadgeCount.rejectedArticleCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {StudentBadgeCount.rejectedArticleCount >
+                                                9
+                                                    ? "9+"
+                                                    : StudentBadgeCount.rejectedArticleCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                             </div>
                         </div>

@@ -16,6 +16,7 @@ export default function Edit({
     EditorBadgeCount,
     WriterBadgeCount,
     DesignerBadgeCount,
+    StudentBadgeCount,
 }) {
     const Layout =
         auth.user.role === "admin"
@@ -34,6 +35,7 @@ export default function Edit({
             EditorBadgeCount={EditorBadgeCount}
             WriterBadgeCount={WriterBadgeCount}
             DesignerBadgeCount={DesignerBadgeCount}
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">

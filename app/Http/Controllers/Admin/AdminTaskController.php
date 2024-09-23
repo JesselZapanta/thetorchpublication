@@ -260,6 +260,10 @@ class AdminTaskController extends Controller
             return to_route('admin-task.index')->with(['error' => 'Task Not Found.']);
         }
 
+        if($task->status === 'completed'){
+            return to_route('admin-task.index')->with(['error' => 'Task is already completed.']);
+        }
+
         // Get the validated data
         $data = $request->validated();
 
@@ -370,9 +374,6 @@ class AdminTaskController extends Controller
         $task->update($data);
 
         // dd($task);
-        
-
-
         
 
         if($data['status'] === 'completed'){

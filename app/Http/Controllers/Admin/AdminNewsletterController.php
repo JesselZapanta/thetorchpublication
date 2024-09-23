@@ -213,7 +213,7 @@ class AdminNewsletterController extends Controller
         }
 
         // Check if the newsletter status is approved
-        if ($newsletter->status !== 'approved') {
+        if ($newsletter->status !== 'approved' && $newsletter->status !== 'distributed') {
             return to_route('newsletter.index')->with(['error' => 'Newsletter has not been approved for distribution.']);
         }
 

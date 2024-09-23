@@ -9,7 +9,7 @@ import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Edit({ auth, article, categories }) {
+export default function Edit({ auth, article, categories, StudentBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
 
@@ -41,6 +41,7 @@ export default function Edit({ auth, article, categories }) {
 
     return (
         <StudentAuthenticatedLayout
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
