@@ -29,6 +29,7 @@ use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
+use App\Http\Controllers\Writer\WriterReviewReport;
 use App\Http\Controllers\Writer\WriterTaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -210,7 +211,27 @@ Route::middleware(['auth', 'writer'])->group(function() {
     Route::put('writer-task/{id}/update', [WriterTaskController::class, 'update'])->name('writer-task.update');
     Route::get('writer-task/{id}/timeline', [WriterTaskController::class, 'timeLine'])->name('writer-task.timeline');
 
-    
+     //review Report article
+    Route::get('/writer-review-report-article', [WriterReviewReport::class, 'article'])->name('writer-review-report-article.index');
+    Route::get('/writer-review-report-article/{id}/show', [WriterReviewReport::class, 'showArticle'])->name('writer-review-report-article.show');
+    Route::post('/writer-review-report-article/{id}/hide', [WriterReviewReport::class, 'hideArticle'])->name('writer-review-report-article.hide');
+    Route::post('/writer-review-report-article/{id}/restore', [WriterReviewReport::class, 'restoreArticle'])->name('writer-review-report-article.restore');
+    Route::post('/writer-review-report-article/{id}/reject', [WriterReviewReport::class, 'rejectArticleReport'])->name('writer-review-report-article.reject');
+    Route::delete('/writer-review-report-article/{id}/destroy', [WriterReviewReport::class, 'destroyArticle'])->name('writer-review-report-article.destroy');
+     //review Report comment
+    Route::get('/writer-review-report-comment', [WriterReviewReport::class, 'comment'])->name('writer-review-report-comment.index');
+    Route::get('/writer-review-report-comment/{comment_id}/{article_id}/show/', [WriterReviewReport::class, 'showComment'])->name('writer-review-report-comment.show');
+    Route::post('/writer-review-report-comment/{id}/hide', [WriterReviewReport::class, 'hideComment'])->name('writer-review-report-comment.hide');
+    Route::post('/writer-review-report-comment/{id}/restore', [WriterReviewReport::class, 'restoreComment'])->name('writer-review-report-comment.restore');
+    Route::post('/writer-review-report-comment/{id}/reject', [WriterReviewReport::class, 'rejectCommentReport'])->name('writer-review-report-comment.reject');
+    Route::delete('/writer-review-report-comment/{id}/destroy', [WriterReviewReport::class, 'destroyComment'])->name('writer-review-report-comment.destroy');
+     //review Report report-freedom-wall
+    Route::get('/writer-review-report-freedom-wall', [WriterReviewReport::class, 'freedomWall'])->name('writer-review-report-freedom-wall.index');
+    Route::get('/writer-review-report-freedom-wall/{id}/show', [WriterReviewReport::class, 'showFreedomWall'])->name('writer-review-report-freedom-wall.show');
+    Route::post('/writer-review-report-freedom-wall/{id}/hide', [WriterReviewReport::class, 'hideFreedomWall'])->name('writer-review-report-freedom-wall.hide');
+    Route::post('/writer-review-report-freedom-wall/{id}/restore', [WriterReviewReport::class, 'restoreFreedomWall'])->name('writer-review-report-freedom-wall.restore');
+    Route::post('/writer-review-report-freedom-wall/{id}/reject', [WriterReviewReport::class, 'rejectFreedomWallReport'])->name('writer-review-report-freedom-wall.reject');
+    Route::delete('/writer-review-report-freedom-wall/{id}/destroy', [WriterReviewReport::class, 'destroyFreedomWall'])->name('writer-review-report-freedom-wall.destroy');
 });
 
 // for Designer

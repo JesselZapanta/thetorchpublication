@@ -74,6 +74,27 @@ export default function WriterAuthenticatedLayout({
                                         </>
                                     )}
                                 </NavLink>
+
+                                <NavLink
+                                    href={route(
+                                        "writer-review-report-article.index"
+                                    )}
+                                    active={route().current(
+                                        "writer-review-report-article.index"
+                                    )}
+                                >
+                                    Review
+                                    {WriterBadgeCount.totalReportCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {WriterBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : WriterBadgeCount.totalReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </NavLink>
                             </div>
                         </div>
 
@@ -189,6 +210,23 @@ export default function WriterAuthenticatedLayout({
                                         {WriterBadgeCount.totalTaskCount > 9
                                             ? "9+"
                                             : WriterBadgeCount.totalTaskCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("writer-review-report-article.index")}
+                            active={route().current(
+                                "writer-review-report-article.index"
+                            )}
+                        >
+                            Review
+                            {WriterBadgeCount.totalReportCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {WriterBadgeCount.totalReportCount > 9
+                                            ? "9+"
+                                            : WriterBadgeCount.totalReportCount}
                                     </span>
                                 </>
                             )}
