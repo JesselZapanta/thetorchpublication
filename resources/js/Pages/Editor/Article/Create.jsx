@@ -10,7 +10,7 @@ import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Create({ auth, categories }) {
+export default function Create({ auth, categories, EditorBadgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         category_id: "",
         title: "",
@@ -37,6 +37,7 @@ export default function Create({ auth, categories }) {
 
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">

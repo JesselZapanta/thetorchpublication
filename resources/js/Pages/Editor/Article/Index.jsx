@@ -21,6 +21,7 @@ export default function Index({
     academicYears,
     queryParams = null,
     flash,
+    EditorBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -92,7 +93,6 @@ export default function Index({
         router.get(route("editor-article.index"), queryParams);
     };
 
-
     // Open modal and set article to delete
 
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -122,6 +122,7 @@ export default function Index({
 
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">

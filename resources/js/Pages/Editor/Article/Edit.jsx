@@ -9,8 +9,7 @@ import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Edit({ auth, article, categories }) {
-
+export default function Edit({ auth, article, categories, EditorBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
         title: article.title || "",
@@ -23,7 +22,6 @@ export default function Edit({ auth, article, categories }) {
         is_anonymous: article.is_anonymous || "",
         _method: "PUT",
     });
-
 
     const onSubmit = () => {
         post(route("editor-article.update", article.id));
@@ -42,6 +40,7 @@ export default function Edit({ auth, article, categories }) {
 
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -57,7 +56,7 @@ export default function Edit({ auth, article, categories }) {
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.status === "pending" ||
-                        article.rejection_message && (
+                        (article.rejection_message && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
@@ -82,7 +81,7 @@ export default function Edit({ auth, article, categories }) {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        ))}
 
                     {article.status == "revision" && (
                         <div

@@ -7,7 +7,12 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function EditorAuthenticatedLayout({ user, header, children }) {
+export default function EditorAuthenticatedLayout({
+    user,
+    header,
+    children,
+    EditorBadgeCount,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -38,6 +43,16 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                                     )}
                                 >
                                     Articles
+                                    {EditorBadgeCount.articleBadgeCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {EditorBadgeCount.articleBadgeCount >
+                                                9
+                                                    ? "9+"
+                                                    : EditorBadgeCount.articleBadgeCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
 
                                 <NavLink
@@ -47,6 +62,16 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                                     )}
                                 >
                                     Task
+                                    {EditorBadgeCount.totalTaskCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {EditorBadgeCount.totalTaskCount >
+                                                9
+                                                    ? "9+"
+                                                    : EditorBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                             </div>
                         </div>
@@ -142,8 +167,31 @@ export default function EditorAuthenticatedLayout({ user, header, children }) {
                             active={route().current("editor-article.index")}
                         >
                             Articles
+                            {EditorBadgeCount.articleBadgeCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {EditorBadgeCount.articleBadgeCount > 9
+                                            ? "9+"
+                                            : EditorBadgeCount.articleBadgeCount}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
-
+                        <ResponsiveNavLink
+                            href={route("editor-task.index")}
+                            active={route().current("editor-task.index")}
+                        >
+                            Task
+                            {EditorBadgeCount.totalTaskCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {EditorBadgeCount.totalTaskCount > 9
+                                            ? "9+"
+                                            : EditorBadgeCount.totalTaskCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

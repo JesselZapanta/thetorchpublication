@@ -3,10 +3,10 @@ import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
-export default function Timeline({ auth, article }) {
-
+export default function Timeline({ auth, article, EditorBadgeCount }) {
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

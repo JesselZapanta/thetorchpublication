@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        //admin notif badge count
         Inertia::share('AdminBadgeCount', function () {
             $userCount = User::count();    // Get the user count
             $editedCount = Article::where('status', 'edited')->count();
@@ -54,6 +54,39 @@ class AppServiceProvider extends ServiceProvider
                 'user' => $userCount,
                 'editedCount' => $editedCount,
                 'newsletterPendingCount' => $newsletterPendingCount,
+                'totalTaskCount' => $totalTaskCount,
+                'totalReportCount' => $totalReportCount,
+            ];
+        });
+
+         //editor notif badge count
+        Inertia::share('EditorBadgeCount', function () {
+            // for article
+            $pendingArticleCount = Article::where('status', 'pending')->count();
+            $revisionArticleCount = Article::where('status', 'revision')->count();
+            $articleBadgeCount = $pendingArticleCount + $revisionArticleCount;
+
+            // for task
+            $pendingTaskCount = Task::where('status', 'pending')->count();
+            $revisionTaskCount = Task::where('status', 'content_revision')->count();
+            $totalTaskCount = $pendingTaskCount + $revisionTaskCount;
+
+
+            // for reported Content
+            $totalArticleReportCount = Article::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+            $totalCommentReportCount = Comment::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+            $totalFreedomWallReportCount = FreedomWall::where('visibility', 'visible')
+                                                ->where('report_count', '>', 0)
+                                                ->count();
+
+            $totalReportCount = $totalArticleReportCount + $totalCommentReportCount + $totalFreedomWallReportCount;
+
+            return [
+                'articleBadgeCount' => $articleBadgeCount,
                 'totalTaskCount' => $totalTaskCount,
                 'totalReportCount' => $totalReportCount,
             ];

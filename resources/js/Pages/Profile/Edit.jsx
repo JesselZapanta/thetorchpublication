@@ -8,8 +8,13 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
-
+export default function Edit({
+    auth,
+    mustVerifyEmail,
+    status,
+    AdminBadgeCount,
+    EditorBadgeCount,
+}) {
     const Layout =
         auth.user.role === "admin"
             ? AdminAuthenticatedLayout
@@ -21,9 +26,10 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             ? DesignerAuthenticatedLayout
             : StudentAuthenticatedLayout;
 
-
     return (
         <Layout
+            AdminBadgeCount={AdminBadgeCount}
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">

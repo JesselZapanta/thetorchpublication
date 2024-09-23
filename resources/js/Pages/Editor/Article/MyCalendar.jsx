@@ -5,7 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function MyCalendar({ auth, articles }) {
+export default function MyCalendar({ auth, articles, EditorBadgeCount }) {
     // Map article to FullCalendar events
     const events = articles.map((article) => ({
         // title: "[" + task.status + "] " + task.name,
@@ -22,6 +22,7 @@ export default function MyCalendar({ auth, articles }) {
 
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

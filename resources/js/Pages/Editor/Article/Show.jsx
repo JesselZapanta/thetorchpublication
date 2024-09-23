@@ -2,9 +2,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, article }) {
+export default function Index({ auth, article, EditorBadgeCount }) {
     return (
         <EditorAuthenticatedLayout
+            EditorBadgeCount={EditorBadgeCount}
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">
@@ -174,7 +175,7 @@ export default function Index({ auth, article }) {
                                     className="px-4 py-2 bg-lime-600 text-white transition-all duration-300 rounded hover:bg-lime-700"
                                 >
                                     View Timeline
-                                </Link> 
+                                </Link>
                                 <SecondaryButton
                                     href={route("editor-article.index")}
                                 >
