@@ -9,7 +9,7 @@ import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Edit({ auth, article, categories }) {
+export default function Edit({ auth, article, categories, WriterBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         category_id: article.category_id || "",
 
@@ -26,7 +26,7 @@ export default function Edit({ auth, article, categories }) {
 
     const onSubmit = () => {
         post(route("writer-article.update", article.id), {
-            preserveScroll: true
+            preserveScroll: true,
         });
 
         // console.log(data);
@@ -45,6 +45,7 @@ export default function Edit({ auth, article, categories }) {
 
     return (
         <WriterAuthenticatedLayout
+            WriterBadgeCount={WriterBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -59,8 +60,8 @@ export default function Edit({ auth, article, categories }) {
             {/* <pre className="text-gray-950">{JSON.stringify(article, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {article.rejection_message  ||
-                        article.status === "rejected" && (
+                    {article.rejection_message ||
+                        (article.status === "rejected" && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
@@ -85,7 +86,7 @@ export default function Edit({ auth, article, categories }) {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        ))}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {article.article_image_path && (
                             <img

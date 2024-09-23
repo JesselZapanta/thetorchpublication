@@ -3,10 +3,10 @@ import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 
-export default function Timeline({ auth, article }) {
-
+export default function Timeline({ auth, article, WriterBadgeCount }) {
     return (
         <WriterAuthenticatedLayout
+            WriterBadgeCount={WriterBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">

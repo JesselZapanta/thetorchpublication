@@ -2,9 +2,10 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, article }) {
+export default function Index({ auth, article, WriterBadgeCount }) {
     return (
         <WriterAuthenticatedLayout
+            WriterBadgeCount={WriterBadgeCount}
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">

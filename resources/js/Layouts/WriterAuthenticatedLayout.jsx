@@ -7,7 +7,12 @@ import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
 
-export default function WriterAuthenticatedLayout({ user, header, children }) {
+export default function WriterAuthenticatedLayout({
+    user,
+    header,
+    children,
+    WriterBadgeCount,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -26,9 +31,7 @@ export default function WriterAuthenticatedLayout({ user, header, children }) {
                             <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
                                     href={route("writer.dashboard")}
-                                    active={route().current(
-                                        "writer.dashboard"
-                                    )}
+                                    active={route().current("writer.dashboard")}
                                 >
                                     Dashboard
                                 </NavLink>
@@ -40,8 +43,19 @@ export default function WriterAuthenticatedLayout({ user, header, children }) {
                                     )}
                                 >
                                     Articles
+                                    {WriterBadgeCount.rejectedArticleCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {WriterBadgeCount.rejectedArticleCount >
+                                                9
+                                                    ? "9+"
+                                                    : WriterBadgeCount.rejectedArticleCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
-                                
+
                                 <NavLink
                                     href={route("writer-task.index")}
                                     active={route().current(
@@ -49,6 +63,16 @@ export default function WriterAuthenticatedLayout({ user, header, children }) {
                                     )}
                                 >
                                     Task
+                                    {WriterBadgeCount.totalTaskCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {WriterBadgeCount.totalTaskCount >
+                                                9
+                                                    ? "9+"
+                                                    : WriterBadgeCount.totalTaskCount}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                             </div>
                         </div>
@@ -143,6 +167,31 @@ export default function WriterAuthenticatedLayout({ user, header, children }) {
                             active={route().current("writer-article.index")}
                         >
                             Articles
+                            {WriterBadgeCount.rejectedArticleCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {WriterBadgeCount.rejectedArticleCount >
+                                        9
+                                            ? "9+"
+                                            : WriterBadgeCount.rejectedArticleCount}
+                                    </span>
+                                </>
+                            )}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("writer-task.index")}
+                            active={route().current("writer-task.index")}
+                        >
+                            Task
+                            {WriterBadgeCount.totalTaskCount > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {WriterBadgeCount.totalTaskCount > 9
+                                            ? "9+"
+                                            : WriterBadgeCount.totalTaskCount}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
                     </div>
 

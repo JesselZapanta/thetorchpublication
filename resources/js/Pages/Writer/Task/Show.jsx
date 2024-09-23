@@ -14,7 +14,7 @@ import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Show({ auth, task }) {
+export default function Show({ auth, task, WriterBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         name: task.name || "",
         description: task.description || "",
@@ -47,6 +47,7 @@ export default function Show({ auth, task }) {
 
     return (
         <WriterAuthenticatedLayout
+            WriterBadgeCount={WriterBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
