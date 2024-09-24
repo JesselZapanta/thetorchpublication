@@ -61,7 +61,7 @@ Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
-// Route::post('/articles/{article}/increment-views', [HomeController::class, 'incrementViews']);
+
 Route::post('/articles/{article}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 
 Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');

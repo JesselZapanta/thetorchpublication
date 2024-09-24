@@ -19,17 +19,17 @@ class ArticleViewsController extends Controller
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
         }
 
-        // Ensure no duplicate views are created
+        // code para 1 ra ka view per user per article
         // $existingView = ArticleView::where('article_id', $articleId)
         //     ->where('user_id', $user->id)
-        //     ->where('academic_year_id', $academicYear->id)
+        //     ->where('academic_year_id', $activeAy->id)
         //     ->first();
 
         // if (!$existingView) {
         //     ArticleView::create([
         //         'article_id' => $articleId,
         //         'user_id' => $user->id,
-        //         'academic_year_id' => $academicYear->id,
+        //         'academic_year_id' => $activeAy->id,
         //     ]);
         // }
 

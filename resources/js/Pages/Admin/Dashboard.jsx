@@ -5,28 +5,49 @@ import { useState } from 'react';
 
 export default function Dashboard({
     auth,
-    articles,
-    comments,
-    views,
-    freedomWall,
-    tasks,
-    reportedContent,
-    timePeriod,
+    reportData,
+    academicYears,
     AdminBadgeCount,
-}) {
-    const [selectedPeriod, setSelectedPeriod] = useState(timePeriod);
 
-    const handleSelectReport = (e) => {
+    dateFrom,
+}) {
+    const [selectedPeriod, setSelectedPeriod] = useState("daily");
+    const [selectedAy, setSelectedAy] = useState(null);
+
+    const handleSelectPeriod = (e) => {
         const value = e.target.value;
         setSelectedPeriod(value);
 
-        // Trigger Inertia request with the selected period as a query parameter
+        // Reset academic year if the selected period is not "ay"
+        if (value !== "ay") {
+            setSelectedAy(null);
+            // Trigger Inertia request without academic year
+            router.get(
+                route("admin.dashboard"),
+                { period: value },
+                {
+                    preserveState: true,
+                    preserveScroll: true, // Move this inside the same object
+                }
+            );
+        }
+    };
+
+    const handleSelectAcademicYear = (e) => {
+        const ayValue = e.target.value;
+        setSelectedAy(ayValue);
+
+        // Trigger Inertia request with both period and academic year
         router.get(
             route("admin.dashboard"),
-            { period: value },
-            { preserveState: true }
+            { period: selectedPeriod, academic_year: ayValue }, // pass both
+            {
+                preserveState: true,
+                preserveScroll: true, // Move this inside the same object
+            }
         );
     };
+
 
     return (
         <AdminAuthenticatedLayout
@@ -34,7 +55,7 @@ export default function Dashboard({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold text-md text-gray-800 dark:text-gray-200 leading-tight">
                         Admin Dashboard
                     </h2>
                     <div className="flex gap-4">
@@ -50,130 +71,181 @@ export default function Dashboard({
         >
             <Head title="Dashboard" />
 
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(reportData, null, 2)}
+            </pre> */}
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
+                            {/* <h1>{dateFrom}</h1> */}
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                                 <SelectInput
                                     className="w-full"
                                     value={selectedPeriod}
-                                    onChange={handleSelectReport}
+                                    onChange={handleSelectPeriod} // Only handle period selection here
                                 >
                                     <option value="daily">Daily</option>
                                     <option value="weekly">Weekly</option>
                                     <option value="monthly">Monthly</option>
                                     <option value="ay">AY</option>
                                 </SelectInput>
+
+                                {selectedPeriod === "ay" && (
+                                    <SelectInput
+                                        className="w-full"
+                                        value={selectedAy}
+                                        onChange={handleSelectAcademicYear} // Handle academic year selection separately
+                                    >
+                                        <option value="">
+                                            Select Academic Year
+                                        </option>
+                                        {academicYears.data.map((ay) => (
+                                            <option key={ay.id} value={ay.id}>
+                                                {ay.description}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
+                                )}
                             </div>
 
-                            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-2 mt-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-2xl">
+                                        <h3 className="text-amber-600 font-semibold text-md">
                                             Published Article
                                         </h3>
-                                        <p className="text-xl mt-4">
+                                        <p className="text-md mt-4">
                                             <span className="mr-2">
-                                                {articles}
+                                                {reportData.articles}
                                             </span>
                                         </p>
                                     </div>
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-lime-600 font-semibold text-2xl">
-                                            Comments
-                                        </h3>
-                                        <p className="text-xl mt-4">
-                                            <span className="mr-2">
-                                                {comments}
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-blue-100">
-                                        <h3 className="text-sky-600 font-semibold text-2xl">
-                                            Freedom Wall
-                                        </h3>
-                                        <p className="text-xl mt-4">
-                                            <span className="mr-2">
-                                                {freedomWall}
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-blue-100">
-                                        <h3 className="text-emerald-500 font-semibold text-2xl">
-                                            Completed Task
-                                        </h3>
-                                        <p className="text-xl mt-4">
-                                            <span className="mr-2">
-                                                {tasks}
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg my-4">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <h3 className="text-indigo-500 font-semibold text-xl">
-                                Engagement Report
-                            </h3>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-2 mt-2">
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-sky-600 font-semibold text-2xl">
+                                        <h3 className="text-amber-600 font-semibold text-md">
                                             Total Views
                                         </h3>
-                                        <p className="text-xl mt-4">
+                                        <p className="text-md mt-4">
                                             <span className="mr-2">
-                                                {views}
+                                                {reportData.views}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-amber-600 font-semibold text-md">
+                                            Total Ratings
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.ratings}
                                             </span>
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-blue-100">
-                                        <h3 className="text-rose-500 font-semibold text-2xl">
-                                            Reported Count
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-emerald-600 font-semibold text-md">
+                                            Total Comments
                                         </h3>
-                                        <p className="text-xl mt-4">
+                                        <p className="text-md mt-4">
                                             <span className="mr-2">
-                                                {reportedContent}
+                                                {reportData.comments}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-emerald-600 font-semibold text-md">
+                                            Total Comments Like
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.commentsLike}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-emerald-600 font-semibold text-md">
+                                            Total Comments Dislike
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.commentsDislike}
                                             </span>
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-blue-100">
-                                        <h3 className="text-blue-600 font-semibold text-2xl">
-                                            Commente
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-violet-600 font-semibold text-md">
+                                            Total FreedomWall
                                         </h3>
-                                        <p className="text-xl mt-4">
-                                            <span className="mr-2">{freedomWall}</span>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.freedomWall}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-violet-600 font-semibold text-md">
+                                            Total Freedom Wall Like
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.freedomWallLike}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-violet-600 font-semibold text-md">
+                                            Total Freedom Wall Dislike
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.freedomWallDislike}
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div className="p-6 text-gray-900 dark:text-blue-100">
-                                        <h3 className="text-fuchsia-500 font-semibold text-2xl">
-                                            Newsletter
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-blue-600 font-semibold text-md">
+                                            Total Task Completed
                                         </h3>
-                                        <p className="text-xl mt-4">
-                                            <span className="mr-2">{tasks}</span>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.tasks}
+                                            </span>
                                         </p>
                                     </div>
-                                </div> */}
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-blue-600 font-semibold text-md">
+                                            Total Distributed Newsletters
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.totalNewsletters}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
