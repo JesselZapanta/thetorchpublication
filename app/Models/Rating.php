@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rating extends Model
 {
     use HasFactory;
-    protected $fillable = ['article_id', 'user_id', 'rating'];
+    protected $fillable = ['article_id', 'user_id', 'rating', 'academic_year_id'];
 
     // Define relationship with User
     public function user()
@@ -20,5 +20,9 @@ class Rating extends Model
     public function article()
     {
         return $this->belongsTo(Article::class);
+    }
+    public function academicYear()
+    {
+        return $this->belongsTo(User::class, 'academic_year_id');
     }
 }

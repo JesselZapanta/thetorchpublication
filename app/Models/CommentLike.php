@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CommentLike extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'comment_id', 'is_like'];
+    protected $fillable = ['user_id', 'comment_id', 'is_like', 'academic_year_id'];
 
     public function user()
     {
@@ -18,5 +18,10 @@ class CommentLike extends Model
     public function comment()
     {
         return $this->belongsTo(Comment::class);
+    }
+    
+    public function academicYear()
+    {
+        return $this->belongsTo(User::class, 'academic_year_id');
     }
 }

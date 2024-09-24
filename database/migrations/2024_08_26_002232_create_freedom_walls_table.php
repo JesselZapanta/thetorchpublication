@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('freedom_walls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//new ambot magamit bani HAHHA
             $table->text('body');
             $table->tinyText('emotion');
             $table->tinyText('report_count')->default(0);

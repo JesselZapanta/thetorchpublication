@@ -9,11 +9,16 @@ class FreedomWall extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'body', 'emotion', 'report_count', 'visibility'];
+    protected $fillable = ['user_id', 'academic_year_id', 'body', 'emotion', 'report_count', 'visibility'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function academicYear()
+    {
+        return $this->belongsTo(User::class, 'academic_year_id');
     }
 
      //for comments like and dislike

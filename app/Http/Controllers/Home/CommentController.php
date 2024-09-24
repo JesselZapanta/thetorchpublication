@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
@@ -58,6 +59,15 @@ class CommentController extends Controller
         }
 
         $data['user_id'] = auth()->id();
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+        $data['academic_year_id'] = $activeAy->id;
+
         
         Comment::create($data);
 

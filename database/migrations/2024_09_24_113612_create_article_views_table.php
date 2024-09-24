@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freedom_wall_likes', function (Blueprint $table) {
+        Schema::create('article_views', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('freedom_wall_id')->constrained('freedom_walls')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//new ambot magamit bani HAHHA
-            $table->boolean('is_like')->default(true); // true for like, false for dislike
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freedom_wall_likes');
+        Schema::dropIfExists('article_views');
     }
 };

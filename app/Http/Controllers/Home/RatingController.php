@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicYear;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,14 @@ class RatingController extends Controller
             'article_id' => 'required|exists:articles,id',
             'rating' => 'required|integer|min:1|max:5',
         ]);
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+        // $data['academic_year_id'] = $activeAy->id;
 
         // Check if the user has already rated the article
         $rating = Rating::where('user_id', auth()->id())
@@ -29,6 +38,7 @@ class RatingController extends Controller
             // Create a new rating
             Rating::create([
                 'article_id' => $request->article_id,
+                'academic_year_id' => $activeAy->id,
                 'user_id' => auth()->id(),
                 'rating' => $request->rating,
             ]);

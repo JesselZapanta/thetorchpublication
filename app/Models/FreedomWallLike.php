@@ -9,11 +9,15 @@ class FreedomWallLike extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'freedom_wall_id', 'is_like'];
+    protected $fillable = ['user_id', 'academic_year_id', 'freedom_wall_id', 'is_like'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function academicYear()
+    {
+        return $this->belongsTo(User::class, 'academic_year_id');
     }
 
     public function freedomWall()

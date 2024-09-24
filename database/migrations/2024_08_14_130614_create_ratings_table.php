@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//new ambot magamit bani HAHHA
             $table->integer('rating')->unsigned(); // Rating value between 1 and 5
             $table->timestamps();
         });

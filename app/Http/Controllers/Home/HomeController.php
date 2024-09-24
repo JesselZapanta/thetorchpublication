@@ -37,13 +37,15 @@ class HomeController extends Controller
         }
 
         // Get the top  articles with the most views
-        $topArticles = Article::orderBy('views', 'DESC')
+        $topArticles = Article::withCount('views') // Count the related views
                                 ->where('status', 'published')
-                                // ->where('draft', 'no')
+                                // ->where('draft', 'no') // Uncomment if needed
                                 ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
+                                ->orderBy('views_count', 'DESC') // Order by the count of views
                                 ->limit(2)
                                 ->get();
+
         //todo might include the ratings and the comments
 
         $latestArticles = Article::orderBy('created_at', 'DESC')
@@ -99,10 +101,12 @@ class HomeController extends Controller
                 $query->orderBy('title', 'asc');
                 break;
             case 'views_desc':
-                $query->orderBy('views', 'desc');
+                $query->withCount('views') 
+                        ->orderBy('views_count', 'desc'); 
                 break;
             case 'views_asc':
-                $query->orderBy('views', 'asc');
+                $query->withCount('views') 
+                        ->orderBy('views_count', 'asc'); 
                 break;
             case 'ratings_desc':
                 $query->withCount(['ratings as avg_ratings'])
@@ -160,13 +164,13 @@ class HomeController extends Controller
         ]);
     }
 
-    public function incrementViews($articleId)
-    {
-        $article = Article::findOrFail($articleId);
-        $article->increment('views');
+    // public function incrementViews($articleId)
+    // {
+    //     $article = Article::findOrFail($articleId);
+    //     $article->increment('views');
 
-        return redirect()->route('article.read', $articleId);
-    }
+    //     return redirect()->route('article.read', $articleId);
+    // }
 }
 
 

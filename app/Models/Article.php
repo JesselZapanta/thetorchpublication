@@ -84,6 +84,12 @@ class Article extends Model
     }
 
      //for ratings
+    public function views()
+    {
+        return $this->hasMany(ArticleView::class);
+    }
+
+     //for ratings
     public function ratings()
     {
         return $this->hasMany(Rating::class);

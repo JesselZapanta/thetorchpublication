@@ -19,7 +19,7 @@ class AdminAcademicYearController extends Controller
         $query = AcademicYear::query();
 
         $sortField = request('sort_field', 'created_at');
-        $sortDirection = request('sort_direction', 'desc');
+        $sortDirection = request('sort_direction', 'asc');
         
         if(request('description')){
             $query->where('description', 'like', '%'. request('description') . '%');

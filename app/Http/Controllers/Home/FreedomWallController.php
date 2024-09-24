@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\FreedomWallResource;
+use App\Models\AcademicYear;
 use App\Models\Category;
 use App\Models\FreedomWall;
 use App\Http\Requests\StoreFreedomWallRequest;
@@ -101,7 +102,7 @@ class FreedomWallController extends Controller
         // dd($request);
         $data = $request->validated();
 
-        // Check for entry limitation (one entry per day)
+        // Check for entry limitation (one entry per day
         $existingEntry = FreedomWall::where('user_id', auth()->id())
                             ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
                             ->first();
@@ -133,6 +134,14 @@ class FreedomWallController extends Controller
         }
 
         $data['user_id'] = auth()->id();
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+        $data['academic_year_id'] = $activeAy->id;
 
         FreedomWall::create($data);
 

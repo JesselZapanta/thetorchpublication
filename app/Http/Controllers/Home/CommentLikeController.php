@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicYear;
 use App\Models\Comment;
 use App\Models\CommentLike;
 use Illuminate\Http\Request;
@@ -13,6 +14,14 @@ class CommentLikeController extends Controller
     public function toggleLike(Comment $comment)
     {
         $user = Auth::user();
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+        // $data['academic_year_id'] = $activeAy->id;
         
         // Check if the user has already liked this comment
         $existingLike = CommentLike::where('comment_id', $comment->id)
@@ -32,6 +41,7 @@ class CommentLikeController extends Controller
             CommentLike::create([
                 'comment_id' => $comment->id,
                 'user_id' => $user->id,
+                'academic_year_id' => $activeAy->id,
                 'is_like' => true,
             ]);
         }
@@ -42,6 +52,14 @@ class CommentLikeController extends Controller
     public function toggleDislike(Comment $comment)
     {
         $user = Auth::user();
+
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
+        // $data['academic_year_id'] = $activeAy->id;
 
         // Check if the user has already disliked this comment
         $existingDislike = CommentLike::where('comment_id', $comment->id)
@@ -61,6 +79,7 @@ class CommentLikeController extends Controller
             CommentLike::create([
                 'comment_id' => $comment->id,
                 'user_id' => $user->id,
+                'academic_year_id' => $activeAy->id,
                 'is_like' => false,
             ]);
         }

@@ -19,6 +19,7 @@ class FreedomWallFactory extends Factory
     {
         return [
             'user_id' => 1,
+            'academic_year_id' => 1,
             'body' => fake()->realText(fake()->numberBetween(10, 500)),
             'emotion' => fake()->randomElement(['happy', 'sad', 'annoyed', 'proud', 'drained', 'inlove', 'calm', 'excited', 'angry', 'down']), // Random emotion
             'created_at' => fake()->dateTimeBetween('-1 year', 'now'), 

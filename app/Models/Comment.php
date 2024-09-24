@@ -12,6 +12,7 @@ class Comment extends Model
     protected $fillable = [
         'body', 
         'article_id', 
+        'academic_year_id', 
         'user_id', 
         'visibility',
         'report_count',
@@ -25,6 +26,11 @@ class Comment extends Model
     public function commentedBy()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function academicYear()
+    {
+        return $this->belongsTo(User::class, 'academic_year_id');
     }
 
 

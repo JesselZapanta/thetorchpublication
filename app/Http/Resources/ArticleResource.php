@@ -35,7 +35,8 @@ class ArticleResource extends JsonResource
             'rejection_message' => $this->rejection_message,
 
             'caption' => $this->caption,
-            'views' => $this->views,
+            // 'views' => $this->views,
+            'views' => $this->views->count(),
 
             'category' => new CategoryResource($this->category),
             'category_id' => $this->category_id,

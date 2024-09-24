@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\ArticleView;
 use App\Models\Comment;
 use App\Models\FreedomWall;
 use App\Models\Task;
@@ -55,8 +56,8 @@ class AdminDashboardController extends Controller
         $totalReportedFreedomWall = FreedomWall::sum('report_count');
         $reportedContent = $totalReportedArticles + $totalReportedComments + $totalReportedFreedomWall;
 
-        $totalViews = Article::sum('views');
-
+        $totalViews = ArticleView::count(); // Count the total number of views
+        
         // Return data to the Inertia view
         return inertia('Admin/Dashboard', [
             'articles' => $articles,

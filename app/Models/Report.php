@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    //wala ni nagamit
     use HasFactory;
 
     protected $fillable = ['reported_by', 'reason', 'reportable_type', 'reportable_id'];
