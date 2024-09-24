@@ -82,26 +82,30 @@ class AdminAcademicYearController extends Controller
     {
         $academicYear = AcademicYear::find($id);
 
-        if(!$academicYear){
+        if (!$academicYear) {
             return to_route('academic-year.index')->with(['error' => 'Academic Year is not found.']);
         }
 
-        // dd($request);
         $data = $request->validated();
 
-        if($academicYear->status === 'active'){
-            return to_route('academic-year.index')->with(['error' => 'There should be one active academic year.']);
+        // If the current academic year is active and we're not changing the status to inactive, just update other fields
+        if ($academicYear->status === 'active' && $data['status'] !== 'inactive') {
+            $academicYear->fill($data); // Fill other fields except status
+            $academicYear->save(); // Save the changes
+            return to_route('academic-year.index')->with(['success' => 'Academic Year is updated successfully.']);
         }
 
-        if($data['status'] === 'active'){
-            // Set all existing academic years' status to 'inactive'
+        // If we are changing the status to active, set all existing academic years' status to 'inactive'
+        if ($data['status'] === 'active') {
             AcademicYear::query()->update(['status' => 'inactive']);
         }
 
+        // Update the academic year with the new data, including status
         $academicYear->update($data);
 
-        return to_route('academic-year.index')->with(['success' => 'Academic Year is Updated Succssfully']);
+        return to_route('academic-year.index')->with(['success' => 'Academic Year is updated successfully.']);
     }
+
 
     /**
      * Remove the specified resource from storage.

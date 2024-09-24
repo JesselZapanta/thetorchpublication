@@ -65,3 +65,14 @@ export const NEWSLETTER_PRIORITY_TEXT_MAP = {
     approved: "Approved",
     distributed: "Distributed",
 };
+
+// AY status
+export const AY_CLASS_MAP = {
+    active: "bg-green-600",
+    inactive: "bg-amber-600",
+};
+
+export const AY_TEXT_MAP = {
+    active: "Active",
+    inactive: "Inactive",
+};

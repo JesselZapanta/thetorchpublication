@@ -40,6 +40,9 @@ class UpdateAcademicYearRequest extends FormRequest
             'status' => ['required',
                 Rule::in(['active','inactive'])
             ],
+
+            'start_at' => ['required', 'date' ],
+            'end_at' => ['required', 'date' ],
         ];
     }
 }

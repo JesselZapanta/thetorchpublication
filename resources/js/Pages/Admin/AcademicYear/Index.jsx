@@ -13,6 +13,7 @@ import DangerButton from "@/Components/DangerButton";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { AY_CLASS_MAP, AY_TEXT_MAP } from "@/constants";
 
 export default function Index({ auth, academicYears, queryParams = null, flash, AdminBadgeCount }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -24,6 +25,8 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
             code: "",
             description: "",
             status: "",
+            start_at: "",
+            end_at: "",
         });
 
     // Display flash messages if they exist
@@ -100,6 +103,8 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
             code: academicYear.code,
             description: academicYear.description,
             status: academicYear.status,
+            start_at: academicYear.start_at,
+            end_at: academicYear.end_at,
         }); // Set the form data with the selected academic-year's data
         setIsCreateModalOpen(true);
     };
@@ -245,7 +250,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                                 Status
                                             </TableHeading>
                                             <TableHeading
-                                                name="created_at"
+                                                name="start_at"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -254,10 +259,10 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Created At
+                                                Start At
                                             </TableHeading>
                                             <TableHeading
-                                                name="updated_at"
+                                                name="end_at"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -266,7 +271,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Updated At
+                                                End At
                                             </TableHeading>
 
                                             <th className="px-3 py-3">
@@ -295,19 +300,33 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {
+                                                            {/* {
                                                                 academicYear.status
-                                                            }
+                                                            } */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    AY_CLASS_MAP[
+                                                                        academicYear
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    AY_TEXT_MAP[
+                                                                        academicYear
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
-                                                                academicYear.created_at
+                                                                academicYear.startAt
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {
-                                                                academicYear.updated_at
-                                                            }
+                                                            {academicYear.endAt}
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             <button
@@ -412,6 +431,52 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                 message={errors.description}
                                 className="mt-2"
                             />
+                        </div>
+
+                        <div className="flex justify-between gap-4">
+                            {/* Start At */}
+                            <div className="mt-2 w-full">
+                                <InputLabel
+                                    htmlFor="start_at"
+                                    value="Start At"
+                                />
+
+                                <TextInput
+                                    id="start_at"
+                                    type="date"
+                                    name="start_at"
+                                    value={data.start_at}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("start_at", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.start_at}
+                                    className="mt-2"
+                                />
+                            </div>
+                            {/* end At */}
+                            <div className="mt-2 w-full">
+                                <InputLabel htmlFor="end_at" value="End At" />
+
+                                <TextInput
+                                    id="end_at"
+                                    type="date"
+                                    name="end_at"
+                                    value={data.end_at}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("end_at", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.end_at}
+                                    className="mt-2"
+                                />
+                            </div>
                         </div>
 
                         {/* Status */}
