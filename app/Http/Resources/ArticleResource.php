@@ -51,11 +51,11 @@ class ArticleResource extends JsonResource
             
             'academic_year_id' => $this->academic_year_id,
 
-            'createdBy' => new UserResource($this->createdBy),
-            'editedBy' => new UserResource($this->editedBy),
-            'layoutBy' => new UserResource($this->layoutBy),
-            'revisionBy' => new UserResource($this->revisionBy),
-            'publishedBy' => new UserResource($this->publishedBy),
+            'createdBy' => $this->createdBy ? new UserResource($this->createdBy) : null ,
+            'editedBy' => $this->editedBy ? new UserResource($this->editedBy) : null ,
+            'layoutBy' => $this->layoutBy ? new UserResource($this->layoutBy) : null ,
+            'revisionBy' => $this->revisionBy ? new UserResource($this->revisionBy) : null ,
+            'publishedBy' => $this->publishedBy ? new UserResource($this->publishedBy) : null ,
 
             'article_image_path' => $this->article_image_path ? Storage::url($this->article_image_path) : '/images/default/article.png',
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),

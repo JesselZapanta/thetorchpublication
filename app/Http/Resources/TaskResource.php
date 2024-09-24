@@ -23,14 +23,14 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'category_id' => $this->category_id,
             'academic_year_id' => $this->academic_year_id,
-            'category' => new CategoryResource($this->category),
+            'category' =>  new CategoryResource($this->category),
 
-            'assignedBy' => new UserResource($this->assignedBy),//for the forin ID/ display table/in model
+            'assignedBy' => $this->assignedBy ? new UserResource($this->assignedBy) : null,//for the forin ID/ display table/in model
 
-            'layoutBy' => new UserResource($this->layoutBy),//for the forin ID/ display table/in model
+            'layoutBy' => $this->layoutBy ? new UserResource($this->layoutBy) : null,//for the forin ID/ display table/in model
             'layout_by' => $this->layout_by,//for edit page
 
-            'assignedTo' => new UserResource($this->assignedTo),//for the forin ID/ display table/in model
+            'assignedTo' =>  $this->assignedTo ? new UserResource($this->assignedTo) : null,//for the forin ID/ display table/in model
             'assigned_to' => $this->assigned_to,//for edit page
 
             
