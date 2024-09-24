@@ -106,6 +106,8 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::resource('word', AdminWordController::class);
     Route::resource('academic-year', AdminAcademicYearController::class);
     
+    Route::get('/newsletter/calendar', [AdminNewsletterController::class, 'calendar'])->name('newsletter.calendar');
+    Route::get('newsletter/{id}/timeline', [AdminNewsletterController::class, 'timeLine'])->name('newsletter.timeline');
     Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
     Route::get('/newsletter-articles/{id}/show', [AdminNewsletterController::class, 'articleShow'])->name('admin-newsletter.article-show');
     Route::post('/newsletter-articles/{id}/add-article', [AdminNewsletterController::class, 'addArticle'])->name('newsletter.add-article');
@@ -241,6 +243,7 @@ Route::middleware(['auth', 'designer'])->group(function() {
     // Route::resource('writer-article', WriterArticleController::class);
 
     Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
+    Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');
     Route::get('/designer-newsletter-articles/{id}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
     Route::post('/designer-newsletter-articles/{id}/is-layout', [DesignerNewsletterController::class, 'isLayout'])->name('designer-newsletter.is-layout');
     Route::post('/designer-newsletter-articles/{id}/not-layout', [DesignerNewsletterController::class, 'notLayout'])->name('designer-newsletter.not-layout');

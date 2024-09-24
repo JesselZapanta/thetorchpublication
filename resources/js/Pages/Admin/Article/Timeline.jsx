@@ -30,7 +30,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
                         <div className="p-4">
                             <ol className="relative ms-6 border-s border-indigo-500 dark:border-gray-700">
-                                {article.submitted_at && (
+                                {article.submitted_at && article.createdBy && (
                                     <li className="mb-10 ml-6">
                                         <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
                                             <img
@@ -56,7 +56,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                     </li>
                                 )}
 
-                                {article.rejected_at && (
+                                {article.rejected_at && article.editedBy && (
                                     <li className="mb-10 ml-6">
                                         <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
                                             <img
@@ -90,7 +90,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                     </li>
                                 )}
 
-                                {article.edited_at && (
+                                {article.edited_at && article.editedBy && (
                                     <li className="mb-10 ml-6">
                                         <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
                                             <img
@@ -119,7 +119,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                     </li>
                                 )}
 
-                                {article.revision_at && (
+                                {article.revision_at && article.revisionBy && (
                                     <li className="mb-10 ml-6">
                                         <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
                                             <img
@@ -156,34 +156,40 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                     </li>
                                 )}
 
-                                {article.published_date && (
-                                    <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
-                                            <img
-                                                className="rounded-full shadow-lg"
-                                                src={
-                                                    article.publishedBy
-                                                        .profile_image_path
-                                                }
-                                                alt={article.publishedBy.name}
-                                            />
-                                        </span>
-                                        <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
-                                            <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                {article.published_date}
-                                            </time>
-                                            <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    {article.publishedBy.name}
-                                                </span>{" "}
-                                                set the article status to{" "}
-                                                <span className="font-semibold text-indigo-600 dark:text-indigo-500">
-                                                    published.
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                )}
+                                {article.published_date &&
+                                    article.publishedBy &&(
+                                        <li className="mb-10 ml-6">
+                                            <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
+                                                <img
+                                                    className="rounded-full shadow-lg"
+                                                    src={
+                                                        article.publishedBy
+                                                            .profile_image_path
+                                                    }
+                                                    alt={
+                                                        article.publishedBy.name
+                                                    }
+                                                />
+                                            </span>
+                                            <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
+                                                <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
+                                                    {article.published_date}
+                                                </time>
+                                                <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
+                                                    <span className="font-semibold text-indigo-600 dark:text-indigo-500">
+                                                        {
+                                                            article.publishedBy
+                                                                .name
+                                                        }
+                                                    </span>{" "}
+                                                    set the article status to{" "}
+                                                    <span className="font-semibold text-indigo-600 dark:text-indigo-500">
+                                                        published.
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </li>
+                                    )}
                             </ol>
                         </div>
                     </div>

@@ -8,15 +8,14 @@ import TextInput from '@/Components/TextInput';
 import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 
-export default function Create({ auth }) {
-    const { data, setData, post, errors, processing, DesignerBadgeCount } =
-        useForm({
-            // academic_year_id: "",
-            description: "",
-            newsletter_thumbnail_image_path: "",
-            newsletter_file_path: "",
-            // status: "",
-        });
+export default function Create({ auth, DesignerBadgeCount }) {
+    const { data, setData, post, errors, processing } = useForm({
+        // academic_year_id: "",
+        description: "",
+        newsletter_thumbnail_image_path: "",
+        newsletter_file_path: "",
+        // status: "",
+    });
 
     const onSubmit = () => {
         post(route("designer-newsletter.store", data));

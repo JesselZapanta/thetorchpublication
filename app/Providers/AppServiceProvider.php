@@ -251,6 +251,8 @@ class AppServiceProvider extends ServiceProvider
                                                         ->count();
                 }
 
+                $newsletterRevision =  $newsletterRevision + $isNewsletter;
+
                 return [
                     'totalTaskCount' => $totalTaskCount,
                     'totalReportCount' => $totalReportCount,

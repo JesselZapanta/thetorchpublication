@@ -87,8 +87,7 @@ export default function Index({
     const [confirmDistribute, setConfirmDistribute] = useState(false);
     const [newsletter, setNewsletter] = useState(null); // Storing newsletter to edit/delete/distribute
 
-    const { data, setData, post, errors, reset, clearErrors, processing } =
-        useForm();
+    const { data, setData, errors, processing } = useForm();
 
     // Open modal and set newsletter to delete
     const openDeleteModal = (newsletter) => {
@@ -99,47 +98,18 @@ export default function Index({
     // Handle delete and close modal
     const handleDelete = () => {
         if (newsletter) {
-            router.delete(route("newsletter.destroy", newsletter.id));
+            router.delete(route("designer-newsletter.destroy", newsletter.id));
         }
         setConfirmDelete(false);
         setNewsletter(null);
     };
 
-    //distribution
-    // Open modal for distributing a newsletter
-    const openDistributeModal = (newsletter) => {
-        setNewsletter(newsletter);
-        setData({
-            message:
-                "Our latest newsletter is packed with highlights, updates, and valuable insights. From exciting events that brought our community together to important announcements shaping our future, there's something for everyone. Whether you're interested in the latest trends, curious about upcoming initiatives, or just want to stay informed, this newsletter has it all. Don't miss out on this detailed recap of the past few months. Download or click the file attached to read our latest newsletter and stay connected with everything that's happening.",
-            password: "",
-        }); // Reset message and password fields
-        setConfirmDistribute(true);
-    };
-
-    // Handle newsletter distribution
-    const handleDistribute = (e) => {
-        e.preventDefault();
-        post(route("newsletter.distribute", newsletter.id), {
-            onSuccess: () => {
-                setConfirmDistribute(false);
-                reset();
-                // alert("Success");
-            },
-            onError: (errors) => {
-                console.error("Distribution failed:", errors);
-            },
-            onFinish: () => {
-                console.log("Request finished");
-            },
-        });
-    };
-
-    // Close distribution modal
-    const closeDistributeModal = () => {
-        setConfirmDistribute(false);
-        reset(); // Reset the form when closing the modal
-        clearErrors(); // Clear any validation errors
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
     };
 
     return (
@@ -178,6 +148,10 @@ export default function Index({
             <Head title="Newsletters" />
 
             <ToastContainer position="bottom-right" />
+            {/* 
+            <pre className="text-gray-900">
+                {JSON.stringify(DesignerBadgeCount, null, 2)}
+            </pre> */}
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -205,8 +179,7 @@ export default function Index({
                                     className="flex justify-center items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     View Articles
-                                    {DesignerBadgeCount.isNewsletter >
-                                        0 && (
+                                    {DesignerBadgeCount.isNewsletter > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                 {DesignerBadgeCount.isNewsletter >
@@ -311,21 +284,32 @@ export default function Index({
                                                                 )}
                                                             </div>
                                                         </th>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <a
                                                                 href={
                                                                     newsletter.newsletter_file_path
                                                                 }
+                                                                className="text-md text-gray-900 dark:text-gray-300"
                                                                 target="blank"
                                                             >
                                                                 VIEW
                                                             </a>
-                                                        </td>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {
-                                                                newsletter.description
-                                                            }
-                                                        </td>
+                                                        </th>
+                                                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                            <Link
+                                                                // added
+                                                                className="text-md text-gray-900 dark:text-gray-300"
+                                                                href={route(
+                                                                    "designer-newsletter.timeline",
+                                                                    newsletter.id
+                                                                )}
+                                                            >
+                                                                {truncate(
+                                                                    newsletter.description,
+                                                                    50
+                                                                )}
+                                                            </Link>
+                                                        </th>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {/* {newsletter.status} */}
                                                             <span
@@ -414,70 +398,6 @@ export default function Index({
                             Delete
                         </DangerButton>
                     </div>
-                </div>
-            </Modal>
-            {/* Confirm Distribute Modal */}
-            <Modal show={confirmDistribute}>
-                <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">
-                        Distribute Newsletter
-                    </h2>
-                    <form onSubmit={handleDistribute}>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="message" value="Message" />
-                            <TextAreaInput
-                                id="message"
-                                type="text"
-                                name="message"
-                                value={data.message}
-                                className="mt-2 block w-full min-h-64 text-justify"
-                                onChange={(e) =>
-                                    setData("message", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.message}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password" />
-
-                            <TextInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password || ""}
-                                className="mt-1 block w-full"
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.password}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4 flex justify-end gap-2">
-                            <SecondaryButton
-                                onClick={closeDistributeModal}
-                                disabled={processing}
-                            >
-                                Cancel
-                            </SecondaryButton>
-                            <button
-                                type="submit"
-                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                                disabled={processing}
-                            >
-                                {processing ? "Distributing..." : "Distribute"}
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </Modal>
         </DesignerAuthenticatedLayout>

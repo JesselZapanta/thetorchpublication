@@ -47,17 +47,20 @@ class AdminNewsletterController extends Controller
         $id = Auth::user()->id;
 
         $newsletters = $query->orderBy($sortField, $sortDirection)
-                                ->where(function ($query) use ($id) {
-                                    // Get all newsletters if auth user is the layout_by, regardless of status
-                                    $query->where('layout_by', $id);
-                                })
-                                ->orWhere(function ($query) use ($id) {
-                                    // Get all newsletters where auth user is NOT layout_by, but status is pending or approved
-                                    $query->where('layout_by', '!=', $id)
-                                        ->whereIn('status', ['pending', 'approved', 'distributed']);
-                                })
-                                ->paginate(10)
-                                ->onEachSide(1);
+            ->where(function ($query) use ($id) {
+                // Get all newsletters if auth user is the layout_by, regardless of status
+                $query->where('layout_by', $id);
+            })
+            ->orWhere(function ($query) use ($id) {
+                // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
+                $query->where(function ($query) use ($id) {
+                    $query->where('layout_by', '!=', $id)
+                        ->orWhereNull('layout_by');
+                })
+                ->whereIn('status', ['pending', 'approved', 'revision','distributed']);
+            })
+            ->paginate(10)
+            ->onEachSide(1);
 
         
         return inertia('Admin/Newsletter/Index', [
@@ -98,6 +101,7 @@ class AdminNewsletterController extends Controller
         }
 
         $data['layout_by'] = Auth::user()->id;
+        $data['submitted_at'] = now();
 
         Newsletter::create($data);
 
@@ -110,6 +114,15 @@ class AdminNewsletterController extends Controller
     public function show(Newsletter $newsletter)
     {
         
+    }
+
+    public function timeLine($id)
+    {
+        $newsletter = Newsletter::find($id);
+
+        return inertia('Admin/Newsletter/Timeline', [
+            'newsletter' => new NewsletterResource($newsletter),
+        ]);
     }
 
     /**
@@ -159,7 +172,26 @@ class AdminNewsletterController extends Controller
             $data['newsletter_file_path'] = $newsletter->newsletter_file_path;
         }
 
+        if ($data['status'] === 'revision') {
+            $data['revision_at'] = now();
+            $data['revision_by'] = Auth::user()->id;
+        }
+
+        if ($data['status'] === 'approved') {
+            $data['approved_at'] = now();
+            $data['approved_by'] = Auth::user()->id;
+        }
+
+
         $newsletter->update($data);
+
+        if ($data['status'] === 'revision') {
+            return to_route('newsletter.index')->with(['access' => 'Newsletter needed revision.']);
+        }
+
+        if ($data['status'] === 'approved') {
+            return to_route('newsletter.index')->with(['access' => 'Newsletter approved successfully.']);
+        }
 
         return to_route('newsletter.index')->with(['success' => 'Newsletter Updated Successfully']);
     }
@@ -218,6 +250,8 @@ class AdminNewsletterController extends Controller
         }
 
         $newsletter->update(['status' => 'distributed']);
+        $newsletter->update(['distributed_at' => now()]);
+        $newsletter->update(['distributed_by' => Auth::user()->id]);
 
          // Get all user emails
         $users = User::pluck('email');
@@ -329,4 +363,16 @@ class AdminNewsletterController extends Controller
         return to_route('newsletter.articles')->with(['success' => 'Article is remove to Newsletter']);
     }
 
+    public function calendar()
+    {
+        $newsletters = Newsletter::where('status', 'distributed')
+                            ->whereNotNull('distributed_at')
+                            ->get(['id','description', 'distributed_at' ,'status',]);
+
+        // dd($newsletters);
+        // Render the calendar page with newsletter passed as props
+        return inertia('Admin/Newsletter/MyCalendar', [
+            'newsletters' => $newsletters,
+        ]);
+    }
 }

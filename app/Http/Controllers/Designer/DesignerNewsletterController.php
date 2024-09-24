@@ -92,6 +92,7 @@ class DesignerNewsletterController extends Controller
 
 
         $data['layout_by'] = Auth::user()->id;
+        $data['submitted_at'] = now();
         $data['status'] = 'pending';
         $data['academic_year_id'] = $activeAy->id;
 
@@ -107,6 +108,17 @@ class DesignerNewsletterController extends Controller
     {
         //
     }
+
+    
+    public function timeLine($id)
+    {
+        $newsletter = Newsletter::find($id);
+
+        return inertia('Designer/Newsletter/Timeline', [
+            'newsletter' => new NewsletterResource($newsletter),
+        ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -163,9 +175,26 @@ class DesignerNewsletterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $newsletter = Newsletter::find($id);
+        if(!$newsletter){
+            return to_route('designer-newsletter.index')->with(['error' => 'Newsletter not found']);
+        }
+        $newsletter->delete();
+
+        if ($newsletter->newsletter_thumbnail_image_path) {
+            // Delete the specific old image file
+            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        }
+
+        if ($newsletter->newsletter_thumbnail_image_path) {
+            // Delete the specific old  file
+            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        }
+
+
+        return to_route('designer-newsletter.index')->with(['success' => 'Deleted Successfully']);
     }
 
     public function SelectArticles()
@@ -263,12 +292,8 @@ class DesignerNewsletterController extends Controller
     public function calendar()
     {
         $newsletters = Newsletter::where('status', 'distributed')
-                            // ->whereNotNull('task_completed_date')
-                            ->get(['id','description', 'status',]);
-
-                            //todo add the dates
-
-        // $newsletter = Task::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
+                            ->whereNotNull('distributed_at')
+                            ->get(['id','description', 'distributed_at' ,'status',]);
 
         // dd($newsletters);
         // Render the calendar page with newsletter passed as props
@@ -276,6 +301,7 @@ class DesignerNewsletterController extends Controller
             'newsletters' => $newsletters,
         ]);
     }
+    
 }
 
 

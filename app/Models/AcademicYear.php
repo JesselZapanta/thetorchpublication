@@ -13,6 +13,9 @@ class AcademicYear extends Model
         'code',
         'description',
         'status',
+        
+        'start_at',//new
+        'end_at',//new
     ];
     //for articles
     public function articles()

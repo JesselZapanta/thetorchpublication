@@ -1,4 +1,5 @@
 import Pagination from "@/Components/Pagination";
+import SecondaryButton from "@/Components/SecondaryButton";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -20,12 +21,9 @@ export default function Jobs({ jobs, auth, queryParams, AdminBadgeCount }) {
                         Newsletters Queue
                     </h2>
                     <div className="flex gap-4">
-                        <Link
-                            href={route("newsletter.index")}
-                            className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
-                        >
-                            Newsletter
-                        </Link>
+                        <SecondaryButton href={route("newsletter.index")}>
+                            Back
+                        </SecondaryButton>
                     </div>
                 </div>
             }

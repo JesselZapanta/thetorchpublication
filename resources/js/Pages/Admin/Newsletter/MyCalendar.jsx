@@ -2,10 +2,10 @@ import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // For month view
 import { Head, Link } from "@inertiajs/react";
-import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function MyCalendar({ auth, newsletters, DesignerBadgeCount }) {
+export default function MyCalendar({ auth, newsletters, AdminBadgeCount }) {
     // Map newsletters to FullCalendar events
     const events = newsletters.map((newsletter) => ({
         // title: "[" + newsletter.status + "] " + newsletter.name,
@@ -15,12 +15,12 @@ export default function MyCalendar({ auth, newsletters, DesignerBadgeCount }) {
         //     ? newsletter.newsletter_completed_date.split(" ")[0]
         //     : newsletter.assigned_date,
 
-        url: route("designer-newsletter.edit", newsletter.id),
+        url: route("newsletter.edit", newsletter.id),
     }));
 
     return (
-        <DesignerAuthenticatedLayout
-            DesignerBadgeCount={DesignerBadgeCount}
+        <AdminAuthenticatedLayout
+            AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
@@ -29,7 +29,7 @@ export default function MyCalendar({ auth, newsletters, DesignerBadgeCount }) {
                     </h2>
                     <div className="flex gap-4">
                         <SecondaryButton
-                            href={route("designer-newsletter.index")}
+                            href={route("newsletter.index")}
                         >
                             Back
                         </SecondaryButton>
@@ -38,7 +38,7 @@ export default function MyCalendar({ auth, newsletters, DesignerBadgeCount }) {
             }
         >
             <Head title="Newsletter" />
-{/* 
+            {/* 
             <pre className="text-gray-900">
                 {JSON.stringify(newsletters, null, 2)}
             </pre> */}
@@ -68,6 +68,6 @@ export default function MyCalendar({ auth, newsletters, DesignerBadgeCount }) {
                     </div>
                 </div>
             </div>
-        </DesignerAuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

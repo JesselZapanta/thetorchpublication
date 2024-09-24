@@ -90,6 +90,15 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
         setConfirmDelete(false);
         setNewsletter(null);
     };
+
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
+    };
+    
     return (
         <AdminAuthenticatedLayout
             AdminBadgeCount={AdminBadgeCount}
@@ -102,10 +111,10 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
 
                     <div className="flex gap-4">
                         <Link
-                            href={route("jobs.index")}
-                            className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
+                            href={route("newsletter.calendar")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                         >
-                            Queue
+                            Calendar
                         </Link>
                         <Link
                             href={route("newsletter.create")}
@@ -125,7 +134,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="flex justify-between gap-2">
+                            <div className="flex justify-between gap-2 flex-col sm:flex-row">
                                 <div className="w-full lg:w-[50%] gap-2">
                                     <TextInput
                                         className="w-full"
@@ -142,12 +151,20 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                         }
                                     />
                                 </div>
-                                <Link
-                                    href={route("newsletter.articles")}
-                                    className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
-                                >
-                                    Select Articles
-                                </Link>
+                                <div className="flex gap-4 justify-end">
+                                    <Link
+                                        href={route("jobs.index")}
+                                        className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
+                                    >
+                                        Queue
+                                    </Link>
+                                    <Link
+                                        href={route("newsletter.articles")}
+                                        className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                    >
+                                        Select Articles
+                                    </Link>
+                                </div>
                             </div>
                             <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -207,7 +224,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Created At
+                                                Submitted At
                                             </TableHeading>
 
                                             <th className="px-3 py-3">
@@ -246,21 +263,37 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                                 )}
                                                             </div>
                                                         </th>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <a
                                                                 href={
                                                                     newsletter.newsletter_file_path
                                                                 }
+                                                                className="text-md text-gray-900 dark:text-gray-300"
                                                                 target="blank"
                                                             >
                                                                 VIEW
                                                             </a>
-                                                        </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        </th>
+                                                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                            <Link
+                                                                // added
+                                                                className="text-md text-gray-900 dark:text-gray-300"
+                                                                href={route(
+                                                                    "newsletter.timeline",
+                                                                    newsletter.id
+                                                                )}
+                                                            >
+                                                                {truncate(
+                                                                    newsletter.description,
+                                                                    50
+                                                                )}
+                                                            </Link>
+                                                        </th>
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             {
                                                                 newsletter.description
                                                             }
-                                                        </td>
+                                                        </td> */}
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {/* {newsletter.status} */}
                                                             <span
@@ -282,7 +315,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
-                                                                newsletter.created_at
+                                                                newsletter.submitted_at
                                                             }
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
