@@ -1,3 +1,5 @@
+import BarChart from '@/Components/Chart/BarChart';
+import PieChart from '@/Components/Chart/PieChart';
 import SelectInput from '@/Components/SelectInput';
 import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
@@ -9,6 +11,8 @@ export default function Dashboard({
     academicYears,
     AdminBadgeCount,
 
+    categoriesWithCount,
+    categoriesWithViewsCount,
     dateFrom,
 }) {
     const [selectedPeriod, setSelectedPeriod] = useState("daily");
@@ -48,19 +52,18 @@ export default function Dashboard({
         );
     };
 
-
     return (
         <AdminAuthenticatedLayout
             AdminBadgeCount={AdminBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-md text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Admin Dashboard
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("user.create")}
+                            href={route("admin.report")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Generate Report
@@ -87,9 +90,9 @@ export default function Dashboard({
                                     onChange={handleSelectPeriod} // Only handle period selection here
                                 >
                                     <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                    <option value="ay">AY</option>
+                                    <option value="weekly">Last Week</option>
+                                    <option value="monthly">Last Month</option>
+                                    <option value="ay">Academic Year</option>
                                 </SelectInput>
 
                                 {selectedPeriod === "ay" && (
@@ -110,7 +113,7 @@ export default function Dashboard({
                                 )}
                             </div>
 
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-amber-600 font-semibold text-md">
@@ -225,11 +228,23 @@ export default function Dashboard({
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-blue-600 font-semibold text-md">
-                                            Total Task Completed
+                                            Total Incomplete Task
                                         </h3>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
-                                                {reportData.tasks}
+                                                {reportData.tasksIncomplete}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                                        <h3 className="text-blue-600 font-semibold text-md">
+                                            Total Completed Task
+                                        </h3>
+                                        <p className="text-md mt-4">
+                                            <span className="mr-2">
+                                                {reportData.tasksCompeted}
                                             </span>
                                         </p>
                                     </div>
@@ -245,6 +260,34 @@ export default function Dashboard({
                                             </span>
                                         </p>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
+                                <div className="col-span-2 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <h3 className="text-sky-600 font-semibold text-md">
+                                        Total Articles Per Category
+                                    </h3>
+                                    <p className="text-md mt-4">
+                                        <BarChart
+                                            categoriesWithCount={
+                                                categoriesWithCount
+                                            }
+                                        />
+                                    </p>
+                                </div>
+
+                                <div className="col-span-1 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <h3 className="text-sky-600 font-semibold text-md">
+                                        Total View of Articles Per Category
+                                    </h3>
+                                    <p className="text-md mt-4">
+                                        <PieChart
+                                            categoriesWithViewsCount={
+                                                categoriesWithViewsCount
+                                            }
+                                        />
+                                    </p>
                                 </div>
                             </div>
                         </div>

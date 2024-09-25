@@ -11,6 +11,12 @@ class ArticleViewsController extends Controller
 {
     public function incrementViews(Request $request, $articleId)
     {
+         // Check if the user is authenticated
+        if (!Auth::check()) {
+            // Do not increment if the user is not authenticated
+            return redirect()->route('article.read', $articleId);
+        }
+        
         $user = Auth::user();
 
         $activeAy = AcademicYear::where('status', 'active')->first();

@@ -53,3 +53,9 @@ php artisan make:notification TaskAssigned
 
 php artisan vendor:publish --tag=laravel-notifications
 php artisan vendor:publish --tag=laravel-mail
+
+
+<!-- lib -->
+npm install chart.js
+
+npm install react-to-print

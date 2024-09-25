@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
 //Admin Routes
 Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/weekly-dashboard', [AdminDashboardController::class, 'weekly'])->name('admin.weekly-dashboard');
+    Route::get('/admin/report', [AdminDashboardController::class, 'report'])->name('admin.report');
 
     Route::resource('user', AdminUserController::class);
     Route::resource('category', AdminCategoryController::class);
