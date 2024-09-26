@@ -7,6 +7,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -260,7 +261,21 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
                                                         {category.description}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {category.status}
+                                                        {/* {category.status} */}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                CATEGORY_CLASS_MAP[
+                                                                    category.status
+                                                                ]
+                                                            }
+                                                        >
+                                                            {
+                                                                CATEGORY_TEXT_MAP[
+                                                                    category.status
+                                                                ]
+                                                            }
+                                                        </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link

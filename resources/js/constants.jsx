@@ -76,3 +76,14 @@ export const AY_TEXT_MAP = {
     active: "Active",
     inactive: "Inactive",
 };
+
+// Category status
+export const CATEGORY_CLASS_MAP = {
+    active: "bg-green-600",
+    inactive: "bg-amber-600",
+};
+
+export const CATEGORY_TEXT_MAP = {
+    active: "Active",
+    inactive: "Inactive",
+};
