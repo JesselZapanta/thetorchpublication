@@ -83,7 +83,7 @@ class Article extends Model
         return $this->belongsTo(User::class, 'published_by');
     }
 
-     //for ratings
+     //for views
     public function views()
     {
         return $this->hasMany(ArticleView::class);

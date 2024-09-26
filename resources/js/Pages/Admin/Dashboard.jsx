@@ -89,7 +89,7 @@ export default function Dashboard({
                                     value={selectedPeriod}
                                     onChange={handleSelectPeriod} // Only handle period selection here
                                 >
-                                    <option value="daily">Daily</option>
+                                    <option value="daily">Today</option>
                                     <option value="weekly">Last Week</option>
                                     <option value="monthly">Last Month</option>
                                     <option value="ay">Academic Year</option>
@@ -252,7 +252,7 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-blue-600 font-semibold text-md">
+                                        <h3 className="text-pink-600 font-semibold text-md">
                                             Total Distributed Newsletters
                                         </h3>
                                         <p className="text-md mt-4">

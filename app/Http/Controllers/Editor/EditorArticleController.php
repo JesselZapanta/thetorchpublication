@@ -178,6 +178,7 @@ class EditorArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['academic_year_id'] = $activeAy->id;
         $data['submitted_at'] =now();
+        $data['edited_at'] =now();
         // $data['status'] = 'edited';
 
         $data['slug'] = Str::slug($request->title);
@@ -308,7 +309,7 @@ class EditorArticleController extends Controller
         // dates
 
          //if edited put the date
-        if($data['status'] !== 'edited'){
+        if($data['status'] === 'edited'){
             $data['edited_at'] = now();
         }
 

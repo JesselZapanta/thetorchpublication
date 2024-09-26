@@ -14,10 +14,12 @@ class ArticleView extends Model
     public function article(){
         return $this->belongsTo(Article::class, 'article_id');
     }
+    //kinsa ang ga view
     public function user(){
         return $this->belongsTo(Article::class, 'user_id');
     }
     public function academicYear(){
         return $this->belongsTo(Article::class, 'academic_year_id');
     }
+
 }

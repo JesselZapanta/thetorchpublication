@@ -85,7 +85,7 @@ class AdminDashboardController extends Controller
         $ratings = $ratingsQuery->count();
 
 
-        // Fetch rate count
+        // Fetch comment count
         $commentsQuery = Comment::query(); 
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
@@ -159,9 +159,9 @@ class AdminDashboardController extends Controller
         $tasksQuery = Task::where('status', '!=' ,'completed');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
-            $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
+            $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
         } else {
-            $tasksQuery->where('task_completed_date', '>=', $dateFrom);
+            $tasksQuery->where('assigned_date', '>=', $dateFrom);
         }
         $tasksIncomplete = $tasksQuery->count();
 

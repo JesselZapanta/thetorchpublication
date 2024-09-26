@@ -69,4 +69,20 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(FreedomWall::class);
     }
+
+
+    // 
+
+
+    // Relation to the articles this user has authored
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'user_id');
+    }
+
+    // Relation to the articles this user has viewed
+    public function articleViews()
+    {
+        return $this->hasMany(ArticleView::class, 'user_id');
+    }
 }
