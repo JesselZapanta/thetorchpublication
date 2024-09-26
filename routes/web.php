@@ -18,6 +18,7 @@ use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
 use App\Http\Controllers\Editor\EditorArticleController;
 use App\Http\Controllers\Editor\EditorDashboardController;
+use App\Http\Controllers\Editor\EditorGenerateReportController;
 use App\Http\Controllers\Editor\EditorReviewReport;
 use App\Http\Controllers\Editor\EditorTaskController;
 use App\Http\Controllers\Home\CommentController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
+use App\Http\Controllers\Writer\WriterGenerateReportController;
 use App\Http\Controllers\Writer\WriterReviewReport;
 use App\Http\Controllers\Writer\WriterTaskController;
 use Illuminate\Support\Facades\Route;
@@ -162,6 +164,7 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
 // for editor
 Route::middleware(['auth', 'editor'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
+    Route::get('/editor/report', [EditorGenerateReportController::class, 'report'])->name('editor.report');
     
     // editor article
     Route::get('editor-article/calendar', [EditorArticleController::class, 'calendar'])->name('editor-article.calendar');
@@ -204,6 +207,7 @@ Route::middleware(['auth', 'editor'])->group(function() {
 // for Writer
 Route::middleware(['auth', 'writer'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
+    Route::get('/writer/report', [WriterGenerateReportController::class, 'report'])->name('writer.report');
 
     Route::get('writer-article/calendar', [WriterArticleController::class, 'calendar'])->name('writer-article.calendar');
     Route::get('writer-article/{id}/timeline', [WriterArticleController::class, 'timeLine'])->name('writer-article.timeline');
@@ -243,7 +247,7 @@ Route::middleware(['auth', 'writer'])->group(function() {
 // for Designer
 Route::middleware(['auth', 'designer'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
-    // Route::resource('writer-article', WriterArticleController::class);
+    Route::get('/designer/report', [WriterGenerateReportController::class, 'report'])->name('designer.report');
 
     Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
     Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');

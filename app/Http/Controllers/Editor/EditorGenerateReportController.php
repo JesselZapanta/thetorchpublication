@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Writer;
+namespace App\Http\Controllers\Editor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
@@ -18,9 +18,12 @@ use App\Models\Task;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-class WriterDashboardController extends Controller
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+class EditorGenerateReportController extends Controller
 {
-    public function index(Request $request)
+    public function report(Request $request)
     {
         // Determine the selected time period (default to 'daily') and selected academic year
         $timePeriod = $request->input('period', 'daily');
@@ -77,16 +80,16 @@ class WriterDashboardController extends Controller
 
         // Fetch counts based on the selected period or academic year range
         //edited by
-        $articlesQuery = Article::where('status','!=' ,'published')
+        $articlesQuery = Article::where('status', 'published')
                                 ->where('visibility', 'visible')
-                                ->where('created_by',  $userId);
+                                ->where('edited_by',  $userId);
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
-            $articlesQuery->whereBetween('submitted_at', [$dateFrom, $dateTo]);
+            $articlesQuery->whereBetween('edited_at', [$dateFrom, $dateTo]);
         } else {
-            $articlesQuery->where('submitted_at', '>=', $dateFrom);
+            $articlesQuery->where('edited_at', '>=', $dateFrom);
         }
-        $unpublishedArticles = $articlesQuery->count();
+        $editedArticles = $articlesQuery->count();
 
         // Total article views
         $totalViewsQuery = ArticleView::whereHas('article', function ($query) use ($userId) {
@@ -120,11 +123,7 @@ class WriterDashboardController extends Controller
 
 
         // Fetch comment count
-         // $commentsQuery = Comment::where('user_id',  $userId);
-        $commentsQuery = Comment::whereHas('article', function ($query) use ($userId) {
-                        $query->where('created_by', $userId) // Your comment
-                            ->where('visibility', 'visible'); // Only visible comment
-                    });
+        $commentsQuery = Comment::where('user_id',  $userId);
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
@@ -273,35 +272,50 @@ class WriterDashboardController extends Controller
 
 
         $reportData = [
-            'articles' => $articles,
-            'unpublishedArticles' => $unpublishedArticles,
-            'views' => $totalViews,
-            'ratings' => $ratings,
-            'comments' => $comments,
-            'commentsLike' => $commentsLike,
-            'commentsDislike' => $commentsDislike,
-            'freedomWall' => $freedomWall,
-            'freedomWallLike' => $freedomWallLike,
-            'freedomWallDislike' => $freedomWallDislike,
-            'tasksCompeted' => $tasksCompeted,
-            'tasksIncomplete' => $tasksIncomplete,
-            'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
+            'TotalPublishedArticles' => $articles,
+            'TotalEditedArticles' => $editedArticles,
+            'TotalArticleViews' => $totalViews,
+            'TotalRatingsCount' => $ratings,
+            'TotalComments' => $comments,
+            'TotalCommentsLike' => $commentsLike,
+            'TotalCommentsDislike' => $commentsDislike,
+            'TotalFreedomWall' => $freedomWall,
+            'TotalFreedomWallLikes' => $freedomWallLike,
+            'TotalFreedomWallDislikes' => $freedomWallDislike,
+            'TotalCompetedTasks' => $tasksCompeted,
+            'TotalIncompleteTasks' => $tasksIncomplete,
+            // 'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
 
             // Add dateFrom and dateTo to the report data
-            'dateFrom' => Carbon::parse($dateFrom)->format('F j, Y'),  // E.g., "September 25, 2024"
-            'dateTo' => Carbon::parse($dateTo)->format('F j, Y'),
-            'academicYear' => isset($academicYear) ? $academicYear->description : null,
+            
         ];
+
+        $articlesQuery = Article::where('status', 'published')
+                                ->where('visibility', 'visible')
+                                ->where('edited_by',  $userId);
+
+        if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
+            $articlesQuery->whereBetween('edited_at', [$dateFrom, $dateTo]);
+        } else {
+            $articlesQuery->where('edited_at', '>=', $dateFrom);
+        }
+        $editedArticlesDetais = $articlesQuery->get(['id','title', 'article_image_path', 'edited_at', 'published_date']);
         
         $academicYears = AcademicYear::all();
         
         // Return data to the Inertia view
-        return inertia('Writer/Dashboard', [
-            'dateFrom' => Carbon::parse($dateFrom)->diffForHumans(),
+        return inertia('Editor/Report', [
+            'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
+            'dateFrom' => Carbon::parse($dateFrom)->format('F j, Y'),  // E.g., "September 25, 2024"
+            'dateTo' => Carbon::parse($dateTo)->format('F j, Y'),
+            'academicYear' => isset($academicYear) ? $academicYear->description : null,
+
             'reportData' => $reportData,
             'categoriesWithCount' => $categoriesWithCount,
             'categoriesWithViewsCount' => $categoriesWithViewsCount,
             'academicYears' => AcademicYearResource::collection($academicYears),
+
+            'editedArticlesDetais' => $editedArticlesDetais
         ]);
     }
 }

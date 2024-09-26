@@ -63,7 +63,7 @@ export default function Dashboard({
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("admin.report")}
+                            href={route("editor.report")}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Generate Report

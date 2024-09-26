@@ -57,7 +57,7 @@ class AdminCategoryController extends Controller
         $data = $request->validated();
         $image = $data['category_image_path'];
 
-        $data['name']=strtoupper($data['name']);
+        // $data['name']=strtoupper($data['name']);
 
         if ($image) {
             // Store the image directly under the 'category/' directory and save its path

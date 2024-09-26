@@ -121,7 +121,11 @@ class EditorDashboardController extends Controller
 
 
         // Fetch comment count
-        $commentsQuery = Comment::where('user_id',  $userId);
+        // $commentsQuery = Comment::where('user_id',  $userId);
+        $commentsQuery = Comment::whereHas('article', function ($query) use ($userId) {
+                        $query->where('created_by', $userId) // Your comment
+                            ->where('visibility', 'visible'); // Only visible comment
+                    });
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);

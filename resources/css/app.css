@@ -2,13 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-@media print {
-    .page-break {
-        page-break-before: always;
-    }
 
+@media print {
     .custom-print-size {
-        width: 100%;
         page-break-inside: avoid;
     }
+
+    .page-break {
+        page-break-after: always;
+    }
+
+    .page {
+        position: relative;
+        height: 1056px; 
+        width: 816px; 
+    }
+
+
+    @page {
+        size: 816px 1056px; 
+        margin: 0;
+    }
 }
+
+/* .print-header,
+.print-footer {
+  text-align: center;
+}
+
+.print-header img,
+.print-footer img {
+  width: 100%; 
+  height: auto;
+}
+
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .print-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .print-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .print-content {
+    margin-top: 100px; 
+    margin-bottom: 50px;
+  }
+
+
+  .page-break {
+    page-break-before: always;
+  }
+} */
+
+/* 
+@media print {
+  body {
+    font-size: 12pt;
+  }
+
+  @page {
+    size: letter;
+    margin: 1in;
+  }
+
+  .print-btn {
+    display: none;
+  }
+
+  .header-img {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .footer-img {
+    width: 100%;
+    height: auto;
+  }
+
+
+  .report-title {
+    page-break-after: avoid;
+  }
+
+
+  .report-content {
+    margin-top: 120px; 
+    margin-bottom: 80px; 
+  }
+
+  .other-pages {
+    page-break-before: always;
+  }
+} */
