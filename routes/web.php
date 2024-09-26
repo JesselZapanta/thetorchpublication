@@ -32,6 +32,7 @@ use App\Http\Controllers\Home\ReportContentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Student\StudentGenerateReportController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
 use App\Http\Controllers\Writer\WriterGenerateReportController;
@@ -156,6 +157,7 @@ Route::middleware(['auth','admin', ])->group(function() {
 // For Student and Student Contributor
 Route::middleware(['auth', 'student','verified'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+    Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
 
     Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
     Route::get('student-article/{id}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
