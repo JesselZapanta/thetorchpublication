@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\ArticleViewsController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
+use App\Http\Controllers\Designer\DesignerGenerateReportController;
 use App\Http\Controllers\Designer\DesignerNewsletterController;
 use App\Http\Controllers\Designer\DesignerReviewReport;
 use App\Http\Controllers\Designer\DesignerTaskController;
@@ -247,7 +248,7 @@ Route::middleware(['auth', 'writer'])->group(function() {
 // for Designer
 Route::middleware(['auth', 'designer'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
-    Route::get('/designer/report', [WriterGenerateReportController::class, 'report'])->name('designer.report');
+    Route::get('/designer/report', [DesignerGenerateReportController::class, 'report'])->name('designer.report');
 
     Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
     Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');
