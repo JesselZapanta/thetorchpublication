@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('article_views', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
+            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');//e null nani
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//new ambot magamit bani HAHHA
             $table->timestamps();

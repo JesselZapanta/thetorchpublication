@@ -111,6 +111,7 @@ export default function Dashboard({
                                         ))}
                                     </SelectInput>
                                 )}
+                                
                             </div>
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
@@ -277,7 +278,7 @@ export default function Dashboard({
                                     </p>
                                 </div>
 
-                                <div className="col-span-1 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                <div className="col-span-2 sm:col-span-1 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <h3 className="text-sky-600 font-semibold text-md">
                                         Total View of Articles Per Category
                                     </h3>

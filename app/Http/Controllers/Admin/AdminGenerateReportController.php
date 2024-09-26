@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Models\AcademicYear;
@@ -19,19 +20,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Spatie\Browsershot\Browsershot;
 
-class AdminDashboardController extends Controller
+class AdminGenerateReportController extends Controller
 {
-    public function index(Request $request)
+    // MOVE TO other controller kay taas kaayu
+
+    public function report(Request $request)
     {
         // Determine the selected time period (default to 'daily') and selected academic year
         $timePeriod = $request->input('period', 'daily');
         $selectedAcademicYear = $request->input('academic_year');
-
-        // Error handling: Ensure that academic_year is only provided when period is 'ay'
-        if ($timePeriod !== 'ay' && $selectedAcademicYear) {
-            return back()->with('error', 'Academic year should only be selected for the "ay" time period.');
-        }
-
 
         // Initialize date range based on the selected time period
         switch ($timePeriod) {
@@ -233,37 +230,35 @@ class AdminDashboardController extends Controller
 
 
         $reportData = [
-            'articles' => $articles,
-            'views' => $totalViews,
-            'ratings' => $ratings,
-            'comments' => $comments,
-            'commentsLike' => $commentsLike,
-            'commentsDislike' => $commentsDislike,
-            'freedomWall' => $freedomWall,
-            'freedomWallLike' => $freedomWallLike,
-            'freedomWallDislike' => $freedomWallDislike,
-            'tasksCompeted' => $tasksCompeted,
-            'tasksIncomplete' => $tasksIncomplete,
-            'totalNewsletters' => $totalNewsletters,
-            'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
-
-            // Add dateFrom and dateTo to the report data
-            'dateFrom' => Carbon::parse($dateFrom)->format('F j, Y'),  // E.g., "September 25, 2024"
-            'dateTo' => Carbon::parse($dateTo)->format('F j, Y'),
-            'academicYear' => isset($academicYear) ? $academicYear->description : null,
+            'TotalPublishedArticles' => $articles,
+            'TotalArticleviews' => $totalViews,
+            'TotalRatingsCount' => $ratings,
+            'TotalComments' => $comments,
+            'TotalCommentsLike' => $commentsLike,
+            'TotalCommentsDislike' => $commentsDislike,
+            'TotalFreedomWall' => $freedomWall,
+            'TotalFreedomWallLikes' => $freedomWallLike,
+            'TotalFreedomWallDislikes' => $freedomWallDislike,
+            'TotalCompetedTasks' => $tasksCompeted,
+            'TotalIncompleteTasks' => $tasksIncomplete,
+            'TotalNewsletters' => $totalNewsletters,
+            // 'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
         ];
         
         $academicYears = AcademicYear::all();
-        
+
+
         // Return data to the Inertia view
-        return inertia('Admin/Dashboard', [
-            'dateFrom' => Carbon::parse($dateFrom)->diffForHumans(),
+        return inertia('Admin/Report', [
+            'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
+            'dateFrom' => Carbon::parse($dateFrom)->format('F j, Y'),  // E.g., "September 25, 2024"
+            'dateTo' => Carbon::parse($dateTo)->format('F j, Y'),
+            'academicYear' => isset($academicYear) ? $academicYear->description : null,
+
             'reportData' => $reportData,
             'categoriesWithCount' => $categoriesWithCount,
             'categoriesWithViewsCount' => $categoriesWithViewsCount,
             'academicYears' => AcademicYearResource::collection($academicYears),
         ]);
     }
-
-    
 }

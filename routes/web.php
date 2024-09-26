@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminAcademicYearController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminGenerateReportController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminReviewReport;
 use App\Http\Controllers\Admin\AdminTaskController;
@@ -96,7 +97,7 @@ Route::middleware('auth')->group(function () {
 //Admin Routes
 Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/report', [AdminDashboardController::class, 'report'])->name('admin.report');
+    Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
 
     Route::resource('user', AdminUserController::class);
     Route::resource('category', AdminCategoryController::class);

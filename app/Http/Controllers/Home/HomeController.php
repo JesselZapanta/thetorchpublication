@@ -18,7 +18,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(10)->get();
+        $categories = Category::where('status', 'active')->limit(7)->get();
 
        // Fetch the featured article
         $featuredArticle = Article::where('is_featured', 'yes')
