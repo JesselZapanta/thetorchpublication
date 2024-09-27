@@ -42,10 +42,25 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                     Users
                                 </NavLink>
                                 <NavLink
+                                    href={route("academic-year.index")}
+                                    active={route().current(
+                                        "academic-year.index"
+                                    )}
+                                >
+                                    Academic Years
+                                </NavLink>
+                                <NavLink
                                     href={route("category.index")}
                                     active={route().current("category.index")}
                                 >
                                     Categories
+                                </NavLink>
+
+                                <NavLink
+                                    href={route("word.index")}
+                                    active={route().current("word.index")}
+                                >
+                                    Words
                                 </NavLink>
                                 <NavLink
                                     href={route("admin-article.index")}
@@ -63,20 +78,6 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                             </span>
                                         </>
                                     )}
-                                </NavLink>
-                                <NavLink
-                                    href={route("word.index")}
-                                    active={route().current("word.index")}
-                                >
-                                    Words
-                                </NavLink>
-                                <NavLink
-                                    href={route("academic-year.index")}
-                                    active={route().current(
-                                        "academic-year.index"
-                                    )}
-                                >
-                                    Academic Years
                                 </NavLink>
                                 <NavLink
                                     href={route("newsletter.index")}
