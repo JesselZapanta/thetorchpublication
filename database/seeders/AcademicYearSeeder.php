@@ -56,6 +56,12 @@ class AcademicYearSeeder extends Seeder
                 'start_at' => '2024-05-31 00:00:00',
                 'end_at' => '2024-07-31 00:00:00',
             ],
+
+            [
+                'description' => '1ST SEM AY 2024-2025',
+                'start_at' => '2024-08-01 00:00:00',
+                'end_at' => '2024-12-27 00:00:00',
+            ]
             
         ];
         \App\Models\AcademicYear::insertOrIgnore($data);

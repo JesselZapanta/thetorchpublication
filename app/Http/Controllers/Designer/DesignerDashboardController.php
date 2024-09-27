@@ -277,7 +277,7 @@ class DesignerDashboardController extends Controller
         // not sure
         $categories = Category::with(['articles' => function($query) use ($dateFrom, $dateTo) {
             // Filter articles based on the time period and is_newsletter
-            $query->where('is_newsletter', 'yes')
+            $query->where('is_newsletter', 'added')
                 ->whereBetween('created_at', [$dateFrom, $dateTo])
                 ->limit(10);
         }])->where('status', 'active')->get();

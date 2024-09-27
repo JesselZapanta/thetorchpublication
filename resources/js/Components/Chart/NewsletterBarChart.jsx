@@ -4,21 +4,21 @@ import { Chart, registerables } from "chart.js";
 // Register Chart.js components
 Chart.register(...registerables);
 
-const NewsletterBarChart = ({ categoriesWithCount }) => {
+const NewsletterBarChart = ({ categoriesWithArticleCount }) => {
     const chartRef = useRef(null);
 
     useEffect(() => {
         const ctx = chartRef.current.getContext("2d");
 
         // Extract category names and article counts
-        const labels = categoriesWithCount.map((category) => {
+        const labels = categoriesWithArticleCount.map((category) => {
             // Capitalize the first letter of the category name
             return (
                 category.category_name.charAt(0).toUpperCase() +
                 category.category_name.slice(1).toLowerCase()
             );
         });
-        const data = categoriesWithCount.map(
+        const data = categoriesWithArticleCount.map(
             (category) => category.is_newsletter
         );
 
@@ -43,7 +43,7 @@ const NewsletterBarChart = ({ categoriesWithCount }) => {
         return () => {
             myChart.destroy();
         };
-    }, [categoriesWithCount]);
+    }, [categoriesWithArticleCount]);
 
     return <canvas ref={chartRef} />;
 };
