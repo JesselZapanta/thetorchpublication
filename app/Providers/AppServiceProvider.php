@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\ContributorApplication;
 use App\Models\FreedomWall;
 use App\Models\Newsletter;
 use App\Models\Task;
@@ -275,10 +276,16 @@ class AppServiceProvider extends ServiceProvider
                     $rejectedArticleCount = Article::where('status', 'rejected')
                         ->where('created_by', Auth::user()->id)
                         ->count();
+
+
+                    $rejectedApplication = ContributorApplication::where('user_id', Auth::user()->id)
+                                                                ->where('status', 'rejected')
+                                                                ->count();
                 }
 
                 return [
                     'rejectedArticleCount' => $rejectedArticleCount,
+                    'rejectedApplication' => $rejectedApplication
                 ];
             }
             return null;

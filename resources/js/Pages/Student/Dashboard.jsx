@@ -64,9 +64,16 @@ export default function Dashboard({
                     <div className="flex gap-4">
                         <Link
                             href={route("student-contributor.create")}
-                            className="px-4 py-2 bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                            className="flex justify-center items-center px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                         >
                             Apply Contributor
+                            {StudentBadgeCount.rejectedApplication > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {StudentBadgeCount.rejectedApplication}
+                                    </span>
+                                </>
+                            )}
                         </Link>
                     </div>
                 </div>

@@ -46,10 +46,10 @@ class StudentApplyContributorController extends Controller
             // If the status is 'rejected', set it to 'pending'
             if ($current_status === 'rejected') {
                 $data['status'] = 'pending';
+                // dd($current_status);
             }
         } else {
-            // If there's no application, you may want to set the initial status
-            $data['status'] = 'pending'; // or another default value
+            $data['status'] = 'pending'; 
         }
 
         $sample_file = $data['sample_work_file_path'];
@@ -68,8 +68,9 @@ class StudentApplyContributorController extends Controller
 
         // Update or create the contributor application
         ContributorApplication::updateOrCreate(
+            
+            ['user_id' => $user_id],
             $data,
-            ['user_id' => $user_id]
                                 
         );
 

@@ -20,7 +20,6 @@ export default function Create({
     existingApplication,
     flash,
 }) {
-
     // Display flash messages if they exist
     useEffect(() => {
         if (flash.message.success) {
@@ -31,7 +30,7 @@ export default function Create({
         }
     }, [flash]);
 
-    const { data, setData, post, errors, processing, reset  } = useForm({
+    const { data, setData, post, errors, processing, reset } = useForm({
         applied_for: existingApplication?.data?.applied_for || "", // Use optional chaining
         institute: existingApplication?.data?.institute || "",
         program: existingApplication?.data?.program || "",
@@ -70,10 +69,11 @@ export default function Create({
         if (application) {
             // alert(user.id);
             router.delete(
-                route("student-contributor.destroy", application.data.id), {
+                route("student-contributor.destroy", application.data.id),
+                {
                     onSuccess: () => {
-                        reset(); 
-                    }
+                        reset();
+                    },
                 }
             );
         }
@@ -108,32 +108,70 @@ export default function Create({
 
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {existingApplication && (
-                        <div
-                            className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
-                            role="alert"
-                        >
-                            <div className="flex">
-                                <div className="py-1">
-                                    <svg
-                                        className="fill-current h-6 w-6 text-red-500 mr-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                    </svg>
+                    {existingApplication &&
+                        existingApplication.data.status ===
+                            "pending" &&(
+                                <div
+                                    className="bg-amber-100 mb-4 border-t-4 border-amber-500 rounded-b-lg text-amber-900 px-4 py-3 shadow-md"
+                                    role="alert"
+                                >
+                                    <div className="flex">
+                                        <div className="py-1">
+                                            <svg
+                                                className="fill-current h-6 w-6 text-amber-500 mr-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold">
+                                                Application Status
+                                            </p>
+                                            <p className="text-sm">
+                                                {
+                                                    existingApplication.data
+                                                        .status
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-bold">
-                                        Application Status
-                                    </p>
-                                    <p className="text-sm">
-                                        {existingApplication.data.status}
-                                    </p>
+                            )}
+
+                    {existingApplication &&
+                        existingApplication.data.status ===
+                            "rejected" &&(
+                                <div
+                                    className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                    role="alert"
+                                >
+                                    <div className="flex">
+                                        <div className="py-1">
+                                            <svg
+                                                className="fill-current h-6 w-6 text-red-500 mr-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold">
+                                                Application Status
+                                            </p>
+                                            <p className="text-sm">
+                                                {
+                                                    existingApplication.data
+                                                        .status
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
+
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {/* sample_work_file_path */}
                         <div className="mt-4">
