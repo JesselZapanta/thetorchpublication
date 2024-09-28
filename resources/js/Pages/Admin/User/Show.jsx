@@ -27,7 +27,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="grid grid-cols-3">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3">
                             <div>
                                 <img
                                     src={user.profile_image_path}
@@ -67,7 +67,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     <p className="mt-1">{user.position}</p>
                                 </div>
                             </div>
-                            <div className="p-6 text-gray-900 dark:text-gray-100 flex flex-col justify-between">
+                            <div className="p-6 lg:col-span-1 md:col-span-2 text-gray-900 dark:text-gray-100 flex flex-col justify-between">
                                 <div>
                                     <div>
                                         <h4 className="font-bold text-base">
