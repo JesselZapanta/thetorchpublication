@@ -2,7 +2,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, user, AdminBadgeCount }) {
+export default function Index({ auth, user, AdminBadgeCount, contributions }) {
     return (
         <AdminAuthenticatedLayout
             AdminBadgeCount={AdminBadgeCount}
@@ -25,58 +25,96 @@ export default function Index({ auth, user, AdminBadgeCount }) {
         >
             <Head title={`User ${user.name}`} />
             <div className="py-12">
-                <div className="max-w-lg mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div>
-                            <img
-                                src={user.profile_image_path}
-                                alt={user.name}
-                                className="w-full h-96 object-cover"
-                            />
-                        </div>
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                        <div className="grid grid-cols-3">
                             <div>
+                                <img
+                                    src={user.profile_image_path}
+                                    alt={user.name}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="p-6 text-gray-900 dark:text-gray-100">
                                 <div>
-                                    <label className="font-bold text-base">
+                                    <h4 className="font-bold text-base">
                                         Student ID
-                                    </label>
+                                    </h4>
                                     <p className="mt-1">{user.student_id}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-base">
+                                    <h4 className="font-bold text-base">
                                         Full Name
-                                    </label>
+                                    </h4>
                                     <p className="mt-1">{user.name}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-base">
+                                    <h4 className="font-bold text-base">
                                         Email
-                                    </label>
+                                    </h4>
                                     <p className="mt-1">{user.email}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-base">
+                                    <h4 className="font-bold text-base">
                                         Role
-                                    </label>
+                                    </h4>
                                     <p className="mt-1">{user.role}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <label className="font-bold text-base">
+                                    <h4 className="font-bold text-base">
                                         Position
-                                    </label>
+                                    </h4>
                                     <p className="mt-1">{user.position}</p>
                                 </div>
                             </div>
-                            <div className="mt-6 flex justify-end gap-2">
-                                <Link
-                                    href={route("user.edit", user.id)}
-                                    className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
-                                >
-                                    Edit User
-                                </Link>
-                                <SecondaryButton href={route("user.index")}>
-                                    Back
-                                </SecondaryButton>
+                            <div className="p-6 text-gray-900 dark:text-gray-100 flex flex-col justify-between">
+                                <div>
+                                    <div>
+                                        <h4 className="font-bold text-base">
+                                            Published Articles
+                                        </h4>
+                                        <p className="mt-1">
+                                            {contributions.articleCount}
+                                        </p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <h4 className="font-bold text-base">
+                                            Total Comments
+                                        </h4>
+                                        <p className="mt-1">
+                                            {contributions.commentsCount}
+                                        </p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <h4 className="font-bold text-base">
+                                            Total Freedom Wall Entries
+                                        </h4>
+                                        <p className="mt-1">
+                                            {
+                                                contributions.freedmWallEntriesCount
+                                            }
+                                        </p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <h4 className="font-bold text-base">
+                                            Total Completed Task
+                                        </h4>
+                                        <p className="mt-1">
+                                            {contributions.taskCount}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <Link
+                                        href={route("user.edit", user.id)}
+                                        className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Edit User
+                                    </Link>
+                                    <SecondaryButton href={route("user.index")}>
+                                        Back
+                                    </SecondaryButton>
+                                </div>
                             </div>
                         </div>
                     </div>

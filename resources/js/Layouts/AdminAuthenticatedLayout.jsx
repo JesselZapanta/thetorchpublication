@@ -40,6 +40,16 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                     active={route().current("user.index")}
                                 >
                                     Users
+                                    {AdminBadgeCount.totalApplication > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalApplication >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalApplication}
+                                            </span>
+                                        </>
+                                    )}
                                 </NavLink>
                                 <NavLink
                                     href={route("academic-year.index")}
@@ -225,6 +235,15 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             active={route().current("user.index")}
                         >
                             User
+                            {AdminBadgeCount.totalApplication > 0 && (
+                                <>
+                                    <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                        {AdminBadgeCount.totalApplication > 9
+                                            ? "9+"
+                                            : AdminBadgeCount.totalApplication}
+                                    </span>
+                                </>
+                            )}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("category.index")}

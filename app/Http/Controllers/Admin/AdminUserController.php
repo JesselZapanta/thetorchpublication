@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Article;
+use App\Models\Comment;
+use App\Models\FreedomWall;
+use App\Models\Task;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -77,10 +81,46 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
+
+        $user = User::find($id);
+
+        $userId = $user->id;
+
+        if(!$user){
+            return to_route('user.index')->with(['error' => 'User not found.']);
+        }
+
+
+        $articleCount = Article::where('created_by', $userId)
+                                ->where('status', 'published')
+                                ->where('visibility', 'visible')
+                                ->count();
+
+        $commentsCount = Comment::where('user_id', $userId)
+                                ->where('visibility', 'visible')
+                                ->count();
+
+        $freedmWallEntriesCount = FreedomWall::where('user_id', $userId)
+                                ->where('visibility', 'visible')
+                                ->count();                      
+        
+        $taskCount = Task::where('assigned_to', $userId)
+                                ->orWhere('layout_by', $userId)
+                                ->count();      
+
+
+        $contributions = [
+            'articleCount' => $articleCount,
+            'commentsCount' => $commentsCount,
+            'freedmWallEntriesCount' => $freedmWallEntriesCount,
+            'taskCount' => $taskCount,
+        ];  
+
         return inertia('Admin/User/Show', [
             'user' => new UserResource($user),
+            'contributions' => $contributions
         ]);
     }
 

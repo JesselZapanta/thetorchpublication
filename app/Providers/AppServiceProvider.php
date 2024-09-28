@@ -81,6 +81,9 @@ class AppServiceProvider extends ServiceProvider
                 $totalFreedomWallReportCount = FreedomWall::where('visibility', 'visible')
                                                     ->where('report_count', '>', 0)
                                                     ->count();
+                                                    
+                $totalApplication = ContributorApplication::where('status', 'pending')
+                                                            ->count();
 
                 $totalReportCount = $totalArticleReportCount + $totalCommentReportCount + $totalFreedomWallReportCount;
 
@@ -90,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
                     'newsletterPendingCount' => $newsletterPendingCount,
                     'totalTaskCount' => $totalTaskCount,
                     'totalReportCount' => $totalReportCount,
+                    'totalApplication' => $totalApplication,
                 ];
             }
 
