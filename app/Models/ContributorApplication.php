@@ -10,11 +10,11 @@ class ContributorApplication extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'name',
+        'applied_for',
         'institute',
         'program',
         'sample_work_file_path',
+        'user_id',
         'status',
     ];
 

@@ -1,4 +1,5 @@
 import Checkbox from "@/Components/Checkbox";
+import DangerButton from "@/Components/DangerButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
@@ -7,14 +8,33 @@ import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
-export default function Create({ auth, StudentBadgeCount, existingEntry }) {
-    const { data, setData, post, errors, processing } = useForm({
-        name: existingEntry.data.name || "",
-        institute: existingEntry.data.institute || "",
-        program: existingEntry.data.program || "",
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+export default function Create({
+    auth,
+    StudentBadgeCount,
+    existingApplication,
+    flash,
+}) {
+
+    // Display flash messages if they exist
+    useEffect(() => {
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+
+    const { data, setData, post, errors, processing, reset  } = useForm({
+        applied_for: existingApplication?.data?.applied_for || "", // Use optional chaining
+        institute: existingApplication?.data?.institute || "",
+        program: existingApplication?.data?.program || "",
         sample_work_file_path: "",
     });
 
@@ -33,6 +53,34 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
         onSubmit();
     };
 
+    // ===== Delere appplication///
+
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [application, setApplication] = useState(null); // For storing the user to edit/delete
+
+    // Open modal and set User to delete
+    const openDeleteModal = (existingApplication) => {
+        // console.log(existingApplication.data.id);
+
+        setApplication(existingApplication);
+        setConfirmDelete(true);
+    };
+
+    const handle = () => {
+        if (application) {
+            // alert(user.id);
+            router.delete(
+                route("student-contributor.destroy", application.data.id), {
+                    onSuccess: () => {
+                        reset(); 
+                    }
+                }
+            );
+        }
+        setConfirmDelete(false);
+        setApplication(null);
+    };
+
     return (
         <StudentAuthenticatedLayout
             StudentBadgeCount={StudentBadgeCount}
@@ -42,17 +90,25 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Apply to be a Contributor
                     </h2>
+                    <div className="flex gap-4">
+                        <SecondaryButton href={route("student.dashboard")}>
+                            Back
+                        </SecondaryButton>
+                    </div>
                 </div>
             }
         >
             <Head title="Apply to be a Contributor" />
+
+            <ToastContainer position="bottom-right" />
+
             {/* <pre className="text-gray-900">
-                {JSON.stringify(existingEntry, null, 2)}
+                {JSON.stringify(existingApplication, null, 2)}
             </pre> */}
 
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {existingEntry && (
+                    {existingApplication && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"
@@ -72,7 +128,7 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                                         Application Status
                                     </p>
                                     <p className="text-sm">
-                                        {existingEntry.data.status}
+                                        {existingApplication.data.status}
                                     </p>
                                 </div>
                             </div>
@@ -81,12 +137,14 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {/* sample_work_file_path */}
                         <div className="mt-4">
-                            {existingEntry.data.sample_work_file_path && (
+                            {existingApplication?.data
+                                ?.sample_work_file_path && (
                                 <div className="w-full h-[400px]">
                                     <iframe
                                         className="w-full h-full"
                                         src={
-                                            existingEntry.data.sample_work_file_path
+                                            existingApplication.data
+                                                .sample_work_file_path
                                         }
                                     ></iframe>
                                 </div>
@@ -96,25 +154,67 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
                         >
-                            {/* title */}
-                            <div className="mt-4 w-full">
-                                <InputLabel htmlFor="name" value="Full Name" />
+                            <div className="flex gap-4">
+                                {/* applied_for */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="applied_for"
+                                        value="Applied For"
+                                    />
 
-                                <TextInput
-                                    id="name"
-                                    type="text"
-                                    name="name"
-                                    value={data.name}
-                                    className="mt-2 block w-full"
-                                    onChange={(e) =>
-                                        setData("name", e.target.value)
-                                    }
-                                />
+                                    <SelectInput
+                                        name="applied_for"
+                                        id="applied_for"
+                                        value={data.applied_for}
+                                        className="mt-1 block w-full"
+                                        onChange={(e) =>
+                                            setData(
+                                                "applied_for",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="">Select a Role</option>
+                                        <option value="student_contributor">
+                                            Student Contributor
+                                        </option>
+                                        <option value="editor">Editor</option>
+                                        <option value="writer">Writer</option>
+                                        <option value="designer">
+                                            Designer
+                                        </option>
+                                    </SelectInput>
 
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.applied_for}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                {/* sample_work_file_path */}
+                                <div className="w-full mt-4">
+                                    <InputLabel
+                                        htmlFor="sample_work_file_path"
+                                        value="Sample Work"
+                                    />
+
+                                    <TextInput
+                                        id="sample_work_file_path"
+                                        type="file"
+                                        name="sample_work_file_path"
+                                        className="mt-2 block w-full cursor-pointer"
+                                        onChange={(e) =>
+                                            setData(
+                                                "sample_work_file_path",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.sample_work_file_path}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex gap-4">
@@ -167,38 +267,18 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                                 </div>
                             </div>
 
-                            {/* sample_work_file_path */}
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="sample_work_file_path"
-                                    value="Sample Work"
-                                />
-
-                                <TextInput
-                                    id="sample_work_file_path"
-                                    type="file"
-                                    name="sample_work_file_path"
-                                    className="mt-2 block w-full cursor-pointer"
-                                    onChange={(e) =>
-                                        setData(
-                                            "sample_work_file_path",
-                                            e.target.files[0]
-                                        )
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.sample_work_file_path}
-                                    className="mt-2"
-                                />
-                            </div>
-
                             <div className="mt-6 flex justify-end gap-2">
-                                <SecondaryButton
-                                    href={route("student-article.index")}
-                                >
-                                    Cancel
-                                </SecondaryButton>
+                                {existingApplication && (
+                                    <DangerButton
+                                        type="button"
+                                        onClick={() =>
+                                            openDeleteModal(existingApplication)
+                                        }
+                                        className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                    >
+                                        Delete
+                                    </DangerButton>
+                                )}
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
@@ -216,7 +296,7 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Submit</h2>
                     <p className="mt-4">
-                        Are you sure you want to Submit this Article?
+                        Are you sure you want to submit this application?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton
@@ -232,6 +312,26 @@ export default function Create({ auth, StudentBadgeCount, existingEntry }) {
                         >
                             {processing ? "Processing" : "Submit"}
                         </button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Confirm Delete Modal */}
+            <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <p className="mt-4">
+                        Are you sure you want to delete this application?
+                    </p>
+                    <div className="mt-4 flex justify-end">
+                        <SecondaryButton
+                            onClick={() => setConfirmDelete(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <DangerButton onClick={handle} className="ml-2">
+                            Delete
+                        </DangerButton>
                     </div>
                 </div>
             </Modal>

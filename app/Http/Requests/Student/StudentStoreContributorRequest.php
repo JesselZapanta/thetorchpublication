@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Student;
 
+use App\Models\ContributorApplication;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StudentStoreContributorRequest extends FormRequest
 {
@@ -21,11 +23,16 @@ class StudentStoreContributorRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Get the current contributor application for the user
+        $contributorApplication = ContributorApplication::where('user_id', Auth::id())->first();
+
         return [
-            'name' => ['required', 'string'],
+            'applied_for' => ['required', 'string'],
             'institute' => ['required', 'string'],
             'program' => ['required', 'string'],
-            'sample_work_file_path' => ['required','file','mimes:pdf'], 
+            // Only require the file if it's not already uploaded
+            'sample_work_file_path' => [$contributorApplication ? 'nullable' : 'required', 'file', 'mimes:pdf'],
         ];
     }
+
 }

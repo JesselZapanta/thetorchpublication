@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contributor_applications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('name');
+            $table->string('applied_for');
             $table->string('institute');
             $table->string('program');
             $table->string('sample_work_file_path');

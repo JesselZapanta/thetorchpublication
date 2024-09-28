@@ -18,7 +18,7 @@ class ContributorApplicationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'applied_for' => $this->applied_for,
             'user_id' => $this->user_id,
 
             'user' => $this->user ? new UserResource($this->user) : null ,

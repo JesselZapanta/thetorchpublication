@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAcademicYearController;
+use App\Http\Controllers\Admin\AdminApplyContributorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
@@ -106,7 +107,8 @@ Route::middleware(['auth','admin', ])->group(function() {
 
     Route::resource('user', AdminUserController::class);
 
-    
+    Route::get('/admin/contributor/index', [AdminApplyContributorController::class, 'index'])->name('admin-contributor.index');
+    Route::post('/admin/contributor/{id}/reject', [AdminApplyContributorController::class, 'reject'])->name('admin-contributor.reject');
         
     Route::resource('category', AdminCategoryController::class);
 
@@ -170,6 +172,7 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
     
     Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
     Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
+    Route::delete('/student/contributor/{id}/destroy', [StudentApplyContributorController::class, 'destroy'])->name('student-contributor.destroy');
 });
 
 // for editor

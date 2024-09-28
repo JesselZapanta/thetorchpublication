@@ -17,42 +17,82 @@ class StudentApplyContributorController extends Controller
         $user_id = Auth::user()->id;
         
 
-        $existingEntry = ContributorApplication::where('user_id', $user_id)->first();
+        $existingApplication = ContributorApplication::where('user_id', $user_id)->first();
 
-        // dd($existingEntry);
+        // dd($existingApplication);
         
 
         return inertia('Student/Contributor', [
-            'existingEntry' => new ContributorApplicationResource($existingEntry),
+            'existingApplication' => $existingApplication ? new ContributorApplicationResource($existingApplication) : null,
         ]);
     }
 
     public function store(StudentStoreContributorRequest $request)
-{
-    $user_id = Auth::user()->id;
+    {
+        $user_id = Auth::user()->id;
 
-    $data = $request->validated();
+        $data = $request->validated();
 
-    $data['user_id'] = $user_id;
+        $data['user_id'] = $user_id;
 
-    $contributorApplication = ContributorApplication::where('user_id', $user_id)->first();
+        $contributorApplication = ContributorApplication::where('user_id', $user_id)->first();
 
-    // Handle the file upload for the sample work file
-    $sample_file = $data['sample_work_file_path'];
+        $current_status = null;
 
-    if ($sample_file) {
-        if ($contributorApplication && $contributorApplication->sample_work_file_path) {
-            Storage::disk('public')->delete($contributorApplication->sample_work_file_path);
+        // Check if the contributor application exists
+        if ($contributorApplication) {
+            $current_status = $contributorApplication->status;
+
+            // If the status is 'rejected', set it to 'pending'
+            if ($current_status === 'rejected') {
+                $data['status'] = 'pending';
+            }
+        } else {
+            // If there's no application, you may want to set the initial status
+            $data['status'] = 'pending'; // or another default value
         }
 
-        $data['sample_work_file_path'] = $sample_file->store('sample_file', 'public');
+        $sample_file = $data['sample_work_file_path'];
+
+        if ($sample_file) {
+            if ($contributorApplication && $contributorApplication->sample_work_file_path) {
+                Storage::disk('public')->delete($contributorApplication->sample_work_file_path);
+            }
+            $data['sample_work_file_path'] = $sample_file->store('sample_file', 'public');
+        } elseif ($contributorApplication) {
+            $data['sample_work_file_path'] = $contributorApplication->sample_work_file_path;
+        }
+
+        // dd($data);
+
+
+        // Update or create the contributor application
+        ContributorApplication::updateOrCreate(
+            $data,
+            ['user_id' => $user_id]
+                                
+        );
+
+        return to_route('student-contributor.create')->with(['success' => 'Application submitted successfully']);
     }
 
-    // Update or create the contributor application
-    ContributorApplication::updateOrCreate(
-        ['user_id' => $user_id],  
-        $data                      
-    );
-    return to_route('student.dashboard')->with(['success' => 'Application submitted successfully']);
-}
+    public function destroy($id){
+
+        $application = ContributorApplication::find($id);
+
+        if(!$application){
+            return to_route('student-contributor.create')->with(key: ['error' => 'Application not found.']);
+        }
+
+        $application->delete();
+
+        // dd($application);
+
+        if($application->sample_work_file_path){
+            Storage::disk('public')->delete($application->sample_work_file_path);
+        }
+
+        return to_route('student-contributor.create')->with(['success' => 'Application deleted successfully']);
+    }
+    
 }
