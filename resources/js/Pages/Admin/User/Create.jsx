@@ -6,8 +6,8 @@ import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth }) {
-    const { data, setData, post, errors, processing, AdminBadgeCount } = useForm({
+export default function Create({ auth, AdminBadgeCount }) {
+    const { data, setData, post, errors, processing } = useForm({
         student_id: "",
         username: "",
         name: "",

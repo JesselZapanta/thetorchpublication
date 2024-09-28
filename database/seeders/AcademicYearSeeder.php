@@ -58,7 +58,9 @@ class AcademicYearSeeder extends Seeder
             ],
 
             [
+                'code' => '241',
                 'description' => '1ST SEM AY 2024-2025',
+                'status' => 'inactive',
                 'start_at' => '2024-08-01 00:00:00',
                 'end_at' => '2024-12-27 00:00:00',
             ]

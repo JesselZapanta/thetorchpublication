@@ -63,10 +63,10 @@ export default function Dashboard({
                     </h2>
                     <div className="flex gap-4">
                         <Link
-                            href={route("student.report")}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                            href={route("student-contributor.create")}
+                            className="px-4 py-2 bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                         >
-                            Generate Report
+                            Apply Contributor
                         </Link>
                     </div>
                 </div>
@@ -83,36 +83,53 @@ export default function Dashboard({
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* <h1>{dateFrom}</h1> */}
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <SelectInput
-                                    className="w-full"
-                                    value={selectedPeriod}
-                                    onChange={handleSelectPeriod} // Only handle period selection here
-                                >
-                                    <option value="daily">Today</option>
-                                    <option value="weekly">Last Week</option>
-                                    <option value="monthly">Last Month</option>
-                                    <option value="ay">Academic Year</option>
-                                </SelectInput>
-
-                                {selectedPeriod === "ay" && (
+                            <div className="flex justify-between">
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedAy}
-                                        onChange={handleSelectAcademicYear} // Handle academic year selection separately
+                                        value={selectedPeriod}
+                                        onChange={handleSelectPeriod} // Only handle period selection here
                                     >
-                                        <option value="">
-                                            Select Academic Year
+                                        <option value="daily">Today</option>
+                                        <option value="weekly">
+                                            Last Week
                                         </option>
-                                        {academicYears.data.map((ay) => (
-                                            <option key={ay.id} value={ay.id}>
-                                                {ay.description}
-                                            </option>
-                                        ))}
+                                        <option value="monthly">
+                                            Last Month
+                                        </option>
+                                        <option value="ay">
+                                            Academic Year
+                                        </option>
                                     </SelectInput>
-                                )}
-                            </div>
 
+                                    {selectedPeriod === "ay" && (
+                                        <SelectInput
+                                            className="w-full"
+                                            value={selectedAy}
+                                            onChange={handleSelectAcademicYear} // Handle academic year selection separately
+                                        >
+                                            <option value="">
+                                                Select Academic Year
+                                            </option>
+                                            {academicYears.data.map((ay) => (
+                                                <option
+                                                    key={ay.id}
+                                                    value={ay.id}
+                                                >
+                                                    {ay.description}
+                                                </option>
+                                            ))}
+                                        </SelectInput>
+                                    )}
+                                </div>
+
+                                <Link
+                                    href={route("student.report")}
+                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Generate Report
+                                </Link>
+                            </div>
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -129,7 +146,7 @@ export default function Dashboard({
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Unpublished Articles 
+                                            Total Unpublished Articles
                                         </h3>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">

@@ -30,6 +30,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReportContentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Student\StudentApplyContributorController;
 use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentGenerateReportController;
@@ -104,6 +105,9 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
 
     Route::resource('user', AdminUserController::class);
+
+    
+        
     Route::resource('category', AdminCategoryController::class);
 
     Route::get('admin-article/calendar', [AdminArticleController::class, 'calendar'])->name('admin-article.calendar');
@@ -162,6 +166,10 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
     Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
     Route::get('student-article/{id}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
     Route::resource('student-article', StudentArticleController::class);
+
+    
+    Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
+    Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
 });
 
 // for editor
