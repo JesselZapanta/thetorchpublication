@@ -1,6 +1,12 @@
 import { Link, router } from '@inertiajs/react';
 import React from 'react'
 
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
+
 export default function FeaturedArticle({ featuredArticle }) {
     const incrementViews = (articleId) => {
         router.post(
@@ -24,8 +30,17 @@ export default function FeaturedArticle({ featuredArticle }) {
     };
 
 
+    
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            // once: true, // Whether animation should happen only once
+        });
+    }, []);
+
+
     return (
-        <div className="w-full md:w-[65%] flex flex-col">
+        <div className="w-full md:w-[65%] flex flex-col" data-aos="fade-up">
             {/* <pre className="text-gray-950">
                 {JSON.stringify(featuredArticle, null, 2)}
             </pre> */}

@@ -72,3 +72,7 @@ php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
 composer require spatie/browsershot
 
 npm install puppeteer
+
+
+<!-- AOS -->
+npm install aos --save

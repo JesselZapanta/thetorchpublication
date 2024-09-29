@@ -1,6 +1,13 @@
 import { Link, router } from "@inertiajs/react";
 import React from "react";
 
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
+
+
 export default function NewsletterCard({ newsletter }) {
     const incrementViews = () => {
         router.post(
@@ -23,12 +30,21 @@ export default function NewsletterCard({ newsletter }) {
         return text;
     };
 
+            
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            // once: true, // Whether animation should happen only once
+        });
+    }, []);
+
+
     return (
         <>
             {/* <pre className="text-gray-900">
                 {JSON.stringify(newsletter, null, 2)}
             </pre> */}
-            <div>
+            <div data-aos="fade-up">
                 <div className="overflow-hidden rounded-xl h-96 shadow-lg">
                     <a href={newsletter.newsletter_file_path} target="blank">
                         <img

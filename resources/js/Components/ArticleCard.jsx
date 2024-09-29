@@ -1,6 +1,11 @@
 import { Link, router } from "@inertiajs/react";
 import React from "react";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
+
 export default function ArticleCard({ article }) {
     const incrementViews = () => {
         router.post(
@@ -23,8 +28,18 @@ export default function ArticleCard({ article }) {
         return text;
     };
 
+
+        
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            // once: true, // Whether animation should happen only once
+        });
+    }, []);
+
+
     return (
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col" data-aos="fade-up">
             <div className="overflow-hidden rounded-xl h-64">
                 <Link
                     href={route("article.read", article.id)}
@@ -53,7 +68,9 @@ export default function ArticleCard({ article }) {
                 </Link>
                 {/* star */}
                 <div className="flex justify-center items-center gap-1">
-                    <p className="text-gray-800 text-md">{article.average_rating}</p>
+                    <p className="text-gray-800 text-md">
+                        {article.average_rating}
+                    </p>
                     <p className="text-amber-600 text-2xl">★</p>
                 </div>
             </div>

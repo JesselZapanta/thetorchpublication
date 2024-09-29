@@ -6,6 +6,11 @@ import TopArticles from "@/Components/TopArticles";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
+
 export default function Welcome({
     auth,
     categories,
@@ -14,6 +19,15 @@ export default function Welcome({
     latestArticles,
     latestNewsletter,
 }) {
+
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            // once: true, // Whether animation should happen only once
+        });
+    }, []);
+
+
     return (
         <UnauthenticatedLayout user={auth.user} categories={categories}>
             <Head title="Home Page" />
@@ -30,9 +44,15 @@ export default function Welcome({
                     </div>
                 </div>
 
-                <div className="w-full h-[2px] bg-indigo-500 mt-2"></div>
+                <div
+                    className="w-full h-[2px] bg-indigo-500 mt-2"
+                    data-aos="fade-up"
+                ></div>
 
-                <h5 className="block text-start  text-2xl text-indigo-500 py-2">
+                <h5
+                    className="block text-start  text-2xl text-indigo-500 py-2"
+                    data-aos="fade-up"
+                >
                     The Latest
                 </h5>
 
@@ -43,9 +63,15 @@ export default function Welcome({
                     ))}
                 </div>
 
-                <div className="w-full h-[2px] bg-indigo-500 mt-2"></div>
+                <div
+                    className="w-full h-[2px] bg-indigo-500 mt-2"
+                    data-aos="fade-up"
+                ></div>
 
-                <h5 className="block text-start  text-2xl text-indigo-500 py-2">
+                <h5
+                    className="block text-start  text-2xl text-indigo-500 py-2"
+                    data-aos="fade-up"
+                >
                     Latest Release
                 </h5>
 

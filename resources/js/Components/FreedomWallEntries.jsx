@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import Dropdown from "./../Components/Dropdown";
 import Modal from "./Modal";
 
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export default function FreedomWallEntries({
     auth,
     freedomWallEntries,
@@ -76,6 +80,13 @@ export default function FreedomWallEntries({
         return text;
     };
 
+    useEffect(() => {
+        AOS.init({
+            duration: 1000, // Animation duration in ms
+            // once: true, // Whether animation should happen only once
+        });
+    }, []);
+
     // //state for modal
     // const [showFreedomWall, setShowFreedomWall] = useState(false);
 
@@ -114,6 +125,7 @@ export default function FreedomWallEntries({
                 <div
                     key={entry.id}
                     className="relative flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden "
+                    data-aos="fade-up"
                 >
                     <div className="dark:bg-gray-700 bg-gray-600 p-2 w-full h-16 flex justify-between items-center">
                         <div className="flex gap-2">
