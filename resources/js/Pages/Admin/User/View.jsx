@@ -1,11 +1,13 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import { ROLE_TEXT } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function View({ auth, user, AdminBadgeCount, application }) {
     const { data, setData, post, errors } = useForm({
@@ -15,11 +17,24 @@ export default function View({ auth, user, AdminBadgeCount, application }) {
         _method: "PUT",
     });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-
-        post(route("admin-contributor.update", user.id));
+    
+    const onSubmit = () => {
+        post(route("admin-contributor.update", user.id), {
+            preserveScroll: true,
+        });
     };
+
+    const [confirmUpdate, setConfirmUpdate] = useState(false);
+
+    const openUpdateModal = () => {
+        setConfirmUpdate(true);
+    };
+
+    const handleConfirmUpdate = () => {
+        setConfirmUpdate(false);
+        onSubmit();
+    };
+
 
     return (
         <AdminAuthenticatedLayout
@@ -38,11 +53,9 @@ export default function View({ auth, user, AdminBadgeCount, application }) {
             }
         >
             <Head title={`View ${user.name}`} />
-
             {/* <pre className="text-gray-900">
                 {JSON.stringify(application, null, 2)}
             </pre> */}
-
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -188,7 +201,11 @@ export default function View({ auth, user, AdminBadgeCount, application }) {
                                             >
                                                 Cancel
                                             </SecondaryButton>
-                                            <button className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700">
+                                            <button
+                                                type="button"
+                                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                                onClick={openUpdateModal}
+                                            >
                                                 Update
                                             </button>
                                         </div>
@@ -198,7 +215,30 @@ export default function View({ auth, user, AdminBadgeCount, application }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>{" "}
+            {/* Confirm Update Modal */}
+            <Modal show={confirmUpdate} onClose={() => setConfirmUpdate(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm Update</h2>
+                    <p className="mt-4">
+                        Are you sure you want to update this user?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton
+                            onClick={() => setConfirmUpdate(false)}
+                        >
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            onClick={handleConfirmUpdate}
+                        >
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </AdminAuthenticatedLayout>
     );
 }
