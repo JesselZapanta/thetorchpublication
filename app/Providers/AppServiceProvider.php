@@ -272,7 +272,7 @@ class AppServiceProvider extends ServiceProvider
         //Student notif badge count
         Inertia::share('StudentBadgeCount', function () {
 
-            if (Auth::check() && Auth::user()->role === 'student') { // Check if user is an student
+            if (Auth::check() && (Auth::user()->role === 'student' || Auth::user()->role === 'student_contributor')) {
 
                 $rejectedArticleCount = 0;
 

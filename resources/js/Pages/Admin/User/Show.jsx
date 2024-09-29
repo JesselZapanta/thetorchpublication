@@ -1,4 +1,5 @@
 import SecondaryButton from "@/Components/SecondaryButton";
+import { ROLE_TEXT } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
@@ -58,7 +59,10 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     <h4 className="font-bold text-base">
                                         Role
                                     </h4>
-                                    <p className="mt-1">{user.role}</p>
+                                    <p className="mt-1">
+                                        {" "}
+                                        {ROLE_TEXT[user.role]}
+                                    </p>
                                 </div>
                                 <div className="mt-4">
                                     <h4 className="font-bold text-base">

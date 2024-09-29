@@ -1,6 +1,7 @@
 import BarChart from "@/Components/Chart/BarChart";
 import PieChart from "@/Components/Chart/PieChart";
 import SelectInput from "@/Components/SelectInput";
+import { ROLE_TEXT } from "@/constants";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
@@ -59,10 +60,10 @@ export default function Dashboard({
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Student Dashboard
+                        {ROLE_TEXT[auth.user.role]} Dashboard
                     </h2>
                     <div className="flex gap-4">
-                        <Link
+                        {/* <Link
                             href={route("student-contributor.create")}
                             className="flex justify-center items-center px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                         >
@@ -74,7 +75,7 @@ export default function Dashboard({
                                     </span>
                                 </>
                             )}
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             }

@@ -104,11 +104,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth','admin', ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
-
+    
     Route::resource('user', AdminUserController::class);
 
     Route::get('/admin/contributor/index', [AdminApplyContributorController::class, 'index'])->name('admin-contributor.index');
     Route::post('/admin/contributor/{id}/reject', [AdminApplyContributorController::class, 'reject'])->name('admin-contributor.reject');
+    Route::get('/admin/contributor/{id}/view', [AdminApplyContributorController::class, 'view'])->name('admin-contributor.view');
+    Route::put('/admin/contributor/{id}/update', [AdminApplyContributorController::class, 'update'])->name('admin-contributor.update');
         
     Route::resource('category', AdminCategoryController::class);
 

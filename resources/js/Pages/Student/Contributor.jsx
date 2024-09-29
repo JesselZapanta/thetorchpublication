@@ -7,6 +7,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
+import { ROLE_TEXT } from "@/constants";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -109,68 +110,89 @@ export default function Create({
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {existingApplication &&
-                        existingApplication.data.status ===
-                            "pending" &&(
-                                <div
-                                    className="bg-amber-100 mb-4 border-t-4 border-amber-500 rounded-b-lg text-amber-900 px-4 py-3 shadow-md"
-                                    role="alert"
-                                >
-                                    <div className="flex">
-                                        <div className="py-1">
-                                            <svg
-                                                className="fill-current h-6 w-6 text-amber-500 mr-4"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p className="font-bold">
-                                                Application Status
-                                            </p>
-                                            <p className="text-sm">
-                                                {
-                                                    existingApplication.data
-                                                        .status
-                                                }
-                                            </p>
-                                        </div>
+                        existingApplication.data.status === "pending" && (
+                            <div
+                                className="bg-amber-100 mb-4 border-t-4 border-amber-500 rounded-b-lg text-amber-900 px-4 py-3 shadow-md"
+                                role="alert"
+                            >
+                                <div className="flex">
+                                    <div className="py-1">
+                                        <svg
+                                            className="fill-current h-6 w-6 text-amber-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold">
+                                            Application Status
+                                        </p>
+                                        <p className="text-sm uppercase">
+                                            {existingApplication.data.status}
+                                        </p>
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                        )}
 
                     {existingApplication &&
-                        existingApplication.data.status ===
-                            "rejected" &&(
-                                <div
-                                    className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
-                                    role="alert"
-                                >
-                                    <div className="flex">
-                                        <div className="py-1">
-                                            <svg
-                                                className="fill-current h-6 w-6 text-red-500 mr-4"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p className="font-bold">
-                                                Application Status
-                                            </p>
-                                            <p className="text-sm">
-                                                {
-                                                    existingApplication.data
-                                                        .status
-                                                }
-                                            </p>
-                                        </div>
+                        existingApplication.data.status === "rejected" && (
+                            <div
+                                className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                role="alert"
+                            >
+                                <div className="flex">
+                                    <div className="py-1">
+                                        <svg
+                                            className="fill-current h-6 w-6 text-red-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold">
+                                            Application Status
+                                        </p>
+                                        <p className="text-sm uppercase">
+                                            {existingApplication.data.status}
+                                        </p>
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                        )}
+
+                    {existingApplication &&
+                        existingApplication.data.status === "approved" && (
+                            <div
+                                className="bg-teal-100 mb-4 border-t-4 border-teal-500 rounded-b-lg text-teal-900 px-4 py-3 shadow-md"
+                                role="alert"
+                            >
+                                <div className="flex">
+                                    <div className="py-1">
+                                        <svg
+                                            className="fill-current h-6 w-6 text-teal-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold">
+                                            Application Status (You are now a{" "}
+                                            {ROLE_TEXT[auth.user.role]})
+                                        </p>
+                                        <p className="text-sm uppercase">
+                                            {existingApplication.data.status}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {/* sample_work_file_path */}
@@ -216,11 +238,11 @@ export default function Create({
                                         <option value="student_contributor">
                                             Student Contributor
                                         </option>
-                                        <option value="editor">Editor</option>
+                                        {/* <option value="editor">Editor</option>
                                         <option value="writer">Writer</option>
                                         <option value="designer">
                                             Designer
-                                        </option>
+                                        </option> */}
                                     </SelectInput>
 
                                     <InputError
@@ -317,13 +339,17 @@ export default function Create({
                                         Delete
                                     </DangerButton>
                                 )}
-                                <button
-                                    type="button"
-                                    className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
-                                    onClick={openSubmitModal}
-                                >
-                                    Submit
-                                </button>
+                                {(!existingApplication ||
+                                    existingApplication.data.status !==
+                                        "approved") && (
+                                    <button
+                                        type="button"
+                                        className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                                        onClick={openSubmitModal}
+                                    >
+                                        Submit
+                                    </button>
+                                )}
                             </div>
                         </form>
                     </div>

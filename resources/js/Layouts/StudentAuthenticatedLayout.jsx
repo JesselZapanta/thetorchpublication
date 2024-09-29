@@ -45,7 +45,8 @@ export default function StudentAuthenticatedLayout({
                                     )}
                                 >
                                     Articles
-                                    {StudentBadgeCount.rejectedArticleCount > 0 && (
+                                    {StudentBadgeCount.rejectedArticleCount >
+                                        0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                 {StudentBadgeCount.rejectedArticleCount >
@@ -75,6 +76,24 @@ export default function StudentAuthenticatedLayout({
                                             href={route("profile.edit")}
                                         >
                                             Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route(
+                                                "student-contributor.create"
+                                            )}
+                                            className="flex items-center"
+                                        >
+                                            Application
+                                            {StudentBadgeCount.rejectedApplication >
+                                                0 && (
+                                                <>
+                                                    <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                        {
+                                                            StudentBadgeCount.rejectedApplication
+                                                        }
+                                                    </span>
+                                                </>
+                                            )}
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}

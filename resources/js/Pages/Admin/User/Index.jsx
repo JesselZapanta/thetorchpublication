@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { ROLE_TEXT } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -334,7 +335,8 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                                                         {user.email}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {user.role}
+                                                        {/* {user.role} */}
+                                                        {ROLE_TEXT[user.role]}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {user.position}

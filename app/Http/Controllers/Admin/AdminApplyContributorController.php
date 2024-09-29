@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ApplicationUpdateUserRequest;
 use App\Http\Resources\Student\ContributorApplicationResource;
+use App\Http\Resources\UserResource;
 use App\Models\ContributorApplication;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminApplyContributorController extends Controller
@@ -25,13 +28,10 @@ class AdminApplyContributorController extends Controller
             });
         }
 
-        
-        // if (request('email')) {
-        //     // Filter based on related user email
-        //     $query->whereHas('user', function ($q) {
-        //         $q->where('email', 'like', '%' . request('email') . '%');
-        //     });
-        // }
+        if(request('applied_for')){
+            $query->where('applied_for', request('applied_for'));
+        }
+
 
 
         $contributorApplications = $query->orderBy($sortField, $sortDirection)
@@ -46,37 +46,7 @@ class AdminApplyContributorController extends Controller
         ]);
     }
 
-    // public function inddsadex()
-    // {   
-    //     // $users = User::all();
-    //     $query = User::query();
 
-    //     $sortField = request('sort_field', 'created_at');
-    //     $sortDirection = request('sort_direction', 'desc');
-        
-        
-    //     if(request('student_id')){
-    //         $query->where('student_id', 'like', '%'. request('student_id') . '%');
-    //     }
-        
-    //     if(request('name')){
-    //         $query->where('name', 'like', '%'. request('name') . '%');
-    //     }
-    //     if(request('email')){
-    //         $query->where('email', 'like', '%'. request('email') . '%');
-    //     }
-
-    //     if(request('role')){
-    //         $query->where('role', request('role'));
-    //     }
-
-    //     $users = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
-
-    //     return inertia('Admin/User/Index',[
-    //         'users' => UserResource::collection($users),
-    //         'queryParams' => request()->query() ? : null,
-    //     ]);
-    // }
 
     public function reject($id)
     {
@@ -91,7 +61,43 @@ class AdminApplyContributorController extends Controller
         $application->update(['status' => 'rejected']);
 
 
-        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Application rejected successfully']);
+        return to_route('admin-contributor.index')->with(['success' => 'Application rejected successfully']);
     }
 
+
+    public function view($id)
+    {
+        $application = ContributorApplication::find($id);
+
+        $userId = $application->user->id;
+
+        $user = User::find($userId);
+
+        if(!$user){
+            return to_route('admin-contributor.index')->with(['error' => 'User not found.']);
+        }
+
+        return inertia('Admin/User/View',[
+            'user' => new UserResource($user),
+            'application' => new ContributorApplicationResource($application),
+        ]);
+    }
+
+    public function update(ApplicationUpdateUserRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        $user = User::find($id);
+
+        $user_id = $user->id;
+
+        $application = ContributorApplication::where('user_id',$user_id)->first();
+
+        // dd($application);
+        $application->update(['status' => 'approved']);
+
+        $user->update($data);
+
+        return to_route('admin-contributor.index')->with(['success' => 'User was updated successfully.']);
+    }
 }

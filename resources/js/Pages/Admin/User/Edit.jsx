@@ -57,7 +57,7 @@ export default function Edit({ auth, user, AdminBadgeCount }) {
                             >
                                 <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
                                     <div>
-                                        <div className="mt-4">
+                                        <div>
                                             <InputLabel
                                                 htmlFor="student_id"
                                                 value="Student ID"
@@ -206,7 +206,7 @@ export default function Edit({ auth, user, AdminBadgeCount }) {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="mt-4">
+                                        <div>
                                             <InputLabel
                                                 htmlFor="position"
                                                 value="Position"

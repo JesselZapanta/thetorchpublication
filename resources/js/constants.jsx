@@ -1,3 +1,14 @@
+// user role
+
+export const ROLE_TEXT = {
+    student: "Student",
+    student_contributor: "Student Contributor",
+    editor: "Editor",
+    writer: "Writer",
+    designer: "Designer",
+    admin: "Admin",
+};
+
 // arti Status
 export const ARTICLE_STATUS_CLASS_MAP = {
     draft: "bg-gray-500",
@@ -7,6 +18,7 @@ export const ARTICLE_STATUS_CLASS_MAP = {
     revision: "bg-rose-500",
     published: "bg-green-500",
 };
+
 export const ARTICLE_STATUS_TEXT_MAP = {
     draft: "Draft",
     pending: "Pending",

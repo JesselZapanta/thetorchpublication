@@ -16,9 +16,10 @@ class Student
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'student') {
+        if (Auth::check() && in_array(Auth::user()->role, ['student', 'student_contributor'])) {
             return $next($request);
         }
+
 
         // return redirect()->route('login')->with('error', 'Access denied.');
         return redirect()->back();

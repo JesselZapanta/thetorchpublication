@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
+import { ROLE_TEXT } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -154,25 +155,24 @@ export default function Contributor({
                                 <div className="w-full">
                                     <SelectInput
                                         className="w-full"
-                                        defaultValue={queryParams.role}
+                                        defaultValue={queryParams.applied_for}
                                         onChange={(e) =>
                                             handleSelectChange(
-                                                "role",
+                                                "applied_for",
                                                 e.target.value
                                             )
                                         }
                                     >
-                                        <option value="">Select Role</option>
-                                        <option value="student">Student</option>
+                                        <option value="">Applied For</option>
+                                        
                                         <option value="student_contributor">
                                             Student Contributor
                                         </option>
-                                        <option value="admin">Admin</option>
-                                        <option value="editor">Editor</option>
+                                        {/* <option value="editor">Editor</option>
                                         <option value="writer">Writer</option>
                                         <option value="designer">
                                             Designer
-                                        </option>
+                                        </option> */}
                                     </SelectInput>
                                 </div>
                             </div>
@@ -200,18 +200,8 @@ export default function Contributor({
                                             <th className="px-3 py-3 text-nowrap">
                                                 Student Id
                                             </th>
-                                            <TableHeading
-                                                name="name"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Name
-                                            </TableHeading>
+
+                                            <th className="px-3 py-3">Name</th>
                                             <TableHeading
                                                 name="institute"
                                                 sort_field={
@@ -235,6 +225,18 @@ export default function Contributor({
                                                 sortChanged={sortChanged}
                                             >
                                                 Program
+                                            </TableHeading>
+                                            <TableHeading
+                                                name="applied_for"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                applied for
                                             </TableHeading>
                                             <th className="px-3 py-3 text-nowrap">
                                                 Sample File
@@ -310,26 +312,34 @@ export default function Contributor({
                                                                 application.program
                                                             }
                                                         </td>
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {
+                                                                ROLE_TEXT[
+                                                                    application
+                                                                        .applied_for
+                                                                ]
+                                                            }
+                                                        </td>
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <a
                                                                 href={
                                                                     application.sample_work_file_path
                                                                 }
-                                                                className="text-md text-gray-900 dark:text-gray-300"
+                                                                className="text-md text-gray-900 dark:text-gray-300 text-nowrap"
                                                                 target="blank"
                                                             >
-                                                                VIEW
+                                                                VIEW FILE
                                                             </a>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             <Link
-                                                                // href={route(
-                                                                //     "user.edit",
-                                                                //     user.id
-                                                                // )}
+                                                                href={route(
+                                                                    "admin-contributor.view",
+                                                                    application.id
+                                                                )}
                                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                                             >
-                                                                Edit
+                                                                View
                                                             </Link>
                                                             <button
                                                                 onClick={() =>
