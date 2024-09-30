@@ -11,8 +11,11 @@ use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Word;
+use App\Notifications\ArticleStatus;
 use App\Utilities\AhoCorasick;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -161,10 +164,38 @@ class StudentArticleController extends Controller
             $data['layout_by'] = Auth::user()->id;
         }
 
-        Article::create($data);
+        $student_article = Article::create($data);
 
         if($data['status'] === 'draft'){
             return to_route('student-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        // ==============send email notif ==================//
+
+        $createdBy = $student_article->createdBy;
+        // $editedBy = $student_article->editedBy;  // Use the currently authenticated user who made the edit
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $student_article->id,
+            'title' => $student_article->title,  
+            'created_by' => $createdBy->name,
+            'status' => $student_article->status,
+        ];
+
+        // dd('edited');
+
+        $customEditorMessage = 'The article submitted by ' . $createdBy->name . ' is currently awaiting editing. Please review it at your earliest convenience.';
+
+
+        if ($student_article->status === 'pending') {
+
+            // Fetch all admin users
+            $allEditors = User::where('role', 'editor')->get();  // Assuming 'role' is the column
+
+            Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
+
+            return to_route('student-article.index')->with(['success'=> 'Article submitted Successfully']);
         }
 
         return to_route('student-article.index')->with(['success' => 'Article submitted successfully']);
@@ -207,8 +238,10 @@ class StudentArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StudentUpdateArticleRequest $request, Article $student_article)
+    public function update(StudentUpdateArticleRequest $request, $id)
     {
+        $student_article = Article::find($id);
+
         $data = $request->validated();
 
         // Build the Trie with bad words
@@ -285,6 +318,45 @@ class StudentArticleController extends Controller
             return to_route('student-article.index')->with(['success' => 'Article saved as draft.']);
         }
 
+
+        // ==============send email notif ==================//
+
+        $createdBy = $student_article->createdBy;
+        $editedBy = $student_article->editedBy;  // Use the currently authenticated user who made the edit
+
+        // dd($editedBy);
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $student_article->id,
+            'title' => $student_article->title,  
+            'created_by' => $createdBy->name,
+            'status' => $student_article->status,
+        ];
+
+        // dd('edited');
+
+        $customEditorMessage = 'The article submitted by ' . $createdBy->name . ' is currently awaiting editing. Please review it at your earliest convenience.';
+
+        if ($student_article->status === 'pending') {
+
+
+        if(!$editedBy){
+                // Fetch all admin users
+                $allEditors = User::where('role', 'editor')->get();  // Assuming 'role' is the column
+
+                Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
+
+                return to_route('student-article.index')->with(['success'=> 'Article submitted Successfully']);
+            }
+        }
+        
+        if ($editedBy) {
+                Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorMessage));
+
+                return to_route('student-article.index')->with(['success' => 'Article submitted successfully']);
+        }
+        
         return to_route('student-article.index')->with(['success' => 'Article updated successfully']);
     }
 
