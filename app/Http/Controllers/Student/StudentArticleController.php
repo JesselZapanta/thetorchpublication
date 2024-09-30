@@ -314,6 +314,7 @@ class StudentArticleController extends Controller
 
             $student_article->update($data);
         }
+        
         if($data['status'] === 'draft'){
             return to_route('student-article.index')->with(['success' => 'Article saved as draft.']);
         }
@@ -356,7 +357,7 @@ class StudentArticleController extends Controller
 
                 return to_route('student-article.index')->with(['success' => 'Article submitted successfully']);
         }
-        
+
         return to_route('student-article.index')->with(['success' => 'Article updated successfully']);
     }
 

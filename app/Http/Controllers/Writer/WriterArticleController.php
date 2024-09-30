@@ -11,9 +11,12 @@ use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Word;
+use App\Notifications\ArticleStatus;
 use App\Utilities\AhoCorasick;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -86,7 +89,7 @@ class WriterArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    //student req AHAHA bala basta mo gana | same validation ra sa student
+    //writer req AHAHA bala basta mo gana | same validation ra sa writer
     public function store(StudentStoreArticleRequest $request)
     {
         $data = $request->validated();
@@ -161,7 +164,39 @@ class WriterArticleController extends Controller
             $data['layout_by'] = Auth::user()->id;
         }
 
-        Article::create($data);
+        $writer_article = Article::create($data);
+
+        if($data['status'] === 'draft'){
+            return to_route('writer-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        // ==============send email notif ==================//
+
+        $createdBy = $writer_article->createdBy;
+        // $editedBy = $writer_article->editedBy;  // Use the currently authenticated user who made the edit
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $writer_article->id,
+            'title' => $writer_article->title,  
+            'created_by' => $createdBy->name,
+            'status' => $writer_article->status,
+        ];
+
+        // dd('edited');
+
+        $customEditorMessage = 'The article submitted by ' . $createdBy->name . ' is currently awaiting editing. Please review it at your earliest convenience.';
+
+
+        if ($writer_article->status === 'pending') {
+
+            // Fetch all admin users
+            $allEditors = User::where('role', 'editor')->get();  // Assuming 'role' is the column
+
+            Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
+
+            return to_route('writer-article.index')->with(['success'=> 'Article submitted Successfully']);
+        }
 
         return to_route('writer-article.index')->with(['success' => 'Article submitted Successfully']);
     }
@@ -203,7 +238,7 @@ class WriterArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-     //student req AHAHA bala basta mo gana | same validation ra sa student
+     //writer req AHAHA bala basta mo gana | same validation ra sa writer
     public function update(StudentUpdateArticleRequest $request, Article $writer_article)
     {
         // dd($request);
@@ -284,6 +319,44 @@ class WriterArticleController extends Controller
 
         if($data['status'] === 'draft'){
             return to_route('writer-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        // ==============send email notif ==================//
+
+        $createdBy = $writer_article->createdBy;
+        $editedBy = $writer_article->editedBy;  // Use the currently authenticated user who made the edit
+
+        // dd($editedBy);
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $writer_article->id,
+            'title' => $writer_article->title,  
+            'created_by' => $createdBy->name,
+            'status' => $writer_article->status,
+        ];
+
+        // dd('edited');
+
+        $customEditorMessage = 'The article submitted by ' . $createdBy->name . ' is currently awaiting editing. Please review it at your earliest convenience.';
+
+        if ($writer_article->status === 'pending') {
+
+
+        if(!$editedBy){
+                // Fetch all admin users
+                $allEditors = User::where('role', 'editor')->get();  // Assuming 'role' is the column
+
+                Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
+
+                return to_route('writer-article.index')->with(['success'=> 'Article submitted Successfully']);
+            }
+        }
+        
+        if ($editedBy) {
+                Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorMessage));
+
+                return to_route('writer-article.index')->with(['success' => 'Article submitted successfully']);
         }
 
 
