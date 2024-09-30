@@ -372,6 +372,8 @@ class EditorArticleController extends Controller
             return to_route('editor-article.index')->with(['success' => 'Article rejected successfully.']);
         }
 
+        
+
         return to_route('editor-article.index')->with(['success' => 'Article Edited Successfully']);
     }
 

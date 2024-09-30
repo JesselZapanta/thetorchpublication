@@ -179,39 +179,6 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
                                 </div>
                             </div>
 
-                            {/* Status */}
-                            {(article.status === "draft" ||
-                                article.status === "pending" ||
-                                article.status === "rejected") && (
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Article status"
-                                    />
-
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">Select Status</option>
-                                        <option value="draft">
-                                            Save as Draft
-                                        </option>
-                                        <option value="pending">Pending</option>
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
-
                             {/* title */}
                             <div className="mt-4 w-full">
                                 <InputLabel
@@ -359,44 +326,87 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
                                     className="mt-2"
                                 />
                             </div>
-                            {/* image path */}
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="article_image_path"
-                                    value="Category Image"
-                                />
 
-                                <TextInput
-                                    id="article_image_path"
-                                    type="file"
-                                    name="article_image_path"
-                                    className={`mt-2 block w-full ${
-                                        article.status !== "draft" &&
-                                        article.status !== "pending" &&
-                                        article.status !== "rejected"
-                                            ? "cursor-not-allowed bg-gray-200"
-                                            : ""
-                                    }`}
-                                    disabled={
-                                        article.status !== "draft" &&
-                                        article.status !== "pending" &&
-                                        article.status !== "rejected"
-                                            ? true
-                                            : false
-                                    }
-                                    onChange={(e) =>
-                                        setData(
-                                            "article_image_path",
-                                            e.target.files[0]
-                                        )
-                                    }
-                                />
+                            <div className="flex gap-4">
+                                {/* image path */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="article_image_path"
+                                        value="Category Image"
+                                    />
 
-                                <InputError
-                                    message={errors.article_image_path}
-                                    className="mt-2"
-                                />
+                                    <TextInput
+                                        id="article_image_path"
+                                        type="file"
+                                        name="article_image_path"
+                                        className={`mt-2 block w-full ${
+                                            article.status !== "draft" &&
+                                            article.status !== "pending" &&
+                                            article.status !== "rejected"
+                                                ? "cursor-not-allowed bg-gray-200"
+                                                : ""
+                                        }`}
+                                        disabled={
+                                            article.status !== "draft" &&
+                                            article.status !== "pending" &&
+                                            article.status !== "rejected"
+                                                ? true
+                                                : false
+                                        }
+                                        onChange={(e) =>
+                                            setData(
+                                                "article_image_path",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.article_image_path}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                {/* Status */}
+                                {(article.status === "draft" ||
+                                    article.status === "pending" ||
+                                    article.status === "rejected") && (
+                                    <div className="mt-4 w-full">
+                                        <InputLabel
+                                            htmlFor="status"
+                                            value="Article status"
+                                        />
+
+                                        <SelectInput
+                                            name="status"
+                                            id="status"
+                                            value={data.status}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select Status
+                                            </option>
+                                            <option value="draft">
+                                                Save as Draft
+                                            </option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                        </SelectInput>
+
+                                        <InputError
+                                            message={errors.status}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
                             </div>
+
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
                                     href={route("student-article.index")}
