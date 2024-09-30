@@ -1,6 +1,6 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -9,13 +9,31 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, categories, queryParams = null, flash, AdminBadgeCount }) {
+export default function Index({
+    auth,
+    categories,
+    queryParams = null,
+    flash,
+    AdminBadgeCount,
+}) {
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [category, setCategory] = useState(null); // For storing the category to edit/delete
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+        useForm({
+            name: "",
+            description: "",
+            status: "",
+            category_image_path: "",
+        });
+
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -27,10 +45,7 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
         }
     }, [flash]);
 
-    const [confirmDelete, setConfirmDelete] = useState(false);
-    const [category, setCategory] = useState(null); // For storing the word to edit/delete
-    // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
+    // for tables sorting and searching
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -68,26 +83,63 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
         }
     };
 
-    // Handle dropdown select changes
-    const handleSelectChange = (name, value) => {
-        queryParams[name] = value;
-        router.get(route("category.index"), queryParams, {
-            preserveState: true,
-        });
-    };
-
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
-            if (queryParams.sort_direction === "asc") {
-                queryParams.sort_direction = "desc";
-            } else {
-                queryParams.sort_direction = "asc";
-            }
+            queryParams.sort_direction =
+                queryParams.sort_direction === "asc" ? "desc" : "asc";
         } else {
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
         router.get(route("category.index"), queryParams);
+    };
+
+    // Open modal for creating a new category
+    const openCreateModal = () => {
+        reset(); // Reset the form to clear previous data
+        setCategory(null); // Clear the selected category for editing
+        setIsCreateModalOpen(true);
+    };
+
+    // Open modal for editing an existing category
+    const openEditModal = (category) => {
+        setCategory(category);
+        setData({
+            name: category.name || "",
+            description: category.description || "",
+            status: category.status || "",
+            category_image_path: "",
+            _method: "PUT",
+        }); // Set the form data with the selected category's data
+        setIsCreateModalOpen(true);
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if (category) {
+            // Update existing category
+            post(route("category.update", category.id), {
+                onSuccess: () => {
+                    setIsCreateModalOpen(false);
+                    reset(); // Reset the form after successful submission
+                },
+            });
+        } else {
+            // Create new category
+            post(route("category.store"), {
+                onSuccess: () => {
+                    setIsCreateModalOpen(false);
+                    reset(); // Reset the form after successful submission
+                },
+            });
+        }
+    };
+
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+        reset(); // Reset the form when closing the modal
+        clearErrors(); // Clear any validation errors
     };
 
     // Open modal and set category to delete
@@ -99,7 +151,6 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
     // Handle delete and close modal
     const handleDelete = () => {
         if (category) {
-            // alert(category.id);
             router.delete(route("category.destroy", category.id));
         }
         setConfirmDelete(false);
@@ -116,12 +167,12 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
                         List of Categories
                     </h2>
                     <div className="flex gap-4">
-                        <Link
-                            href={route("category.create")}
+                        <button
+                            onClick={openCreateModal}
                             className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Create New
-                        </Link>
+                        </button>
                     </div>
                 </div>
             }
@@ -266,19 +317,21 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
                                                             className={
                                                                 "px-2 py-1 rounded text-white " +
                                                                 CATEGORY_CLASS_MAP[
-                                                                    category.status
+                                                                    category
+                                                                        .status
                                                                 ]
                                                             }
                                                         >
                                                             {
                                                                 CATEGORY_TEXT_MAP[
-                                                                    category.status
+                                                                    category
+                                                                        .status
                                                                 ]
                                                             }
                                                         </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        <Link
+                                                        {/* <Link
                                                             href={route(
                                                                 "category.edit",
                                                                 category.id
@@ -286,7 +339,17 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                                         >
                                                             Edit
-                                                        </Link>
+                                                        </Link> */}
+                                                        <button
+                                                            onClick={() =>
+                                                                openEditModal(
+                                                                    category
+                                                                )
+                                                            }
+                                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                                                        >
+                                                            Edit
+                                                        </button>
                                                         <button
                                                             onClick={() =>
                                                                 openDeleteModal(
@@ -321,6 +384,126 @@ export default function Index({ auth, categories, queryParams = null, flash, Adm
                     </div>
                 </div>
             </div>
+            {/* Create/Edit Modal */}
+            <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">
+                        {category ? "Edit Category" : "Add New Category"}
+                    </h2>
+
+                    <form onSubmit={onSubmit} className="mt-4">
+                        {/* Code */}
+                        {/* name */}
+                        <div>
+                            <InputLabel htmlFor="name" value="Category Name" />
+
+                            <TextInput
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={data.name}
+                                className="mt-2 block w-full"
+                                isFocused={true}
+                                onChange={(e) =>
+                                    setData("name", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.name}
+                                className="mt-2"
+                            />
+                        </div>
+                        {/* description */}
+                        <div className="mt-4">
+                            <InputLabel
+                                htmlFor="description"
+                                value="Category Description"
+                            />
+
+                            <TextInput
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={data.description}
+                                className="mt-2 block w-full"
+                                onChange={(e) =>
+                                    setData("description", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.description}
+                                className="mt-2"
+                            />
+                        </div>
+                        {/* Status */}
+                        <div className="mt-2 w-full">
+                            <InputLabel
+                                htmlFor="status"
+                                value="Category status"
+                            />
+
+                            <SelectInput
+                                name="status"
+                                id="status"
+                                value={data.status}
+                                className="mt-1 block w-full"
+                                onChange={(e) =>
+                                    setData("status", e.target.value)
+                                }
+                            >
+                                <option value="">Select a status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </SelectInput>
+
+                            <InputError
+                                message={errors.status}
+                                className="mt-2"
+                            />
+                        </div>
+                        {/* image path */}
+                        <div className="mt-4">
+                            <InputLabel
+                                htmlFor="category_image_path"
+                                value="Category Image"
+                            />
+
+                            <TextInput
+                                id="category_image_path"
+                                type="file"
+                                name="category_image_path"
+                                className="mt-2 block w-full cursor-pointer"
+                                onChange={(e) =>
+                                    setData(
+                                        "category_image_path",
+                                        e.target.files[0]
+                                    )
+                                }
+                            />
+
+                            <InputError
+                                message={errors.category_image_path}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div className="mt-4 flex justify-end gap-2">
+                            <SecondaryButton onClick={closeCreateModal}>
+                                Cancel
+                            </SecondaryButton>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            >
+                                {category ? "Update" : "Create"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
