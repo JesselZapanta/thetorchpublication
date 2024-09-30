@@ -218,39 +218,8 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                     />
                                 </div>
                             </div>
-                            {/* status and published */}
+                            {/* author and published */}
                             <div className="flex gap-4">
-                                {/* Status */}
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Article status"
-                                    />
-
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">Select Status</option>
-                                        <option value="draft">
-                                            Save as Draft
-                                        </option>
-                                        <option value="published">
-                                            Published
-                                        </option>
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
-
                                 {/* published_date */}
                                 <div className="w-full mt-4">
                                     <InputLabel
@@ -277,31 +246,30 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                         className="mt-2"
                                     />
                                 </div>
-                            </div>
+                                {/* author if no acc */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="author"
+                                        value="Article Author (If you are the author, leave empty.)"
+                                    />
 
-                            {/* author if no acc */}
-                            <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="author"
-                                    value="Article Author (If you are the author, leave empty.)"
-                                />
+                                    <TextInput
+                                        id="author"
+                                        type="text"
+                                        name="author"
+                                        placeholder={auth.user.username}
+                                        value={data.author}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("author", e.target.value)
+                                        }
+                                    />
 
-                                <TextInput
-                                    id="author"
-                                    type="text"
-                                    name="author"
-                                    placeholder={auth.user.username}
-                                    value={data.author}
-                                    className="mt-2 block w-full"
-                                    onChange={(e) =>
-                                        setData("author", e.target.value)
-                                    }
-                                />
-
-                                <InputError
-                                    message={errors.author}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.author}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
                             {/* title */}
@@ -399,30 +367,62 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                     className="mt-2"
                                 />
                             </div>
-                            {/* image path */}
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="article_image_path"
-                                    value="Category Image"
-                                />
+                            <div className="flex gap-4">
+                                {/* image path */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="article_image_path"
+                                        value="Category Image"
+                                    />
 
-                                <TextInput
-                                    id="article_image_path"
-                                    type="file"
-                                    name="article_image_path"
-                                    className="mt-2 block w-full cursor-pointer"
-                                    onChange={(e) =>
-                                        setData(
-                                            "article_image_path",
-                                            e.target.files[0]
-                                        )
-                                    }
-                                />
+                                    <TextInput
+                                        id="article_image_path"
+                                        type="file"
+                                        name="article_image_path"
+                                        className="mt-2 block w-full cursor-pointer"
+                                        onChange={(e) =>
+                                            setData(
+                                                "article_image_path",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
 
-                                <InputError
-                                    message={errors.article_image_path}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.article_image_path}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                {/* Status */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Article status"
+                                    />
+
+                                    <SelectInput
+                                        name="status"
+                                        id="status"
+                                        value={data.status}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    >
+                                        <option value="">Select Status</option>
+                                        <option value="draft">
+                                            Save as Draft
+                                        </option>
+                                        <option value="published">
+                                            Published
+                                        </option>
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
                             {/* save as draft
                             <div className="block mt-4">

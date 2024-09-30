@@ -11,8 +11,11 @@ use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Word;
+use App\Notifications\ArticleStatus;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Utilities\AhoCorasick; // Import the AhoCorasick class
@@ -343,12 +346,45 @@ class AdminArticleController extends Controller
             return to_route('admin-article.index')->with(['success' => 'Article saved as draft.']);
         }
 
-        if ($data['status'] === 'published') {
-            return to_route('admin-article.index')->with(['success' => 'Article published succesfullly.']);
+        // ==============send email notif ==================//
+
+        $createdBy = $admin_article->createdBy;
+        $editedBy = $admin_article->editedBy; 
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $admin_article->id,
+            'title' => $admin_article->title,  
+            'created_by' => $createdBy->name,
+            'edited_by' => $editedBy->name,
+            'status' => $admin_article->status,
+        ];
+
+        // dd('edited');
+
+        $customEditorRevisionMessage = 'The article you previously edited has been reviewed and requires further revisions. Please take a moment to review the suggested changes and make the necessary adjustments for final approval.';
+
+        $customRejectionMessage = 'Your article, edited by ' . $editedBy->name . ', has been reviewed and unfortunately does not meet the required standards.';
+
+        $customEditorPublishedMessage = 'Great job! The article you edited has been successfully published and is now live for readers to view. Thank you for your attention to detail and hard work in preparing it for publication.';
+
+        $customPublishedMessage = 'Congratulations! Your article, edited by ' . $editedBy->name . ', has been successfully published. It is now live for readers to enjoy. Thank you for your hard work and contribution!';
+        
+
+        if ($admin_article->status === 'revision') {
+
+            Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorRevisionMessage));
+            Notification::send($createdBy, new ArticleStatus($articleDetails, $customRejectionMessage));
+
+            return to_route('admin-article.index')->with(['success'=> 'Article needed revision.']);
         }
 
-        if ($data['status'] === 'revision') {
-            return to_route('admin-article.index')->with(['success' => 'Article needed revision.']);
+        if ($admin_article->status === 'published') {
+
+            Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorPublishedMessage));
+            Notification::send($createdBy, new ArticleStatus($articleDetails, $customPublishedMessage));
+
+            return to_route('admin-article.index')->with(['success'=> 'Article published succesfullly.']);
         }
 
         return to_route('admin-article.index')->with([ 'success' => 'Article updated successfully']);

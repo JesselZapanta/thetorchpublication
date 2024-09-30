@@ -417,9 +417,12 @@ class EditorArticleController extends Controller
         // dd('edited');
 
         // Customize the message based on the task status
-        $customEditedMessage = 'Your article has been edited by ' . $editedBy->name . ' and is awaiting publication.';
-        $customRejectedMessage = 'Your article has been rejected by ' . $editedBy->name . ', with a rejection message "' . $editor_article->rejection_message . '"';
-        $customAdminMessage = 'The article is currently being edited by ' . $editedBy->name . ' and is awaiting publication.';
+        $customEditedMessage = 'Your article has been edited by ' . $editedBy->name . ' and is now awaiting publication. The admin will review the edited article shortly before it is published.';
+
+        $customRejectedMessage = 'Unfortunately, your article has been rejected by ' . $editedBy->name . '. The reason provided for the rejection is: "' . $editor_article->rejection_message . '". Please review the feedback and consider making the necessary changes before resubmitting.';
+
+
+        $customAdminMessage = 'The article is currently being edited by ' . $editedBy->name . ' and is awaiting publication. It is now waiting for your review before it can be published.';
 
         // Send the email notification to the article's creator
         if ($editor_article->status === 'edited') {

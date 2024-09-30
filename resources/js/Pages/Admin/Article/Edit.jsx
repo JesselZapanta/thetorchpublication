@@ -260,56 +260,6 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                             </div>
                             {/* status and published */}
                             <div className="flex gap-4">
-                                {/* Status */}
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Article status"
-                                    />
-
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a status
-                                        </option>
-                                        {auth.user.id ===
-                                            article.createdBy.id && (
-                                            <option value="draft">
-                                                Save as Draft
-                                            </option>
-                                        )}
-                                        <option value="published">
-                                            Published
-                                        </option>
-
-                                        {auth.user.id !==
-                                            article.createdBy.id && (
-                                            <option value="edited">
-                                                Edited
-                                            </option>
-                                        )}
-
-                                        {auth.user.id !==
-                                            article.createdBy.id && (
-                                            <option value="revision">
-                                                Need Revision
-                                            </option>
-                                        )}
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
-
                                 {/* Published Date */}
                                 {/* <div className="w-full mt-4">
                                     <InputLabel
@@ -366,34 +316,6 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                 </div>
                             )}
 
-                            {/* revision_message */}
-                            {data.status === "revision" && (
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="revision_message"
-                                        value="Revision Message"
-                                    />
-
-                                    <TextAreaInput
-                                        id="revision_message"
-                                        type="text"
-                                        name="revision_message"
-                                        value={data.revision_message}
-                                        className="mt-2 block w-full min-h-24"
-                                        onChange={(e) =>
-                                            setData(
-                                                "revision_message",
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.revision_message}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
                             {/* title */}
                             <div className="mt-2 w-full">
                                 <InputLabel
@@ -487,31 +409,111 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     className="mt-2"
                                 />
                             </div>
-                            {/* image path */}
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="article_image_path"
-                                    value="Category Image"
-                                />
+                            <div className="flex gap-4">
+                                {/* image path */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="article_image_path"
+                                        value="Category Image"
+                                    />
 
-                                <TextInput
-                                    id="article_image_path"
-                                    type="file"
-                                    name="article_image_path"
-                                    className="mt-2 block w-full cursor-pointer"
-                                    onChange={(e) =>
-                                        setData(
-                                            "article_image_path",
-                                            e.target.files[0]
-                                        )
-                                    }
-                                />
+                                    <TextInput
+                                        id="article_image_path"
+                                        type="file"
+                                        name="article_image_path"
+                                        className="mt-2 block w-full cursor-pointer"
+                                        onChange={(e) =>
+                                            setData(
+                                                "article_image_path",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
 
-                                <InputError
-                                    message={errors.article_image_path}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.article_image_path}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                {/* Status */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Article status"
+                                    />
+
+                                    <SelectInput
+                                        name="status"
+                                        id="status"
+                                        value={data.status}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("status", e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select a status
+                                        </option>
+                                        {auth.user.id ===
+                                            article.createdBy.id && (
+                                            <option value="draft">
+                                                Save as Draft
+                                            </option>
+                                        )}
+                                        <option value="published">
+                                            Published
+                                        </option>
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="edited">
+                                                Edited
+                                            </option>
+                                        )}
+
+                                        {auth.user.id !==
+                                            article.createdBy.id && (
+                                            <option value="revision">
+                                                Need Revision
+                                            </option>
+                                        )}
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.status}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
+
+                            {/* revision_message */}
+                            {data.status === "revision" && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="revision_message"
+                                        value="Revision Message"
+                                    />
+
+                                    <TextAreaInput
+                                        id="revision_message"
+                                        type="text"
+                                        name="revision_message"
+                                        value={data.revision_message}
+                                        className="mt-2 block w-full min-h-24"
+                                        onChange={(e) =>
+                                            setData(
+                                                "revision_message",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.revision_message}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
                             {/* save as draft
                             <div className="block mt-4">
                                 <label className="flex items-center">
