@@ -197,114 +197,6 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                                 )}
                             </div>
 
-                            {/* Status */}
-                            {article.status !== "published" && (
-                                <div className="w-full mt-4">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Article status"
-                                    />
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a status
-                                        </option>
-                                        {auth.user.id ===
-                                            article.createdBy.id && (
-                                            <option value="draft">
-                                                Save as Draft
-                                            </option>
-                                        )}
-
-                                        <option value="edited">Edited</option>
-
-                                        {/* {auth.user.id !==
-                                            article.createdBy.id ||
-                                            (article.status === "pending" && (
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-                                            ))} */}
-
-                                        {/* {article.status === "pending" ||
-                                            (article.status === "edited" && (
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-                                            ))} */}
-
-                                        {(article.status === "pending" ||
-                                            article.status === "edited") &&
-                                            auth.user.id !==
-                                                article.createdBy.id && (
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-                                            )}
-
-                                        {article.status === "revision" && (
-                                            <option value="revision">
-                                                Revision
-                                            </option>
-                                        )}
-
-                                        {auth.user.id !==
-                                            article.createdBy.id && (
-                                            <option value="rejected">
-                                                Rejected
-                                            </option>
-                                        )}
-
-                                        {article.status === "published" && (
-                                            <option value="published">
-                                                Published
-                                            </option>
-                                        )}
-                                    </SelectInput>
-
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
-
-                            {/* rejection_message */}
-                            {data.status === "rejected" && (
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="rejection_message"
-                                        value="Rejected message"
-                                    />
-
-                                    <TextAreaInput
-                                        id="rejection_message"
-                                        type="text"
-                                        name="rejection_message"
-                                        value={data.rejection_message}
-                                        className="mt-2 block w-full min-h-24"
-                                        onChange={(e) =>
-                                            setData(
-                                                "rejection_message",
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.rejection_message}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
-
                             {/* title */}
                             <div className="mt-4 w-full">
                                 <InputLabel
@@ -400,31 +292,144 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                                     className="mt-2"
                                 />
                             </div>
-                            {/* image path */}
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="article_image_path"
-                                    value="Category Image"
-                                />
+                            <div className="flex gap-4">
+                                {/* image path */}
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="article_image_path"
+                                        value="Category Image"
+                                    />
 
-                                <TextInput
-                                    id="article_image_path"
-                                    type="file"
-                                    name="article_image_path"
-                                    className="mt-2 block w-full cursor-pointer"
-                                    onChange={(e) =>
-                                        setData(
-                                            "article_image_path",
-                                            e.target.files[0]
-                                        )
-                                    }
-                                />
+                                    <TextInput
+                                        id="article_image_path"
+                                        type="file"
+                                        name="article_image_path"
+                                        className="mt-2 block w-full cursor-pointer"
+                                        onChange={(e) =>
+                                            setData(
+                                                "article_image_path",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
 
-                                <InputError
-                                    message={errors.article_image_path}
-                                    className="mt-2"
-                                />
+                                    <InputError
+                                        message={errors.article_image_path}
+                                        className="mt-2"
+                                    />
+                                </div>
+                                {/* Status */}
+                                {article.status !== "published" && (
+                                    <div className="w-full mt-4">
+                                        <InputLabel
+                                            htmlFor="status"
+                                            value="Article status"
+                                        />
+                                        <SelectInput
+                                            name="status"
+                                            id="status"
+                                            value={data.status}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">
+                                                Select a status
+                                            </option>
+                                            {auth.user.id ===
+                                                article.createdBy.id && (
+                                                <option value="draft">
+                                                    Save as Draft
+                                                </option>
+                                            )}
+
+                                            <option value="edited">
+                                                Edited
+                                            </option>
+
+                                            {/* {auth.user.id !==
+                                            article.createdBy.id ||
+                                            (article.status === "pending" && (
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                            ))} */}
+
+                                            {/* {article.status === "pending" ||
+                                            (article.status === "edited" && (
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+                                            ))} */}
+
+                                            {(article.status === "pending" ||
+                                                article.status === "edited") &&
+                                                auth.user.id !==
+                                                    article.createdBy.id && (
+                                                    <option value="pending">
+                                                        Pending
+                                                    </option>
+                                                )}
+
+                                            {article.status === "revision" && (
+                                                <option value="revision">
+                                                    Revision
+                                                </option>
+                                            )}
+
+                                            {auth.user.id !==
+                                                article.createdBy.id && (
+                                                <option value="rejected">
+                                                    Rejected
+                                                </option>
+                                            )}
+
+                                            {article.status === "published" && (
+                                                <option value="published">
+                                                    Published
+                                                </option>
+                                            )}
+                                        </SelectInput>
+
+                                        <InputError
+                                            message={errors.status}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
                             </div>
+                            {/* rejection_message */}
+                            {data.status === "rejected" && (
+                                <div className="mt-4 w-full">
+                                    <InputLabel
+                                        htmlFor="rejection_message"
+                                        value="Rejected message"
+                                    />
+
+                                    <TextAreaInput
+                                        id="rejection_message"
+                                        type="text"
+                                        name="rejection_message"
+                                        value={data.rejection_message}
+                                        className="mt-2 block w-full min-h-24"
+                                        onChange={(e) =>
+                                            setData(
+                                                "rejection_message",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.rejection_message}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
                                     href={route("editor-article.index")}

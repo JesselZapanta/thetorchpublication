@@ -11,12 +11,17 @@ use App\Http\Resources\CategoryResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Word;
 use App\Utilities\AhoCorasick;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ArticleStatus;//change
+
 
 class EditorArticleController extends Controller
 {
@@ -202,10 +207,38 @@ class EditorArticleController extends Controller
             $data['layout_by'] = Auth::user()->id;
         }
 
-        Article::create($data);
+        $editor_article = Article::create($data);
 
         if ($data['status'] === 'draft') {
             return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
+        }
+
+        // ==============send email notif ==================//
+
+        $createdBy = $editor_article->createdBy;
+        $editedBy = Auth::user();  // Use the currently authenticated user who made the edit
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $editor_article->id,
+            'title' => $editor_article->title,  
+            'created_by' => $createdBy->name,
+            'edited_by' => $editedBy->name,
+            'status' => $editor_article->status,
+        ];
+
+        // dd('edited');
+
+        $customAdminMessage = 'The article is currently being submitted by ' . $editedBy->name . ' and is awaiting publication.';
+
+        if ($editor_article->status === 'edited') {
+
+            // Fetch all admin users
+            $allAdmins = User::where('role', 'admin')->get();  // Assuming 'role' is the column
+
+            Notification::send($allAdmins, new ArticleStatus($articleDetails, $customAdminMessage));
+
+            return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
         }
 
         return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
@@ -260,9 +293,15 @@ class EditorArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EditorUpdateArticleRequest $request, Article $editor_article)
+    public function update(EditorUpdateArticleRequest $request, $id)
     {
+        $editor_article = Article::find($id);
+
+        // dd($editor_article);
+
         $data = $request->validated();
+
+        // dd($data);
         
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
@@ -331,13 +370,12 @@ class EditorArticleController extends Controller
             $data['rejected_at'] = now();
         }
 
-
-        
         // $status = $data['status'];
         // $editorId = Auth::user()->id;
 
         //wako kasabot para asa ni nga code hHAHAHAHA
         //og kinsa nag edit??? limot ko gagi
+        //Wala ni pulos na code
         // if ($status === 'revision' && $editorId === $editor_article->created_by){
         //     $data['status'] = 'edited';
         // }
@@ -360,19 +398,51 @@ class EditorArticleController extends Controller
         $editor_article->update($data);
 
 
-        if ($data['status'] === 'draft') {
-            return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
-        }
+        // ==============send email notif ==================//
 
-        if ($data['status'] === 'edited') {
+        $editorId = Auth::user()->id;
+
+        $createdBy = $editor_article->createdBy;
+        $editedBy = Auth::user();  // Use the currently authenticated user who made the edit
+
+        // Prepare task details for the notification
+        $articleDetails = [
+            'id' => $editor_article->id,
+            'title' => $editor_article->title,  
+            'created_by' => $createdBy->name,
+            'edited_by' => $editedBy->name,
+            'status' => $editor_article->status,
+        ];
+
+        // dd('edited');
+
+        // Customize the message based on the task status
+        $customEditedMessage = 'Your article has been edited by ' . $editedBy->name . ' and is awaiting publication.';
+        $customRejectedMessage = 'Your article has been rejected by ' . $editedBy->name . ', with a rejection message "' . $editor_article->rejection_message . '"';
+        $customAdminMessage = 'The article is currently being edited by ' . $editedBy->name . ' and is awaiting publication.';
+
+        // Send the email notification to the article's creator
+        if ($editor_article->status === 'edited') {
+            Notification::send($createdBy, new ArticleStatus($articleDetails, $customEditedMessage));
+
+            // Fetch all admin users
+            $allAdmins = User::where('role', 'admin')->get();  // Assuming 'role' is the column
+
+            // Send notification to all admin users
+            Notification::send($allAdmins, new ArticleStatus($articleDetails, $customAdminMessage));
+
             return to_route('editor-article.index')->with(['success' => 'Article edited succesfullly.']);
         }
 
-        if ($data['status'] === 'rejected') {
+        if ($editor_article->created_by !== $editorId && $editor_article->status === 'rejected') {
+            Notification::send($createdBy, new ArticleStatus($articleDetails, $customRejectedMessage));
+
             return to_route('editor-article.index')->with(['success' => 'Article rejected successfully.']);
         }
 
-        
+        if ($data['status'] === 'draft') {
+            return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
+        }
 
         return to_route('editor-article.index')->with(['success' => 'Article Edited Successfully']);
     }
@@ -389,7 +459,7 @@ class EditorArticleController extends Controller
             // Delete the specific old image file
             Storage::disk('public')->delete($editor_article->article_image_path);
         }
-        return to_route('editor-article.index')->with(['delete_success' => 'Deleted Successfully']);
+        return to_route('editor-article.index')->with(['success' => 'Deleted successfully']);
     }
 
 
