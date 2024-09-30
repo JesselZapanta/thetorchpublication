@@ -19,7 +19,7 @@ class Article extends Model
         'revision_by',
         'published_by',
 
-        'slug',
+        'slug',//way pulos 
 
         'title',
         'excerpt',

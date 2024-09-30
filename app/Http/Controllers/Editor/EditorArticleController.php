@@ -429,7 +429,7 @@ class EditorArticleController extends Controller
             Notification::send($createdBy, new ArticleStatus($articleDetails, $customEditedMessage));
 
             // Fetch all admin users
-            $allAdmins = User::where('role', 'admin')->get();  // Assuming 'role' is the column
+            $allAdmins = User::where('role', 'admin')->get();
 
             // Send notification to all admin users
             Notification::send($allAdmins, new ArticleStatus($articleDetails, $customAdminMessage));

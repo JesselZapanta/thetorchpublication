@@ -17,7 +17,9 @@ use App\Models\Newsletter;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Requests\UpdateNewsletterRequest;
 use App\Models\User;
+use App\Notifications\NewsletterNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -253,13 +255,30 @@ class AdminNewsletterController extends Controller
         $newsletter->update(['distributed_at' => now()]);
         $newsletter->update(['distributed_by' => Auth::user()->id]);
 
-         // Get all user emails
-        $users = User::pluck('email');
 
-        // Queue each email
-        foreach ($users as $email) {
-            SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
-        }
+        //old version
+         // Get all user emails
+        // $users = User::pluck('email');
+
+        // // Queue each email
+        // foreach ($users as $email) {
+        //     SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
+        // }
+
+        //new version
+
+        $customMessage = $request->message;
+
+        $newsletterDetails = [
+            'id' => $newsletter->id,
+            'description' => $newsletter->description, 
+            'newsletter_file_path' => $newsletter->newsletter_file_path, 
+        ];
+
+
+        $users = User::whereNotNull('email_verified_at')->get();
+
+        Notification::send($users, new NewsletterNotification($newsletterDetails, $customMessage));
 
         return to_route('newsletter.index')->with(['success' => 'Newsletter queued successfully. Distribution will begin shortly.']);
     }
