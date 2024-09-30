@@ -90,6 +90,18 @@ class StudentArticleController extends Controller
     {
         $data = $request->validated();
 
+        
+        // limitations
+        $entriesCount = Article::where('created_by', auth()->id())
+                        ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
+                        ->where('status', '!=', 'draft') // Exclude drafts
+                        ->count();
+
+        if ($entriesCount >= 10 && $data['status'] !== 'draft') {
+            return redirect()->back()->withErrors(['status' => 'You can only post 10 articles per day. Saved as Draft.']);
+            
+        }
+
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
