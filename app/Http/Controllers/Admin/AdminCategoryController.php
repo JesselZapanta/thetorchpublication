@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Models\Article;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
@@ -46,7 +47,7 @@ class AdminCategoryController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Category/Create');
+        //
     }
 
     /**
@@ -75,8 +76,14 @@ class AdminCategoryController extends Controller
      */
     public function show(Category $category)
     {
+
+        $articlesCount = Article::where('category_id', $category->id)
+                                ->where('status', 'published')
+                                ->count();
+
         return inertia('Admin/Category/Show', [
             'category' => new CategoryResource($category),
+            'articlesCount' => $articlesCount
         ]);
     }
 
@@ -85,9 +92,7 @@ class AdminCategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return inertia('Admin/Category/Edit', [
-            'category' => new CategoryResource($category),
-        ]);
+        //
     }
 
     /**

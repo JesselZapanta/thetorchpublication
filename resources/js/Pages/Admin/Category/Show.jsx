@@ -1,8 +1,9 @@
 import SecondaryButton from "@/Components/SecondaryButton";
+import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, category, AdminBadgeCount }) {
+export default function Index({ auth, category, AdminBadgeCount, articlesCount }) {
     return (
         <AdminAuthenticatedLayout
             AdminBadgeCount={AdminBadgeCount}
@@ -55,7 +56,18 @@ export default function Index({ auth, category, AdminBadgeCount }) {
                                     <label className="font-bold text-base">
                                         Status
                                     </label>
-                                    <p className="mt-1">{category.status}</p>
+                                    <p className="mt-1">
+                                        <span
+                                            className={
+                                                "px-2 py-1 rounded text-white " +
+                                                CATEGORY_CLASS_MAP[
+                                                    category.status
+                                                ]
+                                            }
+                                        >
+                                            {CATEGORY_TEXT_MAP[category.status]}
+                                        </span>
+                                    </p>
                                 </div>
                                 {/* Description */}
                                 <div className="mt-4">
@@ -66,14 +78,15 @@ export default function Index({ auth, category, AdminBadgeCount }) {
                                         {category.description}
                                     </p>
                                 </div>
+                                {/* Description */}
+                                <div className="mt-4">
+                                    <label className="font-bold text-base">
+                                        Article Count
+                                    </label>
+                                    <p className="mt-1">{articlesCount}</p>
+                                </div>
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
-                                <Link
-                                    href={route("category.edit", category.id)}
-                                    className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
-                                >
-                                    Edit Category
-                                </Link>
                                 <SecondaryButton href={route("category.index")}>
                                     Back
                                 </SecondaryButton>
