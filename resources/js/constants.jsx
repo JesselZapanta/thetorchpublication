@@ -1,5 +1,7 @@
 // user role
 
+import { NowIndicatorContainer } from "@fullcalendar/core/internal";
+
 export const ROLE_TEXT = {
     student: "Student",
     student_contributor: "Student Contributor",
@@ -98,4 +100,16 @@ export const CATEGORY_CLASS_MAP = {
 export const CATEGORY_TEXT_MAP = {
     active: "Active",
     inactive: "Inactive",
+};
+
+
+export const getTaskDueClass = (dueDate) => {
+    const now = new Date();
+    const taskDueDate = new Date(dueDate);
+
+    if (taskDueDate < now) {
+        return "bg-red-600"; // Past due date
+    } else {
+        return "bg-green-600"; // Future due date (or on time)
+    }
 };
