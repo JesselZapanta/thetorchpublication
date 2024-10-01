@@ -182,6 +182,20 @@ export default function StudentAuthenticatedLayout({
                         </div>
 
                         <div className="mt-3 space-y-1">
+                            <ResponsiveNavLink
+                                href={route("student-contributor.create")}
+                            >
+                                Application
+                                {StudentBadgeCount.rejectedApplication > 0 && (
+                                    <>
+                                        <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                            {
+                                                StudentBadgeCount.rejectedApplication
+                                            }
+                                        </span>
+                                    </>
+                                )}
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink href={route("profile.edit")}>
                                 Profile
                             </ResponsiveNavLink>

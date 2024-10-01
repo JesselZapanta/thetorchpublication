@@ -28,7 +28,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                 {AdminBadgeCount.totalArticleReportCount}
                             </div> */}
 
-                            <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
+                            <div className="hidden space-x-8 xl:-my-px xl:ms-10 xl:flex">
                                 <NavLink
                                     href={route("admin.dashboard")}
                                     active={route().current("admin.dashboard")}
@@ -145,7 +145,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             </div>
                         </div>
 
-                        <div className="hidden lg:flex lg:items-center lg:ms-6">
+                        <div className="hidden xl:flex xl:items-center xl:ms-6">
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -174,7 +174,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center lg:hidden">
+                        <div className="-me-2 flex items-center  xl:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(

@@ -25,7 +25,7 @@ export default function UnauthenticatedLayout({
                                     <ApplicationLogo className="block h-9 w-auto fill-current  dark:text-gray-200" />
                                 </Link>
                             </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
                                     href={route("home")}
                                     active={route().current("home")}
@@ -59,7 +59,7 @@ export default function UnauthenticatedLayout({
                                 </NavLink>
                             </div>
                         </div>
-                        <div className="hidden sm:flex sm:ms-6">
+                        <div className="hidden lg:flex lg:ms-6">
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {user ? (
                                     user.role === "admin" ? (
@@ -109,7 +109,7 @@ export default function UnauthenticatedLayout({
                             </nav>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center lg:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -154,7 +154,7 @@ export default function UnauthenticatedLayout({
                 <div
                     className={
                         (showingNavigationDropdown ? "block" : "hidden") +
-                        " sm:hidden"
+                        " lg:hidden"
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">
@@ -257,27 +257,9 @@ export default function UnauthenticatedLayout({
                         >
                             Freedom Wall
                         </ResponsiveNavLink>
-                        {user ? (
-                            user.role === "admin" ? (
-                                <ResponsiveNavLink
-                                    href={route("admin.dashboard")}
-                                >
-                                    Dashboard
-                                </ResponsiveNavLink>
-                            ) : user.role === "student" ? (
-                                <ResponsiveNavLink
-                                    href={route("student.dashboard")}
-                                >
-                                    Dashboard
-                                </ResponsiveNavLink>
-                            ) : null
-                        ) : (
-                            <>
-                                <ResponsiveNavLink href={route("login")}>
-                                    LOGIN
-                                </ResponsiveNavLink>
-                            </>
-                        )}
+                        <ResponsiveNavLink href={route("login")}>
+                            Log In
+                        </ResponsiveNavLink>
                     </div>
                 </div>
             </nav>
