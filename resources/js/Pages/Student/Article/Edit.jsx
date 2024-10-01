@@ -16,11 +16,11 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
         title: article.title || "",
         excerpt: article.excerpt || "",
         body: article.body || "",
-        status: article.status || "",
+        // status: article.status || "",
         caption: article.caption || "",
         article_image_path: "",
         is_anonymous: article.is_anonymous || "",
-        status: article.status == "rejected" ? "pending" : article.status || "",
+        status: (article.status === "rejected") ? "pending" : article.status || "",
         _method: "PUT",
     });
 

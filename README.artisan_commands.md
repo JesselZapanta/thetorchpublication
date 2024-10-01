@@ -81,3 +81,7 @@ npm install aos --save
 <!-- for cron -->
 <!-- run locally -->
 php artisan schedule:run
+
+
+<!-- for text editor -->
+npm install react-quill quill -- wapa na butang hAHHAH
