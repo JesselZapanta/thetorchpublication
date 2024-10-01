@@ -287,47 +287,51 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                         Write Something
                     </button>
                 </div>
-                <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <SelectInput
-                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
-                        value={sort}
-                        onChange={handleSortChange} // Handle the change
-                    >
-                        {/* <option value="">Sort by</option> */}
-                        <option value="date_desc">Date: Descending</option>
-                        <option value="date_asc">Date: Ascending</option>
+                <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="flex gap-4">
+                        <SelectInput
+                            className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
+                            value={sort}
+                            onChange={handleSortChange} // Handle the change
+                        >
+                            {/* <option value="">Sort by</option> */}
+                            <option value="date_desc">Date: Descending</option>
+                            <option value="date_asc">Date: Ascending</option>
 
-                        <option value="likes_desc">Likes: Descending</option>
-                        <option value="likes_asc">Likes: Ascending</option>
+                            <option value="likes_desc">
+                                Likes: Descending
+                            </option>
+                            <option value="likes_asc">Likes: Ascending</option>
 
-                        <option value="dislikes_desc">
-                            Dislikes: Descending
-                        </option>
-                        <option value="dislikes_asc">
-                            Dislikes: Ascending
-                        </option>
+                            <option value="dislikes_desc">
+                                Dislikes: Descending
+                            </option>
+                            <option value="dislikes_asc">
+                                Dislikes: Ascending
+                            </option>
 
-                        <option value="body_desc">Body: Z-A</option>
-                        <option value="body_asc">Body: A-Z</option>
-                    </SelectInput>
+                            <option value="body_desc">Body: Z-A</option>
+                            <option value="body_asc">Body: A-Z</option>
+                        </SelectInput>
 
-                    <SelectInput
-                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
-                        value={emotionSort}
-                        onChange={handleEmotionSortChange} // Handle the change
-                    >
-                        <option value="">Sort by Emotion</option>
-                        <option value="happy">Happy</option>
-                        <option value="sad">Sad</option>
-                        <option value="annoyed">Annoyed</option>
-                        <option value="proud">Proud</option>
-                        <option value="drained">Drained</option>
-                        <option value="inlove">Inlove</option>
-                        <option value="calm">Calm</option>
-                        <option value="excited">Excited</option>
-                        <option value="angry">Angry</option>
-                        <option value="down">Down</option>
-                    </SelectInput>
+                        <SelectInput
+                            className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
+                            value={emotionSort}
+                            onChange={handleEmotionSortChange} // Handle the change
+                        >
+                            <option value="">Sort by Emotion</option>
+                            <option value="happy">Happy</option>
+                            <option value="sad">Sad</option>
+                            <option value="annoyed">Annoyed</option>
+                            <option value="proud">Proud</option>
+                            <option value="drained">Drained</option>
+                            <option value="inlove">Inlove</option>
+                            <option value="calm">Calm</option>
+                            <option value="excited">Excited</option>
+                            <option value="angry">Angry</option>
+                            <option value="down">Down</option>
+                        </SelectInput>
+                    </div>
 
                     <TextInput
                         className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
@@ -512,7 +516,8 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                                     className="ml-auto px-4 py-2 bg-indigo-600 text-white transition-all rounded hover:bg-indigo-700"
                                     type="submit"
                                     disabled={processing}
-                                    >{freedomWall ? "Update" : "Submit"}
+                                >
+                                    {freedomWall ? "Update" : "Submit"}
                                 </button>
                             </div>
                         </form>
