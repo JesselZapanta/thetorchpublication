@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
 
 
 //Admin Routes
-Route::middleware(['auth','admin', ])->group(function() {
+Route::middleware(['auth','admin','verified' ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
     
@@ -179,7 +179,7 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
 });
 
 // for editor
-Route::middleware(['auth', 'editor'])->group(function() {
+Route::middleware(['auth', 'editor','verified'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::get('/editor/report', [EditorGenerateReportController::class, 'report'])->name('editor.report');
     
@@ -222,7 +222,7 @@ Route::middleware(['auth', 'editor'])->group(function() {
 
 
 // for Writer
-Route::middleware(['auth', 'writer'])->group(function() {
+Route::middleware(['auth', 'writer', 'verified'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
     Route::get('/writer/report', [WriterGenerateReportController::class, 'report'])->name('writer.report');
 
@@ -262,7 +262,7 @@ Route::middleware(['auth', 'writer'])->group(function() {
 });
 
 // for Designer
-Route::middleware(['auth', 'designer'])->group(function() {
+Route::middleware(['auth', 'designer', 'verified'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     Route::get('/designer/report', [DesignerGenerateReportController::class, 'report'])->name('designer.report');
 
@@ -307,7 +307,7 @@ Route::middleware(['auth', 'designer'])->group(function() {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
