@@ -76,3 +76,8 @@ npm install puppeteer
 
 <!-- AOS -->
 npm install aos --save
+
+
+<!-- for cron -->
+<!-- run locally -->
+php artisan schedule:run

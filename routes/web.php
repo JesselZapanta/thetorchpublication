@@ -136,6 +136,7 @@ Route::middleware(['auth','admin', ])->group(function() {
     Route::put('admin-task/{id}/updateSubmittedTask', [AdminTaskController::class, 'updateSubmittedTask'])->name('admin.updateSubmittedTask');
     Route::get('admin-task/{id}/timeline', [AdminTaskController::class, 'timeLine'])->name('admin-task.timeline');
     Route::get('admin-task/calendar', [AdminTaskController::class, 'calendar'])->name('admin-task.calendar');
+    Route::get('admin-task/{id}/remind', [AdminTaskController::class, 'remind'])->name('admin-task.remind');
     Route::resource('admin-task', AdminTaskController::class);
 
     //review Report article

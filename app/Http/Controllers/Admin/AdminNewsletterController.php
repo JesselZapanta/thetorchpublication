@@ -330,8 +330,12 @@ class AdminNewsletterController extends Controller
 
     
         $articles = $query->orderBy($sortField, $sortDirection)
+                        //where the createdBy->role != 'student' 
                         ->where('status', 'published')
                         ->where('visibility', 'visible')
+                        ->whereHas('createdBy', function ($query){
+                            $query->where('role', '!=', 'student');
+                        })
                         ->paginate(10)
                         ->onEachSide(1);
 

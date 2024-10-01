@@ -139,6 +139,12 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
                         List of Tasks
                     </h2>
                     <div className="flex gap-4">
+                        {/* <Link
+                            href={route("admin-task.remind")}
+                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                        >
+                            Remind
+                        </Link> */}
                         <Link
                             href={route("admin-task.calendar")}
                             className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -421,6 +427,15 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
                                                         </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
+                                                        <Link
+                                                            href={route(
+                                                                "admin-task.remind",
+                                                                task.id
+                                                            )}
+                                                            className="font-medium text-amber-600 dark:text-amber-500 hover:underline mx-1"
+                                                        >
+                                                            Remind
+                                                        </Link>
                                                         <Link
                                                             href={route(
                                                                 "admin-task.show",
