@@ -407,7 +407,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                             posts that violate the guidelines, and these reports
                             will be reviewed with appropriate actions taken.
                             Violations may result in the removal of posts from
-                            the platform. ==Must Update==
+                            the platform.
                         </p>
                         <div className="w-full flex">
                             <button
