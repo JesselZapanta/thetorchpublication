@@ -84,4 +84,7 @@ php artisan schedule:run
 
 
 <!-- for text editor -->
-npm install react-quill quill -- wapa na butang hAHHAH
+npm install react-quill quill -- naay error hHAHA
+
+
+npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic

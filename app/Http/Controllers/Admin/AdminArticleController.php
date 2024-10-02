@@ -144,8 +144,26 @@ class AdminArticleController extends Controller
             $errors['excerpt'] = 'The excerpt contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
+        //sanitize for base64
+        function sanitizeContent($body) {
+            // Regular expression to match base64 image data (including jpg, jpeg, png, gif)
+            $base64Pattern = '/data:image\/(?:jpeg|jpg|png|gif);base64,[a-zA-Z0-9\/+\r\n]+={0,2}/';
+            
+            // Regular expression to match <figure>, <oembed>, and <a> tags (removes embedded URLs and links)
+            $urlPattern = '/<figure.*?>.*?<\/figure>|<oembed.*?>.*?<\/oembed>|<a.*?>.*?<\/a>/i';
+            
+            // Remove all base64 image data
+            $body = preg_replace($base64Pattern, '', $body);
+            
+            // Remove all embedded URLs and links (<figure>, <oembed>, and <a> tags)
+            return preg_replace($urlPattern, '', $body);
+        }
+
+        $sanitizedBody = sanitizeContent($data['body']);
+
+
         // Check if the article body contains any bad words
-        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        $detectedWords = $ahoCorasick->search($sanitizedBody);
         if (!empty($detectedWords)) {
             $errors['body'] = 'The body contains inappropriate content: ' . implode(', ', $detectedWords);
         }
@@ -242,6 +260,7 @@ class AdminArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $admin_article)
     {
+        // dd($request);
         $data = $request->validated();
 
         // Build the Trie with bad words
@@ -250,6 +269,7 @@ class AdminArticleController extends Controller
         foreach ($badWords as $badWord) {
             $ahoCorasick->insert(strtolower($badWord));
         }
+
         $ahoCorasick->buildFailureLinks();
 
         // Initialize an array to collect errors
@@ -267,8 +287,27 @@ class AdminArticleController extends Controller
             $errors['excerpt'] = 'The excerpt contains inappropriate content: ' . implode(', ', $detectedWords);
         }
 
+
+        //sanitize for base64
+        function sanitizeContent($body) {
+            // Regular expression to match base64 image data (including jpg, jpeg, png, gif)
+            $base64Pattern = '/data:image\/(?:jpeg|jpg|png|gif);base64,[a-zA-Z0-9\/+\r\n]+={0,2}/';
+            
+            // Regular expression to match <figure>, <oembed>, and <a> tags (removes embedded URLs and links)
+            $urlPattern = '/<figure.*?>.*?<\/figure>|<oembed.*?>.*?<\/oembed>|<a.*?>.*?<\/a>/i';
+            
+            // Remove all base64 image data
+            $body = preg_replace($base64Pattern, '', $body);
+            
+            // Remove all embedded URLs and links (<figure>, <oembed>, and <a> tags)
+            return preg_replace($urlPattern, '', $body);
+        }
+
+        $sanitizedBody = sanitizeContent($data['body']);
+
+
         // Check if the article body contains any bad words
-        $detectedWords = $ahoCorasick->search(strtolower($data['body']));
+        $detectedWords = $ahoCorasick->search($sanitizedBody);
         if (!empty($detectedWords)) {
             $errors['body'] = 'The body contains inappropriate content: ' . implode(', ', $detectedWords);
         }

@@ -6,6 +6,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
@@ -32,6 +33,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
         // draft: article.draft || "no",
         _method: "PUT",
     });
+
 
     // Automatically set published_date if status is "published"
     useEffect(() => {
@@ -370,7 +372,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     value="Article Body"
                                 />
 
-                                <TextAreaInput
+                                {/* <TextAreaInput
                                     id="body"
                                     type="text"
                                     name="body"
@@ -379,6 +381,13 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     onChange={(e) =>
                                         setData("body", e.target.value)
                                     }
+                                /> */}
+
+                                <CustomCKEditor
+                                    id="body"
+                                    className="mt-2"
+                                    value={data.body}
+                                    onChange={(value) => setData("body", value)} // Update the body in form state
                                 />
 
                                 <InputError

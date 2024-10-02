@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWordController;
 use App\Http\Controllers\ArticleViewsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Designer\DesignerGenerateReportController;
 use App\Http\Controllers\Designer\DesignerNewsletterController;
@@ -61,6 +62,8 @@ use Illuminate\Support\Facades\Route;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+
+// Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 //route to verify student
 Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 'validateStudent']);

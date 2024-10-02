@@ -216,7 +216,6 @@ class WordSeeder extends Seeder
             ['name' => 'fvc u'],
             ['name' => 'fvck u'],
             ['name' => 'fvck'],
-            ['name' => 'fck'],
             ['name' => 'fvk'],
         ];
 

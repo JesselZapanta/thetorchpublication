@@ -6,6 +6,7 @@ namespace App\Utilities;
 //     public $children = [];
 //     public $isEndOfWord = false;
 //     public $failLink = null;
+//     public $word = null; // Store the word at the end of the Trie node
 // }
 
 // class AhoCorasick {
@@ -15,21 +16,16 @@ namespace App\Utilities;
 //         $this->root = new TrieNode();
 //     }
 
-//     private function normalize($word) {
-//         // Replace sequences of the same character with a single character
-//         return preg_replace('/(.)\\1+/', '$1', $word);
-//     }
-
 //     public function insert($word) {
-//         $normalizedWord = $this->normalize($word);
 //         $node = $this->root;
-//         foreach (str_split($normalizedWord) as $char) {
+//         foreach (str_split($word) as $char) {
 //             if (!isset($node->children[$char])) {
 //                 $node->children[$char] = new TrieNode();
 //             }
 //             $node = $node->children[$char];
 //         }
 //         $node->isEndOfWord = true;
+//         $node->word = $word; // Store the original word (no normalization)
 //     }
 
 //     public function buildFailureLinks() {
@@ -50,31 +46,41 @@ namespace App\Utilities;
 //                 }
 //                 $childNode->failLink = isset($failNode->children[$char]) ? $failNode->children[$char] : $this->root;
 //                 $childNode->isEndOfWord = $childNode->isEndOfWord || $childNode->failLink->isEndOfWord;
+//                 if ($childNode->failLink->isEndOfWord && !$childNode->word) {
+//                     $childNode->word = $childNode->failLink->word;
+//                 }
 //             }
 //         }
 //     }
 
 //     public function search($text) {
-//         $normalizedText = $this->normalize($text);
 //         $node = $this->root;
-//         $length = strlen($normalizedText);
+//         $length = strlen($text);
+//         $foundWords = [];
 
 //         for ($i = 0; $i < $length; $i++) {
-//             $char = $normalizedText[$i];
+//             $char = $text[$i];
 //             while ($node !== $this->root && !isset($node->children[$char])) {
 //                 $node = $node->failLink;
 //             }
 //             $node = isset($node->children[$char]) ? $node->children[$char] : $this->root;
-//             if ($node->isEndOfWord) {
-//                 return true; // Found a bad word
+
+//             // Collect all words detected at this point
+//             $tempNode = $node;
+//             while ($tempNode !== $this->root) {
+//                 if ($tempNode->isEndOfWord) {
+//                     $foundWords[] = $tempNode->word; // Return the original word
+//                 }
+//                 $tempNode = $tempNode->failLink;
 //             }
 //         }
-//         return false;
+
+//         return array_unique($foundWords); // Return unique detected words
 //     }
 // }
 
 
-// New
+// New with normalize
 
 class TrieNode {
     public $children = [];

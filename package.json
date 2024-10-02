@@ -20,6 +20,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^43.1.1",
+        "@ckeditor/ckeditor5-react": "^9.3.0",
         "@fullcalendar/common": "^5.11.5",
         "@fullcalendar/core": "^6.1.15",
         "@fullcalendar/daygrid": "^6.1.15",

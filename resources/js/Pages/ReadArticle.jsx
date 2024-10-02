@@ -274,9 +274,14 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                             </div>
                             <div className="w-full h-[2px] bg-indigo-400 my-8"></div>
                             <div className="mt-8">
-                                <p className="text-base text-justify whitespace-pre-line">
-                                    {article.body}
-                                </p>
+                                <div
+                                    className="text-base text-justify whitespace-pre-line"
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.body,
+                                    }}
+                                >
+                                    {/* {article.body} */}
+                                </div>
                             </div>
                         </div>
                         <div className="p-4 flex justify-between items-center">
