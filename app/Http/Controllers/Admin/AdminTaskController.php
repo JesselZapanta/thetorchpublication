@@ -450,11 +450,20 @@ class AdminTaskController extends Controller
     public function remind($id)
     {   
         $task = Task::find($id);
-        
+
+        $taskStatus = $task->status;
+
+        if($taskStatus === 'completed'){
+            // dd('completed');
+            return to_route('admin-task.index')->with(key: ['error' => 'Task is already completed.']);
+        }
+
 
         $assignTo = $task->assignedTo;
         $layoutBy = $task->layoutBy;
         $due = $task->due_date;
+
+        // dd($due);
 
         $taskDetails = [
                 'task_id' => $task->id,
@@ -470,12 +479,6 @@ class AdminTaskController extends Controller
 
         $customReminderMessage = 'Reminder: You have a unfinished task that requires your immediate attention. This task is important and has been awaiting completion. Please take a moment to review the details and complete it at your earliest convenience to avoid any potential delays or complications. Your prompt action is greatly appreciated.';
 
-        $taskStatus = $task->status;
-
-        if($taskStatus === 'completed'){
-            return to_route('admin-task.index')->with(key: ['error' => 'Task is already completed.']);
-        }
-
         //past due
 
         if($due < now()){
@@ -489,12 +492,10 @@ class AdminTaskController extends Controller
                 Notification::send($layoutBy, new TaskReminder($taskDetails, $customOverdueMessage));
             }
 
+            // dd('hello');
             return to_route('admin-task.index')->with(['success' => 'Reminders sent successfully.']);
-        }
-        
-        
-        // not past due
-        if($due < now()){
+        }else{
+            // dd('hello');
              //to assignee
             if (in_array($taskStatus, ['pending', 'progress', 'content_revision'])) {
                 Notification::send($assignTo, new TaskReminder($taskDetails, $customReminderMessage));
@@ -505,12 +506,10 @@ class AdminTaskController extends Controller
                 Notification::send($layoutBy, new TaskReminder($taskDetails, $customReminderMessage));
             }
 
+            // dd('hello');
             return to_route('admin-task.index')->with(['success' => 'Reminders sent successfully.']);
         }
-
-
-        // Send the email notification to the assigned user
-        // Notification::send($assignTo, new TaskReminder($taskDetails, $customOverdueMessage));
+        
     }
 
 }
