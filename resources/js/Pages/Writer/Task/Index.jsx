@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
+import { getTaskDueClass, TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -240,7 +240,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Due Data
+                                                Due Date
                                             </TableHeading>
                                             <TableHeading
                                                 name="status"
@@ -297,7 +297,17 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                                                         </Link>
                                                     </th>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {task.due_date}
+                                                        {/* {task.dueDate} */}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                getTaskDueClass(
+                                                                    task.dueDate
+                                                                ) // Use the function here
+                                                            }
+                                                        >
+                                                            {task.dueDate}
+                                                        </span>
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <span
