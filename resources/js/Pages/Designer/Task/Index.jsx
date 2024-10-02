@@ -26,11 +26,11 @@ export default function Index({ auth, tasks, queryParams = null, flash, Designer
         }
     }, [flash]);
 
-    useEffect(() => {
-        router.get(route("designer-task.index"), queryParams, {
-            preserveState: true,
-        });
-    }, []);
+    // useEffect(() => {
+    //     router.get(route("designer-task.index"), queryParams, {
+    //         preserveState: true,
+    //     });
+    // }, []);
 
     queryParams = queryParams || {};
 
