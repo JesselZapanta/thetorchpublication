@@ -174,7 +174,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center  xl:hidden">
+                        <div className="-me-2 flex items-center xl:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -220,7 +220,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                 <div
                     className={
                         (showingNavigationDropdown ? "block" : "hidden") +
-                        " lg:hidden"
+                        " xl:hidden"
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">

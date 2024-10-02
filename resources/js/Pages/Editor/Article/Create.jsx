@@ -5,6 +5,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
@@ -182,7 +183,7 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                                     value="Article Body"
                                 />
 
-                                <TextAreaInput
+                                {/* <TextAreaInput
                                     id="body"
                                     type="text"
                                     name="body"
@@ -191,6 +192,13 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                                     onChange={(e) =>
                                         setData("body", e.target.value)
                                     }
+                                /> */}
+
+                                <CustomCKEditor
+                                    id="body"
+                                    className="mt-2"
+                                    value={data.body}
+                                    onChange={(value) => setData("body", value)}
                                 />
 
                                 <InputError

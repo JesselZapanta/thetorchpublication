@@ -12,6 +12,9 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
 export default function Create({ auth, categories, activeAy, AdminBadgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         category_id: "",
@@ -59,6 +62,8 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
             }
         >
             <Head title="Create New Article" />
+
+            <ToastContainer position="bottom-right" />
             {/* <pre className="text-white">{JSON.stringify(auth, null, 2)}</pre> */}
 
             <div className="py-12">
@@ -347,7 +352,7 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                     value={data.body}
                                     onChange={(value) =>
                                         setData("body", value)
-                                    } // Update the body in form state
+                                    } 
                                 />
 
                                 <InputError

@@ -147,6 +147,7 @@ class AdminArticleController extends Controller
         //sanitize for base64
         function sanitizeContent($body) {
             // Regular expression to match base64 image data (including jpg, jpeg, png, gif)
+            //wa na gamit
             $base64Pattern = '/data:image\/(?:jpeg|jpg|png|gif);base64,[a-zA-Z0-9\/+\r\n]+={0,2}/';
             
             // Regular expression to match <figure>, <oembed>, and <a> tags (removes embedded URLs and links)
@@ -291,6 +292,7 @@ class AdminArticleController extends Controller
         //sanitize for base64
         function sanitizeContent($body) {
             // Regular expression to match base64 image data (including jpg, jpeg, png, gif)
+            //wa na gamit
             $base64Pattern = '/data:image\/(?:jpeg|jpg|png|gif);base64,[a-zA-Z0-9\/+\r\n]+={0,2}/';
             
             // Regular expression to match <figure>, <oembed>, and <a> tags (removes embedded URLs and links)

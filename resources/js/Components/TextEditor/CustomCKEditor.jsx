@@ -1,7 +1,5 @@
 import React, { useRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
 import {
     ClassicEditor,
     Autoformat,
@@ -13,7 +11,6 @@ import {
     CKFinder,
     CKFinderUploadAdapter,
     CloudServices,
-    // CKBox,
     Essentials,
     Heading,
     Image,
@@ -40,9 +37,43 @@ import {
 
 import "ckeditor5/ckeditor5.css";
 
-
 const CustomCKEditor = ({ value, onChange, className = "", id }) => {
     const editorRef = useRef();
+
+    // Create a custom upload adapter for file size validation
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+            this.maxFileSizeMB = 5; // Set the maximum allowed file size in MB
+        }
+
+        upload() {
+            return this.loader.file.then((file) => {
+                const fileSizeMB = file.size / (1024 * 1024); // Convert file size to MB
+                if (fileSizeMB > this.maxFileSizeMB) {
+                    return Promise.reject(
+                        `File size exceeds ${this.maxFileSizeMB} MB.`
+                    );
+                }
+
+                // Proceed with the upload if file size is within the limit
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        resolve({
+                            default: reader.result,
+                        });
+                    };
+                    reader.onerror = (error) => reject(error);
+                    reader.readAsDataURL(file);
+                });
+            });
+        }
+
+        abort() {
+            // Handle aborting upload if necessary
+        }
+    }
 
     return (
         <div className={className}>
@@ -51,53 +82,38 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                 data={value}
                 onReady={(editor) => {
                     editorRef.current = editor; // Store the editor instance
+
+                    // Add custom upload adapter to the FileRepository
+                    editor.plugins.get("FileRepository").createUploadAdapter = (
+                        loader
+                    ) => {
+                        return new MyUploadAdapter(loader);
+                    };
                 }}
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     onChange(data); // Call onChange to update the state
                 }}
-                // config={{
-                //     toolbar: [
-                //         "heading",
-                //         "|",
-                //         "bold",
-                //         "italic",
-                //         "link",
-                //         // "bulletedList", not working
-                //         // "numberedList", not working
-                //         "blockQuote",
-                //         "undo",
-                //         "redo",
-                //     ],
-                //     // No media or table options included
-                // }}
                 config={{
                     toolbar: {
                         items: [
                             "undo",
                             "redo",
                             "|",
-                            // "heading",
-                            "|",
                             "bold",
                             "italic",
                             "underline",
                             "|",
                             "link",
-                            "uploadImage",
-                            "resizeImage",
-                            // "ckbox",
+                            // "uploadImage",
+                            // "resizeImage",
                             "blockQuote",
-                            "mediaEmbed",
-                            "|",
-                            // "bulletedList",
-                            // "numberedList",
+                            // "mediaEmbed",
                             "|",
                             "outdent",
                             "indent",
                         ],
                     },
-
                     heading: {
                         options: [
                             {
@@ -131,7 +147,6 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                             },
                         ],
                     },
-
                     image: {
                         resizeOptions: [
                             {
@@ -161,7 +176,6 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                             "resizeImage",
                         ],
                     },
-
                     link: {
                         addTargetToExternalLinks: true,
                         defaultProtocol: "https://",
@@ -173,7 +187,6 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                             "mergeTableCells",
                         ],
                     },
-
                     plugins: [
                         Autoformat,
                         BlockQuote,
@@ -206,13 +219,6 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                         TextTransformation,
                         Underline,
                     ],
-                    // contentStyle:
-                    //     "body { border-radius: 10px; padding: 10px; }", 
-                    //licenseKey: '<YOUR_LICENSE_KEY>',
-                    // mention: {
-                    //     // Mention configuration
-                    // },
-                    // initialData: "<p>Hello from CKEditor 5 in React!</p>",
                 }}
             />
         </div>

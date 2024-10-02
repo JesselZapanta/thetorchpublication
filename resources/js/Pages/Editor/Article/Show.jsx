@@ -137,9 +137,16 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                             )}
                             {/* Body */}
                             <div className="mt-8">
-                                <p className="text-base text-justify whitespace-pre-line">
+                                {/* <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
-                                </p>
+                                </p> */}
+
+                                <div
+                                    className="text-base text-justify whitespace-pre-line"
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.body,
+                                    }}
+                                ></div>
                             </div>
                             {/* <div className="mt-12 text-right grid justify-items-end">
                                 <div className="flex">
