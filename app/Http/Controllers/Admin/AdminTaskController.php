@@ -14,7 +14,9 @@ use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
+use App\Models\Word;
 use App\Notifications\TaskReminder;
+use App\Utilities\AhoCorasick;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
@@ -267,6 +269,69 @@ class AdminTaskController extends Controller
 
         // Get the validated data
         $data = $request->validated();
+
+                 // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+
+        $ahoCorasick->buildFailureLinks();
+
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the article title contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['title']));
+        if (!empty($detectedWords)) {
+            $errors['title'] = 'The title contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // Check if the article excerpt contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['excerpt']));
+        if (!empty($detectedWords)) {
+            $errors['excerpt'] = 'The excerpt contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+
+        //sanitize for base64
+        function sanitizeContent($body) {
+            // Regular expression to match base64 image data (including jpg, jpeg, png, gif)
+            //wa na gamit
+            $base64Pattern = '/data:image\/(?:jpeg|jpg|png|gif);base64,[a-zA-Z0-9\/+\r\n]+={0,2}/';
+            
+            // Regular expression to match <figure>, <oembed>, and <a> tags (removes embedded URLs and links)
+            $urlPattern = '/<figure.*?>.*?<\/figure>|<oembed.*?>.*?<\/oembed>|<a.*?>.*?<\/a>/i';
+            
+            // Remove all base64 image data
+            $body = preg_replace($base64Pattern, '', $body);
+            
+            // Remove all embedded URLs and links (<figure>, <oembed>, and <a> tags)
+            return preg_replace($urlPattern, '', $body);
+        }
+
+        $sanitizedBody = sanitizeContent($data['body']);
+
+
+        // Check if the article body contains any bad words
+        $detectedWords = $ahoCorasick->search($sanitizedBody);
+        if (!empty($detectedWords)) {
+            $errors['body'] = 'The body contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // Check if the article caption contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['caption']));
+        if (!empty($detectedWords)) {
+            $errors['caption'] = 'The caption contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
+
+
 
         // Set content_revision_date or content_approved_date based on the new status
         if($data['status'] === 'content_revision'){

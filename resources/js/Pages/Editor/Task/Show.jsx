@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextAreaInput from "@/Components/TextAreaInput";
+import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
 import {
     TASK_PRIORITY_CLASS_MAP,
@@ -189,7 +190,7 @@ export default function Show({ auth, task, EditorBadgeCount }) {
                             <div className="mt-4 w-full">
                                 <InputLabel htmlFor="body" value="Body" />
 
-                                <TextAreaInput
+                                {/* <TextAreaInput
                                     id="body"
                                     type="text"
                                     name="body"
@@ -198,6 +199,13 @@ export default function Show({ auth, task, EditorBadgeCount }) {
                                     onChange={(e) =>
                                         setData("body", e.target.value)
                                     }
+                                /> */}
+
+                                <CustomCKEditor
+                                    id="body"
+                                    className="mt-2"
+                                    value={data.body}
+                                    onChange={(value) => setData("body", value)}
                                 />
 
                                 <InputError

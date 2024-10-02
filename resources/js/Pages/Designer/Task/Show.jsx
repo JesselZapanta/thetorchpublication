@@ -156,9 +156,15 @@ export default function Show({ auth, task, DesignerBadgeCount }) {
                             {/* body */}
                             <div className="w-full">
                                 <h2 className="font-bold">Body</h2>
-                                <p className="p-2 bg-gray-100 rounded-sm">
+                                {/* <p className="p-2 bg-gray-100 rounded-sm">
                                     {task.body}
-                                </p>
+                                </p> */}
+                                <div
+                                    className="p-2 bg-gray-100 rounded-sm"
+                                    dangerouslySetInnerHTML={{
+                                        __html: task.body,
+                                    }}
+                                ></div>
                             </div>
 
                             {/* image caption */}
