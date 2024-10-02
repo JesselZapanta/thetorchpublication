@@ -1,79 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import {
-    ClassicEditor,
-    Autoformat,
-    Bold,
-    Italic,
-    Underline,
-    BlockQuote,
-    Base64UploadAdapter,
-    CKFinder,
-    CKFinderUploadAdapter,
-    CloudServices,
-    Essentials,
-    Heading,
-    Image,
-    ImageCaption,
-    ImageResize,
-    ImageStyle,
-    ImageToolbar,
-    ImageUpload,
-    PictureEditing,
-    Indent,
-    IndentBlock,
-    Link,
-    List,
-    MediaEmbed,
-    Mention,
-    Paragraph,
-    PasteFromOffice,
-    Table,
-    TableColumnResize,
-    TableToolbar,
-    TextTransformation,
-    Undo,
-} from "ckeditor5";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"; // Ensure you import the correct editor build
 
 import "ckeditor5/ckeditor5.css";
 
-const CustomCKEditor = ({ value, onChange, className = "", id }) => {
+const CustomCKEditor = ({
+    value,
+    onChange,
+    className = "",
+    id,
+    isReadOnly = false,
+}) => {
     const editorRef = useRef();
 
-    // Create a custom upload adapter for file size validation
-    class MyUploadAdapter {
-        constructor(loader) {
-            this.loader = loader;
-            this.maxFileSizeMB = 5; // Set the maximum allowed file size in MB
+    useEffect(() => {
+        if (editorRef.current) {
+            if (isReadOnly) {
+                editorRef.current.enableReadOnlyMode("feature-id"); // Enable read-only mode
+            } else {
+                editorRef.current.disableReadOnlyMode("feature-id"); // Disable read-only mode
+            }
         }
-
-        upload() {
-            return this.loader.file.then((file) => {
-                const fileSizeMB = file.size / (1024 * 1024); // Convert file size to MB
-                if (fileSizeMB > this.maxFileSizeMB) {
-                    return Promise.reject(
-                        `File size exceeds ${this.maxFileSizeMB} MB.`
-                    );
-                }
-
-                // Proceed with the upload if file size is within the limit
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        resolve({
-                            default: reader.result,
-                        });
-                    };
-                    reader.onerror = (error) => reject(error);
-                    reader.readAsDataURL(file);
-                });
-            });
-        }
-
-        abort() {
-            // Handle aborting upload if necessary
-        }
-    }
+    }, [isReadOnly]); // Re-run effect when isReadOnly changes
 
     return (
         <div className={className}>
@@ -82,17 +30,14 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                 data={value}
                 onReady={(editor) => {
                     editorRef.current = editor; // Store the editor instance
-
-                    // Add custom upload adapter to the FileRepository
-                    editor.plugins.get("FileRepository").createUploadAdapter = (
-                        loader
-                    ) => {
-                        return new MyUploadAdapter(loader);
-                    };
                 }}
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     onChange(data); // Call onChange to update the state
+                }}
+                onBlur={(event, editor) => {
+                    const data = editor.getData();
+                    onChange(data); // Ensure data is updated on blur
                 }}
                 config={{
                     toolbar: {
@@ -105,10 +50,7 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                             "underline",
                             "|",
                             "link",
-                            // "uploadImage",
-                            // "resizeImage",
                             "blockQuote",
-                            // "mediaEmbed",
                             "|",
                             "outdent",
                             "indent",
@@ -147,78 +89,7 @@ const CustomCKEditor = ({ value, onChange, className = "", id }) => {
                             },
                         ],
                     },
-                    image: {
-                        resizeOptions: [
-                            {
-                                name: "resizeImage:original",
-                                label: "Default image width",
-                                value: null,
-                            },
-                            {
-                                name: "resizeImage:50",
-                                label: "50% page width",
-                                value: "50",
-                            },
-                            {
-                                name: "resizeImage:75",
-                                label: "75% page width",
-                                value: "75",
-                            },
-                        ],
-                        toolbar: [
-                            "imageTextAlternative",
-                            "toggleImageCaption",
-                            "|",
-                            "imageStyle:inline",
-                            "imageStyle:wrapText",
-                            "imageStyle:breakText",
-                            "|",
-                            "resizeImage",
-                        ],
-                    },
-                    link: {
-                        addTargetToExternalLinks: true,
-                        defaultProtocol: "https://",
-                    },
-                    table: {
-                        contentToolbar: [
-                            "tableColumn",
-                            "tableRow",
-                            "mergeTableCells",
-                        ],
-                    },
-                    plugins: [
-                        Autoformat,
-                        BlockQuote,
-                        Bold,
-                        CKFinder,
-                        CKFinderUploadAdapter,
-                        CloudServices,
-                        Essentials,
-                        Heading,
-                        Image,
-                        ImageCaption,
-                        ImageResize,
-                        ImageStyle,
-                        ImageToolbar,
-                        ImageUpload,
-                        Base64UploadAdapter,
-                        Indent,
-                        IndentBlock,
-                        Italic,
-                        Link,
-                        List,
-                        MediaEmbed,
-                        Mention,
-                        Paragraph,
-                        PasteFromOffice,
-                        PictureEditing,
-                        Table,
-                        TableColumnResize,
-                        TableToolbar,
-                        TextTransformation,
-                        Underline,
-                    ],
+                    // Other configurations...
                 }}
             />
         </div>

@@ -102,7 +102,7 @@ export default function Index({ auth, article, StudentBadgeCount }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 text-gray-400">
+                            {/* <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
                                 <p>
                                     Edited by:
@@ -111,7 +111,7 @@ export default function Index({ auth, article, StudentBadgeCount }) {
                                         : "No Editor"}
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
-                                {/* {article.rejection_message && (
+                                {article.rejection_message && (
                                     <div
                                         className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                         role="alert"
@@ -136,30 +136,21 @@ export default function Index({ auth, article, StudentBadgeCount }) {
                                             </div>
                                         </div>
                                     </div>
-                                )} */}
-                            </div>
+                                )}
+                            </div> */}
                             {/* Body */}
                             <div className="mt-8">
-                                <p className="text-base text-justify whitespace-pre-line">
+                                {/* <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
-                                </p>
+                                </p> */}
+
+                                <div
+                                    className="text-base text-justify whitespace-pre-line"
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.body,
+                                    }}
+                                ></div>
                             </div>
-                            {/* <div className="mt-12 text-right grid justify-items-end">
-                                <div className="flex">
-                                    <Link
-                                        href={route("admin-article.edit", article.id)}
-                                        className="bg-blue-600 py-1 px-3 text-blue-100 rounded shadow transition-all hover:bg-blue-500 mr-2"
-                                    >
-                                        Edit Article
-                                    </Link>
-                                    <Link
-                                        href={route("admin-article.index")}
-                                        className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
-                                    >   
-                                        Back
-                                    </Link>
-                                </div>
-                            </div> */}
                             <div className="mt-6 flex justify-end gap-2">
                                 <Link
                                     href={route(

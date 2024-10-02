@@ -4,6 +4,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
+import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
@@ -260,7 +261,7 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
                                     value="Article Body"
                                 />
 
-                                <TextAreaInput
+                                {/* <TextAreaInput
                                     id="body"
                                     type="text"
                                     name="body"
@@ -282,6 +283,27 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
                                     onChange={(e) =>
                                         setData("body", e.target.value)
                                     }
+                                /> */}
+
+                                <CustomCKEditor
+                                    id="body"
+                                    className={`mt-2${
+                                        article.status !== "draft" &&
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
+                                            ? "cursor-not-allowed bg-gray-200"
+                                            : ""
+                                    }`}
+                                    isReadOnly={
+                                        article.status !== "draft" &&
+                                        article.status !== "pending" &&
+                                        article.status !== "rejected"
+                                            ? true
+                                            : false
+                                    }
+                                    // isReadOnly={true}
+                                    value={data.body}
+                                    onChange={(value) => setData("body", value)}
                                 />
 
                                 <InputError

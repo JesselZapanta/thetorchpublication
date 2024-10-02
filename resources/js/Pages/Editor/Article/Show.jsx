@@ -99,7 +99,8 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 text-gray-400">
+
+                            {/* <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
                                 <p>
                                     Edited by:
@@ -108,33 +109,34 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                                         : "No Editor"}
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
-                            </div>
-                            {article.rejection_message && (
-                                <div
-                                    className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
-                                    role="alert"
-                                >
-                                    <div className="flex">
-                                        <div className="py-1">
-                                            <svg
-                                                className="fill-current h-6 w-6 text-red-500 mr-4"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p className="font-bold">
-                                                Revision/Rejection Message:
-                                            </p>
-                                            <p className="text-sm">
-                                                {article.rejection_message}
-                                            </p>
+                                {article.rejection_message && (
+                                    <div
+                                        className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                        role="alert"
+                                    >
+                                        <div className="flex">
+                                            <div className="py-1">
+                                                <svg
+                                                    className="fill-current h-6 w-6 text-red-500 mr-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold">
+                                                    Revision/Rejection Message:
+                                                </p>
+                                                <p className="text-sm">
+                                                    {article.rejection_message}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div> */}
+
                             {/* Body */}
                             <div className="mt-8">
                                 {/* <p className="text-base text-justify whitespace-pre-line">
@@ -148,22 +150,6 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                                     }}
                                 ></div>
                             </div>
-                            {/* <div className="mt-12 text-right grid justify-items-end">
-                                <div className="flex">
-                                    <Link
-                                        href={route("admin-article.edit", article.id)}
-                                        className="bg-blue-600 py-1 px-3 text-blue-100 rounded shadow transition-all hover:bg-blue-500 mr-2"
-                                    >
-                                        Edit Article
-                                    </Link>
-                                    <Link
-                                        href={route("admin-article.index")}
-                                        className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
-                                    >
-                                        Back
-                                    </Link>
-                                </div>
-                            </div> */}
                             <div className="mt-6 flex justify-end gap-2">
                                 <Link
                                     href={route(
