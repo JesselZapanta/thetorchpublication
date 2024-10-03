@@ -197,8 +197,8 @@ class AdminDashboardController extends Controller
                 // Ensure we handle other cases properly
                 $query->where('published_date', '>=', $dateFrom);
             }
-            // Limit the number of articles to 10
-            $query->limit(10);
+            // // Limit the number of articles to 10
+            // $query->limit(10);
         }])->where('status', 'active')->get();
 
 
@@ -217,8 +217,7 @@ class AdminDashboardController extends Controller
             $query->withCount(['views' => function($viewQuery) use ($dateFrom, $dateTo) {
                 $viewQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
             }]);
-            // Limit the number of articles to 10
-            $query->limit(10);
+
         }])->where('status', 'active')->get();
 
         // Map categories to get total article view count per category

@@ -238,7 +238,8 @@ class WriterDashboardController extends Controller
                 $query->where('published_date', '>=', $dateFrom);
             }
             // Limit the number of articles to 10
-            $query->where('created_by', $userId)->limit(10);
+            // $query->where('created_by', $userId)->limit(10);
+            $query->where('created_by', $userId);
         }])->where('status', 'active')->get();
 
 
@@ -258,7 +259,8 @@ class WriterDashboardController extends Controller
                 $viewQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
             }]);
             // Limit the number of articles to 10
-            $query->where('created_by', $userId)->limit(10);
+            // $query->where('created_by', $userId)->limit(10);
+            $query->where('created_by', $userId);
         }])->where('status', 'active')->get();
 
         // Map categories to get total article view count per category
