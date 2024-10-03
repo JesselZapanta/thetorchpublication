@@ -6,6 +6,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
 import Footer from '@/Components/Footer';
+import DropDownBtn from '@/Components/DropDownBtn';
 
 export default function Authenticated({ user, header, children, AdminBadgeCount }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -28,7 +29,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                 {AdminBadgeCount.totalArticleReportCount}
                             </div> */}
 
-                            <div className="hidden space-x-8 xl:-my-px xl:ms-10 xl:flex">
+                            <div className="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                                 <NavLink
                                     href={route("admin.dashboard")}
                                     active={route().current("admin.dashboard")}
@@ -51,7 +52,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                         </>
                                     )}
                                 </NavLink>
-                                <NavLink
+                                {/* <NavLink
                                     href={route("academic-year.index")}
                                     active={route().current(
                                         "academic-year.index"
@@ -71,7 +72,49 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                     active={route().current("word.index")}
                                 >
                                     Words
-                                </NavLink>
+                                </NavLink> */}
+                                <div className="flex items-center relative">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <DropDownBtn
+                                                active={
+                                                    route().current(
+                                                        "academic-year.index"
+                                                    ) ||
+                                                    route().current(
+                                                        "word.index"
+                                                    ) ||
+                                                    route().current(
+                                                        "category.index"
+                                                    )
+                                                }
+                                            >
+                                                Settings
+                                            </DropDownBtn>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content>
+                                            <Dropdown.Link
+                                                href={route(
+                                                    "academic-year.index"
+                                                )}
+                                            >
+                                                Academic Years
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("category.index")}
+                                            >
+                                                Categories
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("word.index")}
+                                            >
+                                                Inappropriate Words
+                                            </Dropdown.Link>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
+
                                 <NavLink
                                     href={route("admin-article.index")}
                                     active={route().current(
@@ -145,7 +188,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             </div>
                         </div>
 
-                        <div className="hidden xl:flex xl:items-center xl:ms-6">
+                        <div className="hidden lg:flex lg:items-center lg:ms-6">
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -174,7 +217,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center xl:hidden">
+                        <div className="-me-2 flex items-center lg:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -220,7 +263,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                 <div
                     className={
                         (showingNavigationDropdown ? "block" : "hidden") +
-                        " xl:hidden"
+                        " lg:hidden"
                     }
                 >
                     <div className="pt-2 pb-3 space-y-1">
@@ -270,7 +313,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             href={route("word.index")}
                             active={route().current("word.index")}
                         >
-                            Word
+                            Inappropriate Words
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("academic-year.index")}

@@ -56,16 +56,11 @@ class RegisteredUserController extends Controller
         // Log in the newly created user
         Auth::login($user);
 
-        // Redirect to the dashboard
-        return redirect(route('student.dashboard'));//todo change all the dashboard route to a controller
+
+        return redirect(RouteServiceProvider::HOME);
 
         // Redirect to the dashboard
-        // if($request->user()->role == 'admin'){
-        //         return redirect()->intended('admin.dashboard');
-        //     }elseif($request->user()->userole == 'student'){
-        //         return redirect()->intended('student.dashboard');
-        //     }
-        //  // Optionally, handle other roles or provide a default redirect
-        // return redirect()->intended(RouteServiceProvider::HOME);
+        // return redirect(route('student.dashboard'));//todo change all the dashboard route to a controller
+
     }
 }

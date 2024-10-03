@@ -104,7 +104,7 @@ export default function Index({ auth, article, AdminBadgeCount }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 text-gray-400">
+                            {/* <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
                                 <p>
                                     Edited by:
@@ -113,7 +113,7 @@ export default function Index({ auth, article, AdminBadgeCount }) {
                                         : "No Editor"}
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
-                            </div>
+                            </div> */}
                             {/* Body */}
                             <div className="mt-8">
                                 {/* <p className="text-base text-justify whitespace-pre-line">

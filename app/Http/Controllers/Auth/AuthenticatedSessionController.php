@@ -34,31 +34,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
-        
-         // Redirect to the dashboard
-        // return redirect(route('dashboard'));//todo redirect to specific route
+        return redirect()->intended(RouteServiceProvider::HOME);
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
         
-        //todo  change all the dashboard route to a controller
-         // Redirect to the dashboard based on the user's role
-        if ($request->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($request->user()->role === 'student') {
-            return redirect()->route('student.dashboard');
-        }elseif ($request->user()->role === 'student_contributor') {
-            return redirect()->route('student.dashboard');
-        }elseif ($request->user()->role === 'editor') {
-            return redirect()->route('editor.dashboard');
-        } elseif ($request->user()->role === 'writer') {
-            return redirect()->route('writer.dashboard');
-        }elseif ($request->user()->role === 'designer') {
-            return redirect()->route('designer.dashboard');
-        }
+        // //todo  change all the dashboard route to a controller -- done
+        //  // Redirect to the dashboard based on the user's role
+        // if ($request->user()->role === 'admin') {
+        //     return redirect()->route('admin.dashboard');
+        // } elseif ($request->user()->role === 'student') {
+        //     return redirect()->route('student.dashboard');
+        // }elseif ($request->user()->role === 'student_contributor') {
+        //     return redirect()->route('student.dashboard');
+        // }elseif ($request->user()->role === 'editor') {
+        //     return redirect()->route('editor.dashboard');
+        // } elseif ($request->user()->role === 'writer') {
+        //     return redirect()->route('writer.dashboard');
+        // }elseif ($request->user()->role === 'designer') {
+        //     return redirect()->route('designer.dashboard');
+        // }
         
-        // Optionally, handle other roles or provide a default redirect
-        return redirect()->route('login')->with('error', 'Invalid credentials.');
+        // // Optionally, handle other roles or provide a default redirect
+        // return redirect()->route('login')->with('error', 'Invalid credentials.');
     }
 
     /**
@@ -71,7 +67,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
+        
         return redirect('/');
     }
 }

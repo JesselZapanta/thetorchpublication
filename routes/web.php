@@ -63,7 +63,8 @@ use Illuminate\Support\Facades\Route;
 //     ]);
 // });
 
-// Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+// redirect to specific dashboard
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 //route to verify student
 Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 'validateStudent']);

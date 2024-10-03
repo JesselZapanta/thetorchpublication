@@ -231,7 +231,7 @@ export default function Show({ auth, categories, entry, success }) {
             <AlertError flash={flash} />
 
             <div
-                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
+                className="max-w-7xl min-h-[70vh] mx-auto px-4 sm:px-6 lg:px-8 py-4
             overflow-hidden"
             >
                 {/* Show Freedom Wall */}
@@ -239,7 +239,14 @@ export default function Show({ auth, categories, entry, success }) {
                     {JSON.stringify(entry, null, 2)}
                 </pre> */}
                 <div className="max-w-xl py-2 mx-auto w-full">
-                    <div className="relative flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
+                    <div className="mt-6 flex justify-end gap-2">
+                        <SecondaryButton
+                            href={route("freedom-wall.index")}
+                        >
+                            Back
+                        </SecondaryButton>
+                    </div>
+                    <div className="relative mt-4 flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
                         <div className="dark:bg-gray-700 bg-gray-600 p-2 w-full h-16 flex justify-between items-center">
                             <div className="flex gap-2">
                                 <div className="w-12 h-12 rounded-full border-2 border-indigo-500 overflow-hidden">

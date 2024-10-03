@@ -8,7 +8,7 @@ export default function Jobs({ jobs, auth, queryParams, AdminBadgeCount }) {
         // Regular expression to match email addresses
         const emailPattern = /[\w\.-]+@[\w\.-]+\.\w+/g;
         const match = payload.match(emailPattern);
-        return match ? match[0] : "No email found";
+        return match ? match[0] : "***********@gmail.com";
     }
 
     return (
@@ -18,7 +18,7 @@ export default function Jobs({ jobs, auth, queryParams, AdminBadgeCount }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Newsletters Queue
+                        Queue
                     </h2>
                     <div className="flex gap-4">
                         <SecondaryButton href={route("newsletter.index")}>
@@ -28,7 +28,7 @@ export default function Jobs({ jobs, auth, queryParams, AdminBadgeCount }) {
                 </div>
             }
         >
-            <Head title="Newsletters" />
+            <Head title="Queue" />
             {/* <pre className="text-white">{JSON.stringify(jobs, null, 2)}</pre> */}
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

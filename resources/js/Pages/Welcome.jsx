@@ -75,14 +75,19 @@ export default function Welcome({
                     Latest Release
                 </h5>
 
-                <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* <LatestArticles latestArticles={latestArticles} /> */}
-                    {latestNewsletter.data.map((newsletter) => (
-                        <NewsletterCard
-                            key={newsletter.id}
-                            newsletter={newsletter}
-                        />
-                    ))}
+                <div data-aos="fade-up">
+                    <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {/* <LatestArticles latestArticles={latestArticles} /> */}
+                        {latestNewsletter.data.map((newsletter) => (
+                            <NewsletterCard
+                                key={newsletter.id}
+                                newsletter={newsletter}
+                            />
+                        ))}
+                    </div>
+                    {latestNewsletter.data.length === 0 && (
+                        <p className="text-center">No latest release</p>
+                    )}
                 </div>
 
                 {/* <pre className="text-gray-900">

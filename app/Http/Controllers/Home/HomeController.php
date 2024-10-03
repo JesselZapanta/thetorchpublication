@@ -46,7 +46,6 @@ class HomeController extends Controller
                                 ->limit(2)
                                 ->get();
 
-        //todo might include the ratings and the comments
 
         $latestArticles = Article::orderBy('created_at', 'DESC')
                                 ->where('status', 'published')

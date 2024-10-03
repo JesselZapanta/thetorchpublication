@@ -62,43 +62,9 @@ export default function UnauthenticatedLayout({
                         <div className="hidden lg:flex lg:ms-6">
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {user ? (
-                                    user.role === "admin" ? (
-                                        <NavLink
-                                            href={route("admin.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : user.role === "student" ? (
-                                        <NavLink
-                                            href={route("student.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : user.role === "student_contributor" ? (
-                                        <NavLink
-                                            href={route("student.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : user.role === "editor" ? (
-                                        <NavLink
-                                            href={route("editor.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : user.role === "writer" ? (
-                                        <NavLink
-                                            href={route("writer.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : user.role === "designer" ? (
-                                        <NavLink
-                                            href={route("designer.dashboard")}
-                                        >
-                                            Dashboard
-                                        </NavLink>
-                                    ) : null
+                                    <NavLink href={route("dashboard")}>
+                                        Dashboard
+                                    </NavLink>
                                 ) : (
                                     <>
                                         <NavLink href={route("login")}>
@@ -163,9 +129,9 @@ export default function UnauthenticatedLayout({
                                 <ResponsiveNavLink href={route("login")}>
                                     Log in
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("register")}>
+                                {/* <ResponsiveNavLink href={route("register")}>
                                     Register
-                                </ResponsiveNavLink>
+                                </ResponsiveNavLink> */}
                             </>
                         )}
                     </div>
@@ -173,61 +139,9 @@ export default function UnauthenticatedLayout({
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         {user ? (
                             <>
-                                {user.role === "admin" && (
-                                    <ResponsiveNavLink
-                                        href={route("admin.dashboard")}
-                                        active={route().current(
-                                            "admin.dashboard"
-                                        )}
-                                    >
-                                        Dashboard
-                                    </ResponsiveNavLink>
-                                )}
-                                {user.role === "student" && (
-                                    <ResponsiveNavLink
-                                        href={route("student.dashboard")}
-                                        active={route().current(
-                                            "student.dashboard"
-                                        )}
-                                    >
-                                        Dashboard
-                                    </ResponsiveNavLink>
-                                )}
-
-                                {user.role === "editor" && (
-                                    <ResponsiveNavLink
-                                        href={route("editor.dashboard")}
-                                        active={route().current(
-                                            "editor.dashboard"
-                                        )}
-                                    >
-                                        Dashboard
-                                    </ResponsiveNavLink>
-                                )}
-
-                                {/* {user.role === "writer" && (
-                                            <ResponsiveNavLink
-                                                href={route("writer.dashboard")}
-                                                active={route().current(
-                                                    "writer.dashboard"
-                                                )}
-                                            >
-                                                Writer Dashboard
-                                            </ResponsiveNavLink>
-                                        )}
-                                        
-                                        {user.role === "designer" && (
-                                            <ResponsiveNavLink
-                                                href={route(
-                                                    "designer.dashboard"
-                                                )}
-                                                active={route().current(
-                                                    "designer.dashboard"
-                                                )}
-                                            >
-                                                Designer Dashboard
-                                            </ResponsiveNavLink>
-                                        )} */}
+                                <ResponsiveNavLink href={route("dashboard")}>
+                                    Dashboard
+                                </ResponsiveNavLink>
                             </>
                         ) : null}
 
@@ -256,9 +170,6 @@ export default function UnauthenticatedLayout({
                             className="text-nowrap"
                         >
                             Freedom Wall
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route("login")}>
-                            Log In
                         </ResponsiveNavLink>
                     </div>
                 </div>

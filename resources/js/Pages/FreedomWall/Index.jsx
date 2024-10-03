@@ -295,6 +295,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                             onChange={handleSortChange} // Handle the change
                         >
                             {/* <option value="">Sort by</option> */}
+                            <option value="my">Date: Descending</option>
                             <option value="date_desc">Date: Descending</option>
                             <option value="date_asc">Date: Ascending</option>
 
