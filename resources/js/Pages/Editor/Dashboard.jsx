@@ -58,13 +58,13 @@ export default function Dashboard({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold text-nowrap sm:text-md lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Editor Dashboard
                     </h2>
                     <div className="flex gap-4">
                         <Link
                             href={route("editor.report")}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                            className="px-4 py-2 bg-indigo-600 text-nowrap text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
                             Generate Report
                         </Link>
@@ -73,7 +73,7 @@ export default function Dashboard({
             }
         >
             <Head title="Dashboard" />
-{/* 
+            {/* 
             <pre className="text-gray-900">
                 {JSON.stringify(reportData, null, 2)}
             </pre> */}

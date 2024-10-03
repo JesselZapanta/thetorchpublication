@@ -93,7 +93,7 @@ export default function ByCategory({
                         }}
                         alt={currentCategory.name}
                     />
-                    <p className="absolute font-semibold text-5xl text-gray-50 dark:text-gray-200 leading-tight text-justify uppercase">
+                    <p className="absolute font-semibold sm:txt-md md:text-5xl text-gray-50 dark:text-gray-200 leading-tight text-justify uppercase">
                         {currentCategory.name}
                     </p>
                 </div>

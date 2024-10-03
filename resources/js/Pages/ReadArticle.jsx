@@ -165,7 +165,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
             user={auth.user}
             header={
                 <div className="max-w-7xl mx-auto flex items-center justify-between mt-16">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
+                    <h2 className="font-semibold sm:txt-md lg:text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
                         {article.title}
                     </h2>
                 </div>
@@ -175,7 +175,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
 
             <ToastContainer position="bottom-right" />
 
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="relative">
