@@ -12,10 +12,18 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
+import { PencilSquareIcon, TrashIcon, ListBulletIcon } from "@heroicons/react/16/solid";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Index({ auth, users, queryParams = null, flash, AdminBadgeCount }) {
+export default function Index({
+    auth,
+    users,
+    queryParams = null,
+    flash,
+    AdminBadgeCount,
+}) {
     // Display flash messages if they exist
     useEffect(() => {
         if (flash.message.success) {
@@ -211,9 +219,8 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-gray-100 dark:bg-gray-800 shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="flex gap-2 mb-2 justify-end"></div>
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
@@ -411,10 +418,41 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {user.position}
                                                     </td>
+                                                    {/* <td className="px-3 py-2 text-nowrap">
+                                                        <Dropdown>
+                                                            <Dropdown.Trigger>
+                                                                <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                    <ListBulletIcon className="w-6"/>
+                                                                </div>
+                                                            </Dropdown.Trigger>
+
+                                                            <Dropdown.Content>
+                                                                <Dropdown.Link
+                                                                    href={route(
+                                                                        "user.edit",
+                                                                        user.id
+                                                                    )}
+                                                                >
+                                                                    <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                    Edit
+                                                                </Dropdown.Link>
+                                                                <Dropdown.Btn
+                                                                    onClick={() =>
+                                                                        openDeleteModal(
+                                                                            user
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <TrashIcon className="w-6 text-red-600" />
+                                                                    Delete
+                                                                </Dropdown.Btn>
+                                                            </Dropdown.Content>
+                                                        </Dropdown>
+                                                    </td> */}
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
-                                                                "user.edit",
+                                                                "admin-article.edit",
                                                                 user.id
                                                             )}
                                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"

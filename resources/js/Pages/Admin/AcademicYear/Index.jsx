@@ -433,7 +433,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                             />
                         </div>
 
-                        <div className="flex justify-between gap-4">
+                        <div className="flex w-full justify-between gap-4">
                             {/* Start At */}
                             <div className="mt-2 w-full">
                                 <InputLabel
