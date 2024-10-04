@@ -153,8 +153,8 @@ export default function Register() {
                         className="mt-2"
                     />
                 </div>
-                <div>
-                    <InputLabel htmlFor="profile_image_path" value="Ptofile" />
+                <div className="mt-4">
+                    <InputLabel htmlFor="profile_image_path" value="Profile" />
 
                     <TextInput
                         id="profile_image_path"

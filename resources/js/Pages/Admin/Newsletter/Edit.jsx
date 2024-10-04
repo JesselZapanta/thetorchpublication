@@ -48,7 +48,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
             }
         >
             <Head title="Edit Newsletter" />
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {newsletter.revision_message &&
                         newsletter.status !== 'distributed' &&(

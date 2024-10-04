@@ -54,7 +54,7 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
         >
             <Head title={`Edit ${article.title}`} />
             {/* <pre className="text-white">{JSON.stringify(article, null, 2)}</pre> */}
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.status === "pending" ||
                         (article.rejection_message && (

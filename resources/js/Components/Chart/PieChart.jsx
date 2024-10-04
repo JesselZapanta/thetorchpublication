@@ -41,29 +41,29 @@ const PieChart = ({ categoriesWithViewsCount }) => {
             options: {
                 responsive: true,
             },
-            // options: {
-            //     scales: {
-            //         y: {
-            //             beginAtZero: true,
-            //             title: {
-            //                 display: true,
-            //                 text: "View Count",
-            //             },
-            //         },
-            //         x: {
-            //             title: {
-            //                 display: true,
-            //                 text: "Categories",
-            //             },
-            //         },
-            //     },
-            //     responsive: true,
-            //     plugins: {
-            //         legend: {
-            //             display: true,
-            //         },
-            //     },
-            // },
+            options: {
+                // scales: {
+                //     y: {
+                //         beginAtZero: true,
+                //         title: {
+                //             display: true,
+                //             text: "View Count",
+                //         },
+                //     },
+                //     x: {
+                //         title: {
+                //             display: true,
+                //             text: "Categories",
+                //         },
+                //     },
+                // },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
+            },
         });
 
         // Clean up the chart instance on component unmount

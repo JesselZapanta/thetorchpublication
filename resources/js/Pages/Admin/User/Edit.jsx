@@ -55,7 +55,7 @@ export default function Edit({ auth, user, AdminBadgeCount }) {
         >
             <Head title={`Edit ${user.name}`} />
 
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="grid sm:grid-cols-1 md:grid-cols-3">

@@ -117,7 +117,7 @@ export default function Index({
     const truncate = (text, limit) => {
         if (text.length > limit) {
             return text.slice(0, limit) + "...";
-        }
+    }
         return text;
     };
 
@@ -127,10 +127,10 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold text-nowrap lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-4">
                         <Link
                             href={route("admin-article.calendar")}
                             className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -143,7 +143,7 @@ export default function Index({
                         >
                             Create New
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             }
         >
@@ -155,10 +155,24 @@ export default function Index({
                 {JSON.stringify(AdminBadgeCount, null, 2)}
             </pre> */}
 
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
+                            <div className="flex gap-2 mb-2 justify-end">
+                                <Link
+                                    href={route("admin-article.calendar")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Calendar
+                                </Link>
+                                <Link
+                                    href={route("admin-article.create")}
+                                    className="px-4 py-2 text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Create New
+                                </Link>
+                            </div>
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">

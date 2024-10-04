@@ -39,7 +39,7 @@ export default function Create({ auth, AdminBadgeCount }) {
         >
             <Head title="Create User" />
 
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <form

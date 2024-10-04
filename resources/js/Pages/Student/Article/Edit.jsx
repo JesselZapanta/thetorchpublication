@@ -55,7 +55,7 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
         >
             <Head title={`Edit ${article.title}`} />
             {/* <pre className="text-gray-950">{JSON.stringify(article, null, 2)}</pre> */}
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.rejection_message &&
                         article.status === "rejected" &&

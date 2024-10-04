@@ -49,7 +49,7 @@ export default function Edit({ auth, newsletter, AdminBadgeCount }) {
                 {JSON.stringify(newsletter, null, 2)}
             </pre> */}
 
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {newsletter.newsletter_file_path && (

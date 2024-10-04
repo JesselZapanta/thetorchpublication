@@ -25,10 +25,10 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
             }
         >
             <Head title={`User ${user.name}`} />
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid sm:grid-cols-3">
                             <div>
                                 <img
                                     src={user.profile_image_path}
@@ -71,11 +71,12 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     <p className="mt-1">{user.position}</p>
                                 </div>
                             </div>
-                            <div className="p-6 lg:col-span-1 md:col-span-2 text-gray-900 dark:text-gray-100 flex flex-col justify-between">
+                            <div className="p-6 flex flex-col justify-between text-gray-900 dark:text-gray-100">
+                                {/* <div className="p-6 lg:col-span-1 md:col-span-2 text-gray-900 dark:text-gray-100 flex flex-col justify-between"> */}
                                 <div>
                                     <div>
                                         <h4 className="font-bold text-base">
-                                            Published Articles
+                                            Articles
                                         </h4>
                                         <p className="mt-1">
                                             {contributions.articleCount}
@@ -83,7 +84,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     </div>
                                     <div className="mt-4">
                                         <h4 className="font-bold text-base">
-                                            Total Comments
+                                            Comments
                                         </h4>
                                         <p className="mt-1">
                                             {contributions.commentsCount}
@@ -91,7 +92,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     </div>
                                     <div className="mt-4">
                                         <h4 className="font-bold text-base">
-                                            Total Freedom Wall Entries
+                                            Freedom Wall Entries
                                         </h4>
                                         <p className="mt-1">
                                             {
@@ -101,7 +102,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     </div>
                                     <div className="mt-4">
                                         <h4 className="font-bold text-base">
-                                            Total Completed Task
+                                            Completed Task
                                         </h4>
                                         <p className="mt-1">
                                             {contributions.taskCount}
@@ -113,7 +114,7 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                         href={route("user.edit", user.id)}
                                         className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                     >
-                                        Edit User
+                                        Edit
                                     </Link>
                                     <SecondaryButton href={route("user.index")}>
                                         Back

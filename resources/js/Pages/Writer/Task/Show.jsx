@@ -61,7 +61,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
         >
             <Head title={`Edit ${task.name}`} />
             {/* <pre className="text-gray-900">{JSON.stringify(task, null, 2)}</pre> */}
-            <div className="py-12">
+            <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {task.content_revision_message && (
                         <div
