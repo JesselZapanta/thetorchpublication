@@ -288,12 +288,26 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                 </>
                             )}
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route("academic-year.index")}
+                            active={route().current("academic-year.index")}
+                        >
+                            Academic Years
+                        </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("category.index")}
                             active={route().current("category.index")}
                         >
                             Category
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("word.index")}
+                            active={route().current("word.index")}
+                        >
+                            Inappropriate Words
+                        </ResponsiveNavLink>
+
                         <ResponsiveNavLink
                             href={route("admin-article.index")}
                             active={route().current("admin-article.index")}
@@ -308,18 +322,6 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                     </span>
                                 </>
                             )}
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("word.index")}
-                            active={route().current("word.index")}
-                        >
-                            Inappropriate Words
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("academic-year.index")}
-                            active={route().current("academic-year.index")}
-                        >
-                            Academic Years
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("newsletter.index")}
