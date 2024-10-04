@@ -10,7 +10,7 @@ export default function Timeline({ auth, newsletter, AdminBadgeCount }) {
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Timeline : {newsletter.description}
                     </h2>
                     <div className="flex gap-4">
@@ -168,7 +168,8 @@ export default function Timeline({ auth, newsletter, AdminBadgeCount }) {
                                                     <span className="font-semibold text-indigo-600 dark:text-indigo-500">
                                                         {
                                                             newsletter
-                                                                .distributedBy.name
+                                                                .distributedBy
+                                                                .name
                                                         }
                                                     </span>{" "}
                                                     set the newsletter status to{" "}

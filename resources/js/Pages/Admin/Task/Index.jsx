@@ -125,7 +125,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Tasks
                     </h2>
 
@@ -166,8 +166,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
                                             />
                                         </svg>
                                         Options
-                                        {AdminBadgeCount.totalTaskCount >
-                                            0 && (
+                                        {AdminBadgeCount.totalTaskCount > 0 && (
                                             <>
                                                 <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                     {AdminBadgeCount.totalTaskCount >

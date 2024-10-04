@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
         //     ];
         // });
 
-        // Share admin notification badge count only for admin users
+         //Admin notif badge count
         Inertia::share('AdminBadgeCount', function () {
             if (Auth::check() && Auth::user()->role === 'admin') { // Check if user is an admin
                 $userCount = User::count();    // Get the user count
@@ -148,6 +148,9 @@ class AppServiceProvider extends ServiceProvider
                 return [
                     'articleBadgeCount' => $articleBadgeCount,
                     'totalTaskCount' => $totalTaskCount,
+                    'totalArticleReportCount' => $totalArticleReportCount,
+                    'totalCommentReportCount' => $totalCommentReportCount,
+                    'totalFreedomWallReportCount' => $totalFreedomWallReportCount,
                     'totalReportCount' => $totalReportCount,
                 ];
             }

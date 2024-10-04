@@ -1,5 +1,6 @@
 
 import DangerButton from "@/Components/DangerButton";
+import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -109,17 +110,18 @@ export default function Index({
     };
 
     //select what reported content
-    const handleSelectReport = (e) => {
-        const value = e.target.value;
+    //func not used
+    // const handleSelectReport = (e) => {
+    //     const value = e.target.value;
 
-        if (value === "article") {
-            router.get(route("admin-review-report-article.index"));
-        } else if (value === "comment") {
-            router.get(route("admin-review-report-comment.index"));
-        } else if (value === "freedomWall") {
-            router.get(route("admin-review-report-freedom-wall.index"));
-        }
-    };
+    //     if (value === "article") {
+    //         router.get(route("admin-review-report-article.index"));
+    //     } else if (value === "comment") {
+    //         router.get(route("admin-review-report-comment.index"));
+    //     } else if (value === "freedomWall") {
+    //         router.get(route("admin-review-report-freedom-wall.index"));
+    //     }
+    // };
 
     //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({
@@ -212,10 +214,11 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Reported Articles
                     </h2>
-                    <div className="flex gap-4">
+                    {/* not used */}
+                    {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
                             // value="selectedValue"
@@ -228,6 +231,99 @@ export default function Index({
                                 Reported Freedom Wall
                             </option>
                         </SelectInput>
+                    </div> */}
+                    <div className="flex items-center relative">
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                                        />
+                                    </svg>
+                                    Content Type
+                                    {AdminBadgeCount.totalReportCount > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content>
+                                <Link
+                                    href={route(
+                                        "admin-review-report-article.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Articles
+                                    {AdminBadgeCount.totalArticleReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalArticleReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalArticleReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "admin-review-report-comment.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                >
+                                    Comments
+                                    {AdminBadgeCount.totalCommentReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalCommentReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalCommentReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "admin-review-report-freedom-wall.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Freedom Wall
+                                    {AdminBadgeCount.totalFreedomWallReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {AdminBadgeCount.totalFreedomWallReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : AdminBadgeCount.totalFreedomWallReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                            </Dropdown.Content>
+                        </Dropdown>
                     </div>
                 </div>
             }

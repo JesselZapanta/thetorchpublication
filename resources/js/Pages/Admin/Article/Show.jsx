@@ -9,7 +9,7 @@ export default function Index({ auth, article, AdminBadgeCount }) {
             user={auth.user}
             header={
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
                         {`Title: ${article.title}`}
                     </h2>
                     {/* <div className="flex gap-4">
@@ -124,8 +124,7 @@ export default function Index({ auth, article, AdminBadgeCount }) {
                                     dangerouslySetInnerHTML={{
                                         __html: article.body,
                                     }}
-                                >
-                                </div>
+                                ></div>
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <Link

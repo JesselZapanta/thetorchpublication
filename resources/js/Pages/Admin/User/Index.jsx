@@ -109,7 +109,7 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Users
                     </h2>
 

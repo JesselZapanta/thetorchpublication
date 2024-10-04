@@ -10,7 +10,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Timeline : {article.title}
                     </h2>
                     <div className="flex gap-4">
@@ -157,7 +157,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                 )}
 
                                 {article.published_date &&
-                                    article.publishedBy &&(
+                                    article.publishedBy && (
                                         <li className="mb-10 ml-6">
                                             <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
                                                 <img

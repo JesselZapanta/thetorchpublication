@@ -51,7 +51,7 @@ export default function Show({ auth, task, AdminBadgeCount }) {
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Task : {task.name}
                     </h2>
                 </div>

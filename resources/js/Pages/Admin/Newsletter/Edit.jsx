@@ -41,7 +41,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Edit Newsletter
                     </h2>
                 </div>
@@ -51,7 +51,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {newsletter.revision_message &&
-                        newsletter.status !== 'distributed' &&(
+                        newsletter.status !== "distributed" && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
