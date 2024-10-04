@@ -1,4 +1,5 @@
 import DangerButton from "@/Components/DangerButton";
+import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -109,19 +110,98 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                         Lists of Newsletters
                     </h2>
 
-                    <div className="flex gap-4">
-                        <Link
-                            href={route("newsletter.calendar")}
-                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
-                        >
-                            Calendar
-                        </Link>
-                        <Link
-                            href={route("newsletter.create")}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                        >
-                            Create New
-                        </Link>
+                    <div className="flex items-center relative">
+                        {/* show in large screen */}
+                        <div class="hidden lg:block">
+                            <div className="flex gap-2">
+                                <Link
+                                    href={route("jobs.index")}
+                                    className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
+                                >
+                                    Queue
+                                </Link>
+                                <Link
+                                    href={route("newsletter.calendar")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Calendar
+                                </Link>
+                                <Link
+                                    href={route("newsletter.articles")}
+                                    className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                >
+                                    Select Articles
+                                </Link>
+                                <Link
+                                    href={route("newsletter.create")}
+                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Create New
+                                </Link>
+                            </div>
+                        </div>
+                        <div class="block lg:hidden">
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="size-6"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                                            />
+                                        </svg>
+                                        Options
+                                        {AdminBadgeCount.newsletterPendingCount >
+                                            0 && (
+                                            <>
+                                                <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                    {AdminBadgeCount.newsletterPendingCount >
+                                                    9
+                                                        ? "9+"
+                                                        : AdminBadgeCount.newsletterPendingCount}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Link
+                                        href={route("newsletter.create")}
+                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Create New
+                                    </Link>
+
+                                    <Link
+                                        href={route("newsletter.articles")}
+                                        className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                    >
+                                        Select Articles
+                                    </Link>
+                                    <Link
+                                        href={route("newsletter.calendar")}
+                                        className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    >
+                                        Calendar
+                                    </Link>
+                                    <Link
+                                        href={route("jobs.index")}
+                                        className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
+                                    >
+                                        Queue
+                                    </Link>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             }
@@ -151,7 +231,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                         }
                                     />
                                 </div>
-                                <div className="flex gap-4 justify-end">
+                                {/* <div className="flex gap-4 justify-end">
                                     <Link
                                         href={route("jobs.index")}
                                         className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
@@ -164,7 +244,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                     >
                                         Select Articles
                                     </Link>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

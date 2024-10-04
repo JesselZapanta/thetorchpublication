@@ -1,4 +1,5 @@
 import DangerButton from "@/Components/DangerButton";
+import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -117,7 +118,7 @@ export default function Index({
     const truncate = (text, limit) => {
         if (text.length > limit) {
             return text.slice(0, limit) + "...";
-    }
+        }
         return text;
     };
 
@@ -130,20 +131,74 @@ export default function Index({
                     <h2 className="font-semibold text-nowrap lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
-                    {/* <div className="flex gap-4">
-                        <Link
-                            href={route("admin-article.calendar")}
-                            className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
-                        >
-                            Calendar
-                        </Link>
-                        <Link
-                            href={route("admin-article.create")}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                        >
-                            Create New
-                        </Link>
-                    </div> */}
+
+                    <div className="flex items-center relative">
+                        {/* show in large screen */}
+                        <div class="hidden lg:block">
+                            <div className="flex gap-2">
+                                <Link
+                                    href={route("admin-article.calendar")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Calendar
+                                </Link>
+                                <Link
+                                    href={route("admin-article.create")}
+                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Create New
+                                </Link>
+                            </div>
+                        </div>
+                        <div class="block lg:hidden">
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="size-6"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                                            />
+                                        </svg>
+                                        Options
+                                        {AdminBadgeCount.editedCount > 0 && (
+                                            <>
+                                                <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                    {AdminBadgeCount.editedCount >
+                                                    9
+                                                        ? "9+"
+                                                        : AdminBadgeCount.editedCount}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Link
+                                        href={route("admin-article.create")}
+                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Create New
+                                    </Link>
+                                    <Link
+                                        href={route("admin-article.calendar")}
+                                        className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    >
+                                        Calendar
+                                    </Link>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
+                    </div>
                 </div>
             }
         >
@@ -159,7 +214,7 @@ export default function Index({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="flex gap-2 mb-2 justify-end">
+                            {/* <div className="flex gap-2 mb-2 justify-end">
                                 <Link
                                     href={route("admin-article.calendar")}
                                     className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -172,7 +227,7 @@ export default function Index({
                                 >
                                     Create New
                                 </Link>
-                            </div>
+                            </div> */}
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">

@@ -119,7 +119,7 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                             <div className="flex gap-2">
                                 <Link
                                     href={route("admin-contributor.index")}
-                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
                                 >
                                     Application
                                     {AdminBadgeCount.totalApplication > 0 && (
@@ -144,7 +144,7 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                         <div class="block lg:hidden">
                             <Dropdown>
                                 <Dropdown.Trigger>
-                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700">
+                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -174,10 +174,16 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                                     </div>
                                 </Dropdown.Trigger>
 
-                                <Dropdown.Content className="bg-red-100">
+                                <Dropdown.Content>
+                                    <Link
+                                        href={route("user.create")}
+                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Create New
+                                    </Link>
                                     <Link
                                         href={route("admin-contributor.index")}
-                                        className="flex items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                        className="flex items-center px-4 py-2 text-nowrap bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
                                     >
                                         Application
                                         {AdminBadgeCount.totalApplication >
@@ -191,12 +197,6 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                                                 </span>
                                             </>
                                         )}
-                                    </Link>
-                                    <Link
-                                        href={route("user.create")}
-                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                                    >
-                                        Create New
                                     </Link>
                                 </Dropdown.Content>
                             </Dropdown>
@@ -213,30 +213,7 @@ export default function Index({ auth, users, queryParams = null, flash, AdminBad
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="flex gap-2 mb-2 justify-end">
-                                {/* <Link
-                                    href={route("admin-contributor.index")}
-                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
-                                >
-                                    Application
-                                    {AdminBadgeCount.totalApplication > 0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {AdminBadgeCount.totalApplication >
-                                                9
-                                                    ? "9+"
-                                                    : AdminBadgeCount.totalApplication}
-                                            </span>
-                                        </>
-                                    )}
-                                </Link>
-                                <Link
-                                    href={route("user.create")}
-                                    className="px-4 py-2 text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                                >
-                                    Create New
-                                </Link> */}
-                            </div>
+                            <div className="flex gap-2 mb-2 justify-end"></div>
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">

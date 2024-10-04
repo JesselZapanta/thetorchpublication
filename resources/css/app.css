@@ -25,6 +25,11 @@
     }
 }
 
+/* overide the calendar class */
+.fc-toolbar-title{
+  font-size: 1.2rem !important;
+}
+
 /* .print-header,
 .print-footer {
   text-align: center;
