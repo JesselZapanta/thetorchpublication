@@ -109,7 +109,7 @@ export default function Report({
                                     value={selectedPeriod}
                                     onChange={handleSelectPeriod} // Only handle period selection here
                                 >
-                                    <option value="daily">Daily</option>
+                                    <option value="daily">Today</option>
                                     <option value="weekly">Last Week</option>
                                     <option value="monthly">Last Month</option>
                                     <option value="ay">Academic Year</option>
@@ -147,7 +147,7 @@ export default function Report({
                                     Print Report
                                 </button>
                             </div>
-                            <div className="hidden">
+                            <div className="">
                                 <div className="max-w-[816px] mx-auto">
                                     <div
                                         // className="custom-print-size"
@@ -310,6 +310,11 @@ export default function Report({
                                                 </div>
                                             ))}
                                         </div>
+                                        {editedArticlesDetais.length === 0 && (
+                                            <p className="text-center my-12">
+                                                No data available
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
