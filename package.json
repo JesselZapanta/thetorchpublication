@@ -29,7 +29,6 @@
         "@heroicons/react": "^2.1.5",
         "aos": "^2.3.4",
         "chart.js": "^4.4.4",
-        "puppeteer": "^23.4.1",
         "react-to-print": "^2.15.1",
         "react-toastify": "^10.0.5"
     }

@@ -62,18 +62,6 @@ npm install chart.js
 npm install react-to-print
 
 
-
-<!-- Mga way pulos  -->
-composer require barryvdh/laravel-dompdf
-
-php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
-
-
-composer require spatie/browsershot
-
-npm install puppeteer
-
-
 <!-- AOS -->
 npm install aos --save
 
@@ -84,7 +72,4 @@ php artisan schedule:run
 
 
 <!-- for text editor -->
-npm install react-quill quill -- naay error hHAHA
-
-
 npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
