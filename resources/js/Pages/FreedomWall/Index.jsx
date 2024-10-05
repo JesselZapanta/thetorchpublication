@@ -257,7 +257,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
             categories={categories}
             header={
                 <div className="max-w-7xl mt-16 mx-auto flex items-center justify-center">
-                    <h2 className="font-semibold text-3xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
+                    <h2 className="font-semibold sm:text-lg lg:text-3xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
                         The Torch Freedom Wall
                     </h2>
                 </div>
@@ -276,13 +276,13 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                 <div className="w-full justify-center flex gap-4 my-4">
                     <button
                         onClick={openPolicyModal}
-                        className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700 "
+                        className="px-4 text-nowrap py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700 "
                     >
-                        View Our Policy
+                        Our Policy
                     </button>
                     <button
                         onClick={openCreateModal}
-                        className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                        className="px-4 text-nowrap py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                     >
                         Write Something
                     </button>
@@ -367,9 +367,9 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                 </pre> */}
                 {/* Policy Modal */}
                 <Modal show={policyModalOpen} onClose={closePolicyModal}>
-                    <div className="p-6">
+                    <div className="sm:p-2 lg:p-6">
                         <div className="flex justify-between">
-                            <h2 className="text-2xl text-emerald-500 font-bold">
+                            <h2 className="sm:text-sm lg:text-2xl  text-emerald-500 font-bold">
                                 The Torch Freedom Wall Policy
                             </h2>
                             <button

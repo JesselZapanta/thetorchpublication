@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 
 const DropDownContext = createContext();
 
-const Dropdown = ({ children }) => {
+const DropdownAction = ({ children }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -60,8 +60,8 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'p-2 flex fle
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={` absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
-                    // className={` absolute z-50 right-16 -top-2 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    // className={` absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 right-[70px] -top-16 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
@@ -106,9 +106,9 @@ const DropdownBtn = ({ className = "", children, ...props }) => {
     );
 };
 
-Dropdown.Trigger = Trigger;
-Dropdown.Content = Content;
-Dropdown.Link = DropdownLink;
-Dropdown.Btn = DropdownBtn;
+DropdownAction.Trigger = Trigger;
+DropdownAction.Content = Content;
+DropdownAction.Link = DropdownLink;
+DropdownAction.Btn = DropdownBtn;
 
-export default Dropdown;
+export default DropdownAction;

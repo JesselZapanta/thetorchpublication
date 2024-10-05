@@ -84,7 +84,7 @@ export default function Edit({ auth, user, AdminBadgeCount }) {
                                                 name="student_id"
                                                 value={data.student_id}
                                                 className="mt-2 block w-full"
-                                                isFocused={true}
+                                                 
                                                 onChange={(e) =>
                                                     setData(
                                                         "student_id",

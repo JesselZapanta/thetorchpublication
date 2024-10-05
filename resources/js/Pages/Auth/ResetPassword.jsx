@@ -57,7 +57,7 @@ export default function ResetPassword({ token, email }) {
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        isFocused={true}
+                         
                         onChange={(e) => setData('password', e.target.value)}
                     />
 

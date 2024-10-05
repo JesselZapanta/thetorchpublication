@@ -147,149 +147,169 @@ export default function Report({
                                     Print Report
                                 </button>
                             </div>
-                            <div className="max-w-[816px] mx-auto">
-                                <div
-                                    // className="custom-print-size"
-                                    ref={componentRef}
-                                >
-                                    {/* <pre className="text-gray-900">
+                            <div className="hidden">
+                                <div className="max-w-[816px] mx-auto">
+                                    <div
+                                        // className="custom-print-size"
+                                        ref={componentRef}
+                                    >
+                                        {/* <pre className="text-gray-900">
                                         {JSON.stringify(reportData, null, 2)}
                                     </pre> */}
 
-                                    <div className="mx-auto bg-white ">
-                                        {/* Articles */}
-                                        {pages.map((page, pageIndex) => (
-                                            <div
-                                                key={pageIndex}
-                                                className="h-[1050px] relative p-2 font-times"
-                                            >
-                                                {/* Header */}
-                                                <div className="flex absolute bot-0 w-full">
-                                                    <img
-                                                        src="/images/header.png"
-                                                        alt=""
-                                                        className="w-full"
-                                                    />
-                                                </div>
-
-                                                {/* Conditionally show the title only on the first page */}
-                                                <div className="mt-32 px-[96px] py-2">
-                                                    {pageIndex === 0 && (
-                                                        <div>
-                                                            <div className="text-center font-bold mb-4">
-                                                                <h1 className="uppercase">
-                                                                    TANGUB CITY
-                                                                    GLOBAL
-                                                                    COLLEGE
-                                                                </h1>
-                                                                <p>
-                                                                    Maloro,
-                                                                    Tangub City
-                                                                </p>
-                                                            </div>
-
-                                                            {timePeriod !==
-                                                                "ay" && (
-                                                                <p className="text-[12px] font-bold uppercase">
-                                                                    Report from{" "}
-                                                                    {dateFrom}{" "}
-                                                                    to {dateTo}
-                                                                </p>
-                                                            )}
-                                                            {timePeriod ===
-                                                                "ay" && (
-                                                                <p className="text-[12px] font-bold uppercase">
-                                                                    Report from{" "}
-                                                                    {
-                                                                        academicYear
-                                                                    }{" "}
-                                                                    ({dateFrom}{" "}
-                                                                    - {dateTo})
-                                                                </p>
-                                                            )}
-
-                                                            <p className="text-[12px] font-bold uppercase">
-                                                                Name:{" "}
-                                                                {auth.user.name}
-                                                            </p>
-                                                            <p className="text-[12px] font-bold uppercase">
-                                                                Student ID:{" "}
-                                                                {
-                                                                    auth.user
-                                                                        .student_id
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                {/* Articles for this page */}
-                                                <div className="py-2">
-                                                    {page.map(
-                                                        (
-                                                            article,
-                                                            articleIndex
-                                                        ) => (
-                                                            <div
-                                                                key={
-                                                                    articleIndex
-                                                                }
-                                                                className="px-[96px]"
-                                                            >
-                                                                <p className="text-[12px]">
-                                                                    Title:{" "}
-                                                                    {
-                                                                        article.title
-                                                                    }
-                                                                </p>
-                                                                <div className="flex justify-between">
-                                                                    <p className="text-[12px]">
-                                                                        Edited
-                                                                        Date:{" "}
-                                                                        {
-                                                                            article.edited_at
-                                                                        }
-                                                                    </p>
-                                                                    <p className="text-[12px]">
-                                                                        Published
-                                                                        Date:{" "}
-                                                                        {
-                                                                            article.published_date
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                                <div className="overflow-hidden h-[250px] border-2 mb-4">
-                                                                    {article.article_image_path && (
-                                                                        <img
-                                                                            src={`${window.location.origin}/storage/${article.article_image_path}`}
-                                                                            className="object-cover w-full h-full"
-                                                                            alt={
-                                                                                article.article_image_path
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    )}
-
-                                                    {/* Footer */}
-                                                    <div className="absolute bottom-0">
+                                        <div className="mx-auto bg-white ">
+                                            {/* Articles */}
+                                            {pages.map((page, pageIndex) => (
+                                                <div
+                                                    key={pageIndex}
+                                                    className="h-[1050px] relative p-2 font-times"
+                                                >
+                                                    {/* Header */}
+                                                    <div className="flex absolute bot-0 w-full">
                                                         <img
-                                                            src="/images/footer.png"
+                                                            src="/images/header.png"
                                                             alt=""
                                                             className="w-full"
                                                         />
                                                     </div>
 
-                                                    {/* Page break for printing */}
-                                                    {pageIndex <
-                                                        pages.length - 1 && (
-                                                        <div className="page-break"></div>
-                                                    )}
+                                                    {/* Conditionally show the title only on the first page */}
+                                                    <div className="mt-32 px-[96px] py-2">
+                                                        {pageIndex === 0 && (
+                                                            <div>
+                                                                <div className="text-center font-bold mb-4">
+                                                                    <h1 className="uppercase">
+                                                                        TANGUB
+                                                                        CITY
+                                                                        GLOBAL
+                                                                        COLLEGE
+                                                                    </h1>
+                                                                    <p>
+                                                                        Maloro,
+                                                                        Tangub
+                                                                        City
+                                                                    </p>
+                                                                </div>
+
+                                                                {timePeriod !==
+                                                                    "ay" && (
+                                                                    <p className="text-[12px] font-bold uppercase">
+                                                                        Report
+                                                                        from{" "}
+                                                                        {
+                                                                            dateFrom
+                                                                        }{" "}
+                                                                        to{" "}
+                                                                        {dateTo}
+                                                                    </p>
+                                                                )}
+                                                                {timePeriod ===
+                                                                    "ay" && (
+                                                                    <p className="text-[12px] font-bold uppercase">
+                                                                        Report
+                                                                        from{" "}
+                                                                        {
+                                                                            academicYear
+                                                                        }{" "}
+                                                                        (
+                                                                        {
+                                                                            dateFrom
+                                                                        }{" "}
+                                                                        -{" "}
+                                                                        {dateTo}
+                                                                        )
+                                                                    </p>
+                                                                )}
+
+                                                                <p className="text-[12px] font-bold uppercase">
+                                                                    Name:{" "}
+                                                                    {
+                                                                        auth
+                                                                            .user
+                                                                            .name
+                                                                    }
+                                                                </p>
+                                                                <p className="text-[12px] font-bold uppercase">
+                                                                    Student ID:{" "}
+                                                                    {
+                                                                        auth
+                                                                            .user
+                                                                            .student_id
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Articles for this page */}
+                                                    <div className="py-2">
+                                                        {page.map(
+                                                            (
+                                                                article,
+                                                                articleIndex
+                                                            ) => (
+                                                                <div
+                                                                    key={
+                                                                        articleIndex
+                                                                    }
+                                                                    className="px-[96px]"
+                                                                >
+                                                                    <p className="text-[12px]">
+                                                                        Title:{" "}
+                                                                        {
+                                                                            article.title
+                                                                        }
+                                                                    </p>
+                                                                    <div className="flex justify-between">
+                                                                        <p className="text-[12px]">
+                                                                            Edited
+                                                                            Date:{" "}
+                                                                            {
+                                                                                article.edited_at
+                                                                            }
+                                                                        </p>
+                                                                        <p className="text-[12px]">
+                                                                            Published
+                                                                            Date:{" "}
+                                                                            {
+                                                                                article.published_date
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="overflow-hidden h-[250px] border-2 mb-4">
+                                                                        {article.article_image_path && (
+                                                                            <img
+                                                                                src={`${window.location.origin}/storage/${article.article_image_path}`}
+                                                                                className="object-cover w-full h-full"
+                                                                                alt={
+                                                                                    article.article_image_path
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        )}
+
+                                                        {/* Footer */}
+                                                        <div className="absolute bottom-0">
+                                                            <img
+                                                                src="/images/footer.png"
+                                                                alt=""
+                                                                className="w-full"
+                                                            />
+                                                        </div>
+
+                                                        {/* Page break for printing */}
+                                                        {pageIndex <
+                                                            pages.length -
+                                                                1 && (
+                                                            <div className="page-break"></div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

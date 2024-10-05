@@ -394,7 +394,6 @@ export default function Index({
                                 name="name"
                                 value={data.name}
                                 className="mt-2 block w-full"
-                                isFocused={true}
                                 onChange={(e) =>
                                     setData("name", e.target.value)
                                 }

@@ -331,7 +331,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     name="title"
                                     value={data.title}
                                     className="mt-2 block w-full"
-                                    // isFocused={true}
+                                    //  
                                     onChange={(e) =>
                                         setData("title", e.target.value)
                                     }

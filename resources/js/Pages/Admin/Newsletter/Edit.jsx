@@ -202,7 +202,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                                     name="description"
                                     value={data.description}
                                     className="mt-2 block w-full"
-                                    isFocused={true}
+                                     
                                     onChange={(e) =>
                                         setData("description", e.target.value)
                                     }

@@ -58,7 +58,7 @@ export default function Create({ auth, AdminBadgeCount }) {
                                     name="student_id"
                                     value={data.student_id}
                                     className="mt-2 block w-full"
-                                    isFocused={true}
+                                     
                                     onChange={(e) =>
                                         setData("student_id", e.target.value)
                                     }

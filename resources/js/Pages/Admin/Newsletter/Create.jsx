@@ -130,7 +130,7 @@ export default function Create({ auth, activeAy, AdminBadgeCount }) {
                                     name="description"
                                     value={data.description}
                                     className="mt-2 block w-full"
-                                    isFocused={true}
+                                     
                                     onChange={(e) =>
                                         setData("description", e.target.value)
                                     }

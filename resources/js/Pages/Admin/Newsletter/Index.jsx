@@ -112,7 +112,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
 
                     <div className="flex items-center relative">
                         {/* show in large screen */}
-                        <div class="hidden lg:block">
+                        <div  className="hidden lg:block">
                             <div className="flex gap-2">
                                 <Link
                                     href={route("jobs.index")}
@@ -140,7 +140,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                 </Link>
                             </div>
                         </div>
-                        <div class="block lg:hidden">
+                        <div  className="block lg:hidden">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
@@ -150,7 +150,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                             viewBox="0 0 24 24"
                                             stroke-width="1.5"
                                             stroke="currentColor"
-                                            class="size-6"
+                                             className="size-6"
                                         >
                                             <path
                                                 stroke-linecap="round"

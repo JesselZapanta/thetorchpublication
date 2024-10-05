@@ -398,7 +398,6 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                 name="code"
                                 value={data.code}
                                 className="mt-2 block w-full"
-                                isFocused={true}
                                 onChange={(e) =>
                                     setData("code", e.target.value)
                                 }

@@ -5,8 +5,10 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import UserProfile from '@/Components/UserProfile';
-import Footer from '@/Components/Footer';
 import DropDownBtn from '@/Components/DropDownBtn';
+
+
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
 
 export default function Authenticated({ user, header, children, AdminBadgeCount }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -90,6 +92,9 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                                 }
                                             >
                                                 Settings
+                                                <span>
+                                                    <ChevronDownIcon className="w-6 text-gray-500" />
+                                                </span>
                                             </DropDownBtn>
                                         </Dropdown.Trigger>
 

@@ -64,7 +64,7 @@ export default function Create({ auth, DesignerBadgeCount }) {
                                     name="description"
                                     value={data.description}
                                     className="mt-2 block w-full"
-                                    isFocused={true}
+                                     
                                     onChange={(e) =>
                                         setData("description", e.target.value)
                                     }

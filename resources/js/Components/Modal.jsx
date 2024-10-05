@@ -55,9 +55,11 @@ export default function Modal({
                     <Dialog.Panel
                         className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all w-full sm:w-full ${maxWidthClass} my-8 sm:mt-0 max-h-screen`}
                     >
-                        <div className="overflow-y-auto max-h-[80vh] p-4">
+                        <div className="overflow-y-auto max-h-[100vh] p-4">
                             {children}
                         </div>
+
+                        {/* {children} */}
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>

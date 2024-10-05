@@ -21,7 +21,7 @@
 
     @page {
         size: 816px 1056px; 
-        margin: 0;
+        margin: 0 96px;/**/
     }
 }
 

@@ -12,10 +12,11 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-import { PencilSquareIcon, TrashIcon, ListBulletIcon } from "@heroicons/react/16/solid";
+import { PencilSquareIcon, TrashIcon, ListBulletIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
 
 export default function Index({
     auth,
@@ -123,7 +124,7 @@ export default function Index({
 
                     <div className="flex items-center relative">
                         {/* show in large screen */}
-                        <div class="hidden lg:block">
+                        <div className="hidden lg:block">
                             <div className="flex gap-2">
                                 <Link
                                     href={route("admin-contributor.index")}
@@ -149,24 +150,25 @@ export default function Index({
                                 </Link>
                             </div>
                         </div>
-                        <div class="block lg:hidden">
+                        <div className="block lg:hidden">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
-                                        <svg
+                                        {/* <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke-width="1.5"
                                             stroke="currentColor"
-                                            class="size-6"
+                                             className="size-6"
                                         >
                                             <path
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
                                             />
-                                        </svg>
+                                        </svg> */}
+                                        <AdjustmentsHorizontalIcon />
                                         Options
                                         {AdminBadgeCount.totalApplication >
                                             0 && (
@@ -219,7 +221,7 @@ export default function Index({
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-gray-100 dark:bg-gray-800 shadow-sm sm:rounded-lg">
+                    <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
@@ -310,7 +312,7 @@ export default function Index({
                                     </div>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thead with sorting*/}
                                     {/* added */}
@@ -418,16 +420,16 @@ export default function Index({
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {user.position}
                                                     </td>
-                                                    {/* <td className="px-3 py-2 text-nowrap">
-                                                        <Dropdown>
-                                                            <Dropdown.Trigger>
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        <DropdownAction>
+                                                            <DropdownAction.Trigger>
                                                                 <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
-                                                                    <ListBulletIcon className="w-6"/>
+                                                                    <ListBulletIcon className="w-6" />
                                                                 </div>
-                                                            </Dropdown.Trigger>
+                                                            </DropdownAction.Trigger>
 
-                                                            <Dropdown.Content>
-                                                                <Dropdown.Link
+                                                            <DropdownAction.Content>
+                                                                <DropdownAction.Link
                                                                     href={route(
                                                                         "user.edit",
                                                                         user.id
@@ -435,8 +437,8 @@ export default function Index({
                                                                 >
                                                                     <PencilSquareIcon className="w-6 text-sky-600" />
                                                                     Edit
-                                                                </Dropdown.Link>
-                                                                <Dropdown.Btn
+                                                                </DropdownAction.Link>
+                                                                <DropdownAction.Btn
                                                                     onClick={() =>
                                                                         openDeleteModal(
                                                                             user
@@ -445,11 +447,11 @@ export default function Index({
                                                                 >
                                                                     <TrashIcon className="w-6 text-red-600" />
                                                                     Delete
-                                                                </Dropdown.Btn>
-                                                            </Dropdown.Content>
-                                                        </Dropdown>
-                                                    </td> */}
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                                </DropdownAction.Btn>
+                                                            </DropdownAction.Content>
+                                                        </DropdownAction>
+                                                    </td>
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
                                                                 "admin-article.edit",
@@ -469,7 +471,7 @@ export default function Index({
                                                         >
                                                             Delete
                                                         </button>
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             ))
                                         ) : (
@@ -484,11 +486,17 @@ export default function Index({
                                         )}
                                     </tbody>
                                 </table>
+                                {/* <Pagination
+                                    links={users.meta.links}
+                                    queryParams={queryParams}
+                                /> */}
                             </div>
-                            <Pagination
-                                links={users.meta.links}
-                                queryParams={queryParams}
-                            />
+                            <div>
+                                <Pagination
+                                    links={users.meta.links}
+                                    queryParams={queryParams}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
