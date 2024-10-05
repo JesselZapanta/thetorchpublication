@@ -93,6 +93,9 @@ class AppServiceProvider extends ServiceProvider
                     'newsletterPendingCount' => $newsletterPendingCount,
                     'totalTaskCount' => $totalTaskCount,
                     'totalReportCount' => $totalReportCount,
+                    'totalArticleReportCount' => $totalArticleReportCount,
+                    'totalCommentReportCount' => $totalCommentReportCount,
+                    'totalFreedomWallReportCount' => $totalFreedomWallReportCount,
                     'totalApplication' => $totalApplication,
                 ];
             }

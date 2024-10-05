@@ -33,10 +33,30 @@ class AdminReviewReport extends Controller
         }
 
         // Ensure proper grouping with orWhere for visibility
+        // Tanan ni siya
         $query->where(function($q) {
             $q->where('report_count', '>', 0)
                 ->orWhere('visibility', 'hidden');
         });
+
+         // Ensure proper grouping with orWhere for visibility
+         //only reported and own
+        // $query->where(function ($q) {
+        //     $authId = auth()->id();  // Get the authenticated user's ID
+            
+        //     $q->where(function ($q1) {
+        //         // Get articles where visibility is hidden and report_count > 0
+        //         $q1->where('report_count', '>', 0)
+        //         ->where('visibility', 'hidden');
+        //     })->orWhere(function ($q2) use ($authId) {
+        //         // Get articles where visibility is hidden, report_count == 0, and createdBy matches the authenticated user
+        //         $q2->where('report_count', 0)
+        //         ->where('visibility', 'hidden')
+        //         ->whereHas('createdBy', function ($query) use ($authId) {
+        //             $query->where('id', $authId);
+        //         });
+        //     });
+        // });
 
         // Apply sorting
         $reportedArticle = $query->orderBy($sortField, $sortDirection)
@@ -67,7 +87,7 @@ class AdminReviewReport extends Controller
 
         $article->update(['visibility' => 'hidden']);
 
-        return to_route('admin-review-report-article.index')->with(['success' => 'Hide Successfully']);
+        return to_route('admin-review-report-article.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreArticle($id)
     {
@@ -79,7 +99,7 @@ class AdminReviewReport extends Controller
 
         $article->update(['visibility' => 'visible']);
 
-        return to_route('admin-review-report-article.index')->with(['success' => 'Restore Successfully']);
+        return to_route('admin-review-report-article.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectArticleReport($id)
@@ -93,7 +113,7 @@ class AdminReviewReport extends Controller
         $article->update(['visibility' => 'visible']);
         $article->update(['report_count' => 0]);
 
-        return to_route('admin-review-report-article.index')->with(['success' => 'Reject Successfully']);
+        return to_route('admin-review-report-article.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyArticle($id)
@@ -111,7 +131,7 @@ class AdminReviewReport extends Controller
             Storage::disk('public')->delete($article->article_image_path);
         }
 
-        return to_route('admin-review-report-article.index')->with(['success' => 'Delete Successfully']);
+        return to_route('admin-review-report-article.index')->with(['success' => 'Delete successfully.']);
     }
 
     // Comment
@@ -170,7 +190,7 @@ class AdminReviewReport extends Controller
 
         $comment->update(['visibility' => 'hidden']);
 
-        return to_route('admin-review-report-comment.index')->with(['success' => 'Hide Successfully']);
+        return to_route('admin-review-report-comment.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreComment($id)
     {
@@ -182,7 +202,7 @@ class AdminReviewReport extends Controller
 
         $comment->update(['visibility' => 'visible']);
 
-        return to_route('admin-review-report-comment.index')->with(['success' => 'Restore Successfully']);
+        return to_route('admin-review-report-comment.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectCommentReport($id)
@@ -196,7 +216,7 @@ class AdminReviewReport extends Controller
         $comment->update(['visibility' => 'visible']);
         $comment->update(['report_count' => 0]);
 
-        return to_route('admin-review-report-comment.index')->with(['success' => 'Reject Successfully']);
+        return to_route('admin-review-report-comment.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyComment($id)
@@ -210,7 +230,7 @@ class AdminReviewReport extends Controller
 
         $comment->delete();
 
-        return to_route('admin-review-report-comment.index')->with(['success' => 'Delete Successfully']);
+        return to_route('admin-review-report-comment.index')->with(['success' => 'Delete successfully.']);
     }
 
     //Freedom Wall
@@ -269,7 +289,7 @@ class AdminReviewReport extends Controller
 
         $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Hide Successfully']);
+        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreFreedomWall($id)
     {
@@ -281,7 +301,7 @@ class AdminReviewReport extends Controller
 
         $entry->update(['visibility' => 'visible']);
 
-        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Restore Successfully']);
+        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectFreedomWallReport($id)
@@ -295,7 +315,7 @@ class AdminReviewReport extends Controller
         $entry->update(['visibility' => 'visible']);
         $entry->update(['report_count' => 0]);
 
-        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Reject Successfully']);
+        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyFreedomWall($id)
@@ -309,7 +329,7 @@ class AdminReviewReport extends Controller
 
         $entry->delete();
 
-        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Delete Successfully']);
+        return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }
 
 }

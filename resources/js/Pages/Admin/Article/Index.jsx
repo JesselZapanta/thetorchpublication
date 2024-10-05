@@ -11,8 +11,16 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ListBulletIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
 
 export default function Index({
     auth,
@@ -134,7 +142,7 @@ export default function Index({
 
                     <div className="flex items-center relative">
                         {/* show in large screen */}
-                        <div  className="hidden lg:block">
+                        <div className="hidden lg:block">
                             <div className="flex gap-2">
                                 <Link
                                     href={route("admin-article.calendar")}
@@ -150,24 +158,11 @@ export default function Index({
                                 </Link>
                             </div>
                         </div>
-                        <div  className="block lg:hidden">
+                        <div className="block lg:hidden">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                             className="size-6"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                            />
-                                        </svg>
+                                        <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
                                         Options
                                         {AdminBadgeCount.editedCount > 0 && (
                                             <>
@@ -333,7 +328,7 @@ export default function Index({
                                     />
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thead with search */}
                                     {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -509,7 +504,7 @@ export default function Index({
                                                         </Link>
                                                     </th>
 
-                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                    {/* <td className="px-3 py-2 text-nowrap w-[10%]">
                                                         <Link
                                                             href={route(
                                                                 "admin-article.edit",
@@ -529,6 +524,39 @@ export default function Index({
                                                         >
                                                             Delete
                                                         </button>
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
+
+                                                                <DropdownAction.Content>
+                                                                    <DropdownAction.Link
+                                                                        href={route(
+                                                                            "admin-article.edit",
+                                                                            article.id
+                                                                        )}
+                                                                    >
+                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                        Edit
+                                                                    </DropdownAction.Link>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                article
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                        Delete
+                                                                    </DropdownAction.Btn>
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))

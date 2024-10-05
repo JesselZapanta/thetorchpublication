@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
@@ -8,11 +6,22 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+
+import {
+    TrashIcon,
+    ListBulletIcon,
+    ArchiveBoxIcon,
+    ArrowPathIcon,
+    ArrowUturnLeftIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
+import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 
 export default function Index({ auth, reportedComments, queryParams, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
@@ -36,6 +45,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
 
     //searching
     queryParams = queryParams || {};
+    const [visibility, setVisibility] = useState(queryParams.visibility || "");
     // Handle search and select field changes
     const searchFieldChanged = (name, value) => {
         if (value === "") {
@@ -82,6 +92,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
 
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
+        setVisibility(value);
         queryParams[name] = value;
         router.get(route("admin-review-report-comment.index"), queryParams, {
             preserveState: true,
@@ -207,8 +218,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Reported comments
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight">
+                        {visibility === "visible"
+                            ? "List of Reported Comments"
+                            : visibility === "hidden"
+                            ? "List of Archive Comments"
+                            : "List of Reported/Archive Comments"}
                     </h2>
                     {/* not used */}
                     {/* <div className="flex gap-4">
@@ -229,21 +244,10 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                         className="size-6"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                        />
-                                    </svg>
-                                    Content Type
+                                    <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
+                                    <span className="hidden md:block">
+                                        Content Type
+                                    </span>
                                     {AdminBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
@@ -321,7 +325,16 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 </div>
             }
         >
-            <Head title="Reported Comments" />
+            <Head
+                title={
+                    visibility === "visible"
+                        ? "List of Reported Comments"
+                        : visibility === "hidden"
+                        ? "List of Archive Comments"
+                        : "List of Reported/Archive Comments"
+                }
+            />
+
             <ToastContainer position="bottom-right" />
 
             <div className="py-4">
@@ -358,11 +371,11 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                     >
                                         <option value="">Visibility</option>
                                         <option value="visible">Visible</option>
-                                        <option value="hidden">Hidden</option>
+                                        <option value="hidden">Archive</option>
                                     </SelectInput>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -444,14 +457,30 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                             </Link>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility}
+                                                            {/* {comment.visibility} */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    VISIBILITY_CLASS_MAP[
+                                                                        comment
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    VISIBILITY_TEXT_MAP[
+                                                                        comment
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
                                                                 comment.report_count
                                                             }
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             {comment.visibility !==
                                                                 "hidden" && (
                                                                 <button
@@ -505,6 +534,79 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                                     Delete
                                                                 </button>
                                                             )}
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
+
+                                                                    <DropdownAction.Content>
+                                                                        {comment.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openHideModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArchiveBoxIcon className="w-6 text-rose-600" />
+                                                                                Archive
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {comment.visibility !==
+                                                                            "visible" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRestoreModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowPathIcon className="w-6 text-sky-600" />
+                                                                                Restore
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {comment.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRejectModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowUturnLeftIcon className="w-6 text-sky-600" />
+                                                                                Reject
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {auth
+                                                                            .user
+                                                                            .role ===
+                                                                            "admin" &&
+                                                                            comment.visibility ===
+                                                                                "hidden" && (
+                                                                                <DropdownAction.Btn
+                                                                                    onClick={() =>
+                                                                                        openDeleteModal(
+                                                                                            comment
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <TrashIcon className="w-6 text-red-600" />
+                                                                                    Delete
+                                                                                </DropdownAction.Btn>
+                                                                            )}
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -535,7 +637,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
                         {confirmAction.type === "hide"
-                            ? "Confirm Hide"
+                            ? "Confirm Archive"
                             : confirmAction.type === "restore"
                             ? "Confirm Restore"
                             : confirmAction.type === "reject"
@@ -544,12 +646,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to hide this Comment?"
+                            ? "Are you sure you want to archive this Comment?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this hidden Comment?"
+                            ? "Are you sure you want to restore this archive Comment?"
                             : confirmAction.type === "restore"
                             ? "Are you sure you want to reject this reported Comment?"
-                            : "Are you sure you want to delete this reported Comment?"}
+                            : "Are you sure you want to permanently delete this archive Comment?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -564,7 +666,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                         </SecondaryButton>
                         <DangerButton onClick={handleAction} className="ml-2">
                             {confirmAction.type === "hide"
-                                ? "Hide"
+                                ? "Archive"
                                 : confirmAction.type === "restore"
                                 ? "Restore"
                                 : confirmAction.type === "reject"

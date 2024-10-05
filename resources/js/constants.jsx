@@ -102,6 +102,18 @@ export const CATEGORY_TEXT_MAP = {
     inactive: "Inactive",
 };
 
+// Category status
+export const VISIBILITY_CLASS_MAP = {
+    visible: "bg-green-600",
+    hidden: "bg-rose-600",
+};
+
+export const VISIBILITY_TEXT_MAP = {
+    visible: "Visible",
+    hidden: "Archive",
+};
+
+
 
 export const getTaskDueClass = (dueDate) => {
     const now = new Date();

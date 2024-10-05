@@ -178,7 +178,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                         "admin-review-report-article.index"
                                     )}
                                 >
-                                    Review
+                                    Review & Archive
                                     {AdminBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
@@ -365,7 +365,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                 "admin-review-report-article.index"
                             )}
                         >
-                            Review
+                            Review & Archive
                             {AdminBadgeCount.totalReportCount > 0 && (
                                 <>
                                     <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">

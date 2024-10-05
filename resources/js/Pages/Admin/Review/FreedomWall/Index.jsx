@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
@@ -9,12 +7,22 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
+import {
+    TrashIcon,
+    ListBulletIcon,
+    ArchiveBoxIcon,
+    ArrowPathIcon,
+    ArrowUturnLeftIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
+import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 
 export default function Index({
     auth,
@@ -43,6 +51,7 @@ export default function Index({
     };
     //searching
     queryParams = queryParams || {};
+    const [visibility, setVisibility] = useState(queryParams.visibility || "");
     // Handle search and select field changes
     const searchFieldChanged = (name, value) => {
         if (value === "") {
@@ -89,6 +98,7 @@ export default function Index({
 
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
+        setVisibility(value);
         queryParams[name] = value;
         router.get(
             route("admin-review-report-freedom-wall.index"),
@@ -222,8 +232,12 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Reported Freedom Wall
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight">
+                        {visibility === "visible"
+                            ? "List of Reported Freedom Wall"
+                            : visibility === "hidden"
+                            ? "List of Archive Freedom Wall"
+                            : "List of Reported/Archive Freedom Wall"}
                     </h2>
                     {/* not used */}
                     {/* <div className="flex gap-4">
@@ -244,21 +258,10 @@ export default function Index({
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                         className="size-6"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                        />
-                                    </svg>
-                                    Content Type
+                                    <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
+                                    <span className="hidden md:block">
+                                        Content Type
+                                    </span>
                                     {AdminBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
@@ -336,8 +339,18 @@ export default function Index({
                 </div>
             }
         >
-            <Head title="Reported Freedom Wall" />
+            <Head
+                title={
+                    visibility === "visible"
+                        ? "List of Reported Freedom Wall"
+                        : visibility === "hidden"
+                        ? "List of Archive Freedom Wall"
+                        : "List of Reported/Archive Freedom Wall"
+                }
+            />
+
             <ToastContainer position="bottom-right" />
+
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -368,15 +381,15 @@ export default function Index({
                                                 "visibility",
                                                 e.target.value
                                             )
-                                        }
+                                        } // Trigger request on visibility change
                                     >
                                         <option value="">Visibility</option>
                                         <option value="visible">Visible</option>
-                                        <option value="hidden">Hidden</option>
+                                        <option value="hidden">Archive</option>
                                     </SelectInput>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -453,12 +466,28 @@ export default function Index({
                                                             </Link>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {entry.visibility}
+                                                            {/* {entry.visibility} */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    VISIBILITY_CLASS_MAP[
+                                                                        entry
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    VISIBILITY_TEXT_MAP[
+                                                                        entry
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {entry.report_count}
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             {entry.visibility !==
                                                                 "hidden" && (
                                                                 <button
@@ -512,6 +541,79 @@ export default function Index({
                                                                     Delete
                                                                 </button>
                                                             )}
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
+
+                                                                    <DropdownAction.Content>
+                                                                        {entry.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openHideModal(
+                                                                                        entry
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArchiveBoxIcon className="w-6 text-rose-600" />
+                                                                                Archive
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {entry.visibility !==
+                                                                            "visible" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRestoreModal(
+                                                                                        entry
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowPathIcon className="w-6 text-sky-600" />
+                                                                                Restore
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {entry.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRejectModal(
+                                                                                        entry
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowUturnLeftIcon className="w-6 text-sky-600" />
+                                                                                Reject
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {auth
+                                                                            .user
+                                                                            .role ===
+                                                                            "admin" &&
+                                                                            entry.visibility ===
+                                                                                "hidden" && (
+                                                                                <DropdownAction.Btn
+                                                                                    onClick={() =>
+                                                                                        openDeleteModal(
+                                                                                            entry
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <TrashIcon className="w-6 text-red-600" />
+                                                                                    Delete
+                                                                                </DropdownAction.Btn>
+                                                                            )}
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )

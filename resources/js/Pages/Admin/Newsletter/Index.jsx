@@ -1,5 +1,6 @@
 import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
+import DropdownAction from "@/Components/DropdownAction";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -9,6 +10,15 @@ import { NEWSLETTER_PRIORITY_CLASS_MAP, NEWSLETTER_PRIORITY_TEXT_MAP } from "@/c
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ListBulletIcon,
+    ArrowUpOnSquareIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
+
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -112,7 +122,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
 
                     <div className="flex items-center relative">
                         {/* show in large screen */}
-                        <div  className="hidden lg:block">
+                        <div className="hidden lg:block">
                             <div className="flex gap-2">
                                 <Link
                                     href={route("jobs.index")}
@@ -140,24 +150,11 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                 </Link>
                             </div>
                         </div>
-                        <div  className="block lg:hidden">
+                        <div className="block lg:hidden">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                             className="size-6"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                                            />
-                                        </svg>
+                                        <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
                                         Options
                                         {AdminBadgeCount.newsletterPendingCount >
                                             0 && (
@@ -231,22 +228,8 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                         }
                                     />
                                 </div>
-                                {/* <div className="flex gap-4 justify-end">
-                                    <Link
-                                        href={route("jobs.index")}
-                                        className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
-                                    >
-                                        Queue
-                                    </Link>
-                                    <Link
-                                        href={route("newsletter.articles")}
-                                        className="px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
-                                    >
-                                        Select Articles
-                                    </Link>
-                                </div> */}
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thead with sorting*/}
                                     {/* added */}
@@ -307,9 +290,9 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                 Submitted At
                                             </TableHeading>
 
-                                            <th className="px-3 py-3">
+                                            {/* <th className="px-3 py-3">
                                                 Distritute
-                                            </th>
+                                            </th> */}
 
                                             <th className="px-3 py-3">
                                                 Action
@@ -398,7 +381,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                                 newsletter.submitted_at
                                                             }
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             <Link
                                                                 href={route(
                                                                     "distribute.index",
@@ -408,8 +391,8 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                             >
                                                                 Distribute
                                                             </Link>
-                                                        </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        </td> */}
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             <Link
                                                                 href={route(
                                                                     "newsletter.edit",
@@ -429,6 +412,48 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                             >
                                                                 Delete
                                                             </button>
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
+
+                                                                    <DropdownAction.Content>
+                                                                        <DropdownAction.Link
+                                                                            href={route(
+                                                                                "distribute.index",
+                                                                                newsletter.id
+                                                                            )}
+                                                                        >
+                                                                            <ArrowUpOnSquareIcon className="w-6 text-sky-600" />
+                                                                            Distribute
+                                                                        </DropdownAction.Link>
+                                                                        <DropdownAction.Link
+                                                                            href={route(
+                                                                                "newsletter.edit",
+                                                                                newsletter.id
+                                                                            )}
+                                                                        >
+                                                                            <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                            Edit
+                                                                        </DropdownAction.Link>
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openDeleteModal(
+                                                                                    newsletter
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <TrashIcon className="w-6 text-red-600" />
+                                                                            Delete
+                                                                        </DropdownAction.Btn>
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
