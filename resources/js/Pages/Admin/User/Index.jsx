@@ -421,35 +421,37 @@ export default function Index({
                                                         {user.position}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        <DropdownAction>
-                                                            <DropdownAction.Trigger>
-                                                                <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
-                                                                    <ListBulletIcon className="w-6" />
-                                                                </div>
-                                                            </DropdownAction.Trigger>
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
 
-                                                            <DropdownAction.Content>
-                                                                <DropdownAction.Link
-                                                                    href={route(
-                                                                        "user.edit",
-                                                                        user.id
-                                                                    )}
-                                                                >
-                                                                    <PencilSquareIcon className="w-6 text-sky-600" />
-                                                                    Edit
-                                                                </DropdownAction.Link>
-                                                                <DropdownAction.Btn
-                                                                    onClick={() =>
-                                                                        openDeleteModal(
-                                                                            user
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <TrashIcon className="w-6 text-red-600" />
-                                                                    Delete
-                                                                </DropdownAction.Btn>
-                                                            </DropdownAction.Content>
-                                                        </DropdownAction>
+                                                                <DropdownAction.Content>
+                                                                    <DropdownAction.Link
+                                                                        href={route(
+                                                                            "user.edit",
+                                                                            user.id
+                                                                        )}
+                                                                    >
+                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                        Edit
+                                                                    </DropdownAction.Link>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                user
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                        Delete
+                                                                    </DropdownAction.Btn>
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
                                                     </td>
                                                     {/* <td className="px-3 py-2 text-nowrap">
                                                         <Link

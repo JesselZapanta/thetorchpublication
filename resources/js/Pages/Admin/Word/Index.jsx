@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
@@ -9,11 +7,18 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ListBulletIcon,
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
 
 
 export default function Index({ auth, words, queryParams = null, flash, AdminBadgeCount }) {
@@ -169,7 +174,9 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
             }
         >
             <Head title="Inappropriate Words" />
+
             <ToastContainer position="bottom-right" />
+
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -188,7 +195,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                     onKeyPress={(e) => onKeyPressed("name", e)}
                                 />
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* thead with sort */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -267,7 +274,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {word.updated_at}
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <button
                                                             onClick={() =>
                                                                 openEditModal(
@@ -288,6 +295,40 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                                         >
                                                             Delete
                                                         </button>
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
+
+                                                                <DropdownAction.Content>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openEditModal(
+                                                                                category
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                        Edit
+                                                                    </DropdownAction.Btn>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                category
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                        Delete
+                                                                    </DropdownAction.Btn>
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -335,7 +376,6 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                 name="name"
                                 value={data.name}
                                 className="mt-2 block w-full"
-                                 
                                 onChange={(e) =>
                                     setData("name", e.target.value)
                                 }

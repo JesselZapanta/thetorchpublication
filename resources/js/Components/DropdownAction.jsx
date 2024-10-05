@@ -61,7 +61,7 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'p-2 flex fle
             >
                 <div
                     // className={` absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
-                    className={`absolute z-50 right-[70px] -top-16 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 right-14 -top-16 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div

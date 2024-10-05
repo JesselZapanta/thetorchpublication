@@ -12,8 +12,16 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
+import {
+    PencilSquareIcon,
+    TrashIcon,
+    ListBulletIcon,
+} from "@heroicons/react/16/solid";
+
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import DropdownAction from "@/Components/DropdownAction";
 
 export default function Index({
     auth,
@@ -221,7 +229,7 @@ export default function Index({
                                     </SelectInput>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     {/* added */}
@@ -330,7 +338,7 @@ export default function Index({
                                                             }
                                                         </span>
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <button
                                                             onClick={() =>
                                                                 openEditModal(
@@ -351,6 +359,40 @@ export default function Index({
                                                         >
                                                             Delete
                                                         </button>
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
+
+                                                                <DropdownAction.Content>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openEditModal(
+                                                                                category
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                        Edit
+                                                                    </DropdownAction.Btn>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                category
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                        Delete
+                                                                    </DropdownAction.Btn>
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
