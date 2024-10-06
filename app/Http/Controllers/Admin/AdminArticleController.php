@@ -82,7 +82,10 @@ class AdminArticleController extends Controller
         }
         
 
-        $admin_articles = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        $admin_articles = $query->orderBy($sortField, $sortDirection)
+                                ->where('visibility', 'visible')
+                                ->paginate(10)
+                                ->onEachSide(1);
 
         return inertia('Admin/Article/Index', [
             'articles' => ArticleResource::collection($admin_articles),
@@ -434,16 +437,24 @@ class AdminArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    //Archive instead e delete
     public function destroy(Article $admin_article)
     {
         // dd($admin_article);
-        $admin_article->delete();
+        // $admin_article->delete();
 
-        if ($admin_article->article_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($admin_article->article_image_path);
+        // if ($admin_article->article_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($admin_article->article_image_path);
+        // }
+
+        if(!$admin_article){
+            return back()->with('error', 'Article not found.');
         }
-        return to_route('admin-article.index')->with(['success' => 'Deleted Successfully']);
+
+        $admin_article->update(['visibility' => 'hidden']);
+
+        return to_route('admin-article.index')->with(['success' => 'Archive successfully.']);
     }
 
 

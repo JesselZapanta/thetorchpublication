@@ -7,9 +7,12 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { getTaskDueClass, TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useEffect } from "react";
 
+import {
+    EyeIcon
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -105,7 +108,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, EditorBa
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Tasks
                     </h2>
                     <div className="flex gap-4">
@@ -343,7 +346,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, EditorBa
                                                             }
                                                         </span>
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
                                                                 "editor-task.show",
@@ -353,6 +356,18 @@ export default function Index({ auth, tasks, queryParams = null, flash, EditorBa
                                                         >
                                                             View
                                                         </Link>
+                                                    </td> */}
+                                                    <td>
+                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                            <Link
+                                                                href={route(
+                                                                    "editor-task.show",
+                                                                    task.id
+                                                                )}
+                                                            >
+                                                                <EyeIcon className="w-6 text-gray-50" />
+                                                            </Link>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))

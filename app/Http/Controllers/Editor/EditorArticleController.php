@@ -97,6 +97,7 @@ class EditorArticleController extends Controller
         }
         // Sorting the results
         $articles = $query->orderBy($sortField, $sortDirection)
+                            ->where('visibility', 'visible')
                             ->paginate(10)
                             ->onEachSide(1);
 
@@ -491,16 +492,25 @@ class EditorArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    //do not destroy insted archive
     public function destroy(Article $editor_article)
     {
-        // dd($article);
-        $editor_article->delete();
+        // // dd($article);
+        // $editor_article->delete();
 
-        if ($editor_article->article_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($editor_article->article_image_path);
+        // if ($editor_article->article_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($editor_article->article_image_path);
+        // }
+
+        if(!$editor_article){
+            return back()->with('error', 'Article not found');
         }
-        return to_route('editor-article.index')->with(['success' => 'Deleted successfully']);
+
+        $editor_article->update(['visibility' => 'hidden']);
+
+
+        return to_route('editor-article.index')->with(['success' => 'Archive successfully']);
     }
 
 

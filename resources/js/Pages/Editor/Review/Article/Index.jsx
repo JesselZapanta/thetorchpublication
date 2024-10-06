@@ -226,7 +226,7 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         {visibility === "visible"
                             ? "List of Reported Articles"
                             : visibility === "hidden"
@@ -596,18 +596,22 @@ export default function Index({
                                                                             .role ===
                                                                             "admin" &&
                                                                             article.visibility ===
-                                                                                "hidden" && (
-                                                                                <DropdownAction.Btn
-                                                                                    onClick={() =>
-                                                                                        openDeleteModal(
-                                                                                            article
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    <TrashIcon className="w-6 text-red-600" />
-                                                                                    Delete
-                                                                                </DropdownAction.Btn>
-                                                                            )}
+                                                                                "hidden" ||
+                                                                            article
+                                                                                .createdBy
+                                                                                .id ===
+                                                                                auth.user.id &&(
+                                                                                    <DropdownAction.Btn
+                                                                                        onClick={() =>
+                                                                                            openDeleteModal(
+                                                                                                article
+                                                                                            )
+                                                                                        }
+                                                                                    >
+                                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                                        Delete
+                                                                                    </DropdownAction.Btn>
+                                                                                )}
                                                                     </DropdownAction.Content>
                                                                 </DropdownAction>
                                                             </div>

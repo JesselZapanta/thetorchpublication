@@ -233,7 +233,7 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         {visibility === "visible"
                             ? "List of Reported Freedom Wall"
                             : visibility === "hidden"
@@ -593,12 +593,16 @@ export default function Index({
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {auth
+                                                                        {(auth
                                                                             .user
                                                                             .role ===
                                                                             "admin" &&
                                                                             entry.visibility ===
-                                                                                "hidden" && (
+                                                                                "hidden") ||
+                                                                            (entry.user_id ===
+                                                                                auth
+                                                                                    .user
+                                                                                    .id && (
                                                                                 <DropdownAction.Btn
                                                                                     onClick={() =>
                                                                                         openDeleteModal(
@@ -609,7 +613,7 @@ export default function Index({
                                                                                     <TrashIcon className="w-6 text-red-600" />
                                                                                     Delete
                                                                                 </DropdownAction.Btn>
-                                                                            )}
+                                                                            ))}
                                                                     </DropdownAction.Content>
                                                                 </DropdownAction>
                                                             </div>

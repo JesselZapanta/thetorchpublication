@@ -12,9 +12,9 @@ import { useEffect, useState } from "react";
 
 import {
     PencilSquareIcon,
-    TrashIcon,
     ListBulletIcon,
     AdjustmentsHorizontalIcon,
+    ArchiveBoxIcon,
 } from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -134,7 +134,7 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
                     {/* <div className="flex gap-4">
@@ -513,8 +513,8 @@ export default function Index({
                                                                             )
                                                                         }
                                                                     >
-                                                                        <TrashIcon className="w-6 text-red-600" />
-                                                                        Delete
+                                                                        <ArchiveBoxIcon className="w-6 text-red-600" />
+                                                                        Archive
                                                                     </DropdownAction.Btn>
                                                                 </DropdownAction.Content>
                                                             </DropdownAction>
@@ -546,9 +546,9 @@ export default function Index({
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">Confirm Archive</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete this Article?
+                        Are you sure you want to archive this Article?
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -557,7 +557,7 @@ export default function Index({
                             Cancel
                         </SecondaryButton>
                         <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
+                            Archive
                         </DangerButton>
                     </div>
                 </div>

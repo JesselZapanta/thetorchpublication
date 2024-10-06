@@ -62,24 +62,24 @@ class EditorReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'hidden']);
 
-        return to_route('editor-review-report-article.index')->with(['success' => 'Hide Successfully']);
+        return to_route('editor-review-report-article.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreArticle($id)
     {
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'visible']);
 
-        return to_route('editor-review-report-article.index')->with(['success' => 'Restore Successfully']);
+        return to_route('editor-review-report-article.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectArticleReport($id)
@@ -87,13 +87,13 @@ class EditorReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'visible']);
         $article->update(['report_count' => 0]);
 
-        return to_route('editor-review-report-article.index')->with(['success' => 'Reject Successfully']);
+        return to_route('editor-review-report-article.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyArticle($id)
@@ -101,7 +101,7 @@ class EditorReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->delete();
@@ -111,7 +111,7 @@ class EditorReviewReport extends Controller
             Storage::disk('public')->delete($article->article_image_path);
         }
 
-        return to_route('editor-review-report-article.index')->with(['success' => 'Delete Successfully']);
+        return to_route('editor-review-report-article.index')->with(['success' => 'Delete successfully.']);
     }
 
     // Comment
@@ -165,24 +165,24 @@ class EditorReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'hidden']);
 
-        return to_route('editor-review-report-comment.index')->with(['success' => 'Hide Successfully']);
+        return to_route('editor-review-report-comment.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreComment($id)
     {
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'visible']);
 
-        return to_route('editor-review-report-comment.index')->with(['success' => 'Restore Successfully']);
+        return to_route('editor-review-report-comment.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectCommentReport($id)
@@ -190,13 +190,13 @@ class EditorReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'visible']);
         $comment->update(['report_count' => 0]);
 
-        return to_route('editor-review-report-comment.index')->with(['success' => 'Reject Successfully']);
+        return to_route('editor-review-report-comment.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyComment($id)
@@ -205,12 +205,12 @@ class EditorReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->delete();
 
-        return to_route('editor-review-report-comment.index')->with(['success' => 'Delete Successfully']);
+        return to_route('editor-review-report-comment.index')->with(['success' => 'Delete successfully.']);
     }
 
     //Freedom Wall
@@ -264,24 +264,24 @@ class EditorReviewReport extends Controller
         $freedomWall = FreedomWall::findOrFail($id);
 
         if(!$freedomWall){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Hide Successfully']);
+        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreFreedomWall($id)
     {
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->update(['visibility' => 'visible']);
 
-        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Restore Successfully']);
+        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectFreedomWallReport($id)
@@ -289,13 +289,13 @@ class EditorReviewReport extends Controller
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->update(['visibility' => 'visible']);
         $entry->update(['report_count' => 0]);
 
-        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Reject Successfully']);
+        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyFreedomWall($id)
@@ -304,12 +304,12 @@ class EditorReviewReport extends Controller
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->delete();
 
-        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Delete Successfully']);
+        return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }
 
 }
