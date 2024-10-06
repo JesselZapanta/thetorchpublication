@@ -71,7 +71,8 @@ class CommentController extends Controller
         
         Comment::create($data);
 
-        return back()->with(['success' => 'Comment is Added Successfully']);
+        // return back()->with(['success' => 'Comment is Added Successfully']);
+        return back();
         // todo, redirect to the read article route
     }
 
@@ -127,7 +128,8 @@ class CommentController extends Controller
         
         $comment->update($data);
 
-        return back()->with(['success' => 'Comment is Updated Successfully']);
+        // return back()->with(['success' => 'Comment is Updated Successfully']);
+        return back();
           // todo, redirect to the read article route
     }
 
@@ -139,7 +141,8 @@ class CommentController extends Controller
         // dd($comment);
         $comment->delete();
 
-        return back()->with(['success' => 'Comment is Deleted Successfully']);
+        // return back()->with(['success' => 'Comment is Deleted Successfully']);
+        return back();
     }
 
     public function hide($id)
@@ -153,6 +156,7 @@ class CommentController extends Controller
 
         $comment->update(['visibility' => 'hidden']);
 
-        return back()->with(['success' => 'Hide Successfully']);
+        // return back()->with(['success' => 'Archive Successfully']);
+        return back();
     }
 }

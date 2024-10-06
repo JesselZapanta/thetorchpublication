@@ -448,6 +448,12 @@ class AdminTaskController extends Controller
             $article = new Article();
 
              // Map task data to article fields
+
+            $article->created_by = $task->assigned_to;
+            $article->edited_by = $task->assigned_to;
+            $article->layout_by = $task->layout_by;
+            $article->published_by = Auth::user()->id;
+            
             $article->category_id = $task->category_id;
             $article->academic_year_id = $task->academic_year_id;
             $article->title = $task->title;
@@ -458,8 +464,10 @@ class AdminTaskController extends Controller
             $article->is_anonymous = 'no';
             $article->caption = $task->caption;
             $article->article_image_path = $task->task_image_path;
-            $article->layout_by = $task->layout_by;
-            $article->created_by = $task->assigned_by;
+
+            $article->submitted_at = $task->task_completed_date;
+            $article->edited_at = $task->content_submitted_date;
+            $article->published_date = $task->task_completed_date;
 
             // Save the new article
             $article->save();

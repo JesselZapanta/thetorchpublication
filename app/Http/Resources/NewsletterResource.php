@@ -21,7 +21,7 @@ class NewsletterResource extends JsonResource
             'id' => $this->id,
             'academic_year_id' => $this->academic_year_id,
             'description' => $this->description,
-            'newsletter_thumbnail_image_path' => $this->newsletter_thumbnail_image_path ? Storage::url($this->newsletter_thumbnail_image_path) : '/images/default/article.png',
+            'newsletter_thumbnail_image_path' => $this->newsletter_thumbnail_image_path ? Storage::url($this->newsletter_thumbnail_image_path) : '/images/default/newsletter.jpg',
             'newsletter_file_path' => $this->newsletter_file_path ? Storage::url($this->newsletter_file_path) : '',
             'status' => $this->status,
     

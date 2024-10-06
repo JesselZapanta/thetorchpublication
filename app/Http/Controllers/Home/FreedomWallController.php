@@ -145,7 +145,7 @@ class FreedomWallController extends Controller
 
         FreedomWall::create($data);
 
-        return back()->with(['success' => 'Entry Submitted Successfully']);
+        return back()->with(['success' => 'Entry submitted successfully.']);
     }
 
     /**
@@ -209,7 +209,7 @@ class FreedomWallController extends Controller
         // FreedomWall::create($data);
         $freedomWall->update($data);
 
-        return back()->with('success', 'Freedom Wall Updated Successfully');
+        return back()->with('success', 'Freedom wall updated successfully.');
     }
 
     /**
@@ -220,11 +220,11 @@ class FreedomWallController extends Controller
         $freedomWall = FreedomWall::find($id); // Use find instead of findOrFail
 
         if(!$freedomWall){
-            return to_route('freedom-wall.index')->with(['error' => 'Freedom Wall Not Found']);
+            return to_route('freedom-wall.index')->with(['error' => 'Freedom wall not found.']);
         }
 
         $freedomWall->delete();
-        return to_route('freedom-wall.index')->with(['success' => 'Deleted Successfully']);
+        return to_route('freedom-wall.index')->with(['success' => 'Deleted successfully.']);
     }
 
     public function hide($id)
@@ -232,11 +232,11 @@ class FreedomWallController extends Controller
         $freedomWall = FreedomWall::find($id); // Use find instead of findOrFail
 
         if(!$freedomWall){
-            return to_route('freedom-wall.index')->with(['error' => 'Freedom Wall Not Found']);
+            return to_route('freedom-wall.index')->with(['error' => 'Freedom wall not found.']);
         }
 
         $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('freedom-wall.index')->with(['success' => 'Hide Successfully']);
+        return to_route('freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }
 }

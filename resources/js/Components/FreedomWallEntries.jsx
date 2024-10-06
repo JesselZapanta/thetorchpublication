@@ -175,7 +175,7 @@ export default function FreedomWallEntries({
                                                         openHideModal(entry);
                                                     }}
                                                 >
-                                                    Hide
+                                                    Archive
                                                 </Dropdown.Link>
                                             )}
 

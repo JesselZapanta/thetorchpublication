@@ -280,12 +280,15 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                     >
                         Our Policy
                     </button>
-                    <button
-                        onClick={openCreateModal}
-                        className="px-4 text-nowrap py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
-                    >
-                        Write Something
-                    </button>
+                    {(auth.user.role === "student" ||
+                        auth.user.role === "student_contributor") && (
+                        <button
+                            onClick={openCreateModal}
+                            className="px-4 text-nowrap py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
+                        >
+                            Write Something
+                        </button>
+                    )}
                 </div>
                 <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="flex gap-4">

@@ -393,7 +393,7 @@ export default function CommentsSection({
                                                         openHideModal(comment);
                                                     }}
                                                 >
-                                                    Soft Delete
+                                                    Archive
                                                 </Dropdown.Link>
                                             )}
 

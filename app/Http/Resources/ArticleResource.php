@@ -52,7 +52,12 @@ class ArticleResource extends JsonResource
             
             'academic_year_id' => $this->academic_year_id,
 
-            'createdBy' => $this->createdBy ? new UserResource($this->createdBy) : null ,
+            // 'createdBy' => $this->createdBy ? new UserResource($this->createdBy) : null ,
+
+            'createdBy' => ($this->is_anonymous === 'yes') 
+                ? new AnonymousUserResource($this->createdBy) 
+                : ($this->createdBy ? new UserResource($this->createdBy) : null),
+
             'editedBy' => $this->editedBy ? new UserResource($this->editedBy) : null ,
             'layoutBy' => $this->layoutBy ? new UserResource($this->layoutBy) : null ,
             'revisionBy' => $this->revisionBy ? new UserResource($this->revisionBy) : null ,

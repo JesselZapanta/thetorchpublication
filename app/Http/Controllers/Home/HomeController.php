@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ArticleResource;
+use App\Http\Resources\HomeArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
-use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\HomeNewsletterResource;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
@@ -63,10 +63,10 @@ class HomeController extends Controller
 
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),
-            'featuredArticle' => new ArticleResource($featuredArticle),
-            'topArticles' => ArticleResource::collection($topArticles),
-            'latestArticles' => ArticleResource::collection($latestArticles),
-            'latestNewsletter' => NewsletterResource::collection($latestNewsletter),
+            'featuredArticle' => new HomeArticleResource($featuredArticle),
+            'topArticles' => HomeArticleResource::collection($topArticles),
+            'latestArticles' => HomeArticleResource::collection($latestArticles),
+            'latestNewsletter' => HomeNewsletterResource::collection($latestNewsletter),
         ]);
     }
 
@@ -139,7 +139,7 @@ class HomeController extends Controller
 
         return inertia('ByCategory', [
             'categories' => CategoryResource::collection($categories),
-            'categoryarticles' => ArticleResource::collection($categoryarticles),
+            'categoryarticles' => HomeArticleResource::collection($categoryarticles),
             'currentCategory' => new CategoryResource($currentCategory),
         ]);
     }
@@ -158,7 +158,7 @@ class HomeController extends Controller
             ->get();
 
         return inertia('ReadArticle', [
-            'article' => new ArticleResource($article),
+            'article' => new HomeArticleResource($article),
             'categories' => CategoryResource::collection($categories),
             'comments' => CommentResource::collection($comments),
         ]);

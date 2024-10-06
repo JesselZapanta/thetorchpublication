@@ -295,7 +295,7 @@ export default function Show({ auth, categories, entry, success }) {
                                                             );
                                                         }}
                                                     >
-                                                        Hide
+                                                        Archive
                                                     </Dropdown.Link>
                                                 )}
 
