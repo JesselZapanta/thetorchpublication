@@ -412,31 +412,40 @@ export default function Index({
 
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {article.is_newsletter !==
-                                                            "no" && (
-                                                            <button
-                                                                onClick={() =>
-                                                                    removeArticle(
-                                                                        article
-                                                                    )
-                                                                }
-                                                                className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-                                                            >
-                                                                Yes
-                                                            </button>
-                                                        )}
+                                                            "no" &&
+                                                            article.is_newsletter !==
+                                                                "added" && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        removeArticle(
+                                                                            article
+                                                                        )
+                                                                    }
+                                                                    className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
+                                                                >
+                                                                    Yes
+                                                                </button>
+                                                            )}
                                                         {article.is_newsletter !==
-                                                            "yes" && (
-                                                            <button
-                                                                onClick={() =>
-                                                                    isNewsleter(
-                                                                        article
-                                                                    )
-                                                                }
-                                                                className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
-                                                            >
-                                                                NO
-                                                            </button>
-                                                        )}
+                                                            "yes" &&
+                                                            article.is_newsletter !==
+                                                                "added" && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        isNewsleter(
+                                                                            article
+                                                                        )
+                                                                    }
+                                                                    className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
+                                                                >
+                                                                    NO
+                                                                </button>
+                                                            )}
+                                                            {
+                                                                article.is_newsletter === "added" && (
+                                                                    <span>Added</span>
+                                                                )
+                                                            }
                                                     </td>
                                                 </tr>
                                             ))

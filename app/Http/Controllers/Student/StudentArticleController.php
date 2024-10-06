@@ -214,7 +214,7 @@ class StudentArticleController extends Controller
 
             Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
 
-            return to_route('student-article.index')->with(['success'=> 'Article submitted Successfully']);
+            return to_route('student-article.index')->with(['success'=> 'Article submitted successfully.']);
         }
 
         return to_route('student-article.index')->with(['success' => 'Article submitted successfully']);
@@ -386,7 +386,7 @@ class StudentArticleController extends Controller
 
                 Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
 
-                return to_route('student-article.index')->with(['success'=> 'Article submitted Successfully']);
+                return to_route('student-article.index')->with(['success'=> 'Article submitted successfully.']);
             }
         }
         
@@ -412,7 +412,7 @@ class StudentArticleController extends Controller
             // Delete the specific old image file
             Storage::disk('public')->delete($student_article->article_image_path);
         }
-        return to_route('student-article.index')->with(['success' => 'Deleted Successfully']);
+        return to_route('student-article.index')->with(['success' => 'Deleted successfully.']);
     }
 
 

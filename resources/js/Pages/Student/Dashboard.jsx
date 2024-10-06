@@ -80,7 +80,7 @@ export default function Dashboard({
                             href={route("student.report")}
                             className="px-4 py-2 bg-indigo-600 text-nowrap text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
-                            Generate Report
+                            Report
                         </Link>
                     </div>
                 </div>
@@ -96,53 +96,34 @@ export default function Dashboard({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            {/* <h1>{dateFrom}</h1> */}
-                            <div className="flex justify-between">
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
+                                <SelectInput
+                                    className="w-full"
+                                    value={selectedPeriod}
+                                    onChange={handleSelectPeriod} // Only handle period selection here
+                                >
+                                    <option value="daily">Today</option>
+                                    <option value="weekly">Last Week</option>
+                                    <option value="monthly">Last Month</option>
+                                    <option value="ay">Academic Year</option>
+                                </SelectInput>
+
+                                {selectedPeriod === "ay" && (
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedPeriod}
-                                        onChange={handleSelectPeriod} // Only handle period selection here
+                                        value={selectedAy}
+                                        onChange={handleSelectAcademicYear} // Handle academic year selection separately
                                     >
-                                        <option value="daily">Today</option>
-                                        <option value="weekly">
-                                            Last Week
+                                        <option value="">
+                                            Select Academic Year
                                         </option>
-                                        <option value="monthly">
-                                            Last Month
-                                        </option>
-                                        <option value="ay">
-                                            Academic Year
-                                        </option>
-                                    </SelectInput>
-
-                                    {selectedPeriod === "ay" && (
-                                        <SelectInput
-                                            className="w-full"
-                                            value={selectedAy}
-                                            onChange={handleSelectAcademicYear} // Handle academic year selection separately
-                                        >
-                                            <option value="">
-                                                Select Academic Year
+                                        {academicYears.data.map((ay) => (
+                                            <option key={ay.id} value={ay.id}>
+                                                {ay.description}
                                             </option>
-                                            {academicYears.data.map((ay) => (
-                                                <option
-                                                    key={ay.id}
-                                                    value={ay.id}
-                                                >
-                                                    {ay.description}
-                                                </option>
-                                            ))}
-                                        </SelectInput>
-                                    )}
-                                </div>
-
-                                {/* <Link
-                                    href={route("student.report")}
-                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                                >
-                                    Generate Report
-                                </Link> */}
+                                        ))}
+                                    </SelectInput>
+                                )}
                             </div>
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

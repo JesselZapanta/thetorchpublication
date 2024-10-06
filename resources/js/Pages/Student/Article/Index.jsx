@@ -10,8 +10,18 @@ import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
+import {
+    PencilSquareIcon,
+    ListBulletIcon,
+    AdjustmentsHorizontalIcon,
+    ArchiveBoxIcon,
+    TrashIcon,
+} from "@heroicons/react/16/solid";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Dropdown from "@/Components/Dropdown";
+import DropdownAction from "@/Components/DropdownAction";
 
 export default function Index({
     auth,
@@ -131,10 +141,10 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-md lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-2">
                         <Link
                             href={route("student-article.calendar")}
                             className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -147,6 +157,61 @@ export default function Index({
                         >
                             Create New
                         </Link>
+                    </div> */}
+                    <div className="flex items-center relative">
+                        {/* show in large screen */}
+                        <div className="hidden lg:block">
+                            <div className="flex gap-2">
+                                <Link
+                                    href={route("student-article.calendar")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Calendar
+                                </Link>
+                                <Link
+                                    href={route("student-article.create")}
+                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Create New
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="block lg:hidden">
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                        <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
+                                        Options
+                                        {StudentBadgeCount.rejectedArticleCount >
+                                            0 && (
+                                            <>
+                                                <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                    {StudentBadgeCount.rejectedArticleCount >
+                                                    9
+                                                        ? "9+"
+                                                        : StudentBadgeCount.rejectedArticleCount}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Link
+                                        href={route("student-article.calendar")}
+                                        className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    >
+                                        Calendar
+                                    </Link>
+                                    <Link
+                                        href={route("student-article.create")}
+                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Create New
+                                    </Link>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             }
@@ -256,7 +321,7 @@ export default function Index({
                                     />
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -393,7 +458,7 @@ export default function Index({
                                                             }
                                                         </span>
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
                                                                 "student-article.edit",
@@ -413,6 +478,39 @@ export default function Index({
                                                         >
                                                             Delete
                                                         </button>
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
+
+                                                                <DropdownAction.Content>
+                                                                    <DropdownAction.Link
+                                                                        href={route(
+                                                                            "student-article.edit",
+                                                                            article.id
+                                                                        )}
+                                                                    >
+                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                        Edit
+                                                                    </DropdownAction.Link>
+                                                                    <DropdownAction.Btn
+                                                                        onClick={() =>
+                                                                            openDeleteModal(
+                                                                                article
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <TrashIcon className="w-6 text-red-600" />
+                                                                        Delete
+                                                                    </DropdownAction.Btn>
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))

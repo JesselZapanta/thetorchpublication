@@ -91,10 +91,7 @@ export default function Index({
     };
 
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [confirmDistribute, setConfirmDistribute] = useState(false);
     const [newsletter, setNewsletter] = useState(null); // Storing newsletter to edit/delete/distribute
-
-    const { data, setData, errors, processing } = useForm();
 
     // Open modal and set newsletter to delete
     const openDeleteModal = (newsletter) => {

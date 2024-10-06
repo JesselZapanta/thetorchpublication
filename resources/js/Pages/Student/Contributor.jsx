@@ -88,7 +88,7 @@ export default function Create({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between h-6">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-md lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Apply to be a Contributor
                     </h2>
                     <div className="flex gap-4">

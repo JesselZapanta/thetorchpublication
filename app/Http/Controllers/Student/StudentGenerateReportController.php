@@ -74,7 +74,17 @@ class StudentGenerateReportController extends Controller
         } else {
             $articlesQuery->where('published_date', '>=', $dateFrom);
         }
-        $editedArticlesDetais = $articlesQuery->get(['id','title', 'article_image_path', 'submitted_at', 'published_date']);
+
+        $writenArticlesDetais = $articlesQuery->get(['id', 'title', 'article_image_path', 'submitted_at', 'published_date'])->map(function ($article) {
+            return [
+                'id' => $article->id,
+                'title' => $article->title,
+                'article_image_path' => $article->article_image_path,
+                'submitted_at' => $article->submitted_at ? Carbon::parse($article->submitted_at)->format('F j, Y') : null,  // Format or set null if empty
+                'published_date' => $article->published_date ? Carbon::parse($article->published_date)->format('F j, Y') : null,  // Format or set null if empty
+            ];
+        });
+        
         
         $academicYears = AcademicYear::all();
         
@@ -87,7 +97,7 @@ class StudentGenerateReportController extends Controller
 
             'academicYears' => AcademicYearResource::collection($academicYears),
 
-            'editedArticlesDetais' => $editedArticlesDetais
+            'writenArticlesDetais' => $writenArticlesDetais
         ]);
     }
 }

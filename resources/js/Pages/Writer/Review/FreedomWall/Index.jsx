@@ -22,7 +22,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
-import Dropdown from "@/Components/Dropdown";
 
 export default function Index({
     auth,
