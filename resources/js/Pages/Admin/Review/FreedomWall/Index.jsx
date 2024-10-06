@@ -333,6 +333,20 @@ export default function Index({
                                         </>
                                     )}
                                 </Link>
+                                <Link
+                                    href={route(
+                                        "admin-review-report-newsletter.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
+                                >
+                                    Newsletters
+                                </Link>
+                                <Link
+                                    href={route("admin-archive-task.index")}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-lime-600 text-gray-50 transition-all duration-300 rounded hover:bg-lime-700"
+                                >
+                                    Tasks
+                                </Link>
                             </Dropdown.Content>
                         </Dropdown>
                     </div>

@@ -33,7 +33,7 @@ return new class extends Migration
             $table->timestamp('distributed_at')->nullable();//new
             $table->foreignId('distributed_by')->nullable()->constrained('users')->onDelete('set null');
 
-            
+            $table->integer('report_count')->default(0);
             $table->tinyText('visibility')->default('visible');
             $table->timestamps();
         });

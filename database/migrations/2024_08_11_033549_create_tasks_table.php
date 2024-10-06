@@ -30,6 +30,7 @@ return new class extends Migration
             $table->tinyText('priority')->nullable();
             $table->tinyText('status')->default('pending');
             $table->tinyText('draft')->default('no');
+            $table->tinyText('visibility')->default('visible');//hidden
 
             $table->timestamp('assigned_date')->nullable();
 

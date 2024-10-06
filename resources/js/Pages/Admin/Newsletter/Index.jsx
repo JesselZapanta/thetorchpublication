@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 import {
     PencilSquareIcon,
-    TrashIcon,
+    ArchiveBoxIcon,
     ListBulletIcon,
     ArrowUpOnSquareIcon,
     AdjustmentsHorizontalIcon,
@@ -448,8 +448,8 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                                                                 )
                                                                             }
                                                                         >
-                                                                            <TrashIcon className="w-6 text-red-600" />
-                                                                            Delete
+                                                                            <ArchiveBoxIcon className="w-6 text-red-600" />
+                                                                            Archive
                                                                         </DropdownAction.Btn>
                                                                     </DropdownAction.Content>
                                                                 </DropdownAction>
@@ -483,9 +483,9 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">Confirm Archive</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete the newsletter "
+                        Are you sure you want to archive the newsletter "
                         {newsletter?.description}"?
                     </p>
                     <div className="mt-4 flex justify-end">
@@ -495,7 +495,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                             Cancel
                         </SecondaryButton>
                         <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
+                            Archive
                         </DangerButton>
                     </div>
                 </div>

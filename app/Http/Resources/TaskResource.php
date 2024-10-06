@@ -42,6 +42,7 @@ class TaskResource extends JsonResource
             'priority' => $this->priority,
             'status' => $this->status,
             'draft' => $this->draft,
+            'visibility' => $this->visibility,
 
             'assigned_date' => $this->assigned_date ? (new Carbon($this->assigned_date))->format('F j, Y') : null,
 

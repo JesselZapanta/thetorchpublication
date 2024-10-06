@@ -263,7 +263,7 @@ export default function Index({
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                 {AdminBadgeCount.totalReportCount >
-                                                9
+                                                99
                                                     ? "9+"
                                                     : AdminBadgeCount.totalReportCount}
                                             </span>
@@ -329,6 +329,20 @@ export default function Index({
                                             </span>
                                         </>
                                     )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "admin-review-report-newsletter.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
+                                >
+                                    Newsletters
+                                </Link>
+                                <Link
+                                    href={route("admin-archive-task.index")}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-lime-600 text-gray-50 transition-all duration-300 rounded hover:bg-lime-700"
+                                >
+                                    Tasks
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>

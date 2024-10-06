@@ -83,7 +83,7 @@ class AdminGenerateReportController extends Controller
 
 
         // Fetch rate count
-        $commentsQuery = Comment::query(); 
+        $commentsQuery = Comment::where('visibility', 'visible'); 
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
@@ -143,7 +143,7 @@ class AdminGenerateReportController extends Controller
         $freedomWallDislike = $freedomWallDislikeQuery->count();
 
         // Fetch tasks count completed
-        $tasksQuery = Task::where('status', 'completed');
+        $tasksQuery = Task::where('status', 'completed')->where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
@@ -173,7 +173,7 @@ class AdminGenerateReportController extends Controller
         $totalViews = $totalViewsQuery->count();
 
         // Total newsletters
-        $totalNewslettersQuery = Newsletter::query();
+        $totalNewslettersQuery = Newsletter::where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);

@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\FreedomWallResource;
+use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\TaskResource;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
+use App\Models\Newsletter;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -82,7 +86,7 @@ class AdminReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'hidden']);
@@ -94,7 +98,7 @@ class AdminReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'visible']);
@@ -107,7 +111,7 @@ class AdminReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->update(['visibility' => 'visible']);
@@ -121,7 +125,7 @@ class AdminReviewReport extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return back()->with('error', 'Article Not Found');
+            return back()->with('error', 'Article not found.');
         }
 
         $article->delete();
@@ -134,7 +138,8 @@ class AdminReviewReport extends Controller
         return to_route('admin-review-report-article.index')->with(['success' => 'Delete successfully.']);
     }
 
-    // Comment
+    //=====================================Comment=========================================//
+
     public function comment()
     {   
         $query = Comment::query();
@@ -185,7 +190,7 @@ class AdminReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'hidden']);
@@ -197,7 +202,7 @@ class AdminReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'visible']);
@@ -210,7 +215,7 @@ class AdminReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->update(['visibility' => 'visible']);
@@ -225,7 +230,7 @@ class AdminReviewReport extends Controller
         $comment = Comment::findOrFail($id);
 
         if(!$comment){
-            return back()->with('error', 'Comment Not Found');
+            return back()->with('error', 'Comment not found.');
         }
 
         $comment->delete();
@@ -233,7 +238,7 @@ class AdminReviewReport extends Controller
         return to_route('admin-review-report-comment.index')->with(['success' => 'Delete successfully.']);
     }
 
-    //Freedom Wall
+    //=====================================Freedom Wall=========================================//
 
     public function freedomWall()
     {   
@@ -284,7 +289,7 @@ class AdminReviewReport extends Controller
         $freedomWall = FreedomWall::findOrFail($id);
 
         if(!$freedomWall){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $freedomWall->update(['visibility' => 'hidden']);
@@ -296,7 +301,7 @@ class AdminReviewReport extends Controller
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->update(['visibility' => 'visible']);
@@ -309,7 +314,7 @@ class AdminReviewReport extends Controller
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->update(['visibility' => 'visible']);
@@ -324,12 +329,213 @@ class AdminReviewReport extends Controller
         $entry = FreedomWall::findOrFail($id);
 
         if(!$entry){
-            return back()->with('error', 'FreedomWall Not Found');
+            return back()->with('error', 'FreedomWall not found.');
         }
 
         $entry->delete();
 
         return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
+    }
+
+     //=====================================Newsletter=========================================//
+
+    public function newsletter()
+    {   
+
+        $query = Newsletter::query();
+
+        $sortField = request('sort_field', 'id');
+        $sortDirection = request('sort_direction', 'desc');
+        
+        // Apply search filters if present
+        if (request('description')) {
+            $query->where('description', 'like', '%' . request('description') . '%');
+        }
+        
+        if (request('visibility')) {
+            $query->where('visibility', request('visibility'));
+        }
+
+        // Ensure proper grouping with orWhere for visibility
+        // $query->where(function($q) {
+        //     $q->where('report_count', '>', 0)//report count is not implemented
+        //         ->orWhere('visibility', 'hidden');
+        // });
+
+        // Apply sorting
+        $newsletters = $query->orderBy($sortField, $sortDirection)
+            ->where('visibility', 'hidden')
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('Admin/Review/Newsletter/Index', [
+            'newsletters' => NewsletterResource::collection($newsletters),
+            'queryParams' => request()->query() ? : null,
+        ]);
+    }
+
+    public function hideNewsletter($id)
+    {
+        // dd($id);
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'hidden']);
+
+        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Archive successfully.']);
+    }
+    public function restoreNewsletter($id)
+    {
+        // dd('dksa;l');
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'visible']);
+
+        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Restore successfully.']);
+    }
+
+    public function rejectNewsletterReport($id)
+    {
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'visible']);
+        $newsletter->update(['report_count' => 0]);
+
+        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Reject successfully.']);
+    }
+
+    public function destroyNewsletter($id)
+    {
+        // dd($id);
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->delete();
+
+        if ($newsletter->newsletter_thumbnail_image_path) {
+            // Delete the specific old image file
+            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        }
+
+        if ($newsletter->newsletter_file_path) {
+            // Delete the specific old  file
+            Storage::disk('public')->delete($newsletter->newsletter_file_path);
+        }   
+        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Delete successfully.']);
+    }
+
+    //=====================================Task=========================================//
+
+    public function task()
+    {   
+
+        $query = Task::query();
+
+        $sortField = request('sort_field', 'id');
+        $sortDirection = request('sort_direction', 'desc');
+        
+        // Apply search filters if present
+        if (request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }
+        
+        if (request('visibility')) {
+            $query->where('visibility', request('visibility'));
+        }
+
+        // Apply sorting
+        $tasks = $query->orderBy($sortField, $sortDirection)
+            ->where('visibility', 'hidden')
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('Admin/Review/Task/Index', [
+            'tasks' => TaskResource::collection($tasks),
+            'queryParams' => request()->query() ? : null,
+        ]);
+    }
+
+    public function showTask($id)
+    {
+        $task = Task::findOrFail($id);
+
+        return inertia('Admin/Review/Task/Show', [
+            'task' => new TaskResource($task),
+        ]);
+    }
+
+    public function hideTask($id)
+    {
+        // dd($id);
+        $task = Task::findOrFail($id);
+
+        if(!$task){
+            return back()->with('error', 'Task not found.');
+        }
+
+        $task->update(['visibility' => 'hidden']);
+
+        return to_route('admin-archive-task.index')->with(['success' => 'Archive successfully.']);
+    }
+    public function restoreTask($id)
+    {
+        // dd('dksa;l');
+        $task = Task::findOrFail($id);
+
+        if(!$task){
+            return back()->with('error', 'Task not found.');
+        }
+
+        $task->update(['visibility' => 'visible']);
+
+        return to_route('admin-archive-task.index')->with(['success' => 'Restore successfully.']);
+    }
+
+    public function rejectTaskReport($id)
+    {
+        $task = Task::findOrFail($id);
+
+        if(!$task){
+            return back()->with('error', 'Task not found.');
+        }
+
+        $task->update(['visibility' => 'visible']);
+        $task->update(['report_count' => 0]);
+
+        return to_route('admin-archive-task.index')->with(['success' => 'Reject successfully.']);
+    }
+
+    public function destroyTask($id)
+    {
+        // dd($id);
+        $task = Task::findOrFail($id);
+
+        if(!$task){
+            return back()->with('error', 'Task not found.');
+        }
+
+        $task->delete();
+        
+        if ($task->task_image_path) {
+            // Delete the specific old  file
+            Storage::disk('public')->delete($task->task_image_path);
+        }   
+
+        return to_route('admin-archive-task.index')->with(['success' => 'Delete successfully.']);
     }
 
 }

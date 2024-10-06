@@ -86,7 +86,7 @@ class AdminDashboardController extends Controller
 
 
         // Fetch comment count
-        $commentsQuery = Comment::query(); 
+        $commentsQuery = Comment::where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
@@ -156,7 +156,7 @@ class AdminDashboardController extends Controller
         $tasksCompeted = $tasksQuery->count();
 
         // Fetch tasks count !completed
-        $tasksQuery = Task::where('status', '!=' ,'completed');
+        $tasksQuery = Task::where('status', '!=' ,'completed')->where('visibility', 'visible');;
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
@@ -176,7 +176,7 @@ class AdminDashboardController extends Controller
         $totalViews = $totalViewsQuery->count();
 
         // Total newsletters
-        $totalNewslettersQuery = Newsletter::query();
+        $totalNewslettersQuery = Newsletter::where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);

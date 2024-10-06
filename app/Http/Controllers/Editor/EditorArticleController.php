@@ -258,10 +258,10 @@ class EditorArticleController extends Controller
 
             Notification::send($allAdmins, new ArticleStatus($articleDetails, $customAdminMessage));
 
-            return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
+            return to_route('editor-article.index')->with(['success'=> 'Article submitted successfully.']);
         }
 
-        return to_route('editor-article.index')->with(['success'=> 'Article submitted Successfully']);
+        return to_route('editor-article.index')->with(['success'=> 'Article submitted successfully.']);
     }
 
     /**
@@ -413,7 +413,7 @@ class EditorArticleController extends Controller
         // $editorId = Auth::user()->id;
 
         //wako kasabot para asa ni nga code hHAHAHAHA
-        //og kinsa nag edit??? limot ko gagi
+        //og kinsa nag edit??? limot ko 
         //Wala ni pulos na code
         // if ($status === 'revision' && $editorId === $editor_article->created_by){
         //     $data['status'] = 'edited';
@@ -486,7 +486,7 @@ class EditorArticleController extends Controller
             return to_route('editor-article.index')->with(['success' => 'Article saved as draft.']);
         }
 
-        return to_route('editor-article.index')->with(['success' => 'Article Edited Successfully']);
+        return to_route('editor-article.index')->with(['success' => 'Article edited successfully.']);
     }
 
     /**

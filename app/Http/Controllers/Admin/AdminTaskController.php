@@ -65,6 +65,7 @@ class AdminTaskController extends Controller
         }
 
         $tasks = $query->orderBy($sortField, $sortDirection)
+                    ->where('visibility', 'visible') //todo add this col
                     ->where('assigned_by', Auth::user()->id)
                     ->paginate(10)
                     ->onEachSide(1);
@@ -134,7 +135,7 @@ class AdminTaskController extends Controller
         // Send the email notification to the assigned user
         Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
 
-        return to_route('admin-task.index')->with(['success' => 'Task Assigned Successfully']);
+        return to_route('admin-task.index')->with(['success' => 'Task Assigned successfully.']);
     }
 
 
@@ -247,7 +248,7 @@ class AdminTaskController extends Controller
         Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
 
 
-        return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
+        return to_route('admin-task.index')->with(['success' => 'Task Updated successfully.']);
     }
 
     /**
@@ -475,20 +476,29 @@ class AdminTaskController extends Controller
             return to_route('admin-task.index')->with(['success' => 'The image task needed revision.']);
         }
 
-        return to_route('admin-task.index')->with(['success' => 'Task Updated Successfully']);
+        return to_route('admin-task.index')->with(['success' => 'Task Updated successfully.']);
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
+    //do nt delete but achive
     public function destroy(Task $admin_task)
     {
-        $admin_task->delete();
-        if($admin_task->task_image_path){
-            Storage::disk('public')->deleteDirectory(dirname($admin_task->task_image_path));
+        // $admin_task->delete();
+        // if ($task->task_image_path) {
+        //     // Delete the specific old  file
+        //     Storage::disk('public')->delete($task->task_image_path);
+        // }   
+
+        if(!$admin_task){
+            return back()->with('error', 'Task not found.');
         }
-        return to_route('admin-task.index')->with(['success' => 'Deleted Successfully']);
+
+        $admin_task->update(['visibility' => 'hidden']);
+
+        return to_route('admin-task.index')->with(['success' => 'Archive successfully.']);
     }
 
 

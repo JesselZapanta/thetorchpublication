@@ -1,6 +1,9 @@
+
 import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
+import DropdownAction from "@/Components/DropdownAction";
 import Modal from "@/Components/Modal";
+import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
@@ -18,12 +21,18 @@ import {
     AdjustmentsHorizontalIcon,
 } from "@heroicons/react/16/solid";
 
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import DropdownAction from "@/Components/DropdownAction";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 
-export default function Index({ auth, reportedComments, queryParams, flash, AdminBadgeCount }) {
+export default function Index({
+    auth,
+    tasks,
+    queryParams = null,
+    flash,
+    AdminBadgeCount,
+}) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -51,7 +60,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("admin-review-report-comment.index"),
+                route("admin-archive-task.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -71,7 +80,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("admin-archive-task.index"),
                     {},
                     {
                         preserveState: true,
@@ -80,7 +89,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("admin-review-report-comment.index"),
+                    route("admin-archive-task.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -94,7 +103,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
     const handleSelectChange = (name, value) => {
         setVisibility(value);
         queryParams[name] = value;
-        router.get(route("admin-review-report-comment.index"), queryParams, {
+        router.get(route("admin-archive-task.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -111,45 +120,46 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-review-report-comment.index"), queryParams);
-    };  
+        router.get(route("admin-archive-task.index"), queryParams);
+    };
 
-    // not used
+    //select what reported content
+    //func not used
     // const handleSelectReport = (e) => {
     //     const value = e.target.value;
 
-    //     if (value === "article") {
-    //         router.get(route("admin-review-report-article.index"));
+    //     if (value === "task") {
+    //         router.get(route("admin-archive-task.index"));
     //     } else if (value === "comment") {
-    //         router.get(route("admin-review-report-comment.index"));
+    //         router.get(route("admin-archive-comment.index"));
     //     } else if (value === "freedomWall") {
-    //         router.get(route("admin-review-report-freedom-wall.index"));
+    //         router.get(route("admin-archive-freedom-wall.index"));
     //     }
     // };
 
-    //delete, hide, report
+    //delete report and hide task and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
-        comment: null,
+        task: null,
         show: false,
     });
 
-    const openActionModal = (comment, actionType) => {
+    const openActionModal = (task, actionType) => {
         setConfirmAction({
             type: actionType, // 'delete', 'hide', or 'report'
-            comment: comment,
+            task: task,
             show: true,
         });
     };
 
     const handleAction = () => {
-        if (confirmAction.comment) {
+        if (confirmAction.task) {
             switch (confirmAction.type) {
                 case "hide":
                     router.post(
                         route(
-                            "admin-review-report-comment.hide",
-                            confirmAction.comment.id
+                            "admin-archive-task.hide",
+                            confirmAction.task.id
                         ),
                         {
                             preserveScroll: true,
@@ -159,8 +169,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "restore":
                     router.post(
                         route(
-                            "admin-review-report-comment.restore",
-                            confirmAction.comment.id
+                            "admin-archive-task.restore",
+                            confirmAction.task.id
                         ),
                         {
                             preserveScroll: true,
@@ -170,8 +180,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "reject":
                     router.post(
                         route(
-                            "admin-review-report-comment.reject",
-                            confirmAction.comment.id
+                            "admin-archive-task.reject",
+                            confirmAction.task.id
                         ),
                         {
                             preserveScroll: true,
@@ -181,8 +191,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 case "delete":
                     router.delete(
                         route(
-                            "admin-review-report-comment.destroy",
-                            confirmAction.comment.id
+                            "admin-archive-task.destroy",
+                            confirmAction.task.id
                         ),
                         {
                             preserveScroll: true,
@@ -193,23 +203,23 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     break;
             }
         }
-        setConfirmAction({ type: "", comment: null, show: false });
+        setConfirmAction({ type: "", task: null, show: false });
     };
 
-    const openHideModal = (comment) => {
-        openActionModal(comment, "hide");
+    const openHideModal = (task) => {
+        openActionModal(task, "hide");
     };
 
-    const openRestoreModal = (comment) => {
-        openActionModal(comment, "restore");
+    const openRestoreModal = (task) => {
+        openActionModal(task, "restore");
     };
 
-    const openRejectModal = (comment) => {
-        openActionModal(comment, "reject");
+    const openRejectModal = (task) => {
+        openActionModal(task, "reject");
     };
 
-    const openDeleteModal = (comment) => {
-        openActionModal(comment, "delete");
+    const openDeleteModal = (task) => {
+        openActionModal(task, "delete");
     };
 
     return (
@@ -220,34 +230,36 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight">
                         {visibility === "visible"
-                            ? "List of Reported Comments"
+                            ? "List of Reported Tasks"
                             : visibility === "hidden"
-                            ? "List of Archive Comments"
-                            : "List of Reported/Archive Comments"}
+                            ? "List of Archive Tasks"
+                            : // : "List of Reported/Archive Tasks"}
+                              "List of Archive Tasks"}
                     </h2>
                     {/* not used */}
                     {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
-                            value="comment"
+                            // value="selectedValue"
+                            defaultValue="task"
                             onChange={handleSelectReport}
                         >
-                            <option value="article">Reported Article</option>
+                            <option value="task">Reported Article</option>
                             <option value="comment">Reported Comment</option>
                             <option value="freedomWall">
                                 Reported Freedom Wall
                             </option>
                         </SelectInput>
                     </div> */}
-
                     <div className="flex items-center relative">
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
                                     <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
-                                    <span className="hidden md:block">
+                                    <span className="hidden sm:block">
                                         Content Type
                                     </span>
+
                                     {AdminBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
@@ -264,7 +276,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                             <Dropdown.Content>
                                 <Link
                                     href={route(
-                                        "admin-review-report-article.index"
+                                        "admin-review-report-newsletter.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
@@ -342,14 +354,18 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
             <Head
                 title={
                     visibility === "visible"
-                        ? "List of Reported Comments"
+                        ? "List of Reported Articles"
                         : visibility === "hidden"
-                        ? "List of Archive Comments"
-                        : "List of Reported/Archive Comments"
+                        ? "List of Archive Articles"
+                        : "List of Reported/Archive Articles"
                 }
             />
 
             <ToastContainer position="bottom-right" />
+            {/* 
+            <pre className="text-gray-900">
+                {JSON.stringify(tasks, null, 2)}
+            </pre> */}
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -359,17 +375,17 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                 <div className="w-full">
                                     <TextInput
                                         className="w-full"
-                                        defaultValue={queryParams.body}
-                                        placeholder="Search Comments"
+                                        defaultValue={queryParams.name}
+                                        placeholder="Search Task"
                                         onKeyPress={(e) =>
-                                            onKeyPressed("body", e)
-                                        }
+                                            onKeyPressed("name", e)
+                                        } // Trigger search on Enter key
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "body",
+                                                "name",
                                                 e.target.value
                                             )
-                                        }
+                                        } // Clear or update query param
                                     />
                                 </div>
                                 <div className="w-[40%]">
@@ -384,7 +400,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                         } // Trigger request on visibility change
                                     >
                                         <option value="">Visibility</option>
-                                        <option value="visible">Visible</option>
+                                        {/* <option value="visible">Visible</option> */}
                                         <option value="hidden">Archive</option>
                                     </SelectInput>
                                 </div>
@@ -407,7 +423,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                 ID
                                             </TableHeading>
                                             <TableHeading
-                                                name="body"
+                                                name="name"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -416,12 +432,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Comment
+                                                Task Name
                                             </TableHeading>
                                             <th className="px-3 py-3">
                                                 Visibility
                                             </th>
-                                            <TableHeading
+                                            {/* <TableHeading
                                                 name="report_count"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -432,199 +448,132 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                                 sortChanged={sortChanged}
                                             >
                                                 Report Count
-                                            </TableHeading>
+                                            </TableHeading> */}
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {reportedComments.data.length > 0 ? (
-                                            reportedComments.data.map(
-                                                (comment) => (
-                                                    <tr
-                                                        //added
-                                                        className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                        key={comment.id}
-                                                    >
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {comment.id}
-                                                        </td>
-                                                        <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                                            <Link
-                                                                // added
-                                                                className="text-md text-gray-900 dark:text-gray-300"
-                                                                href={route(
-                                                                    "admin-review-report-comment.show",
-                                                                    {
-                                                                        comment_id:
-                                                                            comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
-                                                                    }
-                                                                )}
-                                                            >
-                                                                {truncate(
-                                                                    comment.body,
-                                                                    50
-                                                                )}
-                                                            </Link>
-                                                        </th>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {/* {comment.visibility} */}
-                                                            <span
-                                                                className={
-                                                                    "px-2 py-1 rounded text-white " +
-                                                                    VISIBILITY_CLASS_MAP[
-                                                                        comment
-                                                                            .visibility
-                                                                    ]
-                                                                }
-                                                            >
-                                                                {
-                                                                    VISIBILITY_TEXT_MAP[
-                                                                        comment
-                                                                            .visibility
-                                                                    ]
-                                                                }
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {
-                                                                comment.report_count
+                                        {tasks.data.length > 0 ? (
+                                            tasks.data.map((task) => (
+                                                <tr
+                                                    //added
+                                                    className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
+                                                    key={task.id}
+                                                >
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {task.id}
+                                                    </td>
+                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                        <Link
+                                                            // added
+                                                            className="text-md text-gray-900 dark:text-gray-300"
+                                                            href={route(
+                                                                "admin-archive-show.show",
+                                                                task.id
+                                                            )}
+                                                        >
+                                                            {truncate(
+                                                                task.name,
+                                                                50
+                                                            )}
+                                                        </Link>
+                                                    </th>
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {/* {task.visibility} */}
+                                                        <span
+                                                            className={
+                                                                "px-2 py-1 rounded text-white " +
+                                                                VISIBILITY_CLASS_MAP[
+                                                                    task
+                                                                        .visibility
+                                                                ]
                                                             }
-                                                        </td>
-                                                        {/* <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility !==
-                                                                "hidden" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openHideModal(
-                                                                            comment
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-                                                                >
-                                                                    Hide
-                                                                </button>
-                                                            )}
-                                                            {comment.visibility !==
-                                                                "visible" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openRestoreModal(
-                                                                            comment
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Restore
-                                                                </button>
-                                                            )}
+                                                        >
+                                                            {
+                                                                VISIBILITY_TEXT_MAP[
+                                                                    task
+                                                                        .visibility
+                                                                ]
+                                                            }
+                                                        </span>
+                                                    </td>
 
-                                                            {comment.visibility !==
-                                                                "hidden" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openRejectModal(
-                                                                            comment
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Reject
-                                                                </button>
-                                                            )}
-                                                            {auth.user.role ===
-                                                                "admin" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openDeleteModal(
-                                                                            comment
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Delete
-                                                                </button>
-                                                            )}
-                                                        </td> */}
-                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
-                                                            <div className="flex items-center relative">
-                                                                <DropdownAction>
-                                                                    <DropdownAction.Trigger>
-                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
-                                                                            <ListBulletIcon className="w-6" />
-                                                                        </div>
-                                                                    </DropdownAction.Trigger>
+                                                    <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                        <div className="flex items-center relative">
+                                                            <DropdownAction>
+                                                                <DropdownAction.Trigger>
+                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                        <ListBulletIcon className="w-6" />
+                                                                    </div>
+                                                                </DropdownAction.Trigger>
 
-                                                                    <DropdownAction.Content>
-                                                                        {comment.visibility !==
+                                                                <DropdownAction.Content>
+                                                                    {task.visibility !==
+                                                                        "hidden" && (
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openHideModal(
+                                                                                    task
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <ArchiveBoxIcon className="w-6 text-rose-600" />
+                                                                            Archive
+                                                                        </DropdownAction.Btn>
+                                                                    )}
+
+                                                                    {task.visibility !==
+                                                                        "visible" && (
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openRestoreModal(
+                                                                                    task
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <ArrowPathIcon className="w-6 text-sky-600" />
+                                                                            Restore
+                                                                        </DropdownAction.Btn>
+                                                                    )}
+
+                                                                    {task.visibility !==
+                                                                        "hidden" && (
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openRejectModal(
+                                                                                    task
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <ArrowUturnLeftIcon className="w-6 text-sky-600" />
+                                                                            Reject
+                                                                        </DropdownAction.Btn>
+                                                                    )}
+
+                                                                    {auth.user
+                                                                        .role ===
+                                                                        "admin" &&
+                                                                        task.visibility ===
                                                                             "hidden" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
-                                                                                    openHideModal(
-                                                                                        comment
+                                                                                    openDeleteModal(
+                                                                                        task
                                                                                     )
                                                                                 }
                                                                             >
-                                                                                <ArchiveBoxIcon className="w-6 text-rose-600" />
-                                                                                Archive
+                                                                                <TrashIcon className="w-6 text-red-600" />
+                                                                                Delete
                                                                             </DropdownAction.Btn>
                                                                         )}
-
-                                                                        {comment.visibility !==
-                                                                            "visible" && (
-                                                                            <DropdownAction.Btn
-                                                                                onClick={() =>
-                                                                                    openRestoreModal(
-                                                                                        comment
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                <ArrowPathIcon className="w-6 text-sky-600" />
-                                                                                Restore
-                                                                            </DropdownAction.Btn>
-                                                                        )}
-
-                                                                        {comment.visibility !==
-                                                                            "hidden" && (
-                                                                            <DropdownAction.Btn
-                                                                                onClick={() =>
-                                                                                    openRejectModal(
-                                                                                        comment
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                <ArrowUturnLeftIcon className="w-6 text-sky-600" />
-                                                                                Reject
-                                                                            </DropdownAction.Btn>
-                                                                        )}
-
-                                                                        {auth
-                                                                            .user
-                                                                            .role ===
-                                                                            "admin" &&
-                                                                            comment.visibility ===
-                                                                                "hidden" && (
-                                                                                <DropdownAction.Btn
-                                                                                    onClick={() =>
-                                                                                        openDeleteModal(
-                                                                                            comment
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    <TrashIcon className="w-6 text-red-600" />
-                                                                                    Delete
-                                                                                </DropdownAction.Btn>
-                                                                            )}
-                                                                    </DropdownAction.Content>
-                                                                </DropdownAction>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            )
+                                                                </DropdownAction.Content>
+                                                            </DropdownAction>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
                                         ) : (
                                             <tr>
                                                 <td
@@ -638,10 +587,15 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                                     </tbody>
                                 </table>
                             </div>
+                            <Pagination
+                                links={tasks.meta.links}
+                                queryParams={queryParams}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
+            {/* Confirm Modal */}
             <Modal
                 show={confirmAction.show}
                 onClose={() =>
@@ -660,12 +614,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to archive this Comment?"
+                            ? "Are you sure you want to archive this task?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this archive Comment?"
+                            ? "Are you sure you want to restore this archive tasks?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported Comment?"
-                            : "Are you sure you want to permanently delete this archive Comment?"}
+                            ? "Are you sure you want to reject this reported task?"
+                            : "Are you sure you want to permanently delete this archive task?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

@@ -49,6 +49,7 @@ class AdminNewsletterController extends Controller
         $id = Auth::user()->id;
 
         $newsletters = $query->orderBy($sortField, $sortDirection)
+            ->where('visibility', 'visible')
             ->where(function ($query) use ($id) {
                 // Get all newsletters if auth user is the layout_by, regardless of status
                 $query->where('layout_by', $id);
@@ -203,20 +204,26 @@ class AdminNewsletterController extends Controller
      */
     public function destroy(Newsletter $newsletter)
     {
-        $newsletter->delete();
+        // $newsletter->delete();
 
-        if ($newsletter->newsletter_thumbnail_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        // if ($newsletter->newsletter_thumbnail_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        // }
+
+        // if ($newsletter->newsletter_thumbnail_image_path) {
+        //     // Delete the specific old  file
+        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        // }
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
         }
 
-        if ($newsletter->newsletter_thumbnail_image_path) {
-            // Delete the specific old  file
-            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
-        }
+        $newsletter->update(['visibility' => 'hidden']);
 
 
-        return to_route('newsletter.index')->with(['success' => 'Deleted Successfully']);
+        return to_route('newsletter.index')->with(['success' => 'Archive Successfully']);
     }
 
     public function distributeIndex($id)

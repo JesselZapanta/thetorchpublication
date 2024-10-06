@@ -52,7 +52,7 @@ return new class extends Migration
             $table->timestamp(column: 'revision_at')->nullable();//new
             $table->timestamp('published_date')->nullable();
 
-            $table->tinyText('report_count')->default(0);
+            $table->integer('report_count')->default(0);
             // $table->bigInteger('views')->default(0);
 
             $table->timestamps();

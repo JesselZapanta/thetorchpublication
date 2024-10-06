@@ -27,6 +27,7 @@ class Task extends Model
         'status',
         'priority',
         'draft',
+        'visibility',
 
         'assigned_date',
 

@@ -29,6 +29,7 @@ class Newsletter extends Model
         'distributed_at',
         'distributed_by',//
 
+        'report_count',
         'visibility',
     ];
 

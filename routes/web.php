@@ -165,6 +165,19 @@ Route::middleware(['auth','admin','verified' ])->group(function() {
     Route::post('/admin-review-report-freedom-wall/{id}/reject', [AdminReviewReport::class, 'rejectFreedomWallReport'])->name('admin-review-report-freedom-wall.reject');
     Route::delete('/admin-review-report-freedom-wall/{id}/destroy', [AdminReviewReport::class, 'destroyFreedomWall'])->name('admin-review-report-freedom-wall.destroy');
 
+    //newsletter archive
+    Route::get('/admin-review-report-newsletter', [AdminReviewReport::class, 'newsletter'])->name('admin-review-report-newsletter.index');
+    Route::post('/admin-review-report-newsletter/{id}/hide', [AdminReviewReport::class, 'hideNewsletter'])->name('admin-review-report-newsletter.hide');
+    Route::post('/admin-review-report-newsletter/{id}/restore', [AdminReviewReport::class, 'restoreNewsletter'])->name('admin-review-report-newsletter.restore');
+    Route::post('/admin-review-report-newsletter/{id}/reject', [AdminReviewReport::class, 'rejectNewsletterReport'])->name('admin-review-report-newsletter.reject');
+    Route::delete('/admin-review-report-newsletter/{id}/destroy', [AdminReviewReport::class, 'destroyNewsletter'])->name('admin-review-report-newsletter.destroy');
+
+      //task archive
+    Route::get('/admin-archive-task', [AdminReviewReport::class, 'task'])->name('admin-archive-task.index');
+    Route::get('/admin-archive-show/{id}/show', [AdminReviewReport::class, 'showTask'])->name('admin-archive-show.show');
+    Route::post('/admin-archive-task/{id}/hide', [AdminReviewReport::class, 'hideTask'])->name('admin-archive-task.hide');
+    Route::post('/admin-archive-task/{id}/restore', [AdminReviewReport::class, 'restoreTask'])->name('admin-archive-task.restore');
+    Route::delete('/admin-archive-task/{id}/destroy', [AdminReviewReport::class, 'destroyTask'])->name('admin-archive-task.destroy');
 });
 
 // For Student and Student Contributor
@@ -215,7 +228,7 @@ Route::middleware(['auth', 'editor','verified'])->group(function() {
     Route::post('/editor-review-report-comment/{id}/restore', [EditorReviewReport::class, 'restoreComment'])->name('editor-review-report-comment.restore');
     Route::post('/editor-review-report-comment/{id}/reject', [EditorReviewReport::class, 'rejectCommentReport'])->name('editor-review-report-comment.reject');
     Route::delete('/editor-review-report-comment/{id}/destroy', [EditorReviewReport::class, 'destroyComment'])->name('editor-review-report-comment.destroy');
-     //review Report report-freedom-wall
+     //review Report report-freedomwall
     Route::get('/editor-review-report-freedom-wall', [EditorReviewReport::class, 'freedomWall'])->name('editor-review-report-freedom-wall.index');
     Route::get('/editor-review-report-freedom-wall/{id}/show', [EditorReviewReport::class, 'showFreedomWall'])->name('editor-review-report-freedom-wall.show');
     Route::post('/editor-review-report-freedom-wall/{id}/hide', [EditorReviewReport::class, 'hideFreedomWall'])->name('editor-review-report-freedom-wall.hide');
