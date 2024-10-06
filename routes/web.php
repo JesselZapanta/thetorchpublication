@@ -321,6 +321,13 @@ Route::middleware(['auth', 'designer', 'verified'])->group(function() {
     Route::post('/designer-review-report-freedom-wall/{id}/restore', [DesignerReviewReport::class, 'restoreFreedomWall'])->name('designer-review-report-freedom-wall.restore');
     Route::post('/designer-review-report-freedom-wall/{id}/reject', [DesignerReviewReport::class, 'rejectFreedomWallReport'])->name('designer-review-report-freedom-wall.reject');
     Route::delete('/designer-review-report-freedom-wall/{id}/destroy', [DesignerReviewReport::class, 'destroyFreedomWall'])->name('designer-review-report-freedom-wall.destroy');
+
+    //newsletter archive
+    Route::get('/designer-review-report-newsletter', [DesignerReviewReport::class, 'newsletter'])->name('designer-review-report-newsletter.index');
+    Route::post('/designer-review-report-newsletter/{id}/hide', [DesignerReviewReport::class, 'hideNewsletter'])->name('designer-review-report-newsletter.hide');
+    Route::post('/designer-review-report-newsletter/{id}/restore', [DesignerReviewReport::class, 'restoreNewsletter'])->name('designer-review-report-newsletter.restore');
+    Route::post('/designer-review-report-newsletter/{id}/reject', [DesignerReviewReport::class, 'rejectNewsletterReport'])->name('designer-review-report-newsletter.reject');
+    Route::delete('/designer-review-report-newsletter/{id}/destroy', [DesignerReviewReport::class, 'destroyNewsletter'])->name('designer-review-report-newsletter.destroy');
 });
 
 

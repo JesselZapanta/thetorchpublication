@@ -4,17 +4,24 @@ import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
 import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import SelectInput from "@/Components/SelectInput";
-import TextAreaInput from "@/Components/TextAreaInput";
+
+
+import {
+    PencilSquareIcon,
+    ArchiveBoxIcon,
+    ListBulletIcon,
+    ArrowUpOnSquareIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { NEWSLETTER_PRIORITY_CLASS_MAP, NEWSLETTER_PRIORITY_TEXT_MAP } from "@/constants";
+import DropdownAction from "@/Components/DropdownAction";
+import Dropdown from "@/Components/Dropdown";
 
 export default function Index({
     auth,
@@ -122,7 +129,7 @@ export default function Index({
                         Lists of Newsletters
                     </h2>
 
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-2">
                         <Link
                             href={route("designer-newsletter.calendar")}
                             className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -135,12 +142,100 @@ export default function Index({
                         >
                             Create New
                         </Link>
-                        {/* <button
-                            onClick={openCreateModal}
-                            className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
-                        >
-                            Create New
-                        </button> */}
+                    </div> */}
+                    <div className="flex items-center relative">
+                        {/* show in large screen */}
+                        <div className="hidden lg:block">
+                            <div className="flex gap-2">
+                                <Link
+                                    href={route("designer-newsletter.calendar")}
+                                    className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Calendar
+                                </Link>
+                                <Link
+                                    href={route("designer-newsletter.articles")}
+                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                >
+                                    View Articles
+                                    {DesignerBadgeCount.isNewsletter > 0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.isNewsletter >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.isNewsletter}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route("designer-newsletter.create")}
+                                    className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Create New
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="block lg:hidden">
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                        <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
+                                        Options
+                                        {DesignerBadgeCount.newsletterRevision >
+                                            0 && (
+                                            <>
+                                                <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                    {DesignerBadgeCount.newsletterRevision >
+                                                    9
+                                                        ? "9+"
+                                                        : DesignerBadgeCount.newsletterRevision}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Link
+                                        href={route(
+                                            "designer-newsletter.create"
+                                        )}
+                                        className="px-4 py-2 bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                    >
+                                        Create New
+                                    </Link>
+                                    <Link
+                                        href={route(
+                                            "designer-newsletter.articles"
+                                        )}
+                                        className="flex  items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                    >
+                                        View Articles
+                                        {DesignerBadgeCount.isNewsletter >
+                                            0 && (
+                                            <>
+                                                <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                    {DesignerBadgeCount.isNewsletter >
+                                                    9
+                                                        ? "9+"
+                                                        : DesignerBadgeCount.isNewsletter}
+                                                </span>
+                                            </>
+                                        )}
+                                    </Link>
+                                    <Link
+                                        href={route(
+                                            "designer-newsletter.calendar"
+                                        )}
+                                        className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                    >
+                                        Calendar
+                                    </Link>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             }
@@ -174,22 +269,6 @@ export default function Index({
                                         }
                                     />
                                 </div>
-                                <Link
-                                    href={route("designer-newsletter.articles")}
-                                    className="flex justify-center items-center px-4 py-2 text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
-                                >
-                                    View Articles
-                                    {DesignerBadgeCount.isNewsletter > 0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {DesignerBadgeCount.isNewsletter >
-                                                9
-                                                    ? "9+"
-                                                    : DesignerBadgeCount.isNewsletter}
-                                            </span>
-                                        </>
-                                    )}
-                                </Link>
                             </div>
                             <div className="overflow-auto mt-2">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -334,7 +413,7 @@ export default function Index({
                                                                 newsletter.created_at
                                                             }
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             <Link
                                                                 href={route(
                                                                     "designer-newsletter.edit",
@@ -354,6 +433,39 @@ export default function Index({
                                                             >
                                                                 Delete
                                                             </button>
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
+
+                                                                    <DropdownAction.Content>
+                                                                        <DropdownAction.Link
+                                                                            href={route(
+                                                                                "designer-newsletter.edit",
+                                                                                newsletter.id
+                                                                            )}
+                                                                        >
+                                                                            <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                            Edit
+                                                                        </DropdownAction.Link>
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openDeleteModal(
+                                                                                    newsletter
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <ArchiveBoxIcon className="w-6 text-red-600" />
+                                                                            Archive
+                                                                        </DropdownAction.Btn>
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -383,9 +495,9 @@ export default function Index({
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">Confirm Archive</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete the newsletter "
+                        Are you sure you want to archive the newsletter "
                         {newsletter?.description}"?
                     </p>
                     <div className="mt-4 flex justify-end">
@@ -395,7 +507,7 @@ export default function Index({
                             Cancel
                         </SecondaryButton>
                         <DangerButton onClick={handleDelete} className="ml-2">
-                            Delete
+                            Archive
                         </DangerButton>
                     </div>
                 </div>

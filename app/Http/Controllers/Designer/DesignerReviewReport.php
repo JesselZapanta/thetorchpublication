@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\FreedomWallResource;
+use App\Http\Resources\NewsletterResource;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -311,5 +313,108 @@ class DesignerReviewReport extends Controller
 
         return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Delete Successfully']);
     }
+
+
+      //=====================================Newsletter=========================================//
+
+    public function newsletter()
+    {   
+
+        $query = Newsletter::query();
+
+        $sortField = request('sort_field', 'id');
+        $sortDirection = request('sort_direction', 'desc');
+        
+        // Apply search filters if present
+        if (request('description')) {
+            $query->where('description', 'like', '%' . request('description') . '%');
+        }
+        
+        if (request('visibility')) {
+            $query->where('visibility', request('visibility'));
+        }
+
+        // Ensure proper grouping with orWhere for visibility
+        // $query->where(function($q) {
+        //     $q->where('report_count', '>', 0)//report count is not implemented
+        //         ->orWhere('visibility', 'hidden');
+        // });
+
+        // Apply sorting
+        $newsletters = $query->orderBy($sortField, $sortDirection)
+            ->where('visibility', 'hidden')
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('Designer/Review/Newsletter/Index', [
+            'newsletters' => NewsletterResource::collection($newsletters),
+            'queryParams' => request()->query() ? : null,
+        ]);
+    }
+
+    public function hideNewsletter($id)
+    {
+        // dd($id);
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'hidden']);
+
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Archive successfully.']);
+    }
+    public function restoreNewsletter($id)
+    {
+        // dd('dksa;l');
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'visible']);
+
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Restore successfully.']);
+    }
+
+    public function rejectNewsletterReport($id)
+    {
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->update(['visibility' => 'visible']);
+        $newsletter->update(['report_count' => 0]);
+
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Reject successfully.']);
+    }
+
+    public function destroyNewsletter($id)
+    {
+        // dd($id);
+        $newsletter = Newsletter::findOrFail($id);
+
+        if(!$newsletter){
+            return back()->with('error', 'Newsletter not found.');
+        }
+
+        $newsletter->delete();
+
+        if ($newsletter->newsletter_thumbnail_image_path) {
+            // Delete the specific old image file
+            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        }
+
+        if ($newsletter->newsletter_file_path) {
+            // Delete the specific old  file
+            Storage::disk('public')->delete($newsletter->newsletter_file_path);
+        }   
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Delete successfully.']);
+    }
+
 
 }

@@ -42,6 +42,7 @@ class DesignerNewsletterController extends Controller
         $id = Auth::user()->id;
 
         $newsletters = $query->orderBy($sortField, $sortDirection)
+                                ->where('visibility', 'visible')
                                 ->where('layout_by', $id)
                                 ->paginate(10)
                                 ->onEachSide(1);
@@ -98,7 +99,7 @@ class DesignerNewsletterController extends Controller
 
         Newsletter::create($data);
 
-        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter submitted Successfully']);
+        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter submitted successfully.']);
     }
 
     /**
@@ -169,32 +170,43 @@ class DesignerNewsletterController extends Controller
 
         $designer_newsletter->update($data);
 
-        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter Updated Successfully']);
+        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter Updated successfully.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
+
+    //  archive instead of delte
     public function destroy($id)
     {
+        // $newsletter = Newsletter::find($id);
+        // if(!$newsletter){
+        //     return to_route('designer-newsletter.index')->with(['error' => 'Newsletter not found']);
+        // }
+        // $newsletter->delete();
+
+        // if ($newsletter->newsletter_thumbnail_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        // }
+
+        // if ($newsletter->newsletter_thumbnail_image_path) {
+        //     // Delete the specific old  file
+        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        // }
+
         $newsletter = Newsletter::find($id);
+
+        // dd($newsletter);
+
         if(!$newsletter){
-            return to_route('designer-newsletter.index')->with(['error' => 'Newsletter not found']);
-        }
-        $newsletter->delete();
-
-        if ($newsletter->newsletter_thumbnail_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+            return back()->with('error', 'Newsletter not found.');
         }
 
-        if ($newsletter->newsletter_thumbnail_image_path) {
-            // Delete the specific old  file
-            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
-        }
+        $newsletter->update(['visibility' => 'hidden']);
 
-
-        return to_route('designer-newsletter.index')->with(['success' => 'Deleted Successfully']);
+        return to_route('designer-newsletter.index')->with(['success' => 'Archive successfully.']);
     }
 
     public function SelectArticles()

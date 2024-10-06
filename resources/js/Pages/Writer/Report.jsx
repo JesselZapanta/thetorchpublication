@@ -22,7 +22,7 @@ export default function Report({
     WriterBadgeCount,
     auth,
 
-    editedArticlesDetais,
+    writenArticlesDetais,
 }) {
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -68,8 +68,8 @@ export default function Report({
 
     const articlesPerPage = 2;
     const pages = [];
-    for (let i = 0; i < editedArticlesDetais.length; i += articlesPerPage) {
-        pages.push(editedArticlesDetais.slice(i, i + articlesPerPage));
+    for (let i = 0; i < writenArticlesDetais.length; i += articlesPerPage) {
+        pages.push(writenArticlesDetais.slice(i, i + articlesPerPage));
     }
 
     return (
@@ -96,7 +96,7 @@ export default function Report({
             </pre> */}
 
             {/* <pre className="text-gray-900">
-                {JSON.stringify(editedArticlesDetais, null, 2)}
+                {JSON.stringify(writenArticlesDetais, null, 2)}
             </pre> */}
 
             <div className="py-4">
@@ -244,7 +244,8 @@ export default function Report({
                                                                 </p>
                                                                 <div className="flex justify-between">
                                                                     <p className="text-[12px]">
-                                                                        Submitted Date: 
+                                                                        Submitted
+                                                                        Date:
                                                                         Date:{" "}
                                                                         {
                                                                             article.submitted_at
@@ -291,6 +292,11 @@ export default function Report({
                                             </div>
                                         ))}
                                     </div>
+                                    {writenArticlesDetais.length === 0 && (
+                                        <p className="text-center my-12">
+                                            No data available
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>

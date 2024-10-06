@@ -253,7 +253,9 @@ class AppServiceProvider extends ServiceProvider
                 $totalReportCount = $totalArticleReportCount + $totalCommentReportCount + $totalFreedomWallReportCount;
 
 
-                $isNewsletter = Article::where('is_newsletter', 'yes')->count();
+                $isNewsletter = Article::where('is_newsletter', 'yes')
+                                        ->where('visibility', 'visible')
+                                        ->count();
 
                 $newsletterRevision = 0;
 
@@ -270,6 +272,9 @@ class AppServiceProvider extends ServiceProvider
                 return [
                     'totalTaskCount' => $totalTaskCount,
                     'totalReportCount' => $totalReportCount,
+                    'totalArticleReportCount' => $totalArticleReportCount,
+                    'totalCommentReportCount' => $totalCommentReportCount,
+                    'totalFreedomWallReportCount' => $totalFreedomWallReportCount,
                     'isNewsletter' => $isNewsletter,
                     'newsletterRevision' => $newsletterRevision,
                 ];

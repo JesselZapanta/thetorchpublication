@@ -84,7 +84,7 @@ export default function DesignerAuthenticatedLayout({
                                         "designer-review-report-article.index"
                                     )}
                                 >
-                                    Review
+                                    Review & Archive
                                     {DesignerBadgeCount.totalReportCount >
                                         0 && (
                                         <>
@@ -224,7 +224,7 @@ export default function DesignerAuthenticatedLayout({
                                 "designer-review-report-article.index"
                             )}
                         >
-                            Review
+                            Review & Archive
                             {DesignerBadgeCount.totalReportCount > 0 && (
                                 <>
                                     <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">

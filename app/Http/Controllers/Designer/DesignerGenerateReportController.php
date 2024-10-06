@@ -5,13 +5,6 @@ namespace App\Http\Controllers\Designer;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Models\AcademicYear;
-use App\Models\Article;
-use App\Models\ArticleView;
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\CommentLike;
-use App\Models\FreedomWall;
-use App\Models\FreedomWallLike;
 use App\Models\Newsletter;
 use App\Models\Rating;
 use App\Models\Task;
@@ -65,16 +58,54 @@ class DesignerGenerateReportController extends Controller
         }
 
 
-        $articlesQuery = Newsletter::where('status', 'distributed')
+        $newsletterQuery = Newsletter::where('status', 'distributed')
                                 ->where('visibility', 'visible')
                                 ->where('layout_by',  $userId);
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
-            $articlesQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
+            $newsletterQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         } else {
-            $articlesQuery->where('distributed_at', '>=', $dateFrom);
+            $newsletterQuery->where('distributed_at', '>=', $dateFrom);
         }
-        $distributedNewsletters = $articlesQuery->get(['id','description', 'newsletter_thumbnail_image_path', 'submitted_at', 'distributed_at']);
+
+        $distributedNewsletters = $newsletterQuery->get(['id','description', 'newsletter_thumbnail_image_path', 'submitted_at', 'distributed_at']);
+
+        $taskQuery = Task::where('status', 'completed')
+                                ->where('visibility', 'visible')
+                                ->where('layout_by',  $userId);
+
+        if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
+            $taskQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
+        } else {
+            $taskQuery->where('task_completed_date', '>=', $dateFrom);
+        }
+        
+        $completedTasks = $taskQuery->get(['id','name', 'task_image_path', 'image_submitted_date', 'task_completed_date']);
+
+        $combinedData = [];
+
+        // Add distributed newsletters
+        foreach ($distributedNewsletters as $newsletter) {
+            $combinedData[] = [
+                'id' => $newsletter->id,
+                'description' => $newsletter->description,
+                'image' => $newsletter->newsletter_thumbnail_image_path,
+                'submitted_at' => Carbon::parse($newsletter->submitted_at)->format('F j, Y'),
+                'completed_distributed_at' =>  Carbon::parse($newsletter->distributed_at)->format('F j, Y'),
+            ];
+        }
+
+        // Add completed tasks
+        foreach ($completedTasks as $task) {
+            $combinedData[] = [
+                'id' => $task->id,
+                'description' => $task->name,
+                'image' => $task->task_image_path,
+                'submitted_at' => Carbon::parse($task->image_submitted_date)->format('F j, Y'),
+                'completed_distributed_at' => Carbon::parse( $task->task_completed_date)->format('F j, Y'),
+            ];
+        }
+
         
         $academicYears = AcademicYear::all();
         
@@ -87,7 +118,9 @@ class DesignerGenerateReportController extends Controller
 
             'academicYears' => AcademicYearResource::collection($academicYears),
 
-            'distributedNewsletters' => $distributedNewsletters
+            'distributedNewsletters' => $distributedNewsletters,
+            'completedTasks' => $completedTasks,
+            'combinedData' => $combinedData
         ]);
     }
 }

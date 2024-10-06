@@ -104,7 +104,7 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 text-gray-400">
+                            {/* <div className="mt-4 text-gray-400">
                                 <p>for testing</p>
                                 <p>
                                     Edited by:
@@ -113,12 +113,18 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                                         : "No Designer"}
                                 </p>
                                 <p> Layout By by:{article.layoutBy.name}</p>
-                            </div>
+                            </div> */}
                             {/* Body */}
                             <div className="mt-8">
-                                <p className="text-base text-justify whitespace-pre-line">
+                                {/* <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
-                                </p>
+                                </p> */}
+                                <div
+                                    className="text-base text-justify whitespace-pre-line"
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.body,
+                                    }}
+                                ></div>
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 {/* <Link

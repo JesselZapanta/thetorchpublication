@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('article_image_path')->nullable();
 
             $table->tinyText('status')->default('pending');
-            $table->tinyText('draft')->default('no');
+            // $table->tinyText('draft')->default('no');
             $table->tinyText('visibility')->default('visible');//hidden
             
             $table->text('rejection_message')->nullable();
@@ -45,6 +45,7 @@ return new class extends Migration
             $table->tinyText('is_featured')->default('no');
             $table->tinyText('is_anonymous')->default('no');
             $table->tinyText('is_newsletter')->default('no');
+            // $table->timestamp('is_added_at')->nullable();//todo migght add
 
             $table->timestamp('submitted_at')->nullable();//new
             $table->timestamp('rejected_at')->nullable();//new

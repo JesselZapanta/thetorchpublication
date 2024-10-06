@@ -6,8 +6,6 @@ import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Report({
-
-
     timePeriod,
     dateFrom,
     dateTo,
@@ -18,6 +16,8 @@ export default function Report({
     auth,
 
     distributedNewsletters,
+    completedTasks,
+    combinedData,
 }) {
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -61,10 +61,14 @@ export default function Report({
         );
     };
 
-    const newslettersPerPage = 2;
+    const datasPerPage = 2;
     const pages = [];
-    for (let i = 0; i < distributedNewsletters.length; i += newslettersPerPage) {
-        pages.push(distributedNewsletters.slice(i, i + newslettersPerPage));
+    for (
+        let i = 0;
+        i < combinedData.length;
+        i += datasPerPage
+    ) {
+        pages.push(combinedData.slice(i, i + datasPerPage));
     }
 
     return (
@@ -91,7 +95,7 @@ export default function Report({
             </pre> */}
 
             {/* <pre className="text-gray-900">
-                {JSON.stringify(editedArticlesDetais, null, 2)}
+                {JSON.stringify(combinedData, null, 2)}
             </pre> */}
 
             <div className="py-4">
@@ -215,7 +219,8 @@ export default function Report({
                                                                 }
                                                             </p>
                                                             <p className="text-[12px] font-bold uppercase">
-                                                                Distributed Newsletters
+                                                                Distributed
+                                                                Newsletters
                                                             </p>
                                                         </div>
                                                     )}
@@ -224,20 +229,15 @@ export default function Report({
                                                 {/* Articles for this page */}
                                                 <div className="py-2">
                                                     {page.map(
-                                                        (
-                                                            newsletter,
-                                                            newsletterIndex
-                                                        ) => (
+                                                        (data, dataIndex) => (
                                                             <div
-                                                                key={
-                                                                    newsletterIndex
-                                                                }
+                                                                key={dataIndex}
                                                                 className="px-[96px]"
                                                             >
                                                                 <p className="text-[12px]">
                                                                     Description:{" "}
                                                                     {
-                                                                        newsletter.description
+                                                                        data.description
                                                                     }
                                                                 </p>
                                                                 <div className="flex justify-between">
@@ -245,24 +245,24 @@ export default function Report({
                                                                         Submitted
                                                                         Date:{" "}
                                                                         {
-                                                                            newsletter.submitted_at
+                                                                            data.submitted_at
                                                                         }
                                                                     </p>
                                                                     <p className="text-[12px]">
-                                                                        Distributed
+                                                                        Distributed/Completed
                                                                         Date:{" "}
                                                                         {
-                                                                            newsletter.distributed_at
+                                                                            data.completed_distributed_at
                                                                         }
                                                                     </p>
                                                                 </div>
                                                                 <div className="overflow-hidden h-[250px] border-2 mb-4">
-                                                                    {newsletter.newsletter_thumbnail_image_path && (
+                                                                    {data.image && (
                                                                         <img
-                                                                            src={`${window.location.origin}/storage/${newsletter.newsletter_thumbnail_image_path}`}
+                                                                            src={`${window.location.origin}/storage/${data.image}`}
                                                                             className="object-cover w-full h-full"
                                                                             alt={
-                                                                                newsletter.newsletter_thumbnail_image_path
+                                                                                data.image
                                                                             }
                                                                         />
                                                                     )}
@@ -289,6 +289,11 @@ export default function Report({
                                             </div>
                                         ))}
                                     </div>
+                                    {combinedData.length === 0 && (
+                                        <p className="text-center my-12">
+                                            No data available
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>

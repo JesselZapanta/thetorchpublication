@@ -205,6 +205,7 @@ class DesignerDashboardController extends Controller
         
         // Fetch tasks count !completed
         $tasksQuery = Task::where('status', '!=' ,'completed')
+                                ->where('visibility', 'visible')
                                 ->where('assigned_to', $userId);
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
@@ -278,6 +279,7 @@ class DesignerDashboardController extends Controller
         $categories = Category::with(['articles' => function($query) use ($dateFrom, $dateTo) {
             // Filter articles based on the time period and is_newsletter
             $query->where('is_newsletter', 'added')
+                ->where('visibility', 'visible')
                 ->whereBetween('created_at', [$dateFrom, $dateTo])
                 ->limit(10);
         }])->where('status', 'active')->get();

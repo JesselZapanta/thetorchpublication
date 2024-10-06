@@ -69,7 +69,7 @@ export default function Dashboard({
                             href={route("designer.report")}
                             className="px-4 py-2 bg-indigo-600 text-nowrap text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
-                            Generate Report
+                            Report
                         </Link>
                     </div>
                 </div>

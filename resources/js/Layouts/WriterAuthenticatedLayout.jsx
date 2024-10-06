@@ -83,7 +83,7 @@ export default function WriterAuthenticatedLayout({
                                         "writer-review-report-article.index"
                                     )}
                                 >
-                                    Review
+                                    Review & Archive
                                     {WriterBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
@@ -220,7 +220,7 @@ export default function WriterAuthenticatedLayout({
                                 "writer-review-report-article.index"
                             )}
                         >
-                            Review
+                            Review & Archive
                             {WriterBadgeCount.totalReportCount > 0 && (
                                 <>
                                     <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">

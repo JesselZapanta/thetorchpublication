@@ -66,7 +66,7 @@ export default function Dashboard({
                             href={route("writer.report")}
                             className="px-4 py-2 text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                         >
-                            Generate Report
+                            Report
                         </Link>
                     </div>
                 </div>

@@ -63,18 +63,26 @@ class EditorGenerateReportController extends Controller
         } else {
             $articlesQuery->where('edited_at', '>=', $dateFrom);
         }
-        $editedArticlesDetais = $articlesQuery->get(['id','title', 'article_image_path', 'edited_at', 'published_date']);
         
+        $editedArticlesDetais = $articlesQuery->get(['id', 'title', 'article_image_path', 'edited_at', 'published_date'])->map(function ($article) {
+            return [
+                'id' => $article->id,
+                'title' => $article->title,
+                'article_image_path' => $article->article_image_path,
+                'edited_at' => $article->edited_at ? Carbon::parse($article->edited_at)->format('F j, Y') : null,  // Format or set null if empty
+                'published_date' => $article->published_date ? Carbon::parse($article->published_date)->format('F j, Y') : null,  // Format or set null if empty
+            ];
+        });
+
         $academicYears = AcademicYear::all();
-        
+
         // Return data to the Inertia view
         return inertia('Editor/Report', [
             'timePeriod' => $timePeriod,  // Pass the selected period to the frontend
             'dateFrom' => Carbon::parse($dateFrom)->format('F j, Y'),  // E.g., "September 25, 2024"
             'dateTo' => Carbon::parse($dateTo)->format('F j, Y'),
             'academicYears' => AcademicYearResource::collection($academicYears),
-
-            'editedArticlesDetais' => $editedArticlesDetais
+            'editedArticlesDetais' => $editedArticlesDetais  // Pass the formatted articles data
         ]);
     }
 }

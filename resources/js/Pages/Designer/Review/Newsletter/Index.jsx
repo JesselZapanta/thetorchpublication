@@ -1,10 +1,14 @@
+
 import DangerButton from "@/Components/DangerButton";
+import Dropdown from "@/Components/Dropdown";
+import DropdownAction from "@/Components/DropdownAction";
 import Modal from "@/Components/Modal";
+import Pagination from "@/Components/Pagination";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -17,14 +21,18 @@ import {
     AdjustmentsHorizontalIcon,
 } from "@heroicons/react/16/solid";
 
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import Dropdown from "@/Components/Dropdown";
-import DropdownAction from "@/Components/DropdownAction";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
-import Pagination from "@/Components/Pagination";
 
-export default function Index({ auth, reportedComments, queryParams, flash, EditorBadgeCount }) {
+export default function Index({
+    auth,
+    newsletters,
+    queryParams = null,
+    flash,
+    DesignerBadgeCount,
+}) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -52,7 +60,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("editor-review-report-comment.index"),
+                route("designer-review-report-newsletter.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -72,7 +80,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("editor-review-report-comment.index"),
+                    route("designer-review-report-newsletter.index"),
                     {},
                     {
                         preserveState: true,
@@ -81,7 +89,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("editor-review-report-comment.index"),
+                    route("designer-review-report-newsletter.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -95,7 +103,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
     const handleSelectChange = (name, value) => {
         setVisibility(value);
         queryParams[name] = value;
-        router.get(route("editor-review-report-comment.index"), queryParams, {
+        router.get(route("designer-review-report-newsletter.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -112,44 +120,46 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("editor-review-report-comment.index"), queryParams);
+        router.get(route("designer-review-report-newsletter.index"), queryParams);
     };
 
+    //select what reported content
+    //func not used
     // const handleSelectReport = (e) => {
     //     const value = e.target.value;
 
-    //     if (value === "article") {
-    //         router.get(route("editor-review-report-article.index"));
+    //     if (value === "newsletter") {
+    //         router.get(route("designer-review-report-newsletter.index"));
     //     } else if (value === "comment") {
-    //         router.get(route("editor-review-report-comment.index"));
+    //         router.get(route("designer-review-report-comment.index"));
     //     } else if (value === "freedomWall") {
-    //         router.get(route("editor-review-report-freedom-wall.index"));
+    //         router.get(route("designer-review-report-freedom-wall.index"));
     //     }
     // };
 
-    //delete, hide, report
+    //delete report and hide newsletter and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
-        comment: null,
+        newsletter: null,
         show: false,
     });
 
-    const openActionModal = (comment, actionType) => {
+    const openActionModal = (newsletter, actionType) => {
         setConfirmAction({
             type: actionType, // 'delete', 'hide', or 'report'
-            comment: comment,
+            newsletter: newsletter,
             show: true,
         });
     };
 
     const handleAction = () => {
-        if (confirmAction.comment) {
+        if (confirmAction.newsletter) {
             switch (confirmAction.type) {
                 case "hide":
                     router.post(
                         route(
-                            "editor-review-report-comment.hide",
-                            confirmAction.comment.id
+                            "designer-review-report-newsletter.hide",
+                            confirmAction.newsletter.id
                         ),
                         {
                             preserveScroll: true,
@@ -159,8 +169,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                 case "restore":
                     router.post(
                         route(
-                            "editor-review-report-comment.restore",
-                            confirmAction.comment.id
+                            "designer-review-report-newsletter.restore",
+                            confirmAction.newsletter.id
                         ),
                         {
                             preserveScroll: true,
@@ -170,8 +180,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                 case "reject":
                     router.post(
                         route(
-                            "editor-review-report-comment.reject",
-                            confirmAction.comment.id
+                            "designer-review-report-newsletter.reject",
+                            confirmAction.newsletter.id
                         ),
                         {
                             preserveScroll: true,
@@ -181,8 +191,8 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                 case "delete":
                     router.delete(
                         route(
-                            "editor-review-report-comment.destroy",
-                            confirmAction.comment.id
+                            "designer-review-report-newsletter.destroy",
+                            confirmAction.newsletter.id
                         ),
                         {
                             preserveScroll: true,
@@ -193,45 +203,48 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                     break;
             }
         }
-        setConfirmAction({ type: "", comment: null, show: false });
+        setConfirmAction({ type: "", newsletter: null, show: false });
     };
 
-    const openHideModal = (comment) => {
-        openActionModal(comment, "hide");
+    const openHideModal = (newsletter) => {
+        openActionModal(newsletter, "hide");
     };
 
-    const openRestoreModal = (comment) => {
-        openActionModal(comment, "restore");
+    const openRestoreModal = (newsletter) => {
+        openActionModal(newsletter, "restore");
     };
 
-    const openRejectModal = (comment) => {
-        openActionModal(comment, "reject");
+    const openRejectModal = (newsletter) => {
+        openActionModal(newsletter, "reject");
     };
 
-    const openDeleteModal = (comment) => {
-        openActionModal(comment, "delete");
+    const openDeleteModal = (newsletter) => {
+        openActionModal(newsletter, "delete");
     };
 
     return (
-        <EditorAuthenticatedLayout
-            EditorBadgeCount={EditorBadgeCount}
+        <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight">
                         {visibility === "visible"
-                            ? "List of Reported Comments"
+                            ? "List of Reported Newsletter"
                             : visibility === "hidden"
-                            ? "List of Archive Comments"
-                            : "List of Reported/Archive Comments"}
+                            ? "List of Archive Newsletter"
+                            : // : "List of Reported/Archive Newsletter"}
+                              "List of Archive Newsletter"}
                     </h2>
+                    {/* not used */}
                     {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
-                            value="comment"
+                            // value="selectedValue"
+                            defaultValue="newsletter"
                             onChange={handleSelectReport}
                         >
-                            <option value="article">Reported Article</option>
+                            <option value="newsletter">Reported Article</option>
                             <option value="comment">Reported Comment</option>
                             <option value="freedomWall">
                                 Reported Freedom Wall
@@ -247,13 +260,13 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                         Content Type
                                     </span>
 
-                                    {EditorBadgeCount.totalReportCount > 0 && (
+                                    {DesignerBadgeCount.totalReportCount > 0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {EditorBadgeCount.totalReportCount >
+                                                {DesignerBadgeCount.totalReportCount >
                                                 9
                                                     ? "9+"
-                                                    : EditorBadgeCount.totalReportCount}
+                                                    : DesignerBadgeCount.totalReportCount}
                                             </span>
                                         </>
                                     )}
@@ -263,60 +276,68 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                             <Dropdown.Content>
                                 <Link
                                     href={route(
-                                        "editor-review-report-article.index"
+                                        "designer-review-report-newsletter.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Articles
-                                    {EditorBadgeCount.totalArticleReportCount >
+                                    {DesignerBadgeCount.totalArticleReportCount >
                                         0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {EditorBadgeCount.totalArticleReportCount >
+                                                {DesignerBadgeCount.totalArticleReportCount >
                                                 9
                                                     ? "9+"
-                                                    : EditorBadgeCount.totalArticleReportCount}
+                                                    : DesignerBadgeCount.totalArticleReportCount}
                                             </span>
                                         </>
                                     )}
                                 </Link>
                                 <Link
                                     href={route(
-                                        "editor-review-report-comment.index"
+                                        "designer-review-report-comment.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
                                 >
                                     Comments
-                                    {EditorBadgeCount.totalCommentReportCount >
+                                    {DesignerBadgeCount.totalCommentReportCount >
                                         0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {EditorBadgeCount.totalCommentReportCount >
+                                                {DesignerBadgeCount.totalCommentReportCount >
                                                 9
                                                     ? "9+"
-                                                    : EditorBadgeCount.totalCommentReportCount}
+                                                    : DesignerBadgeCount.totalCommentReportCount}
                                             </span>
                                         </>
                                     )}
                                 </Link>
                                 <Link
                                     href={route(
-                                        "editor-review-report-freedom-wall.index"
+                                        "designer-review-report-freedom-wall.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     Freedom Wall
-                                    {EditorBadgeCount.totalFreedomWallReportCount >
+                                    {DesignerBadgeCount.totalFreedomWallReportCount >
                                         0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {EditorBadgeCount.totalFreedomWallReportCount >
+                                                {DesignerBadgeCount.totalFreedomWallReportCount >
                                                 9
                                                     ? "9+"
-                                                    : EditorBadgeCount.totalFreedomWallReportCount}
+                                                    : DesignerBadgeCount.totalFreedomWallReportCount}
                                             </span>
                                         </>
                                     )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "designer-review-report-newsletter.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
+                                >
+                                    Newsletters
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>
@@ -327,14 +348,18 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
             <Head
                 title={
                     visibility === "visible"
-                        ? "List of Reported Comments"
+                        ? "List of Reported Articles"
                         : visibility === "hidden"
-                        ? "List of Archive Comments"
-                        : "List of Reported/Archive Comments"
+                        ? "List of Archive Articles"
+                        : "List of Reported/Archive Articles"
                 }
             />
 
             <ToastContainer position="bottom-right" />
+            {/* 
+            <pre className="text-gray-900">
+                {JSON.stringify(newsletters, null, 2)}
+            </pre> */}
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -344,17 +369,17 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                 <div className="w-full">
                                     <TextInput
                                         className="w-full"
-                                        defaultValue={queryParams.body}
-                                        placeholder="Search Freedom Wall"
+                                        defaultValue={queryParams.description}
+                                        placeholder="Search Newsletter"
                                         onKeyPress={(e) =>
-                                            onKeyPressed("body", e)
-                                        }
+                                            onKeyPressed("description", e)
+                                        } // Trigger search on Enter key
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "body",
+                                                "description",
                                                 e.target.value
                                             )
-                                        }
+                                        } // Clear or update query param
                                     />
                                 </div>
                                 <div className="w-[40%]">
@@ -369,7 +394,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                         } // Trigger request on visibility change
                                     >
                                         <option value="">Visibility</option>
-                                        <option value="visible">Visible</option>
+                                        {/* <option value="visible">Visible</option> */}
                                         <option value="hidden">Archive</option>
                                     </SelectInput>
                                 </div>
@@ -392,7 +417,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                 ID
                                             </TableHeading>
                                             <TableHeading
-                                                name="body"
+                                                name="description"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -401,12 +426,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Comment
+                                                Description
                                             </TableHeading>
                                             <th className="px-3 py-3">
                                                 Visibility
                                             </th>
-                                            <TableHeading
+                                            {/* <TableHeading
                                                 name="report_count"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -417,88 +442,82 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                 sortChanged={sortChanged}
                                             >
                                                 Report Count
-                                            </TableHeading>
+                                            </TableHeading> */}
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {reportedComments.data.length > 0 ? (
-                                            reportedComments.data.map(
-                                                (comment) => (
+                                        {newsletters.data.length > 0 ? (
+                                            newsletters.data.map(
+                                                (newsletter) => (
                                                     <tr
                                                         //added
                                                         className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                        key={comment.id}
+                                                        key={newsletter.id}
                                                     >
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.id}
+                                                            {newsletter.id}
                                                         </td>
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                                            <Link
-                                                                // added
+                                                            <a
+                                                                href={
+                                                                    newsletter.newsletter_file_path
+                                                                }
                                                                 className="text-md text-gray-900 dark:text-gray-300"
-                                                                href={route(
-                                                                    "editor-review-report-comment.show",
-                                                                    {
-                                                                        comment_id:
-                                                                            comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
-                                                                    }
-                                                                )}
+                                                                target="blank"
                                                             >
                                                                 {truncate(
-                                                                    comment.body,
+                                                                    newsletter.description,
                                                                     50
                                                                 )}
-                                                            </Link>
+                                                            </a>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {/* {comment.visibility} */}
+                                                            {/* {newsletter.visibility} */}
                                                             <span
                                                                 className={
                                                                     "px-2 py-1 rounded text-white " +
                                                                     VISIBILITY_CLASS_MAP[
-                                                                        comment
+                                                                        newsletter
                                                                             .visibility
                                                                     ]
                                                                 }
                                                             >
                                                                 {
                                                                     VISIBILITY_TEXT_MAP[
-                                                                        comment
+                                                                        newsletter
                                                                             .visibility
                                                                     ]
                                                                 }
                                                             </span>
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {
-                                                                comment.report_count
-                                                            }
-                                                        </td>
                                                         {/* <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility !==
+                                                            {
+                                                                newsletter.report_count
+                                                            }
+                                                        </td> */}
+                                                        {/* <td className="px-3 py-2 text-nowrap">
+                                                            {newsletter.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openHideModal(
-                                                                            comment
+                                                                            newsletter
                                                                         )
                                                                     }
                                                                     className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
                                                                 >
-                                                                    Hide
+                                                                    Archive
                                                                 </button>
                                                             )}
-                                                            {comment.visibility !==
+                                                            {newsletter.visibility !==
                                                                 "visible" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRestoreModal(
-                                                                            comment
+                                                                            newsletter
                                                                         )
                                                                     }
                                                                     className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
@@ -507,12 +526,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                 </button>
                                                             )}
 
-                                                            {comment.visibility !==
+                                                            {newsletter.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRejectModal(
-                                                                            comment
+                                                                            newsletter
                                                                         )
                                                                     }
                                                                     className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
@@ -521,11 +540,11 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "admin" && (
+                                                                "designer" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
-                                                                            comment
+                                                                            newsletter
                                                                         )
                                                                     }
                                                                     className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
@@ -544,12 +563,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                     </DropdownAction.Trigger>
 
                                                                     <DropdownAction.Content>
-                                                                        {comment.visibility !==
+                                                                        {newsletter.visibility !==
                                                                             "hidden" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openHideModal(
-                                                                                        comment
+                                                                                        newsletter
                                                                                     )
                                                                                 }
                                                                             >
@@ -558,12 +577,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {comment.visibility !==
+                                                                        {newsletter.visibility !==
                                                                             "visible" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openRestoreModal(
-                                                                                        comment
+                                                                                        newsletter
                                                                                     )
                                                                                 }
                                                                             >
@@ -572,12 +591,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {comment.visibility !==
+                                                                        {newsletter.visibility !==
                                                                             "hidden" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openRejectModal(
-                                                                                        comment
+                                                                                        newsletter
                                                                                     )
                                                                                 }
                                                                             >
@@ -586,29 +605,23 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {(auth
+                                                                        {auth
                                                                             .user
                                                                             .role ===
                                                                             "admin" &&
-                                                                            comment.visibility ===
-                                                                                "hidden") ||
-                                                                            (comment
-                                                                                .commentedBy
-                                                                                .id ===
-                                                                                auth
-                                                                                    .user
-                                                                                    .id && (
+                                                                            newsletter.visibility ===
+                                                                                "hidden" && (
                                                                                 <DropdownAction.Btn
                                                                                     onClick={() =>
                                                                                         openDeleteModal(
-                                                                                            comment
+                                                                                            newsletter
                                                                                         )
                                                                                     }
                                                                                 >
                                                                                     <TrashIcon className="w-6 text-red-600" />
                                                                                     Delete
                                                                                 </DropdownAction.Btn>
-                                                                            ))}
+                                                                            )}
                                                                     </DropdownAction.Content>
                                                                 </DropdownAction>
                                                             </div>
@@ -630,13 +643,14 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                 </table>
                             </div>
                             <Pagination
-                                links={reportedComments.meta.links}
+                                links={newsletters.meta.links}
                                 queryParams={queryParams}
                             />
                         </div>
                     </div>
                 </div>
             </div>
+            {/* Confirm Modal */}
             <Modal
                 show={confirmAction.show}
                 onClose={() =>
@@ -655,12 +669,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to archive this Comment?"
+                            ? "Are you sure you want to archive this newsletter?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this archive Comment?"
+                            ? "Are you sure you want to restore this archive newsletters?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported Comment?"
-                            : "Are you sure you want to permanently delete this archive Comment?"}
+                            ? "Are you sure you want to reject this reported newsletter?"
+                            : "Are you sure you want to permanently delete this archive newsletter?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -685,6 +699,6 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                     </div>
                 </div>
             </Modal>
-        </EditorAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

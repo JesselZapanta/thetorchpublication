@@ -1,5 +1,3 @@
-import AlertError from "@/Components/AlertError";
-import AlertSuccess from "@/Components/AlertSuccess";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -7,11 +5,23 @@ import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+
+import {
+    TrashIcon,
+    ListBulletIcon,
+    ArchiveBoxIcon,
+    ArrowPathIcon,
+    ArrowUturnLeftIcon,
+    AdjustmentsHorizontalIcon,
+} from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Dropdown from "@/Components/Dropdown";
+import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
+import DropdownAction from "@/Components/DropdownAction";
 
 export default function Index({ auth, reportedComments, queryParams, flash, DesignerBadgeCount }) {
     // Display flash messages if they exist
@@ -35,6 +45,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
 
     //searching
     queryParams = queryParams || {};
+    const [visibility, setVisibility] = useState(queryParams.visibility || "");
     // Handle search and select field changes
     const searchFieldChanged = (name, value) => {
         if (value === "") {
@@ -81,6 +92,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
 
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
+        setVisibility(value);
         queryParams[name] = value;
         router.get(route("designer-review-report-comment.index"), queryParams, {
             preserveState: true,
@@ -102,17 +114,17 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
         router.get(route("designer-review-report-comment.index"), queryParams);
     };
 
-    const handleSelectReport = (e) => {
-        const value = e.target.value;
+    // const handleSelectReport = (e) => {
+    //     const value = e.target.value;
 
-        if (value === "article") {
-            router.get(route("designer-review-report-article.index"));
-        } else if (value === "comment") {
-            router.get(route("designer-review-report-comment.index"));
-        } else if (value === "freedomWall") {
-            router.get(route("designer-review-report-freedom-wall.index"));
-        }
-    };
+    //     if (value === "article") {
+    //         router.get(route("designer-review-report-article.index"));
+    //     } else if (value === "comment") {
+    //         router.get(route("designer-review-report-comment.index"));
+    //     } else if (value === "freedomWall") {
+    //         router.get(route("designer-review-report-freedom-wall.index"));
+    //     }
+    // };
 
     //delete, hide, report
     const [confirmAction, setConfirmAction] = useState({
@@ -205,10 +217,14 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Reported comments
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        {visibility === "visible"
+                            ? "List of Reported Comments"
+                            : visibility === "hidden"
+                            ? "List of Archive Comments"
+                            : "List of Reported/Archive Comments"}
                     </h2>
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
                             value="comment"
@@ -220,11 +236,104 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                 Reported Freedom Wall
                             </option>
                         </SelectInput>
+                    </div> */}
+                    <div className="flex items-center relative">
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <div className="flex p-2 cursor-pointer justify-center items-center  text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700">
+                                    <AdjustmentsHorizontalIcon className="w-6 text-gray-50" />
+                                    <span className="hidden sm:block">
+                                        Content Type
+                                    </span>
+
+                                    {DesignerBadgeCount.totalReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content>
+                                <Link
+                                    href={route(
+                                        "designer-review-report-article.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
+                                >
+                                    Articles
+                                    {DesignerBadgeCount.totalArticleReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalArticleReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalArticleReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "designer-review-report-comment.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
+                                >
+                                    Comments
+                                    {DesignerBadgeCount.totalCommentReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalCommentReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalCommentReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(
+                                        "designer-review-report-freedom-wall.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
+                                >
+                                    Freedom Wall
+                                    {DesignerBadgeCount.totalFreedomWallReportCount >
+                                        0 && (
+                                        <>
+                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
+                                                {DesignerBadgeCount.totalFreedomWallReportCount >
+                                                9
+                                                    ? "9+"
+                                                    : DesignerBadgeCount.totalFreedomWallReportCount}
+                                            </span>
+                                        </>
+                                    )}
+                                </Link>
+                            </Dropdown.Content>
+                        </Dropdown>
                     </div>
                 </div>
             }
         >
-            <Head title="Reported Comments" />
+            <Head
+                title={
+                    visibility === "visible"
+                        ? "List of Reported Comments"
+                        : visibility === "hidden"
+                        ? "List of Archive Comments"
+                        : "List of Reported/Archive Comments"
+                }
+            />
+
             <ToastContainer position="bottom-right" />
 
             <div className="py-4">
@@ -261,11 +370,11 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                     >
                                         <option value="">Visibility</option>
                                         <option value="visible">Visible</option>
-                                        <option value="hidden">Hidden</option>
+                                        <option value="hidden">Archive</option>
                                     </SelectInput>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thhead with sorting */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
@@ -347,14 +456,30 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                                             </Link>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {comment.visibility}
+                                                            {/* {comment.visibility} */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    VISIBILITY_CLASS_MAP[
+                                                                        comment
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    VISIBILITY_TEXT_MAP[
+                                                                        comment
+                                                                            .visibility
+                                                                    ]
+                                                                }
+                                                            </span>
                                                         </td>
                                                         <td className="px-3 py-2 text-nowrap">
                                                             {
                                                                 comment.report_count
                                                             }
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
+                                                        {/* <td className="px-3 py-2 text-nowrap">
                                                             {comment.visibility !==
                                                                 "hidden" && (
                                                                 <button
@@ -408,6 +533,85 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                                                     Delete
                                                                 </button>
                                                             )}
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap w-[10%]">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
+
+                                                                    <DropdownAction.Content>
+                                                                        {comment.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openHideModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArchiveBoxIcon className="w-6 text-rose-600" />
+                                                                                Archive
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {comment.visibility !==
+                                                                            "visible" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRestoreModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowPathIcon className="w-6 text-sky-600" />
+                                                                                Restore
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {comment.visibility !==
+                                                                            "hidden" && (
+                                                                            <DropdownAction.Btn
+                                                                                onClick={() =>
+                                                                                    openRejectModal(
+                                                                                        comment
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <ArrowUturnLeftIcon className="w-6 text-sky-600" />
+                                                                                Reject
+                                                                            </DropdownAction.Btn>
+                                                                        )}
+
+                                                                        {(auth
+                                                                            .user
+                                                                            .role ===
+                                                                            "admin" &&
+                                                                            comment.visibility ===
+                                                                                "hidden") ||
+                                                                            (comment
+                                                                                .commentedBy
+                                                                                .id ===
+                                                                                auth
+                                                                                    .user
+                                                                                    .id && (
+                                                                                <DropdownAction.Btn
+                                                                                    onClick={() =>
+                                                                                        openDeleteModal(
+                                                                                            comment
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <TrashIcon className="w-6 text-red-600" />
+                                                                                    Delete
+                                                                                </DropdownAction.Btn>
+                                                                            ))}
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -438,7 +642,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
                         {confirmAction.type === "hide"
-                            ? "Confirm Hide"
+                            ? "Confirm Archive"
                             : confirmAction.type === "restore"
                             ? "Confirm Restore"
                             : confirmAction.type === "reject"
@@ -447,12 +651,12 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to hide this Comment?"
+                            ? "Are you sure you want to archive this Comment?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this hidden Comment?"
+                            ? "Are you sure you want to restore this archive Comment?"
                             : confirmAction.type === "restore"
                             ? "Are you sure you want to reject this reported Comment?"
-                            : "Are you sure you want to delete this reported Comment?"}
+                            : "Are you sure you want to permanently delete this archive Comment?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -467,7 +671,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                         </SecondaryButton>
                         <DangerButton onClick={handleAction} className="ml-2">
                             {confirmAction.type === "hide"
-                                ? "Hide"
+                                ? "Archive"
                                 : confirmAction.type === "restore"
                                 ? "Restore"
                                 : confirmAction.type === "reject"
