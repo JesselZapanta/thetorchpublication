@@ -1,22 +1,16 @@
 import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
-import BarChart from "@/Components/Chart/BarChart";
-import ReportBarChart from "@/Components/Chart/ReportBarChart";
-import { router, Head, Link } from "@inertiajs/react";
+import { router, Head } from "@inertiajs/react";
 import SelectInput from "@/Components/SelectInput";
 import EditorAuthenticatedLayout from "@/Layouts/EditorAuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Report({
-    reportData,
 
     timePeriod,
     dateFrom,
     dateTo,
     academicYear,
-
-    categoriesWithCount,
-    categoriesWithViewsCount,
 
     academicYears,
     EditorBadgeCount,

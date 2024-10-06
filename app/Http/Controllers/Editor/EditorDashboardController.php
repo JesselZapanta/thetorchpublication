@@ -206,6 +206,7 @@ class EditorDashboardController extends Controller
         
         // Fetch tasks count !completed
         $tasksQuery = Task::where('status', '!=' ,'completed')
+                                ->where('visibility', 'visible')
                                 ->where('assigned_to', $userId);
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
