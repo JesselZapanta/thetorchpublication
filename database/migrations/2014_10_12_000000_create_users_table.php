@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('profile_image_path')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->tinyText('status')->default('active');
             $table->string('password');
             // $table->tinyText('theme')->default('dark');//for light or dark mode
             $table->rememberToken();

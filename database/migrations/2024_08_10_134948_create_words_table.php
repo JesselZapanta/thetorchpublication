@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->string('name');//todo might change to word insted of name
+            $table->tinyText('status')->default('active');
             $table->timestamps();
         });
     }

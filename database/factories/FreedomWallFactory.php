@@ -18,7 +18,7 @@ class FreedomWallFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
+            'user_id' => 8,
             'academic_year_id' => 1,
             'body' => fake()->realText(fake()->numberBetween(10, 500)),
             'emotion' => fake()->randomElement(['happy', 'sad', 'annoyed', 'proud', 'drained', 'inlove', 'calm', 'excited', 'angry', 'down']), // Random emotion

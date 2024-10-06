@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique(); 
             $table->string('description')->unique();
-            $table->string('status')->default('active');
+            $table->tinyText('status')->default('active');
 
             $table->timestamp('start_at')->nullable();//new
             $table->timestamp('end_at')->nullable();//new

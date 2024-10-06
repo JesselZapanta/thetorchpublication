@@ -39,9 +39,6 @@ const PieChart = ({ categoriesWithViewsCount }) => {
                 ],
             },
             options: {
-                responsive: true,
-            },
-            options: {
                 // scales: {
                 //     y: {
                 //         beginAtZero: true,

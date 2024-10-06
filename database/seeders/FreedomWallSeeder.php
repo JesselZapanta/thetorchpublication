@@ -13,6 +13,6 @@ class FreedomWallSeeder extends Seeder
     public function run(): void
     {
         // Generate 1000 Freedom Wall entries
-        FreedomWall::factory()->count(100)->create();
+        FreedomWall::factory()->count(10)->create();
     }
 }
