@@ -123,17 +123,17 @@ export default function Index({
     };
 
     //select what reported content
-    const handleSelectReport = (e) => {
-        const value = e.target.value;
+    // const handleSelectReport = (e) => {
+    //     const value = e.target.value;
 
-        if (value === "article") {
-            router.get(route("editor-review-report-article.index"));
-        } else if (value === "comment") {
-            router.get(route("editor-review-report-comment.index"));
-        } else if (value === "freedomWall") {
-            router.get(route("editor-review-report-freedom-wall.index"));
-        }
-    };
+    //     if (value === "article") {
+    //         router.get(route("editor-review-report-article.index"));
+    //     } else if (value === "comment") {
+    //         router.get(route("editor-review-report-comment.index"));
+    //     } else if (value === "freedomWall") {
+    //         router.get(route("editor-review-report-freedom-wall.index"));
+    //     }
+    // };
 
     //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({

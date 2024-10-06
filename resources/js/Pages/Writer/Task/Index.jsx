@@ -1,14 +1,14 @@
-import DangerButton from "@/Components/DangerButton";
-import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
-import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import { getTaskDueClass, TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP, TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
-import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useEffect } from "react";
+
+
+import { EyeIcon } from "@heroicons/react/16/solid";
 
 
 import { ToastContainer, toast } from "react-toastify";
@@ -200,7 +200,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                                     </div>
                                 </div>
                             </div>
-                            <div className="overflow-auto mt-2">
+                            <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     {/* Thead with sorting*/}
                                     {/* added */}
@@ -343,7 +343,7 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                                                             }
                                                         </span>
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         <Link
                                                             href={route(
                                                                 "writer-task.show",
@@ -353,6 +353,18 @@ export default function Index({ auth, tasks, queryParams = null, flash, WriterBa
                                                         >
                                                             View
                                                         </Link>
+                                                    </td> */}
+                                                    <td>
+                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                            <Link
+                                                                href={route(
+                                                                    "writer-task.show",
+                                                                    task.id
+                                                                )}
+                                                            >
+                                                                <EyeIcon className="w-6 text-gray-50" />
+                                                            </Link>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))

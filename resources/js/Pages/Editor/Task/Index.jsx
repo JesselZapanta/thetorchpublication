@@ -1,7 +1,4 @@
-import DangerButton from "@/Components/DangerButton";
-import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
-import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";

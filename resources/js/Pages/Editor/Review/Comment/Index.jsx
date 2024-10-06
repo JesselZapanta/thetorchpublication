@@ -24,6 +24,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import Dropdown from "@/Components/Dropdown";
 import DropdownAction from "@/Components/DropdownAction";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
+import Pagination from "@/Components/Pagination";
 
 export default function Index({ auth, reportedComments, queryParams, flash, EditorBadgeCount }) {
     // Display flash messages if they exist
@@ -630,6 +631,10 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                     </tbody>
                                 </table>
                             </div>
+                            <Pagination
+                                links={reportedComments.meta.links}
+                                queryParams={queryParams}
+                            />
                         </div>
                     </div>
                 </div>

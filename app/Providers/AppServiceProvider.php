@@ -209,6 +209,9 @@ class AppServiceProvider extends ServiceProvider
                     'rejectedArticleCount' => $rejectedArticleCount,
                     'totalTaskCount' => $totalTaskCount,
                     'totalReportCount' => $totalReportCount,
+                    'totalArticleReportCount' => $totalArticleReportCount,
+                    'totalCommentReportCount' => $totalCommentReportCount,
+                    'totalFreedomWallReportCount' => $totalFreedomWallReportCount,
                 ];
             }
             return null;

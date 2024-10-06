@@ -62,6 +62,7 @@ class WriterArticleController extends Controller
 
         $articles = $query->where('created_by', $id)
                             ->orderBy($sortField, $sortDirection)
+                            ->where('visibility', 'visible')
                             ->paginate(10)
                             ->onEachSide(1);
 
@@ -214,10 +215,10 @@ class WriterArticleController extends Controller
 
             Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
 
-            return to_route('writer-article.index')->with(['success'=> 'Article submitted Successfully']);
+            return to_route('writer-article.index')->with(['success'=> 'Article submitted successfully.']);
         }
 
-        return to_route('writer-article.index')->with(['success' => 'Article submitted Successfully']);
+        return to_route('writer-article.index')->with(['success' => 'Article submitted successfully.']);
     }
 
     /**
@@ -387,7 +388,7 @@ class WriterArticleController extends Controller
 
                 Notification::send($allEditors, new ArticleStatus($articleDetails, $customEditorMessage));
 
-                return to_route('writer-article.index')->with(['success'=> 'Article submitted Successfully']);
+                return to_route('writer-article.index')->with(['success'=> 'Article submitted successfully.']);
             }
         }
         
@@ -398,7 +399,7 @@ class WriterArticleController extends Controller
         }
 
 
-        return to_route('writer-article.index')->with(['success' => 'Article Edited Successfully']);
+        return to_route('writer-article.index')->with(['success' => 'Article Edited successfully.']);
     }
 
     /**
@@ -407,13 +408,21 @@ class WriterArticleController extends Controller
     public function destroy(Article $writer_article)
     {
         // dd($article);
-        $writer_article->delete();
+        // $writer_article->delete();
 
-        if ($writer_article->article_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($writer_article->article_image_path);
+        // if ($writer_article->article_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($writer_article->article_image_path);
+        // }
+
+        //Archive
+        if(!$writer_article){
+            return back()->with('error', 'Article not found');
         }
-        return to_route('writer-article.index')->with(['success' => 'Deleted Successfully']);
+
+        $writer_article->update(['visibility' => 'hidden']);
+
+        return to_route('writer-article.index')->with(['success' => 'Archive successfully.']);
     }
 
     

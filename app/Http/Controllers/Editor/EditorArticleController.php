@@ -502,7 +502,8 @@ class EditorArticleController extends Controller
         //     // Delete the specific old image file
         //     Storage::disk('public')->delete($editor_article->article_image_path);
         // }
-
+        
+        //Archive
         if(!$editor_article){
             return back()->with('error', 'Article not found');
         }
