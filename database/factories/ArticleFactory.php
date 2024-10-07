@@ -19,7 +19,7 @@ class ArticleFactory extends Factory
     {
         return [
             'created_by' => fake()->numberBetween(1, 15),
-            'academic_year_id' => 1,
+            'academic_year_id' => fake()->numberBetween(1,5),
             'category_id' => fake()->numberBetween(1, 5),
             'edited_by' => fake()->numberBetween(3, 5),
             'layout_by' => fake()->numberBetween(1, 15),

@@ -16,6 +16,7 @@ export default function Dashboard({
     dateFrom,
 }) {
     const [selectedPeriod, setSelectedPeriod] = useState("daily");
+    const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedAy, setSelectedAy] = useState(null);
 
     const handleSelectPeriod = (e) => {
@@ -35,6 +36,24 @@ export default function Dashboard({
                 }
             );
         }
+    };
+
+    const handleSelectMonth = (e) => {
+        const value = e.target.value;
+        setSelectedMonth(value);
+
+        // Trigger Inertia request with both period and month
+        router.get(
+            route("admin.dashboard"),
+            {
+                period: selectedPeriod,
+                month: value,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
     };
 
     const handleSelectAcademicYear = (e) => {
@@ -83,7 +102,7 @@ export default function Dashboard({
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* <h1>{dateFrom}</h1> */}
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
                                 <SelectInput
                                     className="w-full"
                                     value={selectedPeriod}
@@ -91,9 +110,27 @@ export default function Dashboard({
                                 >
                                     <option value="daily">Today</option>
                                     <option value="weekly">Last Week</option>
-                                    <option value="monthly">Last Month</option>
+                                    <option value="monthly">Monthly</option>
                                     <option value="ay">Academic Year</option>
                                 </SelectInput>
+
+                                {selectedPeriod === "monthly" && (
+                                    <SelectInput
+                                        className="w-full"
+                                        value={selectedMonth}
+                                        onChange={handleSelectMonth}
+                                    >
+                                        <option value="">Select Month</option>
+                                        {Array.from({ length: 12 }, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {new Date(0, i).toLocaleString(
+                                                    "default",
+                                                    { month: "long" }
+                                                )}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
+                                )}
 
                                 {selectedPeriod === "ay" && (
                                     <SelectInput

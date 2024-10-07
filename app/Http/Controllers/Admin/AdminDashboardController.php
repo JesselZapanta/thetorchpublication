@@ -17,7 +17,6 @@ use App\Models\Rating;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Spatie\Browsershot\Browsershot;
 
 class AdminDashboardController extends Controller
 {
@@ -25,53 +24,53 @@ class AdminDashboardController extends Controller
     {
         // Determine the selected time period (default to 'daily') and selected academic year
         $timePeriod = $request->input('period', 'daily');
+        $selectedMonth = $request->input('month');
         $selectedAcademicYear = $request->input('academic_year');
 
-        // Error handling: Ensure that academic_year is only provided when period is 'ay'
-        if ($timePeriod !== 'ay' && $selectedAcademicYear) {
-            return back()->with('error', 'Academic year should only be selected for the "ay" time period.');
-        }
-
-
-        // Initialize date range based on the selected time period
+        // Initialize date range based on the selected period
         switch ($timePeriod) {
             case 'weekly':
                 $dateFrom = now()->subWeek();
-                $dateTo = now(); // Set dateTo to now for monthly
+                $dateTo = now();
                 break;
             case 'monthly':
-                $dateFrom = now()->subMonth();
-                 $dateTo = now(); // Set dateTo to now for monthly
-                break;
-            case 'ay': // Handle academic year-specific data
-                // Fetch the selected academic year
-                $academicYear = AcademicYear::find($selectedAcademicYear);
-                
-                if ($academicYear) {
-                    $dateFrom = $academicYear->start_at; // Start date of the academic year
-                    $dateTo = $academicYear->end_at; // End date of the academic year
+                if ($selectedMonth) {
+                    // Handle specific month selection
+                    $year = now()->year;
+                    $dateFrom = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+                    $dateTo = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
                 } else {
-                    // Handle case where no academic year is selected or invalid ID is passed
+                    $dateFrom = now()->subMonth();
+                    $dateTo = now();
+                }
+                break;
+            case 'ay': 
+                $academicYear = AcademicYear::find($selectedAcademicYear);
+                if ($academicYear) {
+                    $dateFrom = $academicYear->start_at;
+                    $dateTo = $academicYear->end_at;
+                } else {
                     return back()->with('error', 'Invalid academic year selected.');
                 }
                 break;
             default:
                 $dateFrom = now()->subDay();
-                $dateTo = now(); // Default to now for daily
+                $dateTo = now();
         }
 
-
         
-        // Fetch counts based on the selected period or academic year range
+        // Fetch the articles based on the date range
         $articlesQuery = Article::where('status', 'published')
                                 ->where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $articlesQuery->whereBetween('published_date', [$dateFrom, $dateTo]);
         } else {
-            $articlesQuery->where('published_date', '>=', $dateFrom);
+            $articlesQuery->whereBetween('published_date', [$dateFrom, $dateTo]);
         }
+
         $articles = $articlesQuery->count();
+
 
         // Fetch rate count
         $ratingsQuery = Rating::query(); // Start query without 'visibility' as there's no such field in Rating
@@ -79,7 +78,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $ratingsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $ratingsQuery->where('created_at', '>=', $dateFrom);
+            $ratingsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
 
         $ratings = $ratingsQuery->count();
@@ -91,7 +90,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsQuery->where('created_at', '>=', $dateFrom);
+            $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $comments = $commentsQuery->count();
 
@@ -101,7 +100,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsLikeQuery->where('created_at', '>=', $dateFrom);
+            $commentsLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $commentsLike = $commentsLikeQuery->count();
 
@@ -111,7 +110,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsDislikeQuery->where('created_at', '>=', $dateFrom);
+            $commentsDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $commentsDislike = $commentsDislikeQuery->count();
 
@@ -121,7 +120,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallQuery->where('created_at', '>=', $dateFrom);
+            $freedomWallQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWall = $freedomWallQuery->count();
 
@@ -131,7 +130,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallLikeQuery->where('created_at', '>=', $dateFrom);
+            $freedomWallLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWallLike = $freedomWallLikeQuery->count();
 
@@ -141,7 +140,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallDislikeQuery->where('created_at', '>=', $dateFrom);
+            $freedomWallDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWallDislike = $freedomWallDislikeQuery->count();
 
@@ -151,7 +150,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         } else {
-            $tasksQuery->where('task_completed_date', '>=', $dateFrom);
+            $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         }
         $tasksCompeted = $tasksQuery->count();
 
@@ -161,7 +160,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
         } else {
-            $tasksQuery->where('assigned_date', '>=', $dateFrom);
+            $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
         }
         $tasksIncomplete = $tasksQuery->count();
 
@@ -171,7 +170,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalViewsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $totalViewsQuery->where('created_at', '>=', $dateFrom);
+            $totalViewsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $totalViews = $totalViewsQuery->count();
 
@@ -181,7 +180,7 @@ class AdminDashboardController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         } else {
-            $totalNewslettersQuery->where('distributed_at', '>=', $dateFrom);
+            $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         }
         $totalNewsletters = $totalNewslettersQuery->count();
 
@@ -195,7 +194,7 @@ class AdminDashboardController extends Controller
                 $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             } else {
                 // Ensure we handle other cases properly
-                $query->where('published_date', '>=', $dateFrom);
+                $query->where('published_date', [$dateFrom, $dateTo]);
             }
             // // Limit the number of articles to 10
             // $query->limit(10);

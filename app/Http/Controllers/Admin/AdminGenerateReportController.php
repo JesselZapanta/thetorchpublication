@@ -18,7 +18,6 @@ use App\Models\Rating;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Spatie\Browsershot\Browsershot;
 
 class AdminGenerateReportController extends Controller
 {
@@ -80,7 +79,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $ratingsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $ratingsQuery->where('created_at', [$dateFrom, $dateTo]);
+            $ratingsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
 
         $ratings = $ratingsQuery->count();
@@ -92,7 +91,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsQuery->where('created_at', [$dateFrom, $dateTo]);
+            $commentsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $comments = $commentsQuery->count();
 
@@ -102,7 +101,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsLikeQuery->where('created_at', [$dateFrom, $dateTo]);
+            $commentsLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $commentsLike = $commentsLikeQuery->count();
 
@@ -112,7 +111,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $commentsDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $commentsDislikeQuery->where('created_at', [$dateFrom, $dateTo]);
+            $commentsDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $commentsDislike = $commentsDislikeQuery->count();
 
@@ -122,7 +121,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallQuery->where('created_at', [$dateFrom, $dateTo]);
+            $freedomWallQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWall = $freedomWallQuery->count();
 
@@ -132,7 +131,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallLikeQuery->where('created_at', [$dateFrom, $dateTo]);
+            $freedomWallLikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWallLike = $freedomWallLikeQuery->count();
 
@@ -142,7 +141,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $freedomWallDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $freedomWallDislikeQuery->where('created_at', [$dateFrom, $dateTo]);
+            $freedomWallDislikeQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $freedomWallDislike = $freedomWallDislikeQuery->count();
 
@@ -152,7 +151,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         } else {
-            $tasksQuery->where('task_completed_date', [$dateFrom, $dateTo]);
+            $tasksQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         }
         $tasksCompeted = $tasksQuery->count();
 
@@ -162,7 +161,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
         } else {
-            $tasksQuery->where('assigned_date', [$dateFrom, $dateTo]);
+            $tasksQuery->whereBetween('assigned_date', [$dateFrom, $dateTo]);
         }
         $tasksIncomplete = $tasksQuery->count();
 
@@ -172,7 +171,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalViewsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         } else {
-            $totalViewsQuery->where('created_at', [$dateFrom, $dateTo]);
+            $totalViewsQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
         }
         $totalViews = $totalViewsQuery->count();
 
@@ -182,7 +181,7 @@ class AdminGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         } else {
-            $totalNewslettersQuery->where('distributed_at', [$dateFrom, $dateTo]);
+            $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         }
         $totalNewsletters = $totalNewslettersQuery->count();
 
@@ -196,7 +195,7 @@ class AdminGenerateReportController extends Controller
                 $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             } else {
                 // Ensure we handle other cases properly
-                $query->where('published_date', [$dateFrom, $dateTo]);
+                $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             }
             // Limit the number of articles to 10
             $query->limit(10);

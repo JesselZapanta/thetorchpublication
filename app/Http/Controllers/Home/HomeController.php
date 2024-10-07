@@ -47,7 +47,7 @@ class HomeController extends Controller
                                 ->get();
 
 
-        $latestArticles = Article::orderBy('created_at', 'DESC')
+        $latestArticles = Article::orderBy('published_date', 'DESC')
                                 ->where('status', 'published')
                                 // ->where('draft', 'no')
                                 ->where('visibility', 'visible')
@@ -55,7 +55,7 @@ class HomeController extends Controller
                                 ->limit(12)
                                 ->get();
 
-        $latestNewsletter = Newsletter::orderBy('created_at', 'DESC')
+        $latestNewsletter = Newsletter::orderBy('distributed_at', 'DESC')
                                 ->where('visibility', 'visible')
                                 ->where('status', 'distributed')
                                 ->limit(4)
