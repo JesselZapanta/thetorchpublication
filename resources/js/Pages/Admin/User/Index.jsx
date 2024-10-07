@@ -304,7 +304,10 @@ export default function Index({
                                     {/* added */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
-                                            <TableHeading
+                                            <th className="px-3 py-3 text-nowrap">
+                                                Student Id
+                                            </th>
+                                            {/* <TableHeading
                                                 name="id"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -315,13 +318,11 @@ export default function Index({
                                                 sortChanged={sortChanged}
                                             >
                                                 ID
-                                            </TableHeading>
+                                            </TableHeading> */}
                                             <th className="px-3 py-3">
                                                 Profile
                                             </th>
-                                            <th className="px-3 py-3 text-nowrap">
-                                                Student Id
-                                            </th>
+
                                             <TableHeading
                                                 name="name"
                                                 sort_field={
@@ -363,8 +364,11 @@ export default function Index({
                                                     className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
                                                     key={user.id}
                                                 >
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    {/* <td className="px-3 py-2 text-nowrap">
                                                         {user.id}
+                                                    </td> */}
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {user.student_id}
                                                     </td>
                                                     <th className="px-3 py-2 text-nowrap">
                                                         <div className="rounded-full overflow-hidden w-10 h-10 border-2 border-indigo-500">
@@ -381,9 +385,7 @@ export default function Index({
                                                             )}
                                                         </div>
                                                     </th>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {user.student_id}
-                                                    </td>
+
                                                     <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                         <Link
                                                             // added

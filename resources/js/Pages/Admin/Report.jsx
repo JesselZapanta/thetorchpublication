@@ -28,6 +28,7 @@ export default function Report({
     });
 
     const [selectedPeriod, setSelectedPeriod] = useState("daily");
+    const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedAy, setSelectedAy] = useState(null);
 
     const handleSelectPeriod = (e) => {
@@ -47,6 +48,20 @@ export default function Report({
                 }
             );
         }
+    };
+
+    const handleSelectMonth = (e) => {
+        const value = e.target.value;
+        setSelectedMonth(value);
+
+        // Trigger Inertia request with both period and month
+        router.get(route("admin.report"), {
+            period: selectedPeriod,
+            month: value,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     const handleSelectAcademicYear = (e) => {
@@ -101,11 +116,29 @@ export default function Report({
                                     value={selectedPeriod}
                                     onChange={handleSelectPeriod} // Only handle period selection here
                                 >
-                                    <option value="daily">Daily</option>
+                                    <option value="daily">Today</option>
                                     <option value="weekly">Last Week</option>
-                                    <option value="monthly">Last Month</option>
+                                    <option value="monthly">Monthly</option>
                                     <option value="ay">Academic Year</option>
                                 </SelectInput>
+
+                                {selectedPeriod === "monthly" && (
+                                    <SelectInput
+                                        className="w-full"
+                                        value={selectedMonth}
+                                        onChange={handleSelectMonth}
+                                    >
+                                        <option value="">Select Month</option>
+                                        {Array.from({ length: 12 }, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {new Date(0, i).toLocaleString(
+                                                    "default",
+                                                    { month: "long" }
+                                                )}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
+                                )}
 
                                 {selectedPeriod === "ay" && (
                                     <SelectInput

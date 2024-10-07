@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             AcademicYearSeeder::class,
             ArticleSeeder::class,
             FreedomWallSeeder::class,
-            FreedomWallSeeder::class,
         ]);
     }
 }

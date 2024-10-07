@@ -31,9 +31,9 @@ class ArticleFactory extends Factory
             'caption' => fake()->realText(fake()->numberBetween(10, 300)),
             'status' => 'published',
             
-            'submitted_at' => fake()->dateTimeBetween('-3 week', '-2 week'), 
-            'edited_at' => fake()->dateTimeBetween('-2 week', '-1 week'), 
-            'published_date' => fake()->dateTimeBetween('-1 week', 'now'), 
+            'submitted_at' => fake()->dateTimeBetween('-1 year', 'now'), 
+            'edited_at' => fake()->dateTimeBetween('-1 year', 'now'), 
+            'published_date' => fake()->dateTimeBetween('-1 year', 'now'), 
         ];
     }
 }
