@@ -303,7 +303,7 @@ export default function Dashboard({
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                                 <div className="col-span-2 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <h3 className="text-sky-600 font-semibold text-md">
-                                        Total Articles Per Category
+                                        Total Published Articles Per Category
                                     </h3>
                                     <p className="text-md mt-4">
                                         <BarChart

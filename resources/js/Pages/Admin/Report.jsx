@@ -279,8 +279,8 @@ export default function Report({
                                             <div className="mt-32 px-[96px] py-2">
                                                 <div>
                                                     <p className="text-md font-bold">
-                                                        Total Articles Per
-                                                        Category
+                                                        Total Published Articles
+                                                        Per Category
                                                     </p>
                                                 </div>
                                             </div>
