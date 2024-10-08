@@ -164,215 +164,344 @@ export default function Report({
                                 </button>
                             </div>
                             <div className="max-w-[816px] mx-auto">
-                                <div
-                                    // className="custom-print-size"
-                                    ref={componentRef}
-                                >
-                                    {/* <pre className="text-gray-900">
+                                <div className="py-4">
+                                    {timePeriod !== "ay" && (
+                                        <p className="text-[12px] font-bold uppercase">
+                                            Report from {dateFrom} to {dateTo}
+                                        </p>
+                                    )}
+                                    {timePeriod === "ay" && (
+                                        <p className="text-[12px] font-bold uppercase">
+                                            Report from {academicYear} (
+                                            {dateFrom} - {dateTo})
+                                        </p>
+                                    )}
+                                </div>
+                                <table className="w-full text-[12px]  text-left rtl:text-right text-gray-500">
+                                    {/* thead*/}
+                                    <thead className="text-[12px]  text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                        <tr text-text-nowrap="true">
+                                            <th className="px-2 py-2">
+                                                Metric
+                                            </th>
+                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                Value
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Object.entries(reportData).map(
+                                            ([metric, value]) => (
+                                                <tr
+                                                    className="text-[12px]  text-gray-900 border-b"
+                                                    key={metric}
+                                                >
+                                                    <td className="py-1 text-nowrap w-1/2 ">
+                                                        {metric.replace(
+                                                            /([A-Z])/g,
+                                                            " $1"
+                                                        )}
+                                                    </td>
+                                                    <td className="w-1/2 py-1 text-center align-middle">
+                                                        {value}
+                                                    </td>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+
+                                <p className="text-md mt-4 font-bold">
+                                    Total Published Articles Per Category
+                                </p>
+
+                                <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
+                                    {/* thead */}
+                                    <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                        <tr>
+                                            <th className="px-2 py-2 w-1/2 ">
+                                                Category Name
+                                            </th>
+                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                Article Count
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {categoriesWithCount.map((category) => (
+                                            <tr
+                                                className="text-gray-900 border-b "
+                                                key={category.category_name}
+                                            >
+                                                <td className="py-1 text-nowrap w-1/2 ">
+                                                    {category.category_name}
+                                                </td>
+                                                <td className="w-1/2 py-1 text-center align-middle">
+                                                    {category.article_count}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                                <p className="text-md mt-4 font-bold">
+                                    Total View of Articles Per Category
+                                </p>
+                                <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
+                                    {/* thead */}
+                                    <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                        <tr>
+                                            <th className="px-2 py-2">
+                                                Category Name
+                                            </th>
+                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                Article View Count
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {categoriesWithViewsCount.map(
+                                            (category) => (
+                                                <tr
+                                                    className="text-gray-900 border-b"
+                                                    key={category.category_name}
+                                                >
+                                                    <td className="py-1 text-nowrap w-1/2 ">
+                                                        {category.category_name}
+                                                    </td>
+                                                    <td className="w-1/2 py-1 text-center align-middle">
+                                                        {
+                                                            category.article_view_count
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+
+                                <div className="hidden">
+                                    <div
+                                        // className="custom-print-size"
+                                        ref={componentRef}
+                                    >
+                                        {/* <pre className="text-gray-900">
                                         {JSON.stringify(reportData, null, 2)}
                                     </pre> */}
 
-                                    <div className="mx-auto bg-white ">
-                                        {/* Articles */}
-                                        <div className="h-[1050px] relative p-2 font-times">
-                                            {/* Header */}
-                                            <div className="flex absolute bot-0 w-full">
-                                                <img
-                                                    src="/images/header.png"
-                                                    alt=""
-                                                    className="w-full"
-                                                />
-                                            </div>
-                                            <div className="mt-32 px-[96px] py-2">
-                                                <div>
-                                                    <div className="text-center font-bold mb-4">
-                                                        <h1 className="uppercase">
-                                                            TANGUB CITY GLOBAL
-                                                            COLLEGE
-                                                        </h1>
-                                                        <p>
-                                                            Maloro, Tangub City
-                                                        </p>
-                                                    </div>
-
-                                                    {timePeriod !== "ay" && (
-                                                        <p className="text-[12px] font-bold uppercase">
-                                                            Report from{" "}
-                                                            {dateFrom} to{" "}
-                                                            {dateTo}
-                                                        </p>
-                                                    )}
-                                                    {timePeriod === "ay" && (
-                                                        <p className="text-[12px] font-bold uppercase">
-                                                            Report from{" "}
-                                                            {academicYear} (
-                                                            {dateFrom} -{" "}
-                                                            {dateTo})
-                                                        </p>
-                                                    )}
+                                        <div className="mx-auto bg-white ">
+                                            {/* Articles */}
+                                            <div className="h-[1050px] relative p-2 font-times">
+                                                {/* Header */}
+                                                <div className="flex absolute bot-0 w-full">
+                                                    <img
+                                                        src="/images/header.png"
+                                                        alt=""
+                                                        className="w-full"
+                                                    />
                                                 </div>
-                                            </div>
+                                                <div className="mt-32 px-[96px] py-2">
+                                                    <div>
+                                                        <div className="text-center font-bold mb-4">
+                                                            <h1 className="uppercase">
+                                                                TANGUB CITY
+                                                                GLOBAL COLLEGE
+                                                            </h1>
+                                                            <p>
+                                                                Maloro, Tangub
+                                                                City
+                                                            </p>
+                                                        </div>
 
-                                            <div className="px-[96px] ">
-                                                <table className="w-full text-[12px]  text-left rtl:text-right text-gray-500">
-                                                    {/* thead*/}
-                                                    <thead className="text-[12px]  text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
-                                                        <tr text-text-nowrap="true">
-                                                            <th className="px-2 py-2">
-                                                                Metric
-                                                            </th>
-                                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
-                                                                Value
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {Object.entries(
-                                                            reportData
-                                                        ).map(
-                                                            ([
-                                                                metric,
-                                                                value,
-                                                            ]) => (
-                                                                <tr
-                                                                    className="text-[12px]  text-gray-900 border-b"
-                                                                    key={metric}
-                                                                >
-                                                                    <td className="py-1 text-nowrap w-1/2 ">
-                                                                        {metric.replace(
-                                                                            /([A-Z])/g,
-                                                                            " $1"
-                                                                        )}
-                                                                    </td>
-                                                                    <td className="w-1/2 py-1 text-center align-middle">
-                                                                        {value}
-                                                                    </td>
-                                                                </tr>
-                                                            )
+                                                        {timePeriod !==
+                                                            "ay" && (
+                                                            <p className="text-[12px] font-bold uppercase">
+                                                                Report from{" "}
+                                                                {dateFrom} to{" "}
+                                                                {dateTo}
+                                                            </p>
                                                         )}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div className="absolute bottom-0">
-                                                <img
-                                                    src="/images/footer.png"
-                                                    alt=""
-                                                    className="w-full"
-                                                />
+                                                        {timePeriod ===
+                                                            "ay" && (
+                                                            <p className="text-[12px] font-bold uppercase">
+                                                                Report from{" "}
+                                                                {academicYear} (
+                                                                {dateFrom} -{" "}
+                                                                {dateTo})
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="px-[96px] ">
+                                                    <table className="w-full text-[12px]  text-left rtl:text-right text-gray-500">
+                                                        {/* thead*/}
+                                                        <thead className="text-[12px]  text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                                            <tr text-text-nowrap="true">
+                                                                <th className="px-2 py-2">
+                                                                    Metric
+                                                                </th>
+                                                                <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                                    Value
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {Object.entries(
+                                                                reportData
+                                                            ).map(
+                                                                ([
+                                                                    metric,
+                                                                    value,
+                                                                ]) => (
+                                                                    <tr
+                                                                        className="text-[12px]  text-gray-900 border-b"
+                                                                        key={
+                                                                            metric
+                                                                        }
+                                                                    >
+                                                                        <td className="py-1 text-nowrap w-1/2 ">
+                                                                            {metric.replace(
+                                                                                /([A-Z])/g,
+                                                                                " $1"
+                                                                            )}
+                                                                        </td>
+                                                                        <td className="w-1/2 py-1 text-center align-middle">
+                                                                            {
+                                                                                value
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div className="absolute bottom-0">
+                                                    <img
+                                                        src="/images/footer.png"
+                                                        alt=""
+                                                        className="w-full"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="page-break"></div>
+                                        <div className="page-break"></div>
 
-                                    <div className="mx-auto bg-white ">
-                                        {/* Articles */}
-                                        <div className="h-[1050px] relative p-2 font-times">
-                                            {/* Header */}
-                                            <div className="flex absolute bot-0 w-full">
-                                                <img
-                                                    src="/images/header.png"
-                                                    alt=""
-                                                    className="w-full"
-                                                />
-                                            </div>
-                                            <div className="mt-32 px-[96px] py-2">
-                                                <div>
+                                        <div className="mx-auto bg-white ">
+                                            {/* Articles */}
+                                            <div className="h-[1050px] relative p-2 font-times">
+                                                {/* Header */}
+                                                <div className="flex absolute bot-0 w-full">
+                                                    <img
+                                                        src="/images/header.png"
+                                                        alt=""
+                                                        className="w-full"
+                                                    />
+                                                </div>
+                                                <div className="mt-32 px-[96px] py-2">
+                                                    <div>
+                                                        <p className="text-md font-bold">
+                                                            Total Published
+                                                            Articles Per
+                                                            Category
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="px-[96px] ">
+                                                    <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
+                                                        {/* thead */}
+                                                        <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                                            <tr>
+                                                                <th className="px-2 py-2 w-1/2 ">
+                                                                    Category
+                                                                    Name
+                                                                </th>
+                                                                <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                                    Article
+                                                                    Count
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {categoriesWithCount.map(
+                                                                (category) => (
+                                                                    <tr
+                                                                        className="text-gray-900 border-b "
+                                                                        key={
+                                                                            category.category_name
+                                                                        }
+                                                                    >
+                                                                        <td className="py-1 text-nowrap w-1/2 ">
+                                                                            {
+                                                                                category.category_name
+                                                                            }
+                                                                        </td>
+                                                                        <td className="w-1/2 py-1 text-center align-middle">
+                                                                            {
+                                                                                category.article_count
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div className="px-[96px] mt-4">
                                                     <p className="text-md font-bold">
-                                                        Total Published Articles
+                                                        Total View of Articles
                                                         Per Category
                                                     </p>
+                                                    <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
+                                                        {/* thead */}
+                                                        <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
+                                                            <tr>
+                                                                <th className="px-2 py-2">
+                                                                    Category
+                                                                    Name
+                                                                </th>
+                                                                <th className="px-2 py-2 w-1/2 text-center align-middle">
+                                                                    Article View
+                                                                    Count
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {categoriesWithViewsCount.map(
+                                                                (category) => (
+                                                                    <tr
+                                                                        className="text-gray-900 border-b"
+                                                                        key={
+                                                                            category.category_name
+                                                                        }
+                                                                    >
+                                                                        <td className="py-1 text-nowrap w-1/2 ">
+                                                                            {
+                                                                                category.category_name
+                                                                            }
+                                                                        </td>
+                                                                        <td className="w-1/2 py-1 text-center align-middle">
+                                                                            {
+                                                                                category.article_view_count
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                            </div>
-
-                                            <div className="px-[96px] ">
-                                                <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
-                                                    {/* thead */}
-                                                    <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
-                                                        <tr>
-                                                            <th className="px-2 py-2 w-1/2 ">
-                                                                Category Name
-                                                            </th>
-                                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
-                                                                Article Count
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {categoriesWithCount.map(
-                                                            (category) => (
-                                                                <tr
-                                                                    className="text-gray-900 border-b "
-                                                                    key={
-                                                                        category.category_name
-                                                                    }
-                                                                >
-                                                                    <td className="py-1 text-nowrap w-1/2 ">
-                                                                        {
-                                                                            category.category_name
-                                                                        }
-                                                                    </td>
-                                                                    <td className="w-1/2 py-1 text-center align-middle">
-                                                                        {
-                                                                            category.article_count
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        )}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <div className="px-[96px] mt-4">
-                                                <p className="text-md font-bold">
-                                                    Total View of Articles Per
-                                                    Category
-                                                </p>
-                                                <table className="w-full text-[12px] text-left rtl:text-right text-gray-500">
-                                                    {/* thead */}
-                                                    <thead className="text-[12px] text-gray-700 uppercase border-t-2 border-b-2 border-gray-500">
-                                                        <tr>
-                                                            <th className="px-2 py-2">
-                                                                Category Name
-                                                            </th>
-                                                            <th className="px-2 py-2 w-1/2 text-center align-middle">
-                                                                Article View
-                                                                Count
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {categoriesWithViewsCount.map(
-                                                            (category) => (
-                                                                <tr
-                                                                    className="text-gray-900 border-b"
-                                                                    key={
-                                                                        category.category_name
-                                                                    }
-                                                                >
-                                                                    <td className="py-1 text-nowrap w-1/2 ">
-                                                                        {
-                                                                            category.category_name
-                                                                        }
-                                                                    </td>
-                                                                    <td className="w-1/2 py-1 text-center align-middle">
-                                                                        {
-                                                                            category.article_view_count
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        )}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div className="absolute bottom-0">
-                                                <img
-                                                    src="/images/footer.png"
-                                                    alt=""
-                                                    className="w-full"
-                                                />
+                                                <div className="absolute bottom-0">
+                                                    <img
+                                                        src="/images/footer.png"
+                                                        alt=""
+                                                        className="w-full"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
