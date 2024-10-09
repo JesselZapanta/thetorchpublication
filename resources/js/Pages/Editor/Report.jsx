@@ -24,6 +24,7 @@ export default function Report({
     });
 
     const [selectedPeriod, setSelectedPeriod] = useState("daily");
+    const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedAy, setSelectedAy] = useState(null);
 
     const handleSelectPeriod = (e) => {
@@ -44,6 +45,26 @@ export default function Report({
             );
         }
     };
+
+    
+    const handleSelectMonth = (e) => {
+        const value = e.target.value;
+        setSelectedMonth(value);
+
+        // Trigger Inertia request with both period and month
+        router.get(
+            route("editor.report"),
+            {
+                period: selectedPeriod,
+                month: value,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
+
 
     const handleSelectAcademicYear = (e) => {
         const ayValue = e.target.value;
@@ -97,7 +118,7 @@ export default function Report({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="max-w-[816px]  mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-2 py-2">
+                            <div className="max-w-3xl mx-auto sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-2 py-2">
                                 <SelectInput
                                     className="w-full"
                                     value={selectedPeriod}
@@ -105,9 +126,27 @@ export default function Report({
                                 >
                                     <option value="daily">Today</option>
                                     <option value="weekly">Last Week</option>
-                                    <option value="monthly">Last Month</option>
+                                    <option value="monthly">Monthly</option>
                                     <option value="ay">Academic Year</option>
                                 </SelectInput>
+
+                                {selectedPeriod === "monthly" && (
+                                    <SelectInput
+                                        className="w-full"
+                                        value={selectedMonth}
+                                        onChange={handleSelectMonth}
+                                    >
+                                        <option value="">Select Month</option>
+                                        {Array.from({ length: 12 }, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {new Date(0, i).toLocaleString(
+                                                    "default",
+                                                    { month: "long" }
+                                                )}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
+                                )}
 
                                 {selectedPeriod === "ay" && (
                                     <SelectInput
@@ -141,7 +180,66 @@ export default function Report({
                                     Print Report
                                 </button>
                             </div>
-                            <div className="">
+                            {/* <pre className="text-gray-900">
+                                {JSON.stringify(editedArticlesDetais, null, 2)}
+                            </pre> */}
+                            {editedArticlesDetais.length === 0 && (
+                                <p className="text-center my-12">
+                                    No data available
+                                </p>
+                            )}
+
+                            {editedArticlesDetais.map((article) => (
+                                <div key={article.id} className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+                                    <div className="py-6">
+                                        {timePeriod !== "ay" && (
+                                            <p className="text-[16px] font-bold uppercase">
+                                                Report from {dateFrom} to{" "}
+                                                {dateTo}
+                                            </p>
+                                        )}
+                                        {timePeriod === "ay" && (
+                                            <p className="text-[16px] font-bold uppercase">
+                                                Report from {academicYear} (
+                                                {dateFrom} - {dateTo})
+                                            </p>
+                                        )}
+
+                                        <p className="text-[16px] font-bold uppercase">
+                                            Name: {auth.user.name}
+                                        </p>
+                                        <p className="text-[16px] font-bold uppercase">
+                                            Student ID: {auth.user.student_id}
+                                        </p>
+                                    </div>
+                                    <div key={article.id}>
+                                        <p className="text-[16px]">
+                                            Title: {article.title}
+                                        </p>
+                                        <div className="flex justify-between">
+                                            <p className="text-[16px]">
+                                                Edited Date: {article.edited_at}
+                                            </p>
+                                            <p className="text-[16px]">
+                                                Published Date:{" "}
+                                                {article.published_date}
+                                            </p>
+                                        </div>
+                                        <div className="overflow-hidden h-[250px] border-2 mb-4">
+                                            {article.article_image_path && (
+                                                <img
+                                                    src={`${window.location.origin}/storage/${article.article_image_path}`}
+                                                    className="object-cover w-full h-full"
+                                                    alt={
+                                                        article.article_image_path
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="hidden">
                                 <div className="max-w-[816px] mx-auto">
                                     <div
                                         // className="custom-print-size"
@@ -150,7 +248,6 @@ export default function Report({
                                         {/* <pre className="text-gray-900">
                                         {JSON.stringify(reportData, null, 2)}
                                     </pre> */}
-
                                         <div className="mx-auto bg-white ">
                                             {/* Articles */}
                                             {pages.map((page, pageIndex) => (
@@ -304,11 +401,6 @@ export default function Report({
                                                 </div>
                                             ))}
                                         </div>
-                                        {editedArticlesDetais.length === 0 && (
-                                            <p className="text-center my-12">
-                                                No data available
-                                            </p>
-                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -92,10 +92,10 @@ export default function Dashboard({
             }
         >
             <Head title="Dashboard" />
-            
+{/*             
             <pre className="text-gray-900">
                 {JSON.stringify(reportData, null, 2)}
-            </pre>
+            </pre> */}
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

@@ -16,6 +16,7 @@ class EditorGenerateReportController extends Controller
     {
         // Determine the selected time period (default to 'daily') and selected academic year
         $timePeriod = $request->input('period', 'daily');
+        $selectedMonth = $request->input('month');
         $selectedAcademicYear = $request->input('academic_year');
 
         $userId = Auth::user()->id;
@@ -30,29 +31,32 @@ class EditorGenerateReportController extends Controller
         switch ($timePeriod) {
             case 'weekly':
                 $dateFrom = now()->subWeek();
-                $dateTo = now(); // Set dateTo to now for monthly
+                $dateTo = now();
                 break;
             case 'monthly':
-                $dateFrom = now()->subMonth();
-                 $dateTo = now(); // Set dateTo to now for monthly
-                break;
-            case 'ay': // Handle academic year-specific data
-                // Fetch the selected academic year
-                $academicYear = AcademicYear::find($selectedAcademicYear);
-                
-                if ($academicYear) {
-                    $dateFrom = $academicYear->start_at; // Start date of the academic year
-                    $dateTo = $academicYear->end_at; // End date of the academic year
+                if ($selectedMonth) {
+                    // Handle specific month selection
+                    $year = now()->year;
+                    $dateFrom = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+                    $dateTo = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
                 } else {
-                    // Handle case where no academic year is selected or invalid ID is passed
+                    $dateFrom = now()->subMonth();
+                    $dateTo = now();
+                }
+                break;
+            case 'ay': 
+                $academicYear = AcademicYear::find($selectedAcademicYear);
+                if ($academicYear) {
+                    $dateFrom = $academicYear->start_at;
+                    $dateTo = $academicYear->end_at;
+                } else {
                     return back()->with('error', 'Invalid academic year selected.');
                 }
                 break;
             default:
                 $dateFrom = now()->subDay();
-                $dateTo = now(); // Default to now for daily
+                $dateTo = now();
         }
-
 
         $articlesQuery = Article::where('status', 'published')
                                 ->where('visibility', 'visible')
@@ -61,7 +65,7 @@ class EditorGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $articlesQuery->whereBetween('edited_at', [$dateFrom, $dateTo]);
         } else {
-            $articlesQuery->where('edited_at', '>=', $dateFrom);
+            $articlesQuery->whereBetween('edited_at', [$dateFrom, $dateTo]);
         }
         
         $editedArticlesDetais = $articlesQuery->get(['id', 'title', 'article_image_path', 'edited_at', 'published_date'])->map(function ($article) {
