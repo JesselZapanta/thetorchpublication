@@ -263,60 +263,67 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                             {/* status and published */}
                             <div className="flex gap-4">
                                 {/* Published Date */}
-                                {/* <div className="w-full mt-4">
-                                    <InputLabel
-                                        htmlFor="published_date"
-                                        value="Published Date"
-                                    />
+                                {article.createdBy.id === auth.user.id && (
+                                    <div className="w-full mt-4">
+                                        <InputLabel
+                                            htmlFor="published_date"
+                                            value="Published Date"
+                                        />
 
-                                    <TextInput
-                                        id="published_date"
-                                        type="date"
-                                        name="published_date"
-                                        value={data.published_date}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData(
-                                                "published_date",
-                                                e.target.value
-                                            )
-                                        }
-                                        disabled={data.status !== "published"} // Disable unless status is "published"
-                                    />
+                                        <TextInput
+                                            id="published_date"
+                                            type="date"
+                                            name="published_date"
+                                            value={data.published_date}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "published_date",
+                                                    e.target.value
+                                                )
+                                            }
+                                            disabled={
+                                                data.status !== "published"
+                                            } // Disable unless status is "published"
+                                        />
 
-                                    <InputError
-                                        message={errors.published_date}
-                                        className="mt-2"
-                                    />
-                                </div> */}
+                                        <InputError
+                                            message={errors.published_date}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* author if no acc */}
+                                {article.createdBy.id === auth.user.id && (
+                                    <div className="mt-4 w-full">
+                                        <InputLabel
+                                            htmlFor="author"
+                                            value="Article Author (If you are the author, leave empty.)"
+                                        />
+
+                                        <TextInput
+                                            id="author"
+                                            type="text"
+                                            name="author"
+                                            placeholder={auth.user.username}
+                                            value={data.author}
+                                            className="mt-2 block w-full"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "author",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.author}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                )}
                             </div>
-
-                            {/* author if no acc */}
-                            {article.createdBy.id === auth.user.id && (
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="author"
-                                        value="Article Author (If you are the author, leave empty.)"
-                                    />
-
-                                    <TextInput
-                                        id="author"
-                                        type="text"
-                                        name="author"
-                                        placeholder={auth.user.username}
-                                        value={data.author}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("author", e.target.value)
-                                        }
-                                    />
-
-                                    <InputError
-                                        message={errors.author}
-                                        className="mt-2"
-                                    />
-                                </div>
-                            )}
 
                             {/* title */}
                             <div className="mt-2 w-full">
@@ -331,7 +338,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     name="title"
                                     value={data.title}
                                     className="mt-2 block w-full"
-                                    //  
+                                    //
                                     onChange={(e) =>
                                         setData("title", e.target.value)
                                     }
