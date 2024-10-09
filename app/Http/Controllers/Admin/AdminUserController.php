@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,7 +23,8 @@ class AdminUserController extends Controller
     public function index()
     {   
         // $users = User::all();
-        $query = User::query();
+        $admin_id = Auth::user()->id;
+        $query = User::whereNot('id', $admin_id);
 
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
