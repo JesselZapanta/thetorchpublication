@@ -309,7 +309,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                                                     <DropdownAction.Btn
                                                                         onClick={() =>
                                                                             openEditModal(
-                                                                                category
+                                                                                word
                                                                             )
                                                                         }
                                                                     >
@@ -319,7 +319,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                                                                     <DropdownAction.Btn
                                                                         onClick={() =>
                                                                             openDeleteModal(
-                                                                                category
+                                                                                word
                                                                             )
                                                                         }
                                                                     >
