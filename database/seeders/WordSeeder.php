@@ -68,7 +68,6 @@ class WordSeeder extends Seeder
             ['name' => 'puk*'],
             ['name' => 'b*rkat'],
             ['name' => 'otin'],
-            ['name' => 'oten'],
             ['name' => 'uten'],
             ['name' => '0ten'],
             ['name' => '0tin'],
