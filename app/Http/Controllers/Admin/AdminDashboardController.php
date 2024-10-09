@@ -194,7 +194,7 @@ class AdminDashboardController extends Controller
                 $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             } else {
                 // Ensure we handle other cases properly
-                $query->where('published_date', [$dateFrom, $dateTo]);
+                $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             }
             // // Limit the number of articles to 10
             // $query->limit(10);

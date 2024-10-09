@@ -69,9 +69,9 @@ class EditorArticleController extends Controller
 
             default:
 
-                 //do now show the article in the table if edited_by !== editor_id
+                //do now show the article in the table if edited_by !== editor_id
                 //ang naa sa table is tanan arti status pending, revision basta wapa na edit(null) or siya ang ga edit,
-                // og maka edit siya na published na arti pero di ma change ang editeb_by[in update func] = to avoid exploiting in making acc report
+                // og maka edit siya na published na arti pero di ma change ang editeb_by[in update func] = to avoid exploiting in making  report
 
                 $query->where(function ($query) use ($id) {
                     $query->where('created_by', $id) // Auth user's articles
@@ -83,7 +83,7 @@ class EditorArticleController extends Controller
                                 })
                                 ->orWhere(function ($query) use ($id) {
                                     $query->whereIn('status', ['pending', 'revision', 'edited']) 
-                                        ->where('draft', 'no')
+                                        // ->where('draft', 'no')
                                         ->where(function ($query) use ($id) {
                                             $query->whereNull('edited_by')  // Include records where edited_by is NULL
                                                 ->orWhere('edited_by', $id); // Include records where edited_by equals the user ID
