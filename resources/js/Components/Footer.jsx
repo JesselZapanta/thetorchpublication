@@ -34,8 +34,8 @@ export default function Footer() {
                                 The Torch Publication
                             </h2>
                             <p className="text-white">
-                                    The Torch is Tangub City Global College's
-                                    official publication. 
+                                The Torch is Tangub City Global College's
+                                official publication.
                             </p>
                         </div>
 
@@ -45,7 +45,7 @@ export default function Footer() {
                             </div>
                             <ul className="text-white">
                                 <li>
-                                    <a href="thetorchpubpress@gmail.com" target="blank">
+                                    <a href="mailto:thetorchpubpress@gmail.com">
                                         thetorchpubpress@gmail.com
                                     </a>
                                 </li>
