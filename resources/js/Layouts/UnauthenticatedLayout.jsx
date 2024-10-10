@@ -57,6 +57,15 @@ export default function UnauthenticatedLayout({
                                 >
                                     Freedom Wall
                                 </NavLink>
+                                <NavLink
+                                    href={route("about")}
+                                    active={route().current(
+                                        "about"
+                                    )}
+                                    className="text-nowrap"
+                                >
+                                    About Us
+                                </NavLink>
                             </div>
                         </div>
                         <div className="hidden lg:flex lg:ms-6">

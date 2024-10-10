@@ -23,7 +23,7 @@ class FreedomWallController extends Controller
     public function index(Request $request)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(10)->get();
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
         // Base query for FreedomWall entries
         $query = FreedomWall::query();
@@ -154,7 +154,7 @@ class FreedomWallController extends Controller
     public function show(FreedomWall $freedomWall)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(10)->get();
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
         return inertia('FreedomWall/Show', [
             // 'freedomWall' => $freedomWall,

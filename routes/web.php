@@ -73,11 +73,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+
 Route::post('/articles/{article}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 
-Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');
-Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment'])->name('comment.report');
-Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle'])->name('article.report');
+
+
 
 
 //Get Ratings
@@ -85,6 +86,11 @@ Route::post('/article/{id}/report', [ReportContentController::class, 'reportArti
 
 //Comment Like Dislike
 Route::middleware('auth')->group(function () {
+    // report
+    Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');
+    Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment'])->name('comment.report');
+    Route::post('/article/{id}/report', [ReportContentController::class, 'reportArticle'])->name('article.report');
+
     // rate an article
     Route::post('/rate-article', [RatingController::class, 'rateArticle'])->name('article.rate');
     

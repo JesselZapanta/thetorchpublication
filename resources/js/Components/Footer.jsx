@@ -45,8 +45,8 @@ export default function Footer() {
                             </div>
                             <ul className="text-white">
                                 <li>
-                                    <a href="torch@gmail.com" target="blank">
-                                        torch@gmail.com
+                                    <a href="thetorchpubpress@gmail.com" target="blank">
+                                        thetorchpubpress@gmail.com
                                     </a>
                                 </li>
                                 <li>

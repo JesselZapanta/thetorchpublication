@@ -18,7 +18,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(7)->get();
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
        // Fetch the featured article
         $featuredArticle = Article::where('is_featured', 'yes')
@@ -73,7 +73,7 @@ class HomeController extends Controller
     public function filterByCategory(Request $request, $id)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(10)->get();
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
         // Fetch the current category details
         $currentCategory = Category::findOrFail($id);
@@ -148,7 +148,7 @@ class HomeController extends Controller
     public function read(Article $article)
     {
         // Fetch active categories
-        $categories = Category::where('status', 'active')->limit(10)->get();
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
         // Fetch the latest 5 comments for the article
         $comments = Comment::where('article_id', $article->id)
@@ -161,6 +161,14 @@ class HomeController extends Controller
             'article' => new HomeArticleResource($article),
             'categories' => CategoryResource::collection($categories),
             'comments' => CommentResource::collection($comments),
+        ]);
+    }
+
+    public function about()
+    {
+        $categories = Category::where('status', 'active')->limit(5)->get();
+        return inertia('About', [
+            'categories' => CategoryResource::collection($categories),
         ]);
     }
 
