@@ -135,7 +135,7 @@ export default function Dashboard({
                                 {selectedPeriod === "ay" && (
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedAy}
+                                        value={selectedAy || ""}
                                         onChange={handleSelectAcademicYear} // Handle academic year selection separately
                                     >
                                         <option value="">

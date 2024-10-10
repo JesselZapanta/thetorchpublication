@@ -17,6 +17,7 @@ export default function Dashboard({
     dateFrom,
 }) {
     const [selectedPeriod, setSelectedPeriod] = useState("daily");
+    const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedAy, setSelectedAy] = useState(null);
 
     const handleSelectPeriod = (e) => {
@@ -36,6 +37,24 @@ export default function Dashboard({
                 }
             );
         }
+    };
+
+    const handleSelectMonth = (e) => {
+        const value = e.target.value;
+        setSelectedMonth(value);
+
+        // Trigger Inertia request with both period and month
+        router.get(
+            route("student.dashboard"),
+            {
+                period: selectedPeriod,
+                month: value,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
     };
 
     const handleSelectAcademicYear = (e) => {
@@ -96,7 +115,7 @@ export default function Dashboard({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                                 <SelectInput
                                     className="w-full"
                                     value={selectedPeriod}
@@ -108,10 +127,28 @@ export default function Dashboard({
                                     <option value="ay">Academic Year</option>
                                 </SelectInput>
 
+                                {selectedPeriod === "monthly" && (
+                                    <SelectInput
+                                        className="w-full"
+                                        value={selectedMonth}
+                                        onChange={handleSelectMonth}
+                                    >
+                                        <option value="">Select Month</option>
+                                        {Array.from({ length: 12 }, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>
+                                                {new Date(0, i).toLocaleString(
+                                                    "default",
+                                                    { month: "long" }
+                                                )}
+                                            </option>
+                                        ))}
+                                    </SelectInput>
+                                )}
+
                                 {selectedPeriod === "ay" && (
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedAy}
+                                        value={selectedAy || ""}
                                         onChange={handleSelectAcademicYear} // Handle academic year selection separately
                                     >
                                         <option value="">
@@ -125,7 +162,7 @@ export default function Dashboard({
                                     </SelectInput>
                                 )}
                             </div>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-amber-600 font-semibold text-md">
@@ -138,7 +175,7 @@ export default function Dashboard({
                                         </p>
                                     </div>
                                 </div>
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-amber-600 font-semibold text-md">
                                             Total Unpublished Articles
@@ -149,7 +186,7 @@ export default function Dashboard({
                                             </span>
                                         </p>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-amber-600 font-semibold text-md">
@@ -249,7 +286,7 @@ export default function Dashboard({
                                     </div>
                                 </div>
 
-                                <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
                                         <h3 className="text-blue-600 font-semibold text-md">
                                             Total Incomplete Task
@@ -272,13 +309,13 @@ export default function Dashboard({
                                             </span>
                                         </p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                                 <div className="col-span-2 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <h3 className="text-sky-600 font-semibold text-md">
-                                        Total Articles Per Category
+                                        Total Published Articles Per Category
                                     </h3>
                                     <p className="text-md mt-4">
                                         <BarChart
@@ -289,9 +326,9 @@ export default function Dashboard({
                                     </p>
                                 </div>
 
-                                <div className="col-span-2 sm:col-span-1 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                <div className="col-span-2 lg:col-span-1 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <h3 className="text-sky-600 font-semibold text-md">
-                                        Total View of Articles Per Category
+                                        Total View of your Articles Per Category
                                     </h3>
                                     <p className="text-md mt-4">
                                         <PieChart

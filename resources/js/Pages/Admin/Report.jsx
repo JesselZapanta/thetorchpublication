@@ -143,7 +143,7 @@ export default function Report({
                                 {selectedPeriod === "ay" && (
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedAy}
+                                        value={selectedAy || ""}
                                         onChange={handleSelectAcademicYear} // Handle academic year selection separately
                                     >
                                         <option value="">
@@ -164,7 +164,7 @@ export default function Report({
                                 </button>
                             </div>
                             <div className="max-w-[816px] mx-auto">
-                                <div className="py-4">
+                                {/* <div className="py-4">
                                     {timePeriod !== "ay" && (
                                         <p className="text-[12px] font-bold uppercase">
                                             Report from {dateFrom} to {dateTo}
@@ -176,6 +176,25 @@ export default function Report({
                                             {dateFrom} - {dateTo})
                                         </p>
                                     )}
+                                </div> */}
+                                <div className="mx-auto py-6">
+                                    {timePeriod !== "ay" && (
+                                        <p className="text-[16px] font-bold uppercase">
+                                            Report from {dateFrom} to {dateTo}
+                                        </p>
+                                    )}
+                                    {timePeriod === "ay" && (
+                                        <p className="text-[16px] font-bold uppercase">
+                                            Report from {academicYear} (
+                                            {dateFrom} - {dateTo})
+                                        </p>
+                                    )}
+                                    {/* <p className="text-[16px] font-bold uppercase">
+                                        Name: {auth.user.name}
+                                    </p>
+                                    <p className="text-[16px] font-bold uppercase">
+                                        Student ID: {auth.user.student_id}
+                                    </p> */}
                                 </div>
                                 <table className="w-full text-[12px]  text-left rtl:text-right text-gray-500">
                                     {/* thead*/}

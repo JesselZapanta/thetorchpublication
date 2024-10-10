@@ -151,7 +151,7 @@ export default function Report({
                                 {selectedPeriod === "ay" && (
                                     <SelectInput
                                         className="w-full"
-                                        value={selectedAy}
+                                        value={selectedAy || ""}
                                         onChange={handleSelectAcademicYear} // Handle academic year selection separately
                                     >
                                         <option value="">
@@ -183,6 +183,26 @@ export default function Report({
                             {/* <pre className="text-gray-900">
                                 {JSON.stringify(editedArticlesDetais, null, 2)}
                             </pre> */}
+
+                            <div className="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+                                {timePeriod !== "ay" && (
+                                    <p className="text-[16px] font-bold uppercase">
+                                        Report from {dateFrom} to {dateTo}
+                                    </p>
+                                )}
+                                {timePeriod === "ay" && (
+                                    <p className="text-[16px] font-bold uppercase">
+                                        Report from {academicYear} ({dateFrom} -{" "}
+                                        {dateTo})
+                                    </p>
+                                )}
+                                <p className="text-[16px] font-bold uppercase">
+                                    Name: {auth.user.name}
+                                </p>
+                                <p className="text-[16px] font-bold uppercase">
+                                    Student ID: {auth.user.student_id}
+                                </p>
+                            </div>
                             {editedArticlesDetais.length === 0 && (
                                 <p className="text-center my-12">
                                     No data available
@@ -190,28 +210,10 @@ export default function Report({
                             )}
 
                             {editedArticlesDetais.map((article) => (
-                                <div key={article.id} className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                                    <div className="py-6">
-                                        {timePeriod !== "ay" && (
-                                            <p className="text-[16px] font-bold uppercase">
-                                                Report from {dateFrom} to{" "}
-                                                {dateTo}
-                                            </p>
-                                        )}
-                                        {timePeriod === "ay" && (
-                                            <p className="text-[16px] font-bold uppercase">
-                                                Report from {academicYear} (
-                                                {dateFrom} - {dateTo})
-                                            </p>
-                                        )}
-
-                                        <p className="text-[16px] font-bold uppercase">
-                                            Name: {auth.user.name}
-                                        </p>
-                                        <p className="text-[16px] font-bold uppercase">
-                                            Student ID: {auth.user.student_id}
-                                        </p>
-                                    </div>
+                                <div
+                                    key={article.id}
+                                    className="max-w-3xl mx-auto sm:px-6 lg:px-8"
+                                >
                                     <div key={article.id}>
                                         <p className="text-[16px]">
                                             Title: {article.title}
@@ -240,7 +242,7 @@ export default function Report({
                                 </div>
                             ))}
                             <div className="hidden">
-                                <div className="max-w-[816px] mx-auto">
+                                <div className="max-w-[816px]  mx-auto">
                                     <div
                                         // className="custom-print-size"
                                         ref={componentRef}
@@ -254,6 +256,7 @@ export default function Report({
                                                 <div
                                                     key={pageIndex}
                                                     className="h-[1050px] relative p-2 font-times"
+                                                    // className="relative p-2 font-times"
                                                 >
                                                     {/* Header */}
                                                     <div className="flex absolute bot-0 w-full">

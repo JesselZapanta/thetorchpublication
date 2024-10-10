@@ -18,8 +18,9 @@ class DesignerGenerateReportController extends Controller
 {
     public function report(Request $request)
     {
-        // Determine the selected time period (default to 'daily') and selected academic year
+         // Determine the selected time period (default to 'daily') and selected academic year
         $timePeriod = $request->input('period', 'daily');
+        $selectedMonth = $request->input('month');
         $selectedAcademicYear = $request->input('academic_year');
 
         $userId = Auth::user()->id;
@@ -34,28 +35,33 @@ class DesignerGenerateReportController extends Controller
         switch ($timePeriod) {
             case 'weekly':
                 $dateFrom = now()->subWeek();
-                $dateTo = now(); // Set dateTo to now for monthly
+                $dateTo = now();
                 break;
             case 'monthly':
-                $dateFrom = now()->subMonth();
-                 $dateTo = now(); // Set dateTo to now for monthly
-                break;
-            case 'ay': // Handle academic year-specific data
-                // Fetch the selected academic year
-                $academicYear = AcademicYear::find($selectedAcademicYear);
-                
-                if ($academicYear) {
-                    $dateFrom = $academicYear->start_at; // Start date of the academic year
-                    $dateTo = $academicYear->end_at; // End date of the academic year
+                if ($selectedMonth) {
+                    // Handle specific month selection
+                    $year = now()->year;
+                    $dateFrom = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+                    $dateTo = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
                 } else {
-                    // Handle case where no academic year is selected or invalid ID is passed
+                    $dateFrom = now()->subMonth();
+                    $dateTo = now();
+                }
+                break;
+            case 'ay': 
+                $academicYear = AcademicYear::find($selectedAcademicYear);
+                if ($academicYear) {
+                    $dateFrom = $academicYear->start_at;
+                    $dateTo = $academicYear->end_at;
+                } else {
                     return back()->with('error', 'Invalid academic year selected.');
                 }
                 break;
             default:
                 $dateFrom = now()->subDay();
-                $dateTo = now(); // Default to now for daily
+                $dateTo = now();
         }
+
 
 
         $newsletterQuery = Newsletter::where('status', 'distributed')
@@ -65,7 +71,7 @@ class DesignerGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $newsletterQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         } else {
-            $newsletterQuery->where('distributed_at', '>=', $dateFrom);
+            $newsletterQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         }
 
         $distributedNewsletters = $newsletterQuery->get(['id','description', 'newsletter_thumbnail_image_path', 'submitted_at', 'distributed_at']);
@@ -77,7 +83,7 @@ class DesignerGenerateReportController extends Controller
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $taskQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         } else {
-            $taskQuery->where('task_completed_date', '>=', $dateFrom);
+            $taskQuery->whereBetween('task_completed_date', [$dateFrom, $dateTo]);
         }
         
         $completedTasks = $taskQuery->get(['id','name', 'task_image_path', 'image_submitted_date', 'task_completed_date']);

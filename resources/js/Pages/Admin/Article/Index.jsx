@@ -98,7 +98,9 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("admin-article.index"), queryParams);
+        router.get(route("admin-article.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     // Open modal and set article to delete
