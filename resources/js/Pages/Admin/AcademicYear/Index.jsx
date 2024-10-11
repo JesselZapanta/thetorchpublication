@@ -85,6 +85,14 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
         }
     };
 
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("academic-year.index"), queryParams, {
+            preserveState: true,
+        });
+    };
+
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
             queryParams.sort_direction =
@@ -187,7 +195,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="w-full lg:w-[50%] gap-2">
+                            {/* <div className="w-full lg:w-[50%] gap-2">
                                 <TextInput
                                     className="w-full"
                                     defaultValue={queryParams.description}
@@ -202,6 +210,42 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                         onKeyPressed("description", e)
                                     }
                                 />
+                            </div> */}
+                            <div className="w-full flex gap-2">
+                                <div className="w-full">
+                                    <TextInput
+                                        className="w-full"
+                                        defaultValue={queryParams.description}
+                                        placeholder="Search Academic Year"
+                                        onChange={(e) =>
+                                            searchFieldChanged(
+                                                "description",
+                                                e.target.value
+                                            )
+                                        }
+                                        onKeyPress={(e) =>
+                                            onKeyPressed("description", e)
+                                        }
+                                    />
+                                </div>
+                                <div className="w-[40%]">
+                                    <SelectInput
+                                        className="w-full"
+                                        defaultValue={queryParams.status}
+                                        onChange={(e) =>
+                                            handleSelectChange(
+                                                "status",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="">Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">
+                                            Inactive
+                                        </option>
+                                    </SelectInput>
+                                </div>
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

@@ -91,6 +91,14 @@ export default function Index({
         }
     };
 
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("category.index"), queryParams, {
+            preserveState: true,
+        });
+    };
+
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
             queryParams.sort_direction =

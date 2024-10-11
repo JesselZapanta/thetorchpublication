@@ -25,6 +25,10 @@ class AdminAcademicYearController extends Controller
             $query->where('description', 'like', '%'. request('description') . '%');
         }
 
+        if(request('status')){
+            $query->where('status', request('status'));
+        }
+
         $academicYears = $query->orderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
 
         return inertia('Admin/AcademicYear/Index', [
