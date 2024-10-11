@@ -26,6 +26,9 @@ class StoreMemberRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'position' => ['required', 'string' ],
+            'role' => ['required',
+                Rule::in(['student', 'admin', 'student_contributor', 'editor', 'writer', 'designer'])
+            ],
             'status' => ['required',
                 Rule::in(['active', 'inactive'])
             ],

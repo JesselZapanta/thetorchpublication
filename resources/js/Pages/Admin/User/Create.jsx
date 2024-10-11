@@ -129,7 +129,7 @@ export default function Create({ auth, AdminBadgeCount }) {
                                     className="mt-2"
                                 />
                             </div>
-                            <div className="mt-2 w-full">
+                            <div className="mt-4 w-full">
                                 <InputLabel htmlFor="role" value="User Role" />
 
                                 <SelectInput

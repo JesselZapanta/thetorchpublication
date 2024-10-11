@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->tinyText('role');
             $table->string('position');
             $table->tinyText('status');
             $table->string('member_image_path');

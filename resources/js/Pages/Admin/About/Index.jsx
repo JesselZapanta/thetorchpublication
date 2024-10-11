@@ -37,6 +37,7 @@ export default function Index({
     const { data, setData, post, put, errors, reset, clearErrors, processing } =
         useForm({
             name: "",
+            role: "",
             position: "",
             status: "",
             member_image_path: "",
@@ -497,31 +498,60 @@ export default function Index({
                                     className="mt-2"
                                 />
                             </div>
-                            {/* image path */}
                             <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="member_image_path"
-                                    value="Profile Image"
-                                />
+                                <InputLabel htmlFor="role" value="User Role" />
 
-                                <TextInput
-                                    id="member_image_path"
-                                    type="file"
-                                    name="member_image_path"
-                                    className="mt-2 block w-full cursor-pointer"
+                                <SelectInput
+                                    name="role"
+                                    id="role"
+                                    value={data.role}
+                                    className="mt-1 block w-full"
                                     onChange={(e) =>
-                                        setData(
-                                            "member_image_path",
-                                            e.target.files[0]
-                                        )
+                                        setData("role", e.target.value)
                                     }
-                                />
+                                >
+                                    <option value="">Select a Role</option>
+                                    <option value="student">Student</option>
+                                    <option value="student_contributor">
+                                        Student Contributor
+                                    </option>
+                                    <option value="admin">Admin</option>
+                                    <option value="editor">Editor</option>
+                                    <option value="writer">Writer</option>
+                                    <option value="designer">Designer</option>
+                                </SelectInput>
 
                                 <InputError
-                                    message={errors.member_image_path}
+                                    message={errors.role}
                                     className="mt-2"
                                 />
                             </div>
+                        </div>
+
+                        {/* image path */}
+                        <div className="mt-4 w-full">
+                            <InputLabel
+                                htmlFor="member_image_path"
+                                value="Profile Image"
+                            />
+
+                            <TextInput
+                                id="member_image_path"
+                                type="file"
+                                name="member_image_path"
+                                className="mt-2 block w-full cursor-pointer"
+                                onChange={(e) =>
+                                    setData(
+                                        "member_image_path",
+                                        e.target.files[0]
+                                    )
+                                }
+                            />
+
+                            <InputError
+                                message={errors.member_image_path}
+                                className="mt-2"
+                            />
                         </div>
 
                         <div className="mt-4 flex justify-end gap-2">

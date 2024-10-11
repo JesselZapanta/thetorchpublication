@@ -11,5 +11,5 @@ class Member extends Model
 
     protected $table = 'members';
 
-    protected $fillable = ['name', 'position', 'status', 'member_image_path'];
+    protected $fillable = ['name','role', 'position', 'status', 'member_image_path'];
 }
