@@ -199,7 +199,7 @@ export default function Index({
                                     <TextInput
                                         className="w-full"
                                         defaultValue={queryParams.name}
-                                        placeholder="Search Category Name"
+                                        placeholder="Search Member Name"
                                         onChange={(e) =>
                                             searchFieldChanged(
                                                 "name",
@@ -306,8 +306,8 @@ export default function Index({
                                                             )}
                                                         </div>
                                                     </th>
-                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                                        {/* <Link
+                                                    {/* <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                        <Link
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
                                                                 "category.show",
@@ -315,9 +315,11 @@ export default function Index({
                                                             )}
                                                         >
                                                             {category.name}
-                                                        </Link> */}
+                                                        </Link>
+                                                    </th> */}
+                                                    <td className="px-3 py-2 text-nowrap">
                                                         {member.name}
-                                                    </th>
+                                                    </td>
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {member.position}
                                                     </td>
@@ -529,29 +531,42 @@ export default function Index({
                         </div>
 
                         {/* image path */}
-                        <div className="mt-4 w-full">
-                            <InputLabel
-                                htmlFor="member_image_path"
-                                value="Profile Image"
-                            />
+                        <div className="flex gap-2">
+                            {/* {member && (
+                                <div className="rounded-full mt-8 overflow-hidden flex-shrink-0 w-10 h-10 border-2 border-indigo-500">
+                                    {member.member_image_path && (
+                                        <img
+                                            src={member.member_image_path}
+                                            className="object-cover w-full h-full"
+                                            alt={member.member_image_path}
+                                        />
+                                    )}
+                                </div>
+                            )} */}
+                            <div className="mt-4 w-full">
+                                <InputLabel
+                                    htmlFor="member_image_path"
+                                    value="Profile Image"
+                                />
 
-                            <TextInput
-                                id="member_image_path"
-                                type="file"
-                                name="member_image_path"
-                                className="mt-2 block w-full cursor-pointer"
-                                onChange={(e) =>
-                                    setData(
-                                        "member_image_path",
-                                        e.target.files[0]
-                                    )
-                                }
-                            />
+                                <TextInput
+                                    id="member_image_path"
+                                    type="file"
+                                    name="member_image_path"
+                                    className="mt-2 block w-full cursor-pointer"
+                                    onChange={(e) =>
+                                        setData(
+                                            "member_image_path",
+                                            e.target.files[0]
+                                        )
+                                    }
+                                />
 
-                            <InputError
-                                message={errors.member_image_path}
-                                className="mt-2"
-                            />
+                                <InputError
+                                    message={errors.member_image_path}
+                                    className="mt-2"
+                                />
+                            </div>
                         </div>
 
                         <div className="mt-4 flex justify-end gap-2">

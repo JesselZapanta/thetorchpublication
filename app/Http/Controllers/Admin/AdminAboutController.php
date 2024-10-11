@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\MemberResource;
 use App\Models\Member;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class AdminAboutController extends Controller
@@ -88,9 +90,34 @@ class AdminAboutController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMemberRequest $request, string $id)
     {
-        //
+        $member = Member::find($id);
+
+        if(!$member) {
+            return to_route('about.index')->with(['error' => 'Member not found.']);
+        }
+
+        $data = $request->validated();
+
+        $image = $data['member_image_path'];
+
+        if ($image) {
+            // Delete the old image file if a new one is uploaded
+            if ($member->member_image_path) {
+                Storage::disk('public')->delete($member->member_image_path);
+            }
+            // Store the new image directly under the 'member/' directory
+            $data['member_image_path'] = $image->store('member', 'public');
+        } else {
+            // If no new image is uploaded, keep the existing image
+            $data['member_image_path'] = $member->member_image_path;
+        }
+
+
+        $member->update($data);
+
+        return to_route('about.index')->with(['success' => 'Edited successfuly.']);
     }
 
     /**
