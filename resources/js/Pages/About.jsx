@@ -14,10 +14,8 @@ import { useEffect } from "react";
 export default function About({
     auth,
     categories,
-    featuredArticle,
-    topArticles,
-    latestArticles,
-    latestNewsletter,
+    admins,
+    members,
 }) {
     useEffect(() => {
         AOS.init({
@@ -29,6 +27,11 @@ export default function About({
     return (
         <UnauthenticatedLayout user={auth.user} categories={categories}>
             <Head title="About Us Page" />
+
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(admins, null, 2)}
+            </pre> */}
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
                 <div className="flex flex-col md:flex-row gap-4 mt-16">
                     <img
@@ -134,83 +137,64 @@ export default function About({
                 <div className="max-w-3xl mx-auto ">
                     <div className="grid sm:grid-cols-1 lg:grid-cols-2  py-6 mx-auto">
                         {/* user */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
-                                <img src="/images/default/profile.jpg" />
+                        {admins.data.length < 0 && (
+                            <p className="col-span-2">No data available.</p>
+                        )}
+                        {admins.data.map((admin) => (
+                            <div className="flex flex-col justify-center items-center">
+                                <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
+                                    {admin.member_image_path && (
+                                        <img
+                                            src={admin.member_image_path}
+                                            className="object-cover w-full h-full"
+                                            alt={admin.member_image_path}
+                                        />
+                                    )}
+                                </div>
+                                <div className=" mt-2">
+                                    <p className="text-center font-bold text-md text-emerald-950">
+                                        {admin.name}
+                                    </p>
+                                    <p className="text-center font-bold text-sm text-emerald-950">
+                                        {admin.position}
+                                    </p>
+                                </div>
                             </div>
-                            <div className=" mt-2">
-                                <p className="text-center font-bold text-md text-emerald-950">
-                                    Jessel Zapanta
-                                </p>
-                                <p className="text-center font-bold text-sm text-emerald-950">
-                                    ADVISER
-                                </p>
-                            </div>
-                        </div>
-                        {/* user */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
-                                <img src="/images/default/profile.jpg" />
-                            </div>
-                            <div className=" mt-2">
-                                <p className="text-center font-bold text-md text-emerald-950">
-                                    Jessel Zapanta
-                                </p>
-                                <p className="text-center font-bold text-sm text-emerald-950">
-                                    ADVISER
-                                </p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
+
                 <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
                     Members
                 </h2>
-                {/* Editors */}
+
+                {/* Members */}
                 <div className="mx-auto max-w-3xl">
                     <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 py-6 mx-auto">
-                        {/* user */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
-                                <img src="/images/default/profile.jpg" />
+                        {members.data.length < 0 && (
+                            <p className="col-span-2">No data available.</p>
+                        )}
+                        {members.data.map((member) => (
+                            <div className="flex flex-col justify-center items-center">
+                                <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
+                                    {member.member_image_path && (
+                                        <img
+                                            src={member.member_image_path}
+                                            className="object-cover w-full h-full"
+                                            alt={member.member_image_path}
+                                        />
+                                    )}
+                                </div>
+                                <div className=" mt-2">
+                                    <p className="text-center font-bold text-md text-emerald-950">
+                                        {member.name}
+                                    </p>
+                                    <p className="text-center font-bold text-sm text-emerald-950">
+                                        {member.position}
+                                    </p>
+                                </div>
                             </div>
-                            <div className=" mt-2">
-                                <p className="text-center font-bold text-md text-emerald-950">
-                                    Jessel Zapanta
-                                </p>
-                                <p className="text-center font-bold text-sm text-emerald-950">
-                                    ADVISER
-                                </p>
-                            </div>
-                        </div>
-                        {/* user */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
-                                <img src="/images/default/profile.jpg" />
-                            </div>
-                            <div className=" mt-2">
-                                <p className="text-center font-bold text-md text-emerald-950">
-                                    Jessel Zapanta
-                                </p>
-                                <p className="text-center font-bold text-sm text-emerald-950">
-                                    ADVISER
-                                </p>
-                            </div>
-                        </div>
-                        {/* user */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
-                                <img src="/images/default/profile.jpg" />
-                            </div>
-                            <div className=" mt-2">
-                                <p className="text-center font-bold text-md text-emerald-950">
-                                    Jessel Zapanta
-                                </p>
-                                <p className="text-center font-bold text-sm text-emerald-950">
-                                    ADVISER
-                                </p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

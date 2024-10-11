@@ -7,9 +7,11 @@ use App\Http\Resources\HomeArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\HomeNewsletterResource;
+use App\Http\Resources\MemberResource;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Member;
 use App\Models\Newsletter;
 use Illuminate\Http\Request;
 
@@ -167,8 +169,23 @@ class HomeController extends Controller
     public function about()
     {
         $categories = Category::where('status', 'active')->limit(5)->get();
+
+        //admin
+
+        $admins = Member::where('role', 'admin')
+                        ->where('status', 'active')
+                        ->orderBy('id', 'asc')
+                        ->get();
+
+        $members = Member::whereIn('role', ['editor', 'writer', 'designer'])
+                    ->where('status', 'active')
+                    ->orderBy('id', 'asc')
+                        ->get();
+
         return inertia('About', [
             'categories' => CategoryResource::collection($categories),
+            'admins' => MemberResource::collection($admins),
+            'members' => MemberResource::collection($members),
         ]);
     }
 

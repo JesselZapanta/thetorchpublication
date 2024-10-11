@@ -522,7 +522,7 @@ export default function Index({
                                     }
                                 >
                                     <option value="">Select a Role</option>
-                                    <option value="student">Student</option>
+                                    {/* <option value="student">Student</option> */}
                                     {/* <option value="student_contributor">
                                         Student Contributor
                                     </option> */}
