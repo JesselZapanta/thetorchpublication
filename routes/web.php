@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminAcademicYearController;
 use App\Http\Controllers\Admin\AdminApplyContributorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -122,14 +123,17 @@ Route::middleware(['auth','admin','verified' ])->group(function() {
     Route::get('/admin/contributor/{id}/view', [AdminApplyContributorController::class, 'view'])->name('admin-contributor.view');
     Route::put('/admin/contributor/{id}/update', [AdminApplyContributorController::class, 'update'])->name('admin-contributor.update');
         
-    Route::resource('category', AdminCategoryController::class);
+
 
     Route::get('admin-article/calendar', [AdminArticleController::class, 'calendar'])->name('admin-article.calendar');
     Route::get('admin-article/{id}/imeline', [AdminArticleController::class, 'timeLine'])->name('admin-article.timeline');
     Route::resource('admin-article', AdminArticleController::class);
 
-    Route::resource('word', AdminWordController::class);
+    //Settings
     Route::resource('academic-year', AdminAcademicYearController::class);
+    Route::resource('category', AdminCategoryController::class);
+    Route::resource('word', AdminWordController::class);
+    Route::resource('about', AdminAboutController::class);
     
     Route::get('/newsletter/calendar', [AdminNewsletterController::class, 'calendar'])->name('newsletter.calendar');
     Route::get('newsletter/{id}/timeline', [AdminNewsletterController::class, 'timeLine'])->name('newsletter.timeline');

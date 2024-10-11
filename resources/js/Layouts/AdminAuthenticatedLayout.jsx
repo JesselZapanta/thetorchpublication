@@ -116,6 +116,11 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                             >
                                                 Inappropriate Words
                                             </Dropdown.Link>
+                                            <Dropdown.Link
+                                                // href={route("word.index")}
+                                            >
+                                                About Us
+                                            </Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>
                                 </div>
@@ -306,11 +311,19 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                         >
                             Category
                         </ResponsiveNavLink>
+
                         <ResponsiveNavLink
                             href={route("word.index")}
                             active={route().current("word.index")}
                         >
                             Inappropriate Words
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            // href={route("word.index")}
+                            // active={route().current("word.index")}
+                        >
+                            About Us
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
