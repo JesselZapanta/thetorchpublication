@@ -74,7 +74,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
 
-Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
 
 Route::post('/articles/{article}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 

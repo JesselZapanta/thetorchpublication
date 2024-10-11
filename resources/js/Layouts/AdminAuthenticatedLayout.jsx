@@ -88,6 +88,9 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                                     ) ||
                                                     route().current(
                                                         "category.index"
+                                                    ) ||
+                                                    route().current(
+                                                        "about.index"
                                                     )
                                                 }
                                             >
@@ -117,7 +120,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                                 Inappropriate Words
                                             </Dropdown.Link>
                                             <Dropdown.Link
-                                                // href={route("word.index")}
+                                                href={route("about.index")}
                                             >
                                                 About Us
                                             </Dropdown.Link>
@@ -320,8 +323,8 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                            // href={route("word.index")}
-                            // active={route().current("word.index")}
+                        href={route("about.index")}
+                        active={route().current("about.index")}
                         >
                             About Us
                         </ResponsiveNavLink>

@@ -54,17 +54,15 @@ export default function About({
                 <div className="flex gap-4 flex-col md:flex-row ">
                     <div>
                         <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
-                            Misson
+                            Mission
                         </h2>
                         <p className="text-justify py-4">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Possimus expedita magnam nisi ad fugit
-                            doloribus vel hic similique sint ducimus aliquid
-                            unde sunt molestiae, deserunt laudantium, facere
-                            inventore quibusdam facilis sapiente magni nam?
-                            Tempore asperiores hic ipsam! Voluptas eius
-                            accusantium alias modi recusandae eos tempora
-                            soluta? Ea incidunt magni non.
+                            To provide a platform for students to share
+                            perspectives, disseminate information, and
+                            participate in intellectual discourse, while
+                            maintaining the highest standards of integrity,
+                            excellence, and social responsibility, effectively
+                            capturing the diverse voices of the TCGC community.
                         </p>
                     </div>
                     <div>
@@ -72,14 +70,12 @@ export default function About({
                             Vision
                         </h2>
                         <p className="text-justify py-4">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Possimus expedita magnam nisi ad fugit
-                            doloribus vel hic similique sint ducimus aliquid
-                            unde sunt molestiae, deserunt laudantium, facere
-                            inventore quibusdam facilis sapiente magni nam?
-                            Tempore asperiores hic ipsam! Voluptas eius
-                            accusantium alias modi recusandae eos tempora
-                            soluta? Ea incidunt magni non.
+                            To be a leading student publication that stands for
+                            the principles of press freedom, ethical journalism,
+                            and responsible reporting, with the goal of
+                            empowering students to make valuable contributions
+                            to the academic community and society, while also
+                            fostering commitment to truth and fairness.
                         </p>
                     </div>
                 </div>
@@ -94,10 +90,11 @@ export default function About({
                                 1
                             </div>
                             <p className="text-justify">
-                                Lorem ipsum dolor sit, amet consectetur
-                                adipisicing elit. Nulla natus voluptas aperiam!
-                                Veritatis, iusto. Harum ducimus eaque et commodi
-                                officia!
+                                Promote Ethical Journalism. Ensure that all
+                                content meets the highest standards of integrity
+                                and responsibility, demonstrating a commitment
+                                to truth and fairness while addressing relevant
+                                societal concerns.
                             </p>
                         </div>
                         <div className="flex gap-4 py-4">
@@ -105,10 +102,11 @@ export default function About({
                                 2
                             </div>
                             <p className="text-justify">
-                                Lorem ipsum dolor sit, amet consectetur
-                                adipisicing elit. Nulla natus voluptas aperiam!
-                                Veritatis, iusto. Harum ducimus eaque et commodi
-                                officia!
+                                Empower Student Voices. Provide students with a
+                                variety of opportunities to express themselves,
+                                participate in intellectual discourse, and
+                                interact with the academic and community at
+                                large.
                             </p>
                         </div>
                         <div className="flex gap-4 py-4">
@@ -116,10 +114,11 @@ export default function About({
                                 2
                             </div>
                             <p className="text-justify">
-                                Lorem ipsum dolor sit, amet consectetur
-                                adipisicing elit. Nulla natus voluptas aperiam!
-                                Veritatis, iusto. Harum ducimus eaque et commodi
-                                officia!
+                                Foster Lifelong Learning. Encourage students'
+                                critical thinking and continuous learning by
+                                offering well-researched and thought-provoking
+                                content that contributes to their personal and
+                                academic growth.
                             </p>
                         </div>
                     </div>
