@@ -115,6 +115,7 @@ export default function Index({
         setMember(member);
         setData({
             name: member.name || "",
+            role: member.role || "",
             position: member.position || "",
             status: member.status || "",
             member_image_path: "",
@@ -514,9 +515,9 @@ export default function Index({
                                 >
                                     <option value="">Select a Role</option>
                                     <option value="student">Student</option>
-                                    <option value="student_contributor">
+                                    {/* <option value="student_contributor">
                                         Student Contributor
-                                    </option>
+                                    </option> */}
                                     <option value="admin">Admin</option>
                                     <option value="editor">Editor</option>
                                     <option value="writer">Writer</option>

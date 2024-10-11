@@ -61,7 +61,7 @@ class AdminAboutController extends Controller
         // $data['name']=strtoupper($data['name']);
 
         if ($image) {
-            // Store the image directly under the 'category/' directory and save its path
+            // Store the image directly under the 'members/' directory and save its path
             $data['member_image_path'] = $image->store('members', 'public');
         }
 
@@ -107,8 +107,8 @@ class AdminAboutController extends Controller
             if ($member->member_image_path) {
                 Storage::disk('public')->delete($member->member_image_path);
             }
-            // Store the new image directly under the 'member/' directory
-            $data['member_image_path'] = $image->store('member', 'public');
+            // Store the new image directly under the 'members/' directory
+            $data['member_image_path'] = $image->store('members', 'public');
         } else {
             // If no new image is uploaded, keep the existing image
             $data['member_image_path'] = $member->member_image_path;
@@ -125,6 +125,20 @@ class AdminAboutController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $member = Member::find($id);
+
+        if(!$member) {
+            return to_route('about.index')->with(['error' => 'Member not found.']);
+        }
+
+        // Delete the member image if it exists
+        if($member->member_image_path) {
+            Storage::disk('public')->delete($member->member_image_path);
+        }
+
+        // Delete the member
+        $member->delete();
+
+        return to_route('about.index')->with(['success' => 'Deleted successfully.']);
     }
 }

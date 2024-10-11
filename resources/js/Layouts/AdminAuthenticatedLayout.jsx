@@ -122,7 +122,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                             <Dropdown.Link
                                                 href={route("about.index")}
                                             >
-                                                About Us
+                                                Editorial Board
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>
@@ -326,7 +326,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                         href={route("about.index")}
                         active={route().current("about.index")}
                         >
-                            About Us
+                            Editorial Board
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
