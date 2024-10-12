@@ -31,7 +31,7 @@ class UpdateMemberRequest extends FormRequest
             'status' => ['required',
                 Rule::in(['active', 'inactive'])
             ],
-            'member_image_path' => ['required','image','mimes:jpg,png,jpeg'],
+            'member_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
         ];
     }
 }
