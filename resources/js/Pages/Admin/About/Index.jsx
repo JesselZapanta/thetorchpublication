@@ -7,7 +7,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
+import { MEMBER_CLASS_MAP, MEMBER_TEXT_MAP } from "@/constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -333,23 +333,23 @@ export default function Index({
                                                         {member.position}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {member.status}
-                                                        {/* <span
+                                                        {/* {member.status} */}
+                                                        <span
                                                             className={
                                                                 "px-2 py-1 rounded text-white " +
-                                                                CATEGORY_CLASS_MAP[
-                                                                    category
+                                                                MEMBER_CLASS_MAP[
+                                                                    member
                                                                         .status
                                                                 ]
                                                             }
                                                         >
                                                             {
-                                                                CATEGORY_TEXT_MAP[
-                                                                    category
+                                                                MEMBER_TEXT_MAP[
+                                                                    member
                                                                         .status
                                                                 ]
                                                             }
-                                                        </span> */}
+                                                        </span>
                                                     </td>
                                                     {/* <td className="px-3 py-2 text-nowrap">
                                                         <button

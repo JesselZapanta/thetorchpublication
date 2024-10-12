@@ -113,6 +113,16 @@ export const VISIBILITY_TEXT_MAP = {
     hidden: "Archive",
 };
 
+// Member status
+export const MEMBER_CLASS_MAP = {
+    active: "bg-green-600",
+    inactive: "bg-amber-600",
+};
+
+export const MEMBER_TEXT_MAP = {
+    active: "Active",
+    inactive: "Inactive",
+};
 
 
 export const getTaskDueClass = (dueDate) => {
