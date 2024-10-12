@@ -18,12 +18,18 @@
         width: 816px; 
     }
 
-
     @page {
-        size: 816px 1056px; 
-        margin: 0 96px;/**/
+        size: 816px 1056px;/* this is letter*/
+        margin: 0 !important; /* Ensure no margin is applied */
+    }
+
+    /* Additional styling to remove margins on elements */
+    .no-margin {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
+
 
 /* overide the calendar class */
 .fc-toolbar-title{
