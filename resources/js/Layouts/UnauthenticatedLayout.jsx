@@ -1,4 +1,5 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import BackToTop from "@/Components/BackToTop";
 import Footer from "@/Components/Footer";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
@@ -59,9 +60,7 @@ export default function UnauthenticatedLayout({
                                 </NavLink>
                                 <NavLink
                                     href={route("about-us")}
-                                    active={route().current(
-                                        "about-us"
-                                    )}
+                                    active={route().current("about-us")}
                                     className="text-nowrap"
                                 >
                                     About Us
@@ -193,6 +192,7 @@ export default function UnauthenticatedLayout({
 
             {/* Main Content */}
             <main>{children}</main>
+            <BackToTop />
             <Footer />
         </div>
     );
