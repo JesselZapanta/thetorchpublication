@@ -478,7 +478,7 @@ export default function Index({
                             />
                         </div>
                         {/* Status */}
-                        <div className="mt-2 w-full">
+                        <div className="mt-4 w-full">
                             <InputLabel
                                 htmlFor="status"
                                 value="Category status"

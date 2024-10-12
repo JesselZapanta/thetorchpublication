@@ -9,7 +9,10 @@ class Word extends Model
 {
     use HasFactory;
 
+    protected $table = 'words';
+
     protected $fillable = [
         'name',//todo might change to word insted of name
+        'status'
     ];
 }

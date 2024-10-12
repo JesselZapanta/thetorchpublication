@@ -40,6 +40,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
     const { data, setData, post, put, errors, reset, clearErrors, processing } =
         useForm({
             name: "",
+            status: "",
         });
 
     // for tables sorting and searching
@@ -106,6 +107,7 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
         setWord(word);
         setData({
             name: word.name,
+            status: word.status,
         }); // Set the form data with the selected word's data
         setIsCreateModalOpen(true);
     };

@@ -33,7 +33,7 @@ export default function About({ auth, categories, admins, members, activeAy }) {
                     className="flex flex-col md:flex-row gap-4 mt-16"
                 >
                     <img
-                        src="/images/about.jpg"
+                        src="/images/about.png"
                         className="w-full h-full object-cover"
                     />
                 </div>
@@ -45,13 +45,17 @@ export default function About({ auth, categories, admins, members, activeAy }) {
                         About Us
                     </h2>
                     <p data-aos="fade-up" className="text-justify py-4">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Possimus expedita magnam nisi ad fugit doloribus
-                        vel hic similique sint ducimus aliquid unde sunt
-                        molestiae, deserunt laudantium, facere inventore
-                        quibusdam facilis sapiente magni nam? Tempore asperiores
-                        hic ipsam! Voluptas eius accusantium alias modi
-                        recusandae eos tempora soluta? Ea incidunt magni non.
+                        The Torch is the official student publication of Tangub
+                        City Global College (TCGC), focused on giving students a
+                        space to share their ideas and opinions while following
+                        the values of honest journalism and press freedom. We
+                        aim to encourage thoughtful discussions, truth, and
+                        fairness in everything we publish, helping students
+                        express their views and connect with both the school and
+                        the wider community. The Torch is committed to being
+                        truthful and fair, promoting critical thinking and
+                        continuous learning, while reflecting the diverse voices
+                        and values of the TCGC community.
                     </p>
                 </div>
                 {/* mission vision */}
