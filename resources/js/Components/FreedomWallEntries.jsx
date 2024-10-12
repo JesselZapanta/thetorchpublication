@@ -104,6 +104,15 @@ export default function FreedomWallEntries({
         });
     }, []);
 
+    useEffect(() => {
+        const savedPosition = sessionStorage.getItem("scrollPosition");
+        if (savedPosition) {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+            sessionStorage.removeItem("scrollPosition");
+        }
+    }, []);
+
+
     // //state for modal
     // const [showFreedomWall, setShowFreedomWall] = useState(false);
 
@@ -247,14 +256,29 @@ export default function FreedomWallEntries({
                         {/* <p className="bg-cyan-500 text-white p-2 rounded-lg max-w-xs break-words text-justify">
                             {entry.body}
                         </p> */}
-                        <Link
+                        {/* <Link
                             href={route("freedom-wall.show", entry.id)}
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"
                             } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-[1.01] origin-bottom-right`}
                         >
                             {truncate(entry.body, 350)}
+                        </Link> */}
+                        <Link
+                            href={route("freedom-wall.show", entry.id)}
+                            onClick={() =>
+                                sessionStorage.setItem(
+                                    "scrollPosition",
+                                    window.scrollY
+                                )
+                            }
+                            className={`${
+                                emotionColors[entry.emotion] || "bg-gray-500"
+                            } text-white p-2 rounded-lg max-w-xs break-words text-justify transition-all duration-300 hover:scale-[1.01] origin-bottom-right`}
+                        >
+                            {truncate(entry.body, 350)}
                         </Link>
+
                         {/* <button
                             className={`${
                                 emotionColors[entry.emotion] || "bg-gray-500"

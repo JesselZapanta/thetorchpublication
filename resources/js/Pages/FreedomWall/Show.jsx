@@ -9,7 +9,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Show({ auth, categories, entry, success }) {
@@ -240,9 +240,15 @@ export default function Show({ auth, categories, entry, success }) {
                 </pre> */}
                 <div className="max-w-xl py-2 mx-auto w-full">
                     <div className="mt-6 flex justify-end gap-2">
-                        <SecondaryButton href={route("freedom-wall.index")}>
+                        {/* <SecondaryButton href={route("freedom-wall.index")}>
                             Back
-                        </SecondaryButton>
+                        </SecondaryButton> */}
+                        <Link
+                            href={route("freedom-wall.index")}
+                            className="px-4 text-nowrap py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                        >
+                            Back
+                        </Link>
                     </div>
                     <div className="relative mt-4 flex w-full flex-col rounded-xl dark:bg-gray-800 bg-gray-400 bg-clip-border text-gray-300 shadow-lg overflow-hidden">
                         <div className="dark:bg-gray-700 bg-gray-600 p-2 w-full h-16 flex justify-between items-center">

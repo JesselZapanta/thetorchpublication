@@ -541,7 +541,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Hide"}
+                            : "Confirm Archive"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
@@ -566,7 +566,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Hide"}
+                                : "Archive"}
                         </DangerButton>
                     </div>
                 </div>
