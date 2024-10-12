@@ -45,17 +45,24 @@ export default function About({ auth, categories, admins, members, activeAy }) {
                         About Us
                     </h2>
                     <p data-aos="fade-up" className="text-justify py-4">
-                        The Torch is the official student publication of Tangub
-                        City Global College (TCGC), focused on giving students a
-                        space to share their ideas and opinions while following
-                        the values of honest journalism and press freedom. We
-                        aim to encourage thoughtful discussions, truth, and
-                        fairness in everything we publish, helping students
-                        express their views and connect with both the school and
-                        the wider community. The Torch is committed to being
-                        truthful and fair, promoting critical thinking and
-                        continuous learning, while reflecting the diverse voices
-                        and values of the TCGC community.
+                        The Torch Publication is the official student
+                        publication of Tangub City Global College, and acts as a
+                        vibrant hub of information and creative expression for
+                        its students. Functioning as a beacon, it disseminates
+                        college news and events through its diverse
+                        publications. Monthly newsletters keep students informed
+                        of the latest happenings, while semestral tabloids offer
+                        in-depth exploration of stories and issues relevant to
+                        the college community. Additionally, the Torch
+                        Publication fosters creativity by providing a platform
+                        for students to showcase their literary talents through
+                        literary folios. More than just a source of information,
+                        it lives up to its tagline,{" "}
+                        <span className="font-bold">
+                            "Uplifting the truth, enlightening the minds,"
+                        </span>{" "}
+                        and empowers student voices and fosters a vibrant
+                        creative space within Tangub City Global College.
                     </p>
                 </div>
                 {/* mission vision */}
