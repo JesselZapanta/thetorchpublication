@@ -11,12 +11,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 
 
-export default function About({
-    auth,
-    categories,
-    admins,
-    members,
-}) {
+export default function About({ auth, categories, admins, members, activeAy }) {
     useEffect(() => {
         AOS.init({
             duration: 1000, // Animation duration in ms
@@ -29,21 +24,27 @@ export default function About({
             <Head title="About Us Page" />
 
             {/* <pre className="text-gray-900">
-                {JSON.stringify(admins, null, 2)}
+                {JSON.stringify(activeAy, null, 2)}
             </pre> */}
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
-                <div className="flex flex-col md:flex-row gap-4 mt-16">
+                <div
+                    data-aos="fade-up"
+                    className="flex flex-col md:flex-row gap-4 mt-16"
+                >
                     <img
                         src="/images/about.jpg"
                         className="w-full h-full object-cover"
                     />
                 </div>
                 <div>
-                    <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
+                    <h2
+                        data-aos="fade-up"
+                        className="text-center font-bold text-2xl text-emerald-950 mt-4"
+                    >
                         About Us
                     </h2>
-                    <p className="text-justify py-4">
+                    <p data-aos="fade-up" className="text-justify py-4">
                         Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit. Possimus expedita magnam nisi ad fugit doloribus
                         vel hic similique sint ducimus aliquid unde sunt
@@ -54,12 +55,18 @@ export default function About({
                     </p>
                 </div>
                 {/* mission vision */}
-                <div className="flex gap-4 flex-col md:flex-row ">
+                <div
+                    data-aos="fade-up"
+                    className="flex gap-4 flex-col md:flex-row "
+                >
                     <div>
-                        <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
+                        <h2
+                            data-aos="fade-up"
+                            className="text-center font-bold text-2xl text-emerald-950 mt-4"
+                        >
                             Mission
                         </h2>
-                        <p className="text-justify py-4">
+                        <p data-aos="fade-up" className="text-justify py-4">
                             To provide a platform for students to share
                             perspectives, disseminate information, and
                             participate in intellectual discourse, while
@@ -69,10 +76,13 @@ export default function About({
                         </p>
                     </div>
                     <div>
-                        <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
+                        <h2
+                            data-aos="fade-up"
+                            className="text-center font-bold text-2xl text-emerald-950 mt-4"
+                        >
                             Vision
                         </h2>
-                        <p className="text-justify py-4">
+                        <p data-aos="fade-up" className="text-justify py-4">
                             To be a leading student publication that stands for
                             the principles of press freedom, ethical journalism,
                             and responsible reporting, with the goal of
@@ -83,12 +93,12 @@ export default function About({
                     </div>
                 </div>
                 {/* goals */}
-                <div className="">
+                <div data-aos="fade-up">
                     <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
                         Goals
                     </h2>
                     <div className="mx-auto max-w-xl">
-                        <div className="flex gap-4 py-4">
+                        <div data-aos="fade-up" className="flex gap-4 py-4">
                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 text-lg font-bold text-gray-50 rounded-full bg-emerald-950">
                                 1
                             </div>
@@ -100,7 +110,7 @@ export default function About({
                                 societal concerns.
                             </p>
                         </div>
-                        <div className="flex gap-4 py-4">
+                        <div data-aos="fade-up" className="flex gap-4 py-4">
                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 text-lg font-bold text-gray-50 rounded-full bg-emerald-950">
                                 2
                             </div>
@@ -112,7 +122,7 @@ export default function About({
                                 large.
                             </p>
                         </div>
-                        <div className="flex gap-4 py-4">
+                        <div data-aos="fade-up" className="flex gap-4 py-4">
                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 text-lg font-bold text-gray-50 rounded-full bg-emerald-950">
                                 2
                             </div>
@@ -127,21 +137,30 @@ export default function About({
                     </div>
                 </div>
                 {/* Editorial Board */}
-                <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
+                <h2
+                    data-aos="fade-up"
+                    className="text-center font-bold text-2xl text-emerald-950 mt-4"
+                >
                     Editorial Board
                 </h2>
-                <p className="text-center font-bold text-md text-emerald-950">
-                    A.Y. 2024 - 2025
+                <p
+                    data-aos="fade-up"
+                    className="text-center font-bold text-md text-emerald-950"
+                >
+                    {activeAy.description}
                 </p>
                 {/* admins */}
-                <div className="max-w-3xl mx-auto ">
+                <div data-aos="fade-up" className="max-w-3xl mx-auto ">
                     <div className="grid sm:grid-cols-1 lg:grid-cols-2  py-6 mx-auto">
                         {/* user */}
                         {admins.data.length < 0 && (
                             <p className="col-span-2">No data available.</p>
                         )}
                         {admins.data.map((admin) => (
-                            <div className="flex flex-col justify-center items-center">
+                            <div
+                                data-aos="fade-up"
+                                className="flex flex-col justify-center items-center"
+                            >
                                 <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
                                     {admin.member_image_path && (
                                         <img
@@ -164,7 +183,10 @@ export default function About({
                     </div>
                 </div>
 
-                <h2 className="text-center font-bold text-2xl text-emerald-950 mt-4">
+                <h2
+                    data-aos="fade-up"
+                    className="text-center font-bold text-2xl text-emerald-950 mt-4"
+                >
                     Members
                 </h2>
 
@@ -175,7 +197,10 @@ export default function About({
                             <p className="col-span-2">No data available.</p>
                         )}
                         {members.data.map((member) => (
-                            <div className="flex flex-col justify-center items-center">
+                            <div
+                                data-aos="fade-up"
+                                className="flex flex-col justify-center items-center"
+                            >
                                 <div className="rounded-full overflow-hidden w-52 h-52 border-2 border-indigo-500">
                                     {member.member_image_path && (
                                         <img

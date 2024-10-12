@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\HomeArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\HomeNewsletterResource;
 use App\Http\Resources\MemberResource;
+use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
@@ -177,15 +179,24 @@ class HomeController extends Controller
                         ->orderBy('id', 'asc')
                         ->get();
 
+        //members 
+
         $members = Member::whereIn('role', ['editor', 'writer', 'designer'])
                     ->where('status', 'active')
                     ->orderBy('id', 'asc')
                         ->get();
 
+        $activeAy = AcademicYear::where('status', 'active')->first();
+
+        if (!$activeAy) {
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+        }
+
         return inertia('About', [
             'categories' => CategoryResource::collection($categories),
             'admins' => MemberResource::collection($admins),
             'members' => MemberResource::collection($members),
+            'activeAy' => new AcademicYearResource($activeAy),
         ]);
     }
 
