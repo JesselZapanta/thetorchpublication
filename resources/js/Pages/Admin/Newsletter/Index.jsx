@@ -23,6 +23,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import SearchInput from "@/Components/SearchInput";
+import SelectInput from "@/Components/SelectInput";
 
 export default function Index({ auth, newsletters, queryParams = null, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
@@ -74,6 +75,14 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
         }
     };
 
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("newsletter.index"), queryParams, {
+            preserveState: true,
+        });
+    };
+
     const sortChanged = (name) => {
         if (name === queryParams.sort_field) {
             queryParams.sort_direction =
@@ -110,7 +119,7 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
         }
         return text;
     };
-    
+
     return (
         <AdminAuthenticatedLayout
             AdminBadgeCount={AdminBadgeCount}
@@ -213,23 +222,53 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex justify-between gap-2 flex-col sm:flex-row">
-                                <div className="w-full lg:w-[50%] gap-2">
-                                    <SearchInput
-                                        className="w-full"
-                                        defaultValue={queryParams.description}
-                                        route={route("newsletter.index")}
-                                        queryParams={queryParams}
-                                        placeholder="Search Newsletter"
-                                        onChange={(e) =>
-                                            searchFieldChanged(
-                                                "description",
-                                                e.target.value
-                                            )
-                                        }
-                                        onKeyPress={(e) =>
-                                            onKeyPressed("description", e)
-                                        }
-                                    />
+                                <div className="w-full flex gap-2">
+                                    <div className="w-full">
+                                        <SearchInput
+                                            className="w-full"
+                                            defaultValue={
+                                                queryParams.description
+                                            }
+                                            route={route("newsletter.index")}
+                                            queryParams={queryParams}
+                                            placeholder="Search Newsletter"
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "description",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("description", e)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="w-[40%]">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.status}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Status</option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                            <option value="revision">
+                                                Revision
+                                            </option>
+                                            <option value="approved">
+                                                Approved
+                                            </option>
+                                            <option value="distributed">
+                                                Distributed
+                                            </option>
+                                        </SelectInput>
+                                    </div>
                                 </div>
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
