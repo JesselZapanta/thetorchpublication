@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Dropdown from "@/Components/Dropdown";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -133,7 +134,7 @@ export default function Index({
             WriterBadgeCount={WriterBadgeCount}
             user={auth.user}
             header={
-                <div className="flex items-center justify-between h-6">
+                <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-md lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
@@ -298,9 +299,11 @@ export default function Index({
                                     </div>
                                 </div>
                                 <div>
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
+                                        route={route("writer-article.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onChange={(e) =>
                                             searchFieldChanged(

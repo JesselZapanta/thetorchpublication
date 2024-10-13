@@ -22,6 +22,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
+import Dropdown from "@/Components/Dropdown";
 
 export default function Index({
     auth,
@@ -354,9 +356,13 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.body}
+                                        route={route(
+                                            "writer-review-report-freedom-wall.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Freedom Wall"
                                         onKeyPress={(e) =>
                                             onKeyPressed("body", e)
