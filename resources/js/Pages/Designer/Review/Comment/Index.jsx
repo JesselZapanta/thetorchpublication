@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import Dropdown from "@/Components/Dropdown";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, reportedComments, queryParams, flash, DesignerBadgeCount }) {
     // Display flash messages if they exist
@@ -318,6 +319,14 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                         </>
                                     )}
                                 </Link>
+                                <Link
+                                    href={route(
+                                        "designer-review-report-newsletter.index"
+                                    )}
+                                    className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
+                                >
+                                    Newsletters
+                                </Link>
                             </Dropdown.Content>
                         </Dropdown>
                     </div>
@@ -342,9 +351,13 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.body}
+                                        route={route(
+                                            "designer-review-report-comment.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Freedom Wall"
                                         onKeyPress={(e) =>
                                             onKeyPressed("body", e)

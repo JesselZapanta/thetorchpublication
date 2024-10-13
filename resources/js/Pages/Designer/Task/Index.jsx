@@ -11,6 +11,7 @@ import { EyeIcon } from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, tasks, queryParams = null, flash, DesignerBadgeCount }) {
     // Display flash messages if they exist
@@ -128,9 +129,11 @@ export default function Index({ auth, tasks, queryParams = null, flash, Designer
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
                                     <div className="w-full">
-                                        <TextInput
+                                        <SearchInput
                                             className="w-full"
                                             defaultValue={queryParams.name}
+                                            route={route("designer-task.index")}
+                                            queryParams={queryParams}
                                             placeholder="Task Name"
                                             onChange={(e) =>
                                                 searchFieldChanged(

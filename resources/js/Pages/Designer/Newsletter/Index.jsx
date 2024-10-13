@@ -22,6 +22,8 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { NEWSLETTER_PRIORITY_CLASS_MAP, NEWSLETTER_PRIORITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import Dropdown from "@/Components/Dropdown";
+import SearchInput from "@/Components/SearchInput";
+import SelectInput from "@/Components/SelectInput";
 
 export default function Index({
     auth,
@@ -47,7 +49,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("newsletter.index"), queryParams, {
+            router.get(route("designer-newsletter.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -64,7 +66,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("newsletter.index"),
+                    route("designer-newsletter.index"),
                     {},
                     {
                         preserveState: true,
@@ -72,11 +74,19 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("newsletter.index"), queryParams, {
+                router.get(route("designer-newsletter.index"), queryParams, {
                     preserveState: true,
                 });
             }
         }
+    };
+
+    // Handle dropdown select changes
+    const handleSelectChange = (name, value) => {
+        queryParams[name] = value;
+        router.get(route("designer-newsletter.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     const sortChanged = (name) => {
@@ -87,7 +97,7 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("newsletter.index"), queryParams);
+        router.get(route("designer-newsletter.index"), queryParams);
     };
 
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -250,7 +260,7 @@ export default function Index({
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex justify-between gap-2">
-                                <div className="w-full lg:w-[50%] gap-2">
+                                {/* <div className="w-full lg:w-[50%] gap-2">
                                     <TextInput
                                         className="w-full"
                                         defaultValue={queryParams.description}
@@ -265,6 +275,56 @@ export default function Index({
                                             onKeyPressed("description", e)
                                         }
                                     />
+                                </div> */}
+                                <div className="w-full flex gap-2">
+                                    <div className="w-full">
+                                        <SearchInput
+                                            className="w-full"
+                                            defaultValue={
+                                                queryParams.description
+                                            }
+                                            route={route(
+                                                "designer-newsletter.index"
+                                            )}
+                                            queryParams={queryParams}
+                                            placeholder="Search Newsletter"
+                                            onChange={(e) =>
+                                                searchFieldChanged(
+                                                    "description",
+                                                    e.target.value
+                                                )
+                                            }
+                                            onKeyPress={(e) =>
+                                                onKeyPressed("description", e)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="w-[40%]">
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={queryParams.status}
+                                            onChange={(e) =>
+                                                handleSelectChange(
+                                                    "status",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="">Status</option>
+                                            <option value="pending">
+                                                Pending
+                                            </option>
+                                            <option value="revision">
+                                                Revision
+                                            </option>
+                                            <option value="approved">
+                                                Approved
+                                            </option>
+                                            <option value="distributed">
+                                                Distributed
+                                            </option>
+                                        </SelectInput>
+                                    </div>
                                 </div>
                             </div>
                             <div className="overflow-auto mt-2">

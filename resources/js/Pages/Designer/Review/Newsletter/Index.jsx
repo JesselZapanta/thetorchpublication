@@ -25,6 +25,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -260,7 +261,8 @@ export default function Index({
                                         Content Type
                                     </span>
 
-                                    {DesignerBadgeCount.totalReportCount > 0 && (
+                                    {DesignerBadgeCount.totalReportCount >
+                                        0 && (
                                         <>
                                             <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
                                                 {DesignerBadgeCount.totalReportCount >
@@ -367,9 +369,13 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.description}
+                                        route={route(
+                                            "designer-review-report-newsletter.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Newsletter"
                                         onKeyPress={(e) =>
                                             onKeyPressed("description", e)
