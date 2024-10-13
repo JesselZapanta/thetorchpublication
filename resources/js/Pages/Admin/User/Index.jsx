@@ -12,7 +12,7 @@ import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-import { PencilSquareIcon, TrashIcon, ListBulletIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/16/solid";
+import { PencilSquareIcon, TrashIcon, ListBulletIcon, AdjustmentsHorizontalIcon, MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -212,7 +212,7 @@ export default function Index({
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
-                                    <div className="w-full">
+                                    <div className="w-full flex">
                                         <TextInput
                                             className="w-full"
                                             defaultValue={
@@ -225,12 +225,26 @@ export default function Index({
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyPress={(e) =>
+                                            onKeyDown={(e) =>
                                                 onKeyPressed("student_id", e)
                                             }
                                         />
+                                        {/* <button
+                                            onClick={() => {
+                                                // Trigger search on button click using the current value in queryParams
+                                                router.get(
+                                                    route("user.index"),
+                                                    queryParams,
+                                                    {
+                                                        preserveState: true,
+                                                    }
+                                                );
+                                            }}
+                                        >
+                                            <MagnifyingGlassIcon className="w-6 text-indigo-900" />
+                                        </button> */}
                                     </div>
-                                    <div className="w-full">
+                                    <div className="w-full flex">
                                         <TextInput
                                             className="w-full"
                                             defaultValue={queryParams.name}
@@ -241,10 +255,24 @@ export default function Index({
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyPress={(e) =>
+                                            onKeyDown={(e) =>
                                                 onKeyPressed("name", e)
                                             }
                                         />
+                                        {/* <button
+                                            onClick={() => {
+                                                // Trigger search on button click using the current value in queryParams
+                                                router.get(
+                                                    route("user.index"),
+                                                    queryParams,
+                                                    {
+                                                        preserveState: true,
+                                                    }
+                                                );
+                                            }}
+                                        >
+                                            <MagnifyingGlassIcon className="w-6 text-indigo-900" />
+                                        </button> */}
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
@@ -259,7 +287,7 @@ export default function Index({
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyPress={(e) =>
+                                            onKeyDown={(e) =>
                                                 onKeyPressed("email", e)
                                             }
                                         />

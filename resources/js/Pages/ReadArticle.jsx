@@ -33,6 +33,29 @@ export default function ReadArticle({ auth, article, categories, comments, flash
 
     const [isSpeaking, setIsSpeaking] = useState(false);
 
+    const MAX_CHUNK_LENGTH = 1000; // You can adjust this length
+
+    const chunkText = (text) => {
+        const words = text.split(" ");
+        let chunks = [];
+        let currentChunk = "";
+
+        for (let word of words) {
+            if ((currentChunk + word).length <= MAX_CHUNK_LENGTH) {
+                currentChunk += word + " ";
+            } else {
+                chunks.push(currentChunk.trim());
+                currentChunk = word + " ";
+            }
+        }
+
+        if (currentChunk) {
+            chunks.push(currentChunk.trim());
+        }
+
+        return chunks;
+    };
+
     // Function to strip HTML tags
     const stripHtml = (html) => {
         const doc = new DOMParser().parseFromString(html, "text/html");
@@ -50,36 +73,46 @@ export default function ReadArticle({ auth, article, categories, comments, flash
             window.speechSynthesis.cancel();
             setIsSpeaking(false);
         } else {
-            // Get the selected text and normalize it if there is any selection
             const selectedText = window.getSelection().toString();
             const cleanSelectedText = selectedText
                 ? normalizeText(stripHtml(selectedText))
                 : "";
 
-            // Normalize both the article title and body
-            const cleanTitle = normalizeText(article.title); // Normalize title
-            const cleanText = stripHtml(article.body); // Strip HTML tags from body
-            const normalizedText = normalizeText(cleanText); // Normalize body content
+            const cleanTitle = normalizeText(article.title);
+            const cleanText = stripHtml(article.body);
+            const normalizedText = normalizeText(cleanText);
 
-            // Use normalized selected text if available, otherwise use article content
             const textToRead =
                 cleanSelectedText ||
                 `${cleanTitle}. Written by ${article.createdBy.name}. ${normalizedText}`;
 
-            const utterance = new SpeechSynthesisUtterance(textToRead);
+            const textChunks = chunkText(textToRead); // Split the text into chunks
 
-            utterance.onend = () => {
-                setIsSpeaking(false);
-            };
+            let chunkIndex = 0;
 
-            utterance.onerror = () => {
-                setIsSpeaking(false);
+            const speakNextChunk = () => {
+                if (chunkIndex < textChunks.length) {
+                    const utterance = new SpeechSynthesisUtterance(
+                        textChunks[chunkIndex]
+                    );
+                    utterance.onend = () => {
+                        chunkIndex++;
+                        speakNextChunk(); // Speak the next chunk
+                    };
+                    utterance.onerror = () => {
+                        setIsSpeaking(false);
+                    };
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    setIsSpeaking(false);
+                }
             };
 
             setIsSpeaking(true);
-            window.speechSynthesis.speak(utterance);
+            speakNextChunk(); // Start speaking the first chunk
         }
     };
+
 
 
 

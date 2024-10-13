@@ -430,7 +430,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                 <div className="mt-4 w-full">
                                     <InputLabel
                                         htmlFor="article_image_path"
-                                        value="Category Image"
+                                        value="Article Image"
                                     />
 
                                     <TextInput
