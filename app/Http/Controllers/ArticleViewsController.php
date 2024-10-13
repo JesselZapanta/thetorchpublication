@@ -12,12 +12,17 @@ class ArticleViewsController extends Controller
     public function incrementViews(Request $request, $articleId)
     {
          // Check if the user is authenticated
-        if (!Auth::check()) {
-            // Do not increment if the user is not authenticated
-            return redirect()->route('article.read', $articleId);
-        }
+        // if (!Auth::check()) {
+        //     // Do not increment if the user is not authenticated
+        //     return redirect()->route('article.read', $articleId);
+        // }
         
-        $user = Auth::user();
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            $user = null; // Set user to null if not authenticated
+        } else {
+            $user = Auth::user()->id; // Get the authenticated user
+        }
 
         $activeAy = AcademicYear::where('status', 'active')->first();
 
@@ -41,7 +46,7 @@ class ArticleViewsController extends Controller
 
         ArticleView::create([
             'article_id' => $articleId,
-            'user_id' => $user->id,
+            'user_id' => $user,
             'academic_year_id' => $activeAy->id,
         ]);
 
