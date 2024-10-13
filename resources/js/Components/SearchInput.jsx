@@ -7,9 +7,11 @@ export default forwardRef(function SearchInput(
         type = "text",
         className = "",
         isFocused = false,
+        value,
+        onChange,
         queryParams = {},
         route,
-        onKeyPressed,
+        onKeyPress,
         ...props
     },
     ref
@@ -35,6 +37,8 @@ export default forwardRef(function SearchInput(
             <input
                 {...props}
                 type={type}
+                value={value} // Controlled input
+                onChange={onChange} // Handle input change
                 className={
                     "border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm " +
                     className
@@ -44,6 +48,9 @@ export default forwardRef(function SearchInput(
                     if (e.key === "Enter") {
                         e.preventDefault();
                         handleSearch();
+                        if (onKeyPress) {
+                            onKeyPress(e); // Call the optional onKeyPress prop if provided
+                        }
                     }
                 }}
             />

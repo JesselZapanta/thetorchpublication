@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import ArticleCard from "@/Components/ArticleCard";
 import { Head, router } from "@inertiajs/react";
 import ArticlePagination from "@/Components/ArticlePagination";
+import SearchInput from "@/Components/SearchInput";
 
 export default function ByCategory({
     auth,
@@ -97,41 +98,64 @@ export default function ByCategory({
                         {currentCategory.name}
                     </p>
                 </div>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center py-4 overflow-hidden flex gap-2">
-                    <SelectInput
-                        className="w-full sm:w-1/3 p-2 border border-gray-300 rounded-lg"
-                        value={sort}
-                        onChange={handleSortChange} // Handle the change
-                    >
-                        <option value="date_desc">Date: Descending</option>
-                        <option value="date_asc">Date: Ascending</option>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center py-4 overflow-hidden gap-2">
+                    <div className="grid grid-cols-3 gap-2">
+                        <div className="w-full">
+                            <SelectInput
+                                className="w-full"
+                                value={sort}
+                                onChange={handleSortChange} // Handle the change
+                            >
+                                <option value="date_desc">
+                                    Date: Descending
+                                </option>
+                                <option value="date_asc">
+                                    Date: Ascending
+                                </option>
 
-                        <option value="title_desc">Title: Z-A</option>
-                        <option value="title_asc">Title: A-Z</option>
+                                <option value="title_desc">Title: Z-A</option>
+                                <option value="title_asc">Title: A-Z</option>
 
-                        <option value="views_desc">Views: Descending</option>
-                        <option value="views_asc">Views: Ascending</option>
+                                <option value="views_desc">
+                                    Views: Descending
+                                </option>
+                                <option value="views_asc">
+                                    Views: Ascending
+                                </option>
 
-                        <option value="ratings_desc">
-                            Ratings: Descending(5 - 0)
-                        </option>
-                        <option value="ratings_asc">
-                            Ratings: Ascending(0 - 5)
-                        </option>
+                                <option value="ratings_desc">
+                                    Ratings: Descending(5 - 0)
+                                </option>
+                                <option value="ratings_asc">
+                                    Ratings: Ascending(0 - 5)
+                                </option>
 
-                        <option value="30_days_desc">30 Days Ago</option>
-                        <option value="60_days_desc">60 Days Ago</option>
-                        <option value="90_days_desc">90 Days Ago</option>
-                    </SelectInput>
-
-                    <TextInput
-                        type="text"
-                        placeholder="Search articles..."
-                        value={search}
-                        onChange={handleSearchChange}
-                        onKeyPress={handleKeyPress} // Trigger search on Enter key
-                        className="w-full sm:w-2/3 p-2 border border-gray-300 rounded-lg"
-                    />
+                                <option value="30_days_desc">
+                                    30 Days Ago
+                                </option>
+                                <option value="60_days_desc">
+                                    60 Days Ago
+                                </option>
+                                <option value="90_days_desc">
+                                    90 Days Ago
+                                </option>
+                            </SelectInput>
+                        </div>
+                        <div className="w-full col-span-2">
+                            <SearchInput
+                                type="text"
+                                placeholder="Search articles..."
+                                value={search}
+                                onChange={handleSearchChange} 
+                                onKeyPress={handleKeyPress} 
+                                className="w-full"
+                                queryParams={{ sort, search }} 
+                                route={route("articles.byCategory", {
+                                    id: currentCategory.id,
+                                })}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
                     {/* <pre className="text-white">

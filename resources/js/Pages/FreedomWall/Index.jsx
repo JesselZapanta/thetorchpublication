@@ -6,6 +6,7 @@ import FreedomWallEntries from "@/Components/FreedomWallEntries";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
+import SearchInput from "@/Components/SearchInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TextAreaInput from "@/Components/TextAreaInput";
@@ -290,10 +291,10 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                         </button>
                     )}
                 </div>
-                <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="flex gap-4">
+                <div className="max-w-7xl py-2 mx-auto w-full grid sm:grid-cols-1 lg:grid-cols-2 gap-2">
+                    <div className="flex gap-2">
                         <SelectInput
-                            className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
+                            className="w-full"
                             value={sort}
                             onChange={handleSortChange} // Handle the change
                         >
@@ -319,7 +320,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                         </SelectInput>
 
                         <SelectInput
-                            className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
+                            className="w-full"
                             value={emotionSort}
                             onChange={handleEmotionSortChange} // Handle the change
                         >
@@ -337,13 +338,17 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                         </SelectInput>
                     </div>
 
-                    <TextInput
-                        className="w-full p-2 border border-gray-300 rounded-lg mt-1 md:mt-4"
-                        value={search}
-                        placeholder="Search Entry..."
-                        onChange={handleSearchChange}
-                        onKeyPress={handleKeyPress} // Trigger search on Enter key
-                    />
+                    <div className="w-full">
+                        <SearchInput
+                            className="w-full"
+                            value={search}
+                            placeholder="Search Entry..."
+                            queryParams={{ sort, emotionSort, search }} // Pass query parameters for search
+                            route={route("freedom-wall.index")}
+                            onChange={handleSearchChange}
+                            onKeyPress={handleKeyPress} // Trigger search on Enter key
+                        />
+                    </div>
                 </div>
                 {/* Freedom Wall Entries */}
                 <FreedomWallEntries
