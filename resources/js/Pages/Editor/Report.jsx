@@ -404,6 +404,11 @@ export default function Report({
                                                 </div>
                                             ))}
                                         </div>
+                                        {editedArticlesDetais.length === 0 && (
+                                            <p className="text-center my-12">
+                                                No data available
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
