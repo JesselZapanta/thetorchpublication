@@ -24,6 +24,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import Dropdown from "@/Components/Dropdown";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -352,9 +353,13 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
+                                        route={route(
+                                            "editor-review-report-article.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onKeyPress={(e) =>
                                             onKeyPressed("title", e)
@@ -591,27 +596,29 @@ export default function Index({
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {auth
+                                                                        {(auth
                                                                             .user
                                                                             .role ===
                                                                             "admin" &&
                                                                             article.visibility ===
-                                                                                "hidden" ||
-                                                                            article
+                                                                                "hidden") ||
+                                                                            (article
                                                                                 .createdBy
                                                                                 .id ===
-                                                                                auth.user.id &&(
-                                                                                    <DropdownAction.Btn
-                                                                                        onClick={() =>
-                                                                                            openDeleteModal(
-                                                                                                article
-                                                                                            )
-                                                                                        }
-                                                                                    >
-                                                                                        <TrashIcon className="w-6 text-red-600" />
-                                                                                        Delete
-                                                                                    </DropdownAction.Btn>
-                                                                                )}
+                                                                                auth
+                                                                                    .user
+                                                                                    .id && (
+                                                                                <DropdownAction.Btn
+                                                                                    onClick={() =>
+                                                                                        openDeleteModal(
+                                                                                            article
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <TrashIcon className="w-6 text-red-600" />
+                                                                                    Delete
+                                                                                </DropdownAction.Btn>
+                                                                            ))}
                                                                     </DropdownAction.Content>
                                                                 </DropdownAction>
                                                             </div>

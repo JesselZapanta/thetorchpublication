@@ -13,6 +13,7 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, tasks, queryParams = null, flash, EditorBadgeCount }) {
     // Display flash messages if they exist
@@ -130,8 +131,10 @@ export default function Index({ auth, tasks, queryParams = null, flash, EditorBa
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
                                     <div className="w-full">
-                                        <TextInput
+                                        <SearchInput
                                             className="w-full"
+                                            route={route("editor-task.index")}
+                                            queryParams={queryParams}
                                             defaultValue={queryParams.name}
                                             placeholder="Task Name"
                                             onChange={(e) =>

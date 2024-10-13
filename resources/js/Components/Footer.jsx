@@ -10,7 +10,9 @@ export default function Footer() {
 
                     <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4">
                         <div>
-                            <h1 className="font-bold text-white mb-4">TCGC</h1>
+                            <h1 className="font-bold text-white mb-4">
+                                Tangub City Global College{" "}
+                            </h1>
                             <ul className="text-white flex flex-col gap-2">
                                 <li className="flex items-center gap-2">
                                     <svg
