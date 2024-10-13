@@ -17,6 +17,7 @@ import { PencilSquareIcon, TrashIcon, ListBulletIcon, AdjustmentsHorizontalIcon,
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -212,42 +213,32 @@ export default function Index({
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
                                 <div className="flex gap-2">
-                                    <div className="w-full flex">
-                                        <TextInput
+                                    <div className="w-full">
+                                        <SearchInput
                                             className="w-full"
                                             defaultValue={
                                                 queryParams.student_id
                                             }
                                             placeholder="Search Student ID"
+                                            route={route("user.index")}
+                                            queryParams={queryParams}
                                             onChange={(e) =>
                                                 searchFieldChanged(
                                                     "student_id",
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyDown={(e) =>
+                                            onKeyPressed={(e) =>
                                                 onKeyPressed("student_id", e)
                                             }
                                         />
-                                        {/* <button
-                                            onClick={() => {
-                                                // Trigger search on button click using the current value in queryParams
-                                                router.get(
-                                                    route("user.index"),
-                                                    queryParams,
-                                                    {
-                                                        preserveState: true,
-                                                    }
-                                                );
-                                            }}
-                                        >
-                                            <MagnifyingGlassIcon className="w-6 text-indigo-900" />
-                                        </button> */}
                                     </div>
-                                    <div className="w-full flex">
-                                        <TextInput
+                                    <div className="w-full">
+                                        <SearchInput
                                             className="w-full"
                                             defaultValue={queryParams.name}
+                                            route={route("user.index")}
+                                            queryParams={queryParams}
                                             placeholder="Search Name"
                                             onChange={(e) =>
                                                 searchFieldChanged(
@@ -255,31 +246,19 @@ export default function Index({
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyDown={(e) =>
+                                            onKeyPress={(e) =>
                                                 onKeyPressed("name", e)
                                             }
                                         />
-                                        {/* <button
-                                            onClick={() => {
-                                                // Trigger search on button click using the current value in queryParams
-                                                router.get(
-                                                    route("user.index"),
-                                                    queryParams,
-                                                    {
-                                                        preserveState: true,
-                                                    }
-                                                );
-                                            }}
-                                        >
-                                            <MagnifyingGlassIcon className="w-6 text-indigo-900" />
-                                        </button> */}
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="w-full">
-                                        <TextInput
+                                        <SearchInput
                                             className="w-full"
                                             defaultValue={queryParams.email}
+                                            route={route("user.index")}
+                                            queryParams={queryParams}
                                             placeholder="Search Email"
                                             onChange={(e) =>
                                                 searchFieldChanged(
@@ -287,7 +266,7 @@ export default function Index({
                                                     e.target.value
                                                 )
                                             }
-                                            onKeyDown={(e) =>
+                                            onKeyPress={(e) =>
                                                 onKeyPressed("email", e)
                                             }
                                         />

@@ -79,12 +79,20 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                 : "";
 
             const cleanTitle = normalizeText(article.title);
+            const cleanAuthor = article.author
+                ? normalizeText(article.author) // Use article.author if it exists
+                : article.is_anonymous === "yes"
+                ? "Anonymous" // Show "Anonymous" if the article is marked as anonymous
+                : article.createdBy?.name
+                ? normalizeText(article.createdBy.name) // Use article.createdBy.name if it exists
+                : "Unknown Author"; // Fallback in case both are missing
+
             const cleanText = stripHtml(article.body);
             const normalizedText = normalizeText(cleanText);
 
             const textToRead =
                 cleanSelectedText ||
-                `${cleanTitle}. Written by ${article.createdBy.name}. ${normalizedText}`;
+                `${cleanTitle}. Written by ${cleanAuthor}. ${normalizedText}`;
 
             const textChunks = chunkText(textToRead); // Split the text into chunks
 

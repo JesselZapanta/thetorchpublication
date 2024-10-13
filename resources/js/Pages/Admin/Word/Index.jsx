@@ -19,6 +19,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 
 export default function Index({ auth, words, queryParams = null, flash, AdminBadgeCount }) {
@@ -184,9 +185,11 @@ export default function Index({ auth, words, queryParams = null, flash, AdminBad
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full lg:w-[50%] gap-2">
-                                <TextInput
+                                <SearchInput
                                     className="w-full"
                                     defaultValue={queryParams.name}
+                                    route={route("word.index")}
+                                    queryParams={queryParams}
                                     placeholder="Search Inappropriate Word"
                                     onChange={(e) =>
                                         searchFieldChanged(

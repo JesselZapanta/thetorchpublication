@@ -22,6 +22,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -203,9 +204,11 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.name}
+                                        route={route("category.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Category Name"
                                         onChange={(e) =>
                                             searchFieldChanged(

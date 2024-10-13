@@ -21,6 +21,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -227,7 +228,7 @@ export default function Index({
                             </div> */}
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
-                                <div className="flex gap-2">
+                                <div class="w-full grid grid-cols-2 lg:grid-cols-4 gap-2">
                                     <div className="w-full">
                                         <SelectInput
                                             className="w-full"
@@ -314,9 +315,11 @@ export default function Index({
                                     </div>
                                 </div>
                                 <div>
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
+                                        route={route("admin-article.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onChange={(e) =>
                                             searchFieldChanged(
@@ -338,7 +341,6 @@ export default function Index({
                                             
                                             
 
-                                           
                                             <th className="px-3 py-3 w-[50%]">
                                                 <TextInput
                                                     className="w-full"
@@ -357,7 +359,6 @@ export default function Index({
                                                     }
                                                 />
                                             </th>
-                                           
                                             <th className="px-3 py-3 w-[10%]"></th>
                                         </tr>
                                     </thead> */}

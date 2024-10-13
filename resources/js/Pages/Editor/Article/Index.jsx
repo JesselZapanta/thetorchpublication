@@ -219,7 +219,7 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
-                                <div className="flex gap-2">
+                                <div class="w-full grid grid-cols-2 lg:grid-cols-4 gap-2">
                                     <div className="w-full">
                                         <SelectInput
                                             className="w-full"

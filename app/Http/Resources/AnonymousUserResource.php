@@ -17,7 +17,7 @@ class AnonymousUserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return[
-            // 'id' => $this->id,
+            'id' => $this->id,
             'student_id' => 100001,
             'username' => 'Anonymous',
             'name' => 'Anonymous',

@@ -25,6 +25,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
@@ -372,9 +373,13 @@ export default function Index({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
+                                        route={route(
+                                            "admin-review-report-article.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onKeyPress={(e) =>
                                             onKeyPressed("title", e)

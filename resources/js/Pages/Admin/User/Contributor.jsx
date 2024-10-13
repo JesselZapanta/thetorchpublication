@@ -19,6 +19,7 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Contributor({
     auth,
@@ -144,9 +145,11 @@ export default function Contributor({
                             {/* sort and search */}
                             <div className="w-full grid grid-cols-3 gap-2">
                                 <div className="col-span-2">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.name}
+                                        route={route("admin-contributor.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Name"
                                         onChange={(e) =>
                                             searchFieldChanged(

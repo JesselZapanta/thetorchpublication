@@ -4,6 +4,7 @@ import Checkbox from "@/Components/Checkbox";
 import ConfirmButton from "@/Components/ConfirmButton";
 import Modal from "@/Components/Modal";
 import Pagination from "@/Components/Pagination";
+import SearchInput from "@/Components/SearchInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
@@ -253,9 +254,11 @@ export default function Index({
                                     </div>
                                 </div>
                                 <div>
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
+                                        route={route("newsletter.articles")}
+                                        queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onChange={(e) =>
                                             searchFieldChanged(
@@ -441,11 +444,10 @@ export default function Index({
                                                                     NO
                                                                 </button>
                                                             )}
-                                                            {
-                                                                article.is_newsletter === "added" && (
-                                                                    <span>Added</span>
-                                                                )
-                                                            }
+                                                        {article.is_newsletter ===
+                                                            "added" && (
+                                                            <span>Added</span>
+                                                        )}
                                                     </td>
                                                 </tr>
                                             ))

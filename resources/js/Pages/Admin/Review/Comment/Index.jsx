@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import DropdownAction from "@/Components/DropdownAction";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import Pagination from "@/Components/Pagination";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, reportedComments, queryParams, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
@@ -358,9 +359,13 @@ export default function Index({ auth, reportedComments, queryParams, flash, Admi
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.body}
+                                        route={route(
+                                            "admin-review-report-comment.index"
+                                        )}
+                                        queryParams={queryParams}
                                         placeholder="Search Comments"
                                         onKeyPress={(e) =>
                                             onKeyPressed("body", e)

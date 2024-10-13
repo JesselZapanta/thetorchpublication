@@ -21,6 +21,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AY_CLASS_MAP, AY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, academicYears, queryParams = null, flash, AdminBadgeCount }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -213,9 +214,11 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                             </div> */}
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.description}
+                                        route={route("academic-year.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Academic Year"
                                         onChange={(e) =>
                                             searchFieldChanged(

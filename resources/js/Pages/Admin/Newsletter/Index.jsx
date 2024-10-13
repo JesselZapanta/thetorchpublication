@@ -22,6 +22,7 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import SearchInput from "@/Components/SearchInput";
 
 export default function Index({ auth, newsletters, queryParams = null, flash, AdminBadgeCount }) {
     // Display flash messages if they exist
@@ -213,9 +214,11 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="flex justify-between gap-2 flex-col sm:flex-row">
                                 <div className="w-full lg:w-[50%] gap-2">
-                                    <TextInput
+                                    <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.description}
+                                        route={route("newsletter.index")}
+                                        queryParams={queryParams}
                                         placeholder="Search Newsletter"
                                         onChange={(e) =>
                                             searchFieldChanged(
