@@ -44,20 +44,29 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                                 {/* ID */}
                                 <div className="flex items-center gap-2">
                                     <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
-                                        {article.article_image_path && (
+                                        {article.createdBy
+                                            .profile_image_path && (
                                             <img
                                                 src={
-                                                    article.is_anonymous ===
-                                                    "yes"
+                                                    article.author
                                                         ? "/images/default/profile.jpg"
-                                                        : article.article_image_path
+                                                        : article.is_anonymous ===
+                                                          "yes"
+                                                        ? "/images/default/profile.jpg"
+                                                        : article.createdBy
+                                                              .profile_image_path
                                                 }
                                                 className="object-cover w-full h-full"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src =
+                                                        "/images/default/profile.jpg";
+                                                }}
                                                 alt={
                                                     article.is_anonymous ===
                                                     "yes"
                                                         ? "Default image"
-                                                        : article.article_image_path
+                                                        : "Profile Picture"
                                                 }
                                             />
                                         )}
@@ -144,7 +153,7 @@ export default function Index({ auth, article, EditorBadgeCount }) {
                                 </p> */}
 
                                 <div
-                                    className="text-base text-justify whitespace-pre-line"
+                                    className="article-body text-base text-justify whitespace-pre-line"
                                     dangerouslySetInnerHTML={{
                                         __html: article.body,
                                     }}

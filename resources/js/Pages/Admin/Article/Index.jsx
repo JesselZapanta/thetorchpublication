@@ -228,7 +228,7 @@ export default function Index({
                             </div> */}
                             {/* sort and search */}
                             <div className="w-full grid lg:grid-cols-2 gap-2">
-                                <div class="w-full grid grid-cols-2 lg:grid-cols-4 gap-2">
+                                <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-2">
                                     <div className="w-full">
                                         <SelectInput
                                             className="w-full"

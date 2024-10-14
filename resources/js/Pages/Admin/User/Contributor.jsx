@@ -302,7 +302,7 @@ export default function Contributor({
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
                                                                     "user.show",
-                                                                    application.id
+                                                                    application.user_id
                                                                 )}
                                                             >
                                                                 {

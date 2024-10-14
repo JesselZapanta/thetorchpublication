@@ -276,7 +276,8 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                                                             : article.is_anonymous ===
                                                               "yes"
                                                             ? "/images/default/profile.jpg"
-                                                            : article.article_image_path
+                                                            : article.createdBy
+                                                                  .profile_image_path
                                                     }
                                                     className="object-cover w-full h-full"
                                                     onError={(e) => {
@@ -288,7 +289,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                                                         article.is_anonymous ===
                                                         "yes"
                                                             ? "Default image"
-                                                            : article.article_image_path
+                                                            : "Profile Picture"
                                                     }
                                                 />
                                             )}
@@ -342,7 +343,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                             <div className="w-full h-[2px] bg-indigo-400 my-8"></div>
                             <div className="mt-8">
                                 <div
-                                    className="text-base text-justify whitespace-pre-line"
+                                    className="article-body text-base text-justify whitespace-pre-line"
                                     dangerouslySetInnerHTML={{
                                         __html: article.body,
                                     }}

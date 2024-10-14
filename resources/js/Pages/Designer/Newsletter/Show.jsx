@@ -44,7 +44,8 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                                 {/* ID */}
                                 <div className="flex items-center gap-2">
                                     <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
-                                        {article.article_image_path && (
+                                        {article.createdBy
+                                            .profile_image_path && (
                                             <img
                                                 src={
                                                     article.author
@@ -52,14 +53,20 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                                                         : article.is_anonymous ===
                                                           "yes"
                                                         ? "/images/default/profile.jpg"
-                                                        : article.article_image_path
+                                                        : article.createdBy
+                                                              .profile_image_path
                                                 }
                                                 className="object-cover w-full h-full"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src =
+                                                        "/images/default/profile.jpg";
+                                                }}
                                                 alt={
                                                     article.is_anonymous ===
                                                     "yes"
                                                         ? "Default image"
-                                                        : article.createdBy.name
+                                                        : "Profile Picture"
                                                 }
                                             />
                                         )}
@@ -116,9 +123,15 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                             </div>
                             {/* Body */}
                             <div className="mt-8">
-                                <p className="text-base text-justify whitespace-pre-line">
+                                {/* <p className="text-base text-justify whitespace-pre-line">
                                     {article.body}
-                                </p>
+                                </p> */}
+                                <div
+                                    className="article-body text-base text-justify whitespace-pre-line"
+                                    dangerouslySetInnerHTML={{
+                                        __html: article.body,
+                                    }}
+                                ></div>
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton

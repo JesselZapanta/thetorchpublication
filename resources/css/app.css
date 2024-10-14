@@ -36,6 +36,12 @@
   font-size: 1.2rem !important;
 }
 
+/* override the a tag in editor ckeditro */
+
+.article-body a {
+  color: blue;
+}
+
 /* .print-header,
 .print-footer {
   text-align: center;
