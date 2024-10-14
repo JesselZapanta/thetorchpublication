@@ -39,7 +39,7 @@ class MemberSeeder extends Seeder
                 'status' => 'active',
             ],
             [   
-                'name' => 'Meldhee Claire Kaamino',
+                'name' => 'Meldhee Claire Kaamiño',
                 'role' => 'editor',
                 'position' => 'Managing Editor/Graphic Designer',
                 'status' => 'active',

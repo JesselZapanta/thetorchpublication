@@ -54,8 +54,8 @@ return new class extends Migration
             $table->integer('report_count')->default(0);
 
 
-            $table->tinyText('visibility')->default('visible');//hidden
-            $table->foreignId('archive_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->tinyText('visibility')->default('visible');//archive
+            $table->foreignId('archive_by')->nullable()->constrained(table: 'users')->onDelete('set null');
 
             $table->timestamps();
         });
