@@ -17,8 +17,16 @@ class HomeArticleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Calculate average rating
-        $averageRating = $this->ratings->avg('rating');
+        // // Calculate average rating
+        // $averageRating = $this->ratings->avg('rating');
+
+         // Check if the resource (article) exists
+        if (!$this->resource) {
+            return [];
+        }
+
+        // Calculate the average rating if ratings exist, otherwise return 0
+        $averageRating = $this->ratings ? $this->ratings->avg('rating') : 0;
 
         return[
             'id' => $this->id,

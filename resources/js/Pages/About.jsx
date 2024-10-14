@@ -158,7 +158,7 @@ export default function About({ auth, categories, admins, members, activeAy }) {
                     data-aos="fade-up"
                     className="text-center font-bold text-md text-emerald-950"
                 >
-                    {activeAy.description}
+                    {activeAy && activeAy.description}
                 </p>
                 {/* admins */}
                 <div data-aos="fade-up" className="max-w-3xl mx-auto ">

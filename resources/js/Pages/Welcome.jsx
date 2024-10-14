@@ -34,13 +34,20 @@ export default function Welcome({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
                 <div className="flex flex-col md:flex-row gap-4 mt-16">
                     {/* Featured article */}
-                    <FeaturedArticle featuredArticle={featuredArticle} />
+                    {featuredArticle && featuredArticle.data?.length > 0 ? (
+                        <FeaturedArticle featuredArticle={featuredArticle} />
+                    ) : (
+                        <p className="text-center">No featured article.</p>
+                    )}
 
                     {/* Top Articles */}
                     <div className="w-full md:w-[35%] flex gap-4 flex-col">
                         {topArticles.data.map((article) => (
                             <ArticleCard key={article.id} article={article} />
                         ))}
+                        {topArticles.data.length === 0 && (
+                            <p className="text-center">No top articles.</p>
+                        )}
                     </div>
                 </div>
 
@@ -56,11 +63,17 @@ export default function Welcome({
                     The Latest
                 </h5>
 
-                <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div
+                    className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-4"
+                    data-aos="fade-up"
+                >
                     {/* <LatestArticles latestArticles={latestArticles} /> */}
                     {latestArticles.data.map((article) => (
                         <ArticleCard key={article.id} article={article} />
                     ))}
+                    {latestArticles.data.length === 0 && (
+                        <p className="text-center">No latest articles.</p>
+                    )}
                 </div>
 
                 <div

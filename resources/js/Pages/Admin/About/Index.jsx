@@ -585,10 +585,21 @@ export default function Index({
                             <SecondaryButton onClick={closeCreateModal}>
                                 Cancel
                             </SecondaryButton>
-                            <button
+                            {/* <button
                                 type="submit"
                                 disabled={processing}
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
+                            >
+                                {member ? "Update" : "Create"}
+                            </button> */}
+                            <button
+                                type="submit"
+                                disabled={processing} // Disable button when processing
+                                className={`px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded ${
+                                    processing
+                                        ? "cursor-not-allowed opacity-50"
+                                        : "hover:bg-emerald-700"
+                                }`}
                             >
                                 {member ? "Update" : "Create"}
                             </button>

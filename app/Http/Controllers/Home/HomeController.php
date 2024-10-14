@@ -34,11 +34,12 @@ class HomeController extends Controller
         // If there is no featured article, get the latest article
         if (!$featuredArticle) {
             $featuredArticle = Article::latest()
-                                ->where('status', 'published')
-                                // ->where('draft', 'no')
-                                ->where('visibility', 'visible')
-                                ->first();
+                ->where('status', 'published')
+                // ->where('draft', 'no')
+                ->where('visibility', 'visible')
+                ->first() ?? null;
         }
+
 
         // Get the top  articles with the most views
         $topArticles = Article::withCount('views') // Count the related views
@@ -67,7 +68,7 @@ class HomeController extends Controller
 
         return inertia('Welcome', [
             'categories' => CategoryResource::collection($categories),
-            'featuredArticle' => new HomeArticleResource($featuredArticle),
+            'featuredArticle' => $featuredArticle ? new HomeArticleResource($featuredArticle) : null,
             'topArticles' => HomeArticleResource::collection($topArticles),
             'latestArticles' => HomeArticleResource::collection($latestArticles),
             'latestNewsletter' => HomeNewsletterResource::collection($latestNewsletter),
@@ -189,14 +190,15 @@ class HomeController extends Controller
         $activeAy = AcademicYear::where('status', 'active')->first();
 
         if (!$activeAy) {
-            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
+            $activeAy = AcademicYear::orderBy('created_at', 'desc')->first() ?? null;
         }
 
         return inertia('About', [
             'categories' => CategoryResource::collection($categories),
             'admins' => MemberResource::collection($admins),
             'members' => MemberResource::collection($members),
-            'activeAy' => new AcademicYearResource($activeAy),
+            'activeAy' => $activeAy ? new AcademicYearResource($activeAy) : null,
+
         ]);
     }
 
