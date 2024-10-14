@@ -18,7 +18,10 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');//new ambot magamit bani HAHHA
             $table->text('body');
             $table->integer('report_count')->default(0);
-            $table->tinyText('visibility')->default('visible');//hidden
+            
+            $table->tinyText('visibility')->default('visible');//archive
+            $table->foreignId('archive_by')->nullable()->constrained('users')->onDelete('set null');
+
             $table->timestamps();
         });
     }

@@ -219,7 +219,7 @@ export default function Index({
                                             defaultValue={
                                                 queryParams.student_id
                                             }
-                                            placeholder="Search Student ID"
+                                            placeholder="Search ID"
                                             route={route("user.index")}
                                             queryParams={queryParams}
                                             onChange={(e) =>

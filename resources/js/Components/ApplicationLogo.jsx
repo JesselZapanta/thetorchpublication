@@ -3,8 +3,8 @@ export default function ApplicationLogo() {
         <div className="w-12 h-12 rounded-full overflow-hidden">
             <img
                 src="/images/logo.jpg"
-                alt=""
-                className="w-full"
+                alt="Torch Logo"
+                className="w-full j-full"
             />
         </div>
     );

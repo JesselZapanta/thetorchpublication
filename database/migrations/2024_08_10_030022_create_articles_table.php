@@ -35,9 +35,7 @@ return new class extends Migration
             $table->string('article_image_path')->nullable();
 
             $table->tinyText('status')->default('pending');
-            // $table->tinyText('draft')->default('no');
-            $table->tinyText('visibility')->default('visible');//hidden
-            
+
             $table->text('rejection_message')->nullable();
             $table->text('revision_message')->nullable();
             
@@ -54,14 +52,12 @@ return new class extends Migration
             $table->timestamp('published_date')->nullable();
 
             $table->integer('report_count')->default(0);
-            // $table->bigInteger('views')->default(0);
+
+
+            $table->tinyText('visibility')->default('visible');//hidden
+            $table->foreignId('archive_by')->nullable()->constrained('users')->onDelete('set null');
 
             $table->timestamps();
-
-            // todo save as draft, timeline[submitted_at, edited_at, rejected_at, revision_at, published_at]
-            //calendar time line
-            //version controll, not sure
-            // 
         });
     }
 

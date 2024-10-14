@@ -30,7 +30,6 @@ return new class extends Migration
             $table->tinyText('priority')->nullable();
             $table->tinyText('status')->default('pending');
             $table->tinyText('draft')->default('no');
-            $table->tinyText('visibility')->default('visible');//hidden
 
             $table->timestamp('assigned_date')->nullable();
 
@@ -51,6 +50,10 @@ return new class extends Migration
             $table->timestamp('due_date')->nullable();
 
             $table->string('task_image_path')->nullable();
+
+            
+            $table->tinyText('visibility')->default('visible');//archive
+            $table->foreignId('archive_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -34,7 +34,7 @@ export default function Welcome({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
                 <div className="flex flex-col md:flex-row gap-4 mt-16">
                     {/* Featured article */}
-                    {featuredArticle && featuredArticle.data?.length > 0 ? (
+                    {featuredArticle ? (
                         <FeaturedArticle featuredArticle={featuredArticle} />
                     ) : (
                         <p className="text-center">No featured article.</p>
@@ -104,7 +104,7 @@ export default function Welcome({
                 </div>
 
                 {/* <pre className="text-gray-900">
-                    {JSON.stringify(latestArticles, null, 2)}
+                    {JSON.stringify(featuredArticle, null, 2)}
                 </pre> */}
             </div>
         </UnauthenticatedLayout>
