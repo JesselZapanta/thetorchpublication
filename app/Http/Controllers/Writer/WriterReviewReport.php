@@ -67,7 +67,7 @@ class WriterReviewReport extends Controller
 
         $article->update(['visibility' => 'hidden']);
 
-        return to_route('writer-review-report-article.index')->with(['success' => 'Hide Successfully']);
+        return to_route('writer-review-report-article.index')->with(['success' => 'Archive Successfully']);
     }
     public function restoreArticle($id)
     {
@@ -170,7 +170,7 @@ class WriterReviewReport extends Controller
 
         $comment->update(['visibility' => 'hidden']);
 
-        return to_route('writer-review-report-comment.index')->with(['success' => 'Hide Successfully']);
+        return to_route('writer-review-report-comment.index')->with(['success' => 'Archive Successfully']);
     }
     public function restoreComment($id)
     {
@@ -269,7 +269,7 @@ class WriterReviewReport extends Controller
 
         $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('writer-review-report-freedom-wall.index')->with(['success' => 'Hide Successfully']);
+        return to_route('writer-review-report-freedom-wall.index')->with(['success' => 'Archive Successfully']);
     }
     public function restoreFreedomWall($id)
     {

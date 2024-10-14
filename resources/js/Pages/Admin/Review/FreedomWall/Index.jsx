@@ -667,7 +667,7 @@ export default function Index({
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
                         {confirmAction.type === "hide"
-                            ? "Confirm Hide"
+                            ? "Confirm Archive"
                             : confirmAction.type === "restore"
                             ? "Confirm Restore"
                             : confirmAction.type === "reject"
@@ -676,12 +676,12 @@ export default function Index({
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to hide this Freedom Wall Entry?"
+                            ? "Are you sure you want to archive this Freedom Wall Entry?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this hidden Freedom Wall Entry?"
+                            ? "Are you sure you want to restore this archive Freedom Wall Entry?"
                             : confirmAction.type === "restore"
                             ? "Are you sure you want to reject this reported Freedom Wall Entry?"
-                            : "Are you sure you want to delete this reported Freedom Wall Entry?"}
+                            : "Are you sure you want to permanently delete this reported Freedom Wall Entry?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -696,7 +696,7 @@ export default function Index({
                         </SecondaryButton>
                         <DangerButton onClick={handleAction} className="ml-2">
                             {confirmAction.type === "hide"
-                                ? "Hide"
+                                ? "Archive"
                                 : confirmAction.type === "restore"
                                 ? "Restore"
                                 : confirmAction.type === "reject"

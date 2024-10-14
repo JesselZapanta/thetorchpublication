@@ -567,14 +567,14 @@ export default function Show({ auth, categories, entry, success }) {
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Hide"}
+                            : "Confirm Archive"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
                             ? "Are you sure you want to delete this entry?"
                             : confirmAction.type === "report"
                             ? "Are you sure you want to report this entry?"
-                            : "Are you sure you want to soft delete this entry?"}
+                            : "Are you sure you want to archive this entry?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

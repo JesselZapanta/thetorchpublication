@@ -69,7 +69,7 @@ class DesignerReviewReport extends Controller
 
         $article->update(['visibility' => 'hidden']);
 
-        return to_route('designer-review-report-article.index')->with(['success' => 'Hide Successfully']);
+        return to_route('designer-review-report-article.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreArticle($id)
     {
@@ -81,7 +81,7 @@ class DesignerReviewReport extends Controller
 
         $article->update(['visibility' => 'visible']);
 
-        return to_route('designer-review-report-article.index')->with(['success' => 'Restore Successfully']);
+        return to_route('designer-review-report-article.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectArticleReport($id)
@@ -95,7 +95,7 @@ class DesignerReviewReport extends Controller
         $article->update(['visibility' => 'visible']);
         $article->update(['report_count' => 0]);
 
-        return to_route('designer-review-report-article.index')->with(['success' => 'Reject Successfully']);
+        return to_route('designer-review-report-article.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyArticle($id)
@@ -113,7 +113,7 @@ class DesignerReviewReport extends Controller
             Storage::disk('public')->delete($article->article_image_path);
         }
 
-        return to_route('designer-review-report-article.index')->with(['success' => 'Delete Successfully']);
+        return to_route('designer-review-report-article.index')->with(['success' => 'Delete successfully.']);
     }
 
     // Comment
@@ -172,7 +172,7 @@ class DesignerReviewReport extends Controller
 
         $comment->update(['visibility' => 'hidden']);
 
-        return to_route('designer-review-report-comment.index')->with(['success' => 'Hide Successfully']);
+        return to_route('designer-review-report-comment.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreComment($id)
     {
@@ -184,7 +184,7 @@ class DesignerReviewReport extends Controller
 
         $comment->update(['visibility' => 'visible']);
 
-        return to_route('designer-review-report-comment.index')->with(['success' => 'Restore Successfully']);
+        return to_route('designer-review-report-comment.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectCommentReport($id)
@@ -198,7 +198,7 @@ class DesignerReviewReport extends Controller
         $comment->update(['visibility' => 'visible']);
         $comment->update(['report_count' => 0]);
 
-        return to_route('designer-review-report-comment.index')->with(['success' => 'Reject Successfully']);
+        return to_route('designer-review-report-comment.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyComment($id)
@@ -212,7 +212,7 @@ class DesignerReviewReport extends Controller
 
         $comment->delete();
 
-        return to_route('designer-review-report-comment.index')->with(['success' => 'Delete Successfully']);
+        return to_route('designer-review-report-comment.index')->with(['success' => 'Delete successfully.']);
     }
 
     //Freedom Wall
@@ -271,7 +271,7 @@ class DesignerReviewReport extends Controller
 
         $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Hide Successfully']);
+        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }
     public function restoreFreedomWall($id)
     {
@@ -283,7 +283,7 @@ class DesignerReviewReport extends Controller
 
         $entry->update(['visibility' => 'visible']);
 
-        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Restore Successfully']);
+        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Restore successfully.']);
     }
 
     public function rejectFreedomWallReport($id)
@@ -297,7 +297,7 @@ class DesignerReviewReport extends Controller
         $entry->update(['visibility' => 'visible']);
         $entry->update(['report_count' => 0]);
 
-        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Reject Successfully']);
+        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Reject successfully.']);
     }
 
     public function destroyFreedomWall($id)
@@ -311,7 +311,7 @@ class DesignerReviewReport extends Controller
 
         $entry->delete();
 
-        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Delete Successfully']);
+        return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }
 
 
@@ -363,7 +363,7 @@ class DesignerReviewReport extends Controller
 
         $newsletter->update(['visibility' => 'hidden']);
 
-        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Archive successfully.']);
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Archive successfully..']);
     }
     public function restoreNewsletter($id)
     {
@@ -376,7 +376,7 @@ class DesignerReviewReport extends Controller
 
         $newsletter->update(['visibility' => 'visible']);
 
-        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Restore successfully.']);
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Restore successfully..']);
     }
 
     public function rejectNewsletterReport($id)
@@ -390,7 +390,7 @@ class DesignerReviewReport extends Controller
         $newsletter->update(['visibility' => 'visible']);
         $newsletter->update(['report_count' => 0]);
 
-        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Reject successfully.']);
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Reject successfully..']);
     }
 
     public function destroyNewsletter($id)
@@ -413,7 +413,7 @@ class DesignerReviewReport extends Controller
             // Delete the specific old  file
             Storage::disk('public')->delete($newsletter->newsletter_file_path);
         }   
-        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Delete successfully.']);
+        return to_route('designer-review-report-newsletter.index')->with(['success' => 'Delete successfully..']);
     }
 
 

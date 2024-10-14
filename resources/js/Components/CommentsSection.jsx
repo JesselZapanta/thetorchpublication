@@ -547,14 +547,14 @@ export default function CommentsSection({
                             ? "Confirm Delete"
                             : confirmAction.type === "report"
                             ? "Confirm Report"
-                            : "Confirm Soft Delete"}
+                            : "Confirm Archive"}
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
                             ? "Are you sure you want to delete this entry?"
                             : confirmAction.type === "report"
                             ? "Are you sure you want to report this entry?"
-                            : "Are you sure you want to soft delete this entry?"}
+                            : "Are you sure you want to archive this entry?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -576,7 +576,7 @@ export default function CommentsSection({
                                 ? "Delete"
                                 : confirmAction.type === "report"
                                 ? "Report"
-                                : "Soft Delete"}
+                                : "Archive"}
                         </DangerButton>
                     </div>
                 </div>
