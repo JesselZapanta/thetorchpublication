@@ -36,6 +36,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\StudentApplyContributorController;
 use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Student\StudentFreedomWallController;
 use App\Http\Controllers\Student\StudentGenerateReportController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
@@ -190,20 +191,6 @@ Route::middleware(['auth','admin','verified' ])->group(function() {
     Route::delete('/admin-archive-task/{id}/destroy', [AdminReviewReport::class, 'destroyTask'])->name('admin-archive-task.destroy');
 });
 
-// For Student and Student Contributor
-Route::middleware(['auth', 'student','verified'])->group(function() {
-    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
-    Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
-
-    Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
-    Route::get('student-article/{id}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
-    Route::resource('student-article', StudentArticleController::class);
-
-    
-    Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
-    Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
-    Route::delete('/student/contributor/{id}/destroy', [StudentApplyContributorController::class, 'destroy'])->name('student-contributor.destroy');
-});
 
 // for editor
 Route::middleware(['auth', 'editor','verified'])->group(function() {
@@ -338,6 +325,22 @@ Route::middleware(['auth', 'designer', 'verified'])->group(function() {
     Route::post('/designer-review-report-newsletter/{id}/restore', [DesignerReviewReport::class, 'restoreNewsletter'])->name('designer-review-report-newsletter.restore');
     Route::post('/designer-review-report-newsletter/{id}/reject', [DesignerReviewReport::class, 'rejectNewsletterReport'])->name('designer-review-report-newsletter.reject');
     Route::delete('/designer-review-report-newsletter/{id}/destroy', [DesignerReviewReport::class, 'destroyNewsletter'])->name('designer-review-report-newsletter.destroy');
+});
+
+// For Student and Student Contributor
+Route::middleware(['auth', 'student','verified'])->group(function() {
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+    Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
+
+    Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
+    Route::get('student-article/{id}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
+    Route::resource('student-article', StudentArticleController::class);
+
+    Route::resource('student-freedomwall', StudentFreedomWallController::class);
+
+    Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
+    Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
+    Route::delete('/student/contributor/{id}/destroy', [StudentApplyContributorController::class, 'destroy'])->name('student-contributor.destroy');
 });
 
 

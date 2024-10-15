@@ -136,6 +136,10 @@ export default function Index({
     const onSubmit = (e) => {
         e.preventDefault();
 
+        if (processing) {
+            return; // Prevent multiple submissions while the request is still being processed
+        }
+
         if (member) {
             // Update existing member
             post(route("about.update", member.id), {

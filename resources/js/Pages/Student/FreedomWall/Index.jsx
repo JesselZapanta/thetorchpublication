@@ -1,16 +1,15 @@
-import DangerButton from "@/Components/DangerButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import React, { useEffect, useState } from "react";
+import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
-import Pagination from "@/Components/Pagination";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
+import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
-import TextInput from "@/Components/TextInput";
-import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import DangerButton from "@/Components/DangerButton";
 
 import {
     PencilSquareIcon,
@@ -18,29 +17,28 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/16/solid";
 
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { EMOTION_CLASS_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import SearchInput from "@/Components/SearchInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 
 export default function Index({
     auth,
-    categories,
+    entries,
     queryParams = null,
     flash,
-    AdminBadgeCount,
+    StudentBadgeCount,
 }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [category, setCategory] = useState(null); // For storing the category to edit/delete
+    const [freedomwall, setFreedomWall] = useState(null); // For storing the freedomwall to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const { data, setData, post, put, errors, reset, clearErrors, processing } =
         useForm({
-            name: "",
-            description: "",
-            status: "",
-            category_image_path: "",
+            body: "",
+            emotion: "",
         });
 
     // Display flash messages if they exist
@@ -60,7 +58,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("category.index"), queryParams, {
+            router.get(route("student-freedomwall.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -77,7 +75,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("category.index"),
+                    route("student-freedomwall.index"),
                     {},
                     {
                         preserveState: true,
@@ -85,7 +83,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("category.index"), queryParams, {
+                router.get(route("student-freedomwall.index"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -95,7 +93,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("category.index"), queryParams, {
+        router.get(route("student-freedomwall.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -108,47 +106,41 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("category.index"), queryParams);
+        router.get(route("student-freedomwall.index"), queryParams);
     };
 
-    // Open modal for creating a new category
+    // Open modal for creating a new student-freedomwall
     const openCreateModal = () => {
         reset(); // Reset the form to clear previous data
-        setCategory(null); // Clear the selected category for editing
+        setFreedomWall(null); // Clear the selected student-freedomwall for editing
         setIsCreateModalOpen(true);
     };
 
-    // Open modal for editing an existing category
-    const openEditModal = (category) => {
-        setCategory(category);
+    // Open modal for editing an existing student-freedomwall
+    const openEditModal = (freedomwall) => {
+        // alert(freedomwall);
+        setFreedomWall(freedomwall);
         setData({
-            name: category.name || "",
-            description: category.description || "",
-            status: category.status || "",
-            category_image_path: "",    
-            _method: "PUT",
-        }); // Set the form data with the selected category's data
+            body: freedomwall.body,
+            emotion: freedomwall.emotion,
+        }); // Set the form data with the selected freedomwall's data
         setIsCreateModalOpen(true);
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if (processing) {
-            return; // Prevent multiple submissions while the request is still being processed
-        }
-
-        if (category) {
-            // Update existing category
-            put(route("category.update", category.id), {
+        if (freedomwall) {
+            // Update existing freedomwall
+            put(route("student-freedomwall.update", freedomwall.id), {
                 onSuccess: () => {
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
             });
         } else {
-            // Create new category
-            post(route("category.store"), {
+            // Create new freedomwall
+            post(route("student-freedomwall.store"), {
                 onSuccess: () => {
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
@@ -156,7 +148,6 @@ export default function Index({
             });
         }
     };
-
 
     const closeCreateModal = () => {
         setIsCreateModalOpen(false);
@@ -164,29 +155,37 @@ export default function Index({
         clearErrors(); // Clear any validation errors
     };
 
-    // Open modal and set category to delete
-    const openDeleteModal = (category) => {
-        setCategory(category);
+    // Open modal and set freedomwall to delete
+    const openDeleteModal = (freedomwall) => {
+        setFreedomWall(freedomwall);
         setConfirmDelete(true);
     };
 
     // Handle delete and close modal
     const handleDelete = () => {
-        if (category) {
-            router.delete(route("category.destroy", category.id));
+        if (freedomwall) {
+            router.delete(route("student-freedomwall.destroy", freedomwall.id));
         }
         setConfirmDelete(false);
-        setCategory(null);
+        setFreedomWall(null);
+    };
+
+    //text limit
+    const truncate = (text, limit) => {
+        if (text.length > limit) {
+            return text.slice(0, limit) + "...";
+        }
+        return text;
     };
 
     return (
-        <AdminAuthenticatedLayout
-            AdminBadgeCount={AdminBadgeCount}
+        <StudentAuthenticatedLayout
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Categories
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Lists of Entries
                     </h2>
                     <div className="flex gap-4">
                         <button
@@ -199,7 +198,7 @@ export default function Index({
                 </div>
             }
         >
-            <Head title="Categories" />
+            <Head title="Academic Years" />
 
             <ToastContainer position="bottom-right" />
 
@@ -211,44 +210,53 @@ export default function Index({
                                 <div className="w-full">
                                     <SearchInput
                                         className="w-full"
-                                        defaultValue={queryParams.name}
-                                        route={route("category.index")}
+                                        defaultValue={queryParams.body}
+                                        route={route(
+                                            "student-freedomwall.index"
+                                        )}
                                         queryParams={queryParams}
-                                        placeholder="Search Category Name"
+                                        placeholder="Search Freedom Wall Entries"
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "name",
+                                                "body",
                                                 e.target.value
                                             )
                                         }
                                         onKeyPress={(e) =>
-                                            onKeyPressed("name", e)
+                                            onKeyPressed("body", e)
                                         }
                                     />
                                 </div>
                                 <div className="w-[40%]">
                                     <SelectInput
                                         className="w-full"
-                                        defaultValue={queryParams.status}
+                                        defaultValue={queryParams.emotion}
                                         onChange={(e) =>
                                             handleSelectChange(
-                                                "status",
+                                                "emotion",
                                                 e.target.value
                                             )
                                         }
                                     >
-                                        <option value="">Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">
-                                            Inactive
+                                        <option value="">
+                                            Sort by Emotion
                                         </option>
+                                        <option value="happy">Happy</option>
+                                        <option value="sad">Sad</option>
+                                        <option value="annoyed">Annoyed</option>
+                                        <option value="proud">Proud</option>
+                                        <option value="drained">Drained</option>
+                                        <option value="inlove">Inlove</option>
+                                        <option value="calm">Calm</option>
+                                        <option value="excited">Excited</option>
+                                        <option value="angry">Angry</option>
+                                        <option value="down">Down</option>
                                     </SelectInput>
                                 </div>
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thhead with sorting */}
-                                    {/* added */}
+                                    {/* thead with sort */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <TableHeading
@@ -263,9 +271,8 @@ export default function Index({
                                             >
                                                 ID
                                             </TableHeading>
-                                            <th className="px-3 py-3">Image</th>
                                             <TableHeading
-                                                name="name"
+                                                name="body"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -274,13 +281,10 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Name
+                                                Message Body
                                             </TableHeading>
-                                            <th className="px-3 py-3">
-                                                Description
-                                            </th>
                                             <TableHeading
-                                                name="status"
+                                                name="emotion"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -289,93 +293,56 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Status
+                                                Emotion
                                             </TableHeading>
+
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {categories.data.length > 0 ? (
-                                            categories.data.map((category) => (
+                                        {entries.data.length > 0 ? (
+                                            entries.data.map((freedomwall) => (
                                                 <tr
+                                                    //added
                                                     className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                    key={category.id}
+                                                    key={freedomwall.id}
                                                 >
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {category.id}
+                                                        {freedomwall.id}
                                                     </td>
-                                                    <th className="px-3 py-2 text-nowrap">
-                                                        <div className="rounded-full overflow-hidden w-10 h-10 border-2 border-indigo-500">
-                                                            {category.category_image_path && (
-                                                                <img
-                                                                    src={
-                                                                        category.category_image_path
-                                                                    }
-                                                                    className="object-cover w-full h-full"
-                                                                    alt={
-                                                                        category.category_image_path
-                                                                    }
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    </th>
-                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
+                                                    <td className="px-3 py-2 text-nowrap">
+                                                        {/* {freedomwall.body} */}
                                                         <Link
+                                                            // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
-                                                            href={route(
-                                                                "category.show",
-                                                                category.id
-                                                            )}
+                                                            // href={route(
+                                                            //     "student-article.show",
+                                                            //     article.id
+                                                            // )}
                                                         >
-                                                            {category.name}
+                                                            {truncate(
+                                                                freedomwall.body,
+                                                                50
+                                                            )}
                                                         </Link>
-                                                    </th>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {category.description}
                                                     </td>
                                                     <td className="px-3 py-2 text-nowrap">
-                                                        {/* {category.status} */}
+                                                        {/* {freedomwall.emotion} */}
                                                         <span
                                                             className={
                                                                 "px-2 py-1 rounded text-white " +
-                                                                CATEGORY_CLASS_MAP[
-                                                                    category
-                                                                        .status
+                                                                EMOTION_CLASS_MAP[
+                                                                    freedomwall
+                                                                        .emotion
                                                                 ]
                                                             }
                                                         >
-                                                            {
-                                                                CATEGORY_TEXT_MAP[
-                                                                    category
-                                                                        .status
-                                                                ]
-                                                            }
+                                                            {freedomwall.emotion}
                                                         </span>
                                                     </td>
-                                                    {/* <td className="px-3 py-2 text-nowrap">
-                                                        <button
-                                                            onClick={() =>
-                                                                openEditModal(
-                                                                    category
-                                                                )
-                                                            }
-                                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button
-                                                            onClick={() =>
-                                                                openDeleteModal(
-                                                                    category
-                                                                )
-                                                            }
-                                                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </td> */}
+
                                                     <td className="px-3 py-2 text-nowrap">
                                                         <div className="flex items-center relative">
                                                             <DropdownAction>
@@ -389,7 +356,7 @@ export default function Index({
                                                                     <DropdownAction.Btn
                                                                         onClick={() =>
                                                                             openEditModal(
-                                                                                category
+                                                                                freedomwall
                                                                             )
                                                                         }
                                                                     >
@@ -399,7 +366,7 @@ export default function Index({
                                                                     <DropdownAction.Btn
                                                                         onClick={() =>
                                                                             openDeleteModal(
-                                                                                category
+                                                                                freedomwall
                                                                             )
                                                                         }
                                                                     >
@@ -426,113 +393,76 @@ export default function Index({
                                 </table>
                             </div>
                             <Pagination
-                                links={categories.meta.links}
-                                queryParams={queryParams}
+                                links={entries.meta.links}
+                                // queryParams={queryParams}
                             />
                         </div>
                     </div>
                 </div>
             </div>
+
             {/* Create/Edit Modal */}
             <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
-                        {category ? "Edit Category" : "Add New Category"}
+                        {freedomwall
+                            ? "Edit Freedom Wall Entry"
+                            : "Add New Freedom Wall Entry"}
                     </h2>
 
                     <form onSubmit={onSubmit} className="mt-4">
-                        {/* Code */}
-                        {/* name */}
-                        <div>
-                            <InputLabel htmlFor="name" value="Category Name" />
+                        {/* body */}
+                        <div className="mt-2 w-full">
+                            <InputLabel htmlFor="body" value="Message" />
 
-                            <TextInput
-                                id="name"
+                            <TextAreaInput
+                                id="body"
                                 type="text"
-                                name="name"
-                                value={data.name}
-                                className="mt-2 block w-full"
+                                name="body"
+                                value={data.body}
+                                className="mt-2 block w-full min-h-44 resize-none"
                                 onChange={(e) =>
-                                    setData("name", e.target.value)
+                                    setData("body", e.target.value)
                                 }
                             />
 
                             <InputError
-                                message={errors.name}
+                                message={errors.body}
                                 className="mt-2"
                             />
                         </div>
-                        {/* description */}
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="description"
-                                value="Category Description"
-                            />
 
-                            <TextInput
-                                id="description"
-                                type="text"
-                                name="description"
-                                value={data.description}
-                                className="mt-2 block w-full"
-                                onChange={(e) =>
-                                    setData("description", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.description}
-                                className="mt-2"
-                            />
-                        </div>
-                        {/* Status */}
-                        <div className="mt-4 w-full">
+                        {/* Emotion */}
+                        <div className="mt-2 w-full">
                             <InputLabel
-                                htmlFor="status"
-                                value="Category status"
+                                htmlFor="emotion"
+                                value="Message Emotion"
                             />
 
                             <SelectInput
-                                name="status"
-                                id="status"
-                                value={data.status}
+                                name="emotion"
+                                id="emotion"
+                                value={data.emotion}
                                 className="mt-1 block w-full"
                                 onChange={(e) =>
-                                    setData("status", e.target.value)
+                                    setData("emotion", e.target.value)
                                 }
                             >
-                                <option value="">Select a status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="">How are you feeling?</option>
+                                <option value="happy">Happy</option>
+                                <option value="sad">Sad</option>
+                                <option value="annoyed">Annoyed</option>
+                                <option value="proud">Proud</option>
+                                <option value="drained">Drained</option>
+                                <option value="inlove">Inlove</option>
+                                <option value="calm">Calm</option>
+                                <option value="excited">Excited</option>
+                                <option value="angry">Angry</option>
+                                <option value="down">Down</option>
                             </SelectInput>
 
                             <InputError
-                                message={errors.status}
-                                className="mt-2"
-                            />
-                        </div>
-                        {/* image path */}
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="category_image_path"
-                                value="Category Image"
-                            />
-
-                            <TextInput
-                                id="category_image_path"
-                                type="file"
-                                name="category_image_path"
-                                className="mt-2 block w-full cursor-pointer"
-                                onChange={(e) =>
-                                    setData(
-                                        "category_image_path",
-                                        e.target.files[0]
-                                    )
-                                }
-                            />
-
-                            <InputError
-                                message={errors.category_image_path}
+                                message={errors.emotion}
                                 className="mt-2"
                             />
                         </div>
@@ -546,7 +476,7 @@ export default function Index({
                                 disabled={processing}
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
-                                {category ? "Update" : "Create"}
+                                {freedomwall ? "Update" : "Create"}
                             </button> */}
                             <button
                                 type="submit"
@@ -557,7 +487,7 @@ export default function Index({
                                         : "hover:bg-emerald-700"
                                 }`}
                             >
-                                {category ? "Update" : "Create"}
+                                {freedomwall ? "Update" : "Create"}
                             </button>
                         </div>
                     </form>
@@ -568,8 +498,7 @@ export default function Index({
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Delete</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete "{category?.name}"
-                        Category?
+                        Are you sure you want to delete this freedom wall entry?
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -583,6 +512,6 @@ export default function Index({
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </StudentAuthenticatedLayout>
     );
 }

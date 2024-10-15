@@ -124,6 +124,19 @@ export const MEMBER_TEXT_MAP = {
     inactive: "Inactive",
 };
 
+export const EMOTION_CLASS_MAP = {
+    happy: "bg-yellow-700",
+    sad: "bg-blue-800",
+    annoyed: "bg-red-700",
+    proud: "bg-green-700",
+    drained: "bg-gray-700",
+    inlove: "bg-pink-700",
+    calm: "bg-blue-600",
+    excited: "bg-purple-700",
+    angry: "bg-red-800",
+    down: "bg-gray-600",
+};
+
 
 export const getTaskDueClass = (dueDate) => {
     const now = new Date();
