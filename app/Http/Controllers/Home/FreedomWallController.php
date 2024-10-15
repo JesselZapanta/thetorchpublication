@@ -151,8 +151,9 @@ class FreedomWallController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FreedomWall $freedomWall)
+    public function show($id)
     {
+        $freedomWall = FreedomWall::find($id);
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();
 

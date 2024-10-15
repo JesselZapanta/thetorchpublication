@@ -94,7 +94,10 @@ export default function Show({ auth, entry, DesignerBadgeCount }) {
     };
 
     return (
-        <AdminAuthenticatedLayout user={auth.user} DesignerBadgeCount={DesignerBadgeCount}>
+        <AdminAuthenticatedLayout
+            user={auth.user}
+            DesignerBadgeCount={DesignerBadgeCount}
+        >
             <Head title="Freedom Wall" />
             <div
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4
@@ -135,14 +138,14 @@ export default function Show({ auth, entry, DesignerBadgeCount }) {
                                 {entry.data.body}
                             </p>
 
-                            <div>
+                            {/* <div>
                                 <button
                                     className={`${
                                         isSpeaking === entry.data.id
                                             ? "text-indigo-400 animate-pulse"
-                                            : "text-gray-400"
+                                            : "text-gray-800"
                                     }`}
-                                    onClick={() => handleSpeak(entry)}
+                                    onClick={() => handleSpeak(entry.data)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +157,7 @@ export default function Show({ auth, entry, DesignerBadgeCount }) {
                                         <path d="M15.932 7.757a.75.75 0 0 1 1.061 0 6 6 0 0 1 0 8.486.75.75 0 0 1-1.06-1.061 4.5 4.5 0 0 0 0-6.364.75.75 0 0 1 0-1.06Z" />
                                     </svg>
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                         {/* Bottoom Btns */}
                         <div className="dark:bg-gray-700 bg-gray-600 p-2  w-full h-16 flex justify-between items-center">

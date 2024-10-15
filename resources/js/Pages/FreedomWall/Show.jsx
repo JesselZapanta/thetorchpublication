@@ -235,7 +235,7 @@ export default function Show({ auth, categories, entry, success }) {
             overflow-hidden"
             >
                 {/* Show Freedom Wall */}
-                {/* <pre className="text-white">
+                {/* <pre className="text-gray-800">
                     {JSON.stringify(entry, null, 2)}
                 </pre> */}
                 <div className="max-w-xl py-2 mx-auto w-full">
@@ -375,9 +375,9 @@ export default function Show({ auth, categories, entry, success }) {
                                     className={`${
                                         isSpeaking === entry.data.id
                                             ? "text-indigo-400 animate-pulse"
-                                            : "text-gray-400"
+                                            : "text-gray-800"
                                     }`}
-                                    onClick={() => handleSpeak(entry)}
+                                    onClick={() => handleSpeak(entry.data)}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
