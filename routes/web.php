@@ -45,6 +45,7 @@ use App\Http\Controllers\Writer\WriterGenerateReportController;
 use App\Http\Controllers\Writer\WriterReviewReport;
 use App\Http\Controllers\Writer\WriterTaskController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,9 +70,22 @@ use Illuminate\Support\Facades\Route;
 // redirect to specific dashboard
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
+Route::get('/deactivated', function () {
+    return Inertia::render('Error/DeactivatedAccount', [
+         'error' => session('error') // Pass any session error message
+    ]);
+})->name('deactivated');
+
+Route::get('/unauthorized', function () {
+    return Inertia::render('Error/Unauthorized', [
+         'error' => session('error') // Pass any session error message
+    ]);
+})->name('unauthorized');
+
 //route to verify student
 Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 'validateStudent']);
 
+// Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
@@ -81,14 +95,11 @@ Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
 Route::post('/articles/{article}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 
 
-
-
-
 //Get Ratings
     Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
 
 //Comment Like Dislike
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'userStatus'])->group(function () {
     // report
     Route::post('/freedom-wall/{id}/report', [ReportContentController::class, 'reportFreedomWall'])->name('freedom-wall.report');
     Route::post('/comment/{id}/report', [ReportContentController::class, 'reportComment'])->name('comment.report');
@@ -114,7 +125,7 @@ Route::middleware('auth')->group(function () {
 
 
 //Admin Routes
-Route::middleware(['auth','admin','verified' ])->group(function() {
+Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
     
@@ -196,7 +207,7 @@ Route::middleware(['auth','admin','verified' ])->group(function() {
 
 
 // for editor
-Route::middleware(['auth', 'editor','verified'])->group(function() {
+Route::middleware(['auth', 'editor','verified', 'userStatus'])->group(function() {
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::get('/editor/report', [EditorGenerateReportController::class, 'report'])->name('editor.report');
     
@@ -239,7 +250,7 @@ Route::middleware(['auth', 'editor','verified'])->group(function() {
 
 
 // for Writer
-Route::middleware(['auth', 'writer', 'verified'])->group(function() {
+Route::middleware(['auth', 'writer', 'verified', 'userStatus'])->group(function() {
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
     Route::get('/writer/report', [WriterGenerateReportController::class, 'report'])->name('writer.report');
 
@@ -279,7 +290,7 @@ Route::middleware(['auth', 'writer', 'verified'])->group(function() {
 });
 
 // for Designer
-Route::middleware(['auth', 'designer', 'verified'])->group(function() {
+Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(function() {
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     Route::get('/designer/report', [DesignerGenerateReportController::class, 'report'])->name('designer.report');
 
@@ -331,7 +342,7 @@ Route::middleware(['auth', 'designer', 'verified'])->group(function() {
 });
 
 // For Student and Student Contributor
-Route::middleware(['auth', 'student','verified'])->group(function() {
+Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function() {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
     Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
 
@@ -347,7 +358,7 @@ Route::middleware(['auth', 'student','verified'])->group(function() {
 });
 
 
-Route::middleware('auth', )->group(function () {
+Route::middleware(['auth','userStatus'] )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

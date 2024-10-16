@@ -32,6 +32,9 @@ class UpdateUserRequest extends FormRequest
                 Rule::in(['admin', 'student', 'student_contributor' , 'editor', 'writer', 'designer'])
             ],
             'position' => ['nullable', 'string', 'max:255'],
+            'status' => ['required',
+                Rule::in(['active', 'inactive'])
+            ],
             'profile_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             'password' => ['nullable', 'confirmed', Password::min(8)->letters()],
         ];

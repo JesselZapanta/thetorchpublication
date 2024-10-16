@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class Admin
+class UserStatus
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,10 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->status === 'active') {
             return $next($request);
         }
 
-        // return redirect()->route('login')->with('error', 'Access denied.');
-        // return redirect()->back();
-        return redirect()->route('unauthorized');
+        return redirect()->route('deactivated');
     }
 }

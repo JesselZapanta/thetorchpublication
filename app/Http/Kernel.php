@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'editor' => \App\Http\Middleware\Editor::class,
         'writer' => \App\Http\Middleware\Writer::class,
         'designer' => \App\Http\Middleware\Designer::class,
+        'userStatus' => \App\Http\Middleware\UserStatus::class,
     ];
 }

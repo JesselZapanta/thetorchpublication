@@ -22,6 +22,7 @@ class Student
 
 
         // return redirect()->route('login')->with('error', 'Access denied.');
-        return redirect()->back();
+        // return redirect()->back();
+        return redirect()->route('unauthorized');
     }
 }

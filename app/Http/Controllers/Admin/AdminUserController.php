@@ -85,9 +85,8 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-
         $user = User::find($id);
-
+        // dd($user);
         $userId = $user->id;
 
         if(!$user){
@@ -141,6 +140,7 @@ class AdminUserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        // dd($request);
         $data = $request->validated();
         $password = $data['password'] ?? null;
         
@@ -166,6 +166,8 @@ class AdminUserController extends Controller
 
 
         $user->update($data);
+
+        // dd($data);
 
         return to_route('user.index')->with(['success' => 'User was Updated']);
     }

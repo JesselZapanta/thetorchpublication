@@ -32,6 +32,9 @@ class StoreUserRequest extends FormRequest
                 Rule::in(['student', 'admin', 'student_contributor', 'editor', 'writer', 'designer'])
             ],
             'position' => ['nullable', 'string', 'max:255'],
+            'status' => ['required',
+                Rule::in(['active', 'inactive'])
+            ],
             'profile_image_path' => ['required','image','mimes:jpg,png,jpeg'],
             'password' => ['required', 'confirmed',Password::min(8)->letters()]
         ];
