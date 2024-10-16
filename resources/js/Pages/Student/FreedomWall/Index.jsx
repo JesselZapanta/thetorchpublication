@@ -198,7 +198,7 @@ export default function Index({
                 </div>
             }
         >
-            <Head title="Academic Years" />
+            <Head title="Freedom Wall" />
 
             <ToastContainer position="bottom-right" />
 

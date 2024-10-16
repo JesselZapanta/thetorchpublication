@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminApplyContributorController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminDatabaseBackupController;
 use App\Http\Controllers\Admin\AdminGenerateReportController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminReviewReport;
@@ -118,6 +119,8 @@ Route::middleware(['auth','admin','verified' ])->group(function() {
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
     
     Route::resource('user', AdminUserController::class);
+
+    Route::get('/backup/download', [AdminDatabaseBackupController::class, 'downloadBackup'])->name('backup.download');
 
     Route::get('/admin/contributor/index', [AdminApplyContributorController::class, 'index'])->name('admin-contributor.index');
     Route::post('/admin/contributor/{id}/reject', [AdminApplyContributorController::class, 'reject'])->name('admin-contributor.reject');

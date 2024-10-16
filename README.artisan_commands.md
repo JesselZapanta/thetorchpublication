@@ -70,6 +70,10 @@ npm install aos --save
 <!-- run locally -->
 php artisan schedule:run
 
+<!-- in server -->
+
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+
 
 <!-- for text editor -->
 npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic

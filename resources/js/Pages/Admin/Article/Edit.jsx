@@ -477,7 +477,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                             </option>
                                         )}
                                         <option value="published">
-                                            Published
+                                            Approved and Published
                                         </option>
 
                                         {auth.user.id !==

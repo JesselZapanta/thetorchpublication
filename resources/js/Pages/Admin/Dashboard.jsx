@@ -81,6 +81,12 @@ export default function Dashboard({
                         Admin Dashboard
                     </h2>
                     <div className="flex gap-4">
+                        {/* <a
+                            href="/backup/download"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Download SQL Backup
+                        </a> */}
                         <Link
                             href={route("admin.report")}
                             className="px-4 py-2 bg-indigo-600 text-nowrap text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
