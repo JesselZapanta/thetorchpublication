@@ -21,7 +21,7 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href="/">
+                                <Link href={route("home")}>
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
                             </div>
@@ -323,8 +323,8 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                        href={route("about.index")}
-                        active={route().current("about.index")}
+                            href={route("about.index")}
+                            active={route().current("about.index")}
                         >
                             Editorial Board
                         </ResponsiveNavLink>

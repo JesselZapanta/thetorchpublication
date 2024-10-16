@@ -5,7 +5,14 @@ export default function Unauthorized({ error }) {
     return (
         <div className="flex items-center justify-center w-full h-[100vh] ">
             <div>
-                <h2 className="text-2xl text-red-500 mt-4">
+                <div className="w-full flex justify-center items-center">
+                    <img
+                        src="/images/unauthorized.png"
+                        alt="Torch Logo"
+                        className="w-60 h-60 overflow-hidden"
+                    />
+                </div>
+                <h2 className="sm:text-sm lg:text-xl text-red-500 mt-4">
                     You do not have permission to access this page. Thank you!
                     {/* {error && <p className="">{error}</p>} */}
                 </h2>

@@ -5,9 +5,17 @@ export default function DeactivatedAccount() {
     return (
         <div className="flex items-center justify-center w-full h-[100vh] ">
             <div>
-                <h2 className="text-2xl text-red-500 mt-4">
-                    Your account has been deactivated. Please contact or visit
-                    Torch Office for account reactivation process. Thank you!
+                <div className="w-full flex justify-center items-center">
+                    <img
+                        src="/images/deactivated.png"
+                        alt="Torch Logo"
+                        className="w-60 h-60 overflow-hidden"
+                    />
+                </div>
+                <h2 className="sm:text-sm lg:text-xl text-center text-red-500 mt-4">
+                    Your account has been deactivated. <br /> Please contact or
+                    visit Torch Office for account reactivation process. <br />
+                    Thank you!
                 </h2>
                 {/*  {error && <p className="text-red-500 mt-4">{error}</p>} */}
                 <div className="w-full flex mt-4 justify-center gap-4">

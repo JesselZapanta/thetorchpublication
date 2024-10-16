@@ -19,9 +19,8 @@ class Admin
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
-
+        
         // return redirect()->route('login')->with('error', 'Access denied.');
-        // return redirect()->back();
         return redirect()->route('unauthorized');
     }
 }
