@@ -70,6 +70,12 @@ export default function Index({ auth, user, AdminBadgeCount, contributions }) {
                                     </h4>
                                     <p className="mt-1">{user.position}</p>
                                 </div>
+                                <div className="mt-4">
+                                    <h4 className="font-bold text-base">
+                                        Status
+                                    </h4>
+                                    <p className="mt-1">{user.status}</p>
+                                </div>
                             </div>
                             <div className="p-6 flex flex-col justify-between text-gray-900 dark:text-gray-100">
                                 {/* <div className="p-6 lg:col-span-1 md:col-span-2 text-gray-900 dark:text-gray-100 flex flex-col justify-between"> */}

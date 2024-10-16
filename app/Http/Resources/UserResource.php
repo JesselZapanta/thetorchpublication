@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'position' => $this->position,
+            'status' => $this->status,
             // 'profile_image_path' => $this->profile_image_path ? Storage::url($this->profile_image_path) : '',
             'profile_image_path' => $this->profile_image_path ? Storage::url($this->profile_image_path) : '/images/default/profile.jpg',
         ];

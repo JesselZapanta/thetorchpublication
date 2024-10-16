@@ -252,61 +252,58 @@ export default function Create({ auth, AdminBadgeCount }) {
                             </div>
 
                             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
-                                {/* Status */}
-                                <div className="mt-4 w-full">
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="User status"
-                                    />
 
-                                    <SelectInput
-                                        name="status"
-                                        id="status"
-                                        value={data.status}
-                                        className="mt-2 block w-full"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select a status
-                                        </option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">
-                                            Inactive
-                                        </option>
-                                    </SelectInput>
+                            {/* Status */}
+                            <div className="mt-4 w-full">
+                                <InputLabel
+                                    htmlFor="status"
+                                    value="User status"
+                                />
 
-                                    <InputError
-                                        message={errors.status}
-                                        className="mt-2"
-                                    />
-                                </div>
+                                <SelectInput
+                                    name="status"
+                                    id="status"
+                                    value={data.status}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
+                                >
+                                    <option value="">Select a status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </SelectInput>
 
-                                <div className="mt-4">
-                                    <InputLabel
-                                        htmlFor="profile_image_path"
-                                        value="Profile Image"
-                                    />
+                                <InputError
+                                    message={errors.status}
+                                    className="mt-2"
+                                />
+                            </div>
 
-                                    <TextInput
-                                        id="profile_image_path"
-                                        type="file"
-                                        name="profile_image_path"
-                                        className="mt-2 block w-full cursor-pointer"
-                                        onChange={(e) =>
-                                            setData(
-                                                "profile_image_path",
-                                                e.target.files[0]
-                                            )
-                                        }
-                                    />
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="profile_image_path"
+                                    value="Profile Image"
+                                />
 
-                                    <InputError
-                                        message={errors.profile_image_path}
-                                        className="mt-2"
-                                    />
-                                </div>
+                                <TextInput
+                                    id="profile_image_path"
+                                    type="file"
+                                    name="profile_image_path"
+                                    className="mt-2 block w-full cursor-pointer"
+                                    onChange={(e) =>
+                                        setData(
+                                            "profile_image_path",
+                                            e.target.files[0]
+                                        )
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.profile_image_path}
+                                    className="mt-2"
+                                />
+                            </div>
                             </div>
 
                             <div className="mt-12 flex justify-end gap-2">
