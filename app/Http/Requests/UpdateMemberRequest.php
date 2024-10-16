@@ -24,7 +24,7 @@ class UpdateMemberRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'position' => ['required', 'string' ],
+            'position' => ['required', 'string' , 'max:255'],
             'role' => ['required',
                 Rule::in(['student', 'admin', 'student_contributor', 'editor', 'writer', 'designer'])
             ],

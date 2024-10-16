@@ -23,12 +23,12 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
             'category_id' => ['required','exists:categories,id'],
             'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['required','exists:users,id'],
             'assigned_to' => ['required','exists:users,id'],
-            'description' => ['required' , 'string'],
+            'description' => ['required' , 'string', 'max:255'],
             'body' => ['nullable'],
             'message' => ['nullable'],
             'priority' => ['required',

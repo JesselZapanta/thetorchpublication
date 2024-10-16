@@ -24,8 +24,8 @@ class UpdateTaskRequest extends FormRequest
     {
 
         return [
-            'name' => ['required', 'string'],
-            'description' => ['required' , 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required' , 'string', 'max:255'],
             'category_id' => ['required','exists:categories,id'],
             'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['required','exists:users,id'],

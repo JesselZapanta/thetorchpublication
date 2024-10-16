@@ -106,6 +106,7 @@ export default function Welcome({
                 {/* <pre className="text-gray-900">
                     {JSON.stringify(featuredArticle, null, 2)}
                 </pre> */}
+                
             </div>
         </UnauthenticatedLayout>
     );

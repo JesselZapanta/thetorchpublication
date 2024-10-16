@@ -25,7 +25,7 @@ class StoreNewsletterRequest extends FormRequest
         return [
             'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['nullable','exists:users,id'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:255'],
             'newsletter_thumbnail_image_path' => ['required','image','mimes:jpg,png,jpeg'],//todo
             'newsletter_file_path' => ['required','file','mimes:pdf'], //todo
             'status' => ['required',

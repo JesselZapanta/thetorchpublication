@@ -29,10 +29,10 @@ class StudentUpdateArticleRequest extends FormRequest
             // 'author' => ['nullable','string', 'max:255'],//added
             // 'edited_by' => ['nullable','exists:users,id'],
             // 'layout_by' => ['nullable','exists:users,id'],
-            'title' => ['required', 'string'],
-            'excerpt' => ['required', 'string'],//added
+            'title' => ['required', 'string', 'max:255'],
+            'excerpt' => ['required', 'string', 'max:500'],//added
             'body' => ['required', 'string' ],
-            'caption' => ['required', 'string' ],
+            'caption' => ['required', 'string' , 'max:255'],
             'status' => ['required',
                 Rule::in(['draft','pending', 'revision', 'edited','rejected' ,'published'])
             ],

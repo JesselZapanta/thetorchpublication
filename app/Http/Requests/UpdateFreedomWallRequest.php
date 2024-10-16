@@ -22,7 +22,7 @@ class UpdateFreedomWallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'string'],
+            'body' => ['required', 'string', 'max:500'],
             'emotion' => ['required', 'string'],
         ];
     }

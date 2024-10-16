@@ -23,7 +23,7 @@ class DesignerUpdateNewsletterRequest extends FormRequest
     {
         return [
             'layout_by' => ['nullable','exists:users,id'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:255'],
             'newsletter_thumbnail_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             'newsletter_file_path' => ['nullable','file','mimes:pdf'], 
         ];
