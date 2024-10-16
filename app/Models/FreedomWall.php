@@ -9,6 +9,8 @@ class FreedomWall extends Model
 {
     use HasFactory;
 
+    protected $table = 'freedom_walls';
+
     protected $fillable = ['user_id', 'academic_year_id', 'body', 'emotion', 'report_count', 'visibility'];
 
     public function user()

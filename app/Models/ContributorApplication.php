@@ -9,6 +9,7 @@ class ContributorApplication extends Model
 {
     use HasFactory;
 
+    protected $table = 'contributor_applications';
     protected $fillable = [
         'applied_for',
         'institute',

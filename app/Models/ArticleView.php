@@ -8,6 +8,8 @@ class ArticleView extends Model
 {
     use HasFactory;
 
+    protected $table = 'article_views';
+
     protected $fillable = ['article_id', 'user_id', 'academic_year_id'];
 
 

@@ -9,6 +9,8 @@ class Newsletter extends Model
 {
     use HasFactory;
 
+    protected $table = 'newsletters';
+
     protected $fillable = [
         'description',
         'academic_year_id',//

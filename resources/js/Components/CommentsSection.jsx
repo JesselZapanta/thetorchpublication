@@ -551,10 +551,10 @@ export default function CommentsSection({
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "delete"
-                            ? "Are you sure you want to delete this entry?"
+                            ? "Are you sure you want to delete this comment?"
                             : confirmAction.type === "report"
-                            ? "Are you sure you want to report this entry?"
-                            : "Are you sure you want to archive this entry?"}
+                            ? "Are you sure you want to report this comment?"
+                            : "Are you sure you want to archive this comment?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
