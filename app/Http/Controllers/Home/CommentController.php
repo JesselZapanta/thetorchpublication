@@ -10,6 +10,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Word;
 use App\Utilities\AhoCorasick;
+use Auth;
 
 class CommentController extends Controller
 {
@@ -155,6 +156,7 @@ class CommentController extends Controller
         }
 
         $comment->update(['visibility' => 'hidden']);
+        $comment->update(['archive_by' => Auth::user()->id ]);
 
         // return back()->with(['success' => 'Archive Successfully']);
         return back();

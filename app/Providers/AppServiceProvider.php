@@ -30,12 +30,43 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //admin notif badge count
+        // Inertia::share('AdminBadgeCount', function () {
+        //     $userCount = User::count();    // Get the user count
+        //     $editedCount = Article::where('status', 'edited')->count();
+        //     $newsletterPendingCount = Newsletter::where('status', 'pending')->count();
+
+        //     $pendingApprovalTaskCount = Task::where('status', 'approval')->count();
+        //     $reviewApprovalTaskCount = Task::where('status', 'review')->count();
+        //     $totalTaskCount = $pendingApprovalTaskCount + $reviewApprovalTaskCount;
+
+        //     $totalArticleReportCount = Article::where('visibility', 'visible')
+        //                                         ->where('report_count', '>', 0)
+        //                                         ->count();
+        //     $totalCommentReportCount = Comment::where('visibility', 'visible')
+        //                                         ->where('report_count', '>', 0)
+        //                                         ->count();
+        //     $totalFreedomWallReportCount = FreedomWall::where('visibility', 'visible')
+        //                                         ->where('report_count', '>', 0)
+        //                                         ->count();
+
+        //     $totalReportCount = $totalArticleReportCount + $totalCommentReportCount + $totalFreedomWallReportCount;
+
+        //     return [
+        //         'user' => $userCount,
+        //         'editedCount' => $editedCount,
+        //         'newsletterPendingCount' => $newsletterPendingCount,
+        //         'totalTaskCount' => $totalTaskCount,
+        //         'totalReportCount' => $totalReportCount,
+        //     ];
+        // });
+
          //Admin notif badge count
         Inertia::share('AdminBadgeCount', function () {
             if (Auth::check() && Auth::user()->role === 'admin') { // Check if user is an admin
                 $userCount = User::count();    // Get the user count
                 $editedCount = Article::where('status', 'edited')->count();
-                $newsletterPendingCount = Newsletter::where('status', 'pending')->count();
+                $newsletterPendingCount = Newsletter::where('status', 'pending')->where('visibility', 'visible')->count();
 
                 $pendingApprovalTaskCount = Task::where('status', 'approval')->count();
                 $reviewApprovalTaskCount = Task::where('status', 'review')->count();

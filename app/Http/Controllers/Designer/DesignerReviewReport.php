@@ -12,6 +12,7 @@ use App\Models\Comment;
 use App\Models\FreedomWall;
 use App\Models\Newsletter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -35,9 +36,18 @@ class DesignerReviewReport extends Controller
         }
 
         // Ensure proper grouping with orWhere for visibility
+        // $query->where(function($q) {
+        //     $q->where('report_count', '>', 0)
+        //         ->orWhere('visibility', 'hidden');
+        // });
+
+        // Ensure proper grouping with orWhere for visibility
         $query->where(function($q) {
             $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
         });
 
         // Apply sorting
@@ -67,6 +77,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Article Not Found');
         }
 
+        $article->update(['archive_by' => Auth::user()->id ]);
         $article->update(['visibility' => 'hidden']);
 
         return to_route('designer-review-report-article.index')->with(['success' => 'Archive successfully.']);
@@ -79,6 +90,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Article Not Found');
         }
 
+        $article->update(['archive_by' => null ]);
         $article->update(['visibility' => 'visible']);
 
         return to_route('designer-review-report-article.index')->with(['success' => 'Restore successfully.']);
@@ -134,9 +146,18 @@ class DesignerReviewReport extends Controller
         }
 
         // Ensure proper grouping with orWhere for visibility
+        // $query->where(function($q) {
+        //     $q->where('report_count', '>', 0)
+        //         ->orWhere('visibility', 'hidden');
+        // });
+
+        // Ensure proper grouping with orWhere for visibility
         $query->where(function($q) {
             $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
         });
 
         // Apply sorting
@@ -170,6 +191,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Comment Not Found');
         }
 
+        $comment->update(['archive_by' => Auth::user()->id ]);
         $comment->update(['visibility' => 'hidden']);
 
         return to_route('designer-review-report-comment.index')->with(['success' => 'Archive successfully.']);
@@ -182,6 +204,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Comment Not Found');
         }
 
+        $comment->update(['archive_by' => null ]);
         $comment->update(['visibility' => 'visible']);
 
         return to_route('designer-review-report-comment.index')->with(['success' => 'Restore successfully.']);
@@ -234,14 +257,22 @@ class DesignerReviewReport extends Controller
             $query->where('visibility', request('visibility'));
         }
 
-        // Ensure proper grouping with orWhere for visibility
-        $query->where(function($q) {
-            $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
-        });
+        // Get all FreedomWall entries where:
+        // 1. reports_count > 0 (withCount relationship)
+        // 2. visibility is set to 'hidden'
+        //this is a trial func
+
+        //todo
+        // $query->where(function ($q) {
+        // $q->whereHas('reports', function ($subQuery) {
+        //       $subQuery->where('id', '>', 0); // Report count > 0
+        //     })
+        //     ->orWhere('visibility', 'hidden');
+        // });
 
         // Apply sorting
         $reportedFreedomWall = $query->orderBy($sortField, $sortDirection)
+            ->where('visibility', 'hidden')
             ->paginate(10)
             ->onEachSide(1);
 
@@ -269,6 +300,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'FreedomWall Not Found');
         }
 
+        $freedomWall->update(['archive_by' => Auth::user()->id ]);
         $freedomWall->update(['visibility' => 'hidden']);
 
         return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Archive successfully.']);
@@ -281,6 +313,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'FreedomWall Not Found');
         }
 
+        $entry->update(['archive_by' => null ]);
         $entry->update(['visibility' => 'visible']);
 
         return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Restore successfully.']);
@@ -297,6 +330,9 @@ class DesignerReviewReport extends Controller
         $entry->update(['visibility' => 'visible']);
         $entry->update(['report_count' => 0]);
 
+         //get the id of the freedom wall then delete all the report data
+        $entry->reports()->delete();//trial
+
         return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Reject successfully.']);
     }
 
@@ -310,6 +346,7 @@ class DesignerReviewReport extends Controller
         }
 
         $entry->delete();
+        $entry->reports()->delete();//trial
 
         return to_route('designer-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }
@@ -361,6 +398,7 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Newsletter not found.');
         }
 
+        $newsletter->update(['archive_by' => Auth::user()->id ]);
         $newsletter->update(['visibility' => 'hidden']);
 
         return to_route('designer-review-report-newsletter.index')->with(['success' => 'Archive successfully..']);
@@ -374,6 +412,11 @@ class DesignerReviewReport extends Controller
             return back()->with('error', 'Newsletter not found.');
         }
 
+        if($newsletter->archive_by != Auth::user()->id){
+            return to_route('designer-review-report-newsletter.index')->with(key: ['error' => 'Unable to restore the content. This content was archived by an administrator.']);
+        }
+
+        $newsletter->update(['archive_by' => null ]);
         $newsletter->update(['visibility' => 'visible']);
 
         return to_route('designer-review-report-newsletter.index')->with(['success' => 'Restore successfully..']);

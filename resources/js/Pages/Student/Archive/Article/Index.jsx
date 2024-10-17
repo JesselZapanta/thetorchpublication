@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -20,17 +20,17 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Dropdown from "@/Components/Dropdown";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import SearchInput from "@/Components/SearchInput";
-import Dropdown from "@/Components/Dropdown";
 
 export default function Index({
     auth,
-    reportedFreedomWall,
+    archivedArticle,
     queryParams = null,
     flash,
-    WriterBadgeCount,
+    StudentBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -50,6 +50,7 @@ export default function Index({
         }
         return text;
     };
+
     //searching
     queryParams = queryParams || {};
     const [visibility, setVisibility] = useState(queryParams.visibility || "");
@@ -58,7 +59,7 @@ export default function Index({
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("writer-review-report-freedom-wall.index"),
+                route("student-archive-article.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -78,7 +79,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("writer-review-report-freedom-wall.index"),
+                    route("student-archive-article.index"),
                     {},
                     {
                         preserveState: true,
@@ -87,7 +88,7 @@ export default function Index({
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("writer-review-report-freedom-wall.index"),
+                    route("student-archive-article.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -101,13 +102,9 @@ export default function Index({
     const handleSelectChange = (name, value) => {
         setVisibility(value);
         queryParams[name] = value;
-        router.get(
-            route("writer-review-report-freedom-wall.index"),
-            queryParams,
-            {
-                preserveState: true,
-            }
-        );
+        router.get(route("student-archive-article.index"), queryParams, {
+            preserveState: true,
+        });
     };
 
     //sorting
@@ -122,70 +119,45 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(
-            route("writer-review-report-freedom-wall.index"),
-            queryParams
-        );
+        router.get(route("student-archive-article.index"), queryParams);
     };
 
-    //select reported content
+    //select what reported content
     // const handleSelectReport = (e) => {
     //     const value = e.target.value;
 
     //     if (value === "article") {
-    //         router.get(route("writer-review-report-article.index"));
+    //         router.get(route("student-archive-article.index"));
     //     } else if (value === "comment") {
-    //         router.get(route("writer-review-report-comment.index"));
+    //         router.get(route("editor-archive-comment.index"));
     //     } else if (value === "freedomWall") {
-    //         router.get(route("writer-review-report-freedom-wall.index"));
+    //         router.get(route("editor-archive-freedom-wall.index"));
     //     }
     // };
 
-    //delete, hide, report
+    //delete report and hide article and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
-        entry: null,
+        article: null,
         show: false,
     });
 
-    const openActionModal = (entry, actionType) => {
+    const openActionModal = (article, actionType) => {
         setConfirmAction({
             type: actionType, // 'delete', 'hide', or 'report'
-            entry: entry,
+            article: article,
             show: true,
         });
     };
 
     const handleAction = () => {
-        if (confirmAction.entry) {
+        if (confirmAction.article) {
             switch (confirmAction.type) {
-                case "hide":
-                    router.post(
-                        route(
-                            "writer-review-report-freedom-wall.hide",
-                            confirmAction.entry.id
-                        ),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
-                    break;
                 case "restore":
                     router.post(
                         route(
-                            "writer-review-report-freedom-wall.restore",
-                            confirmAction.entry.id
-                        ),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
-                    break;
-                case "reject":
-                    router.post(
-                        route(
-                            "writer-review-report-freedom-wall.reject",
-                            confirmAction.entry.id
+                            "student-archive-article.restore",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -195,8 +167,8 @@ export default function Index({
                 case "delete":
                     router.delete(
                         route(
-                            "writer-review-report-freedom-wall.destroy",
-                            confirmAction.entry.id
+                            "student-archive-article.destroy",
+                            confirmAction.article.id
                         ),
                         {
                             preserveScroll: true,
@@ -207,42 +179,40 @@ export default function Index({
                     break;
             }
         }
-        setConfirmAction({ type: "", entry: null, show: false });
+        setConfirmAction({ type: "", article: null, show: false });
     };
 
-    const openHideModal = (entry) => {
-        openActionModal(entry, "hide");
+    // const openHideModal = (article) => {
+    //     openActionModal(article, "hide");
+    // };
+
+    const openRestoreModal = (article) => {
+        openActionModal(article, "restore");
     };
 
-    const openRestoreModal = (entry) => {
-        openActionModal(entry, "restore");
-    };
+    // const openRejectModal = (article) => {
+    //     openActionModal(article, "reject");
+    // };
 
-    const openRejectModal = (entry) => {
-        openActionModal(entry, "reject");
-    };
-
-    const openDeleteModal = (entry) => {
-        openActionModal(entry, "delete");
+    const openDeleteModal = (article) => {
+        openActionModal(article, "delete");
     };
 
     return (
-        <WriterAuthenticatedLayout
-            WriterBadgeCount={WriterBadgeCount}
+        <StudentAuthenticatedLayout
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        {visibility === "visible"
-                            ? "List of Reported Freedom Wall"
-                            : visibility === "hidden"
-                            ? "List of Archive Freedom Wall"
-                            : "List of Reported/Archive Freedom Wall"}
+                        List of Archive Articles
                     </h2>
+                    {/* not used */}
                     {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
-                            value="freedomWall"
+                            // value="selectedValue"
+                            defaultValue="article"
                             onChange={handleSelectReport}
                         >
                             <option value="article">Reported Article</option>
@@ -260,77 +230,31 @@ export default function Index({
                                     <span className="hidden sm:block">
                                         Content Type
                                     </span>
-
-                                    {WriterBadgeCount.totalReportCount > 0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </div>
                             </Dropdown.Trigger>
 
                             <Dropdown.Content>
                                 <Link
                                     href={route(
-                                        "writer-review-report-article.index"
+                                        "student-archive-article.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Articles
-                                    {WriterBadgeCount.totalArticleReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalArticleReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalArticleReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                                 <Link
-                                    href={route(
-                                        "writer-review-report-comment.index"
-                                    )}
+                                    href={route("student-archive-comment.index")}
                                     className="px-4 py-2 flex items-center text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
                                 >
                                     Comments
-                                    {WriterBadgeCount.totalCommentReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalCommentReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalCommentReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                                 <Link
                                     href={route(
-                                        "writer-review-report-freedom-wall.index"
+                                        "student-archive-freedom-wall.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     Freedom Wall
-                                    {WriterBadgeCount.totalFreedomWallReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalFreedomWallReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalFreedomWallReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>
@@ -338,15 +262,7 @@ export default function Index({
                 </div>
             }
         >
-            <Head
-                title={
-                    visibility === "visible"
-                        ? "List of Reported Freedom Wall"
-                        : visibility === "hidden"
-                        ? "List of Archive Freedom Wall"
-                        : "List of Reported/Archive Freedom Wall"
-                }
-            />
+            <Head title="List of Archive Articles" />
 
             <ToastContainer position="bottom-right" />
 
@@ -358,24 +274,24 @@ export default function Index({
                                 <div className="w-full">
                                     <SearchInput
                                         className="w-full"
-                                        defaultValue={queryParams.body}
+                                        defaultValue={queryParams.title}
                                         route={route(
-                                            "writer-review-report-freedom-wall.index"
+                                            "student-archive-article.index"
                                         )}
                                         queryParams={queryParams}
-                                        placeholder="Search Freedom Wall"
+                                        placeholder="Search Article Title"
                                         onKeyPress={(e) =>
-                                            onKeyPressed("body", e)
-                                        }
+                                            onKeyPressed("title", e)
+                                        } // Trigger search on Enter key
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "body",
+                                                "title",
                                                 e.target.value
                                             )
-                                        }
+                                        } // Clear or update query param
                                     />
                                 </div>
-                                <div className="w-[40%]">
+                                {/* <div className="w-[40%]">
                                     <SelectInput
                                         className="w-full"
                                         defaultValue={queryParams.visibility}
@@ -390,7 +306,7 @@ export default function Index({
                                         <option value="visible">Visible</option>
                                         <option value="hidden">Archive</option>
                                     </SelectInput>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -410,7 +326,7 @@ export default function Index({
                                                 ID
                                             </TableHeading>
                                             <TableHeading
-                                                name="body"
+                                                name="title"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -419,12 +335,12 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Body
+                                                Title
                                             </TableHeading>
                                             <th className="px-3 py-3">
                                                 Visibility
                                             </th>
-                                            <TableHeading
+                                            {/* <TableHeading
                                                 name="report_count"
                                                 sort_field={
                                                     queryParams.sort_field
@@ -435,68 +351,70 @@ export default function Index({
                                                 sortChanged={sortChanged}
                                             >
                                                 Report Count
-                                            </TableHeading>
+                                            </TableHeading> */}
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {reportedFreedomWall.data.length > 0 ? (
-                                            reportedFreedomWall.data.map(
-                                                (entry) => (
+                                        {archivedArticle.data.length > 0 ? (
+                                            archivedArticle.data.map(
+                                                (article) => (
                                                     <tr
                                                         //added
                                                         className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                        key={entry.id}
+                                                        key={article.id}
                                                     >
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {entry.id}
+                                                            {article.id}
                                                         </td>
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <Link
                                                                 // added
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
-                                                                    "writer-review-report-freedom-wall.show",
-                                                                    entry.id
+                                                                    "student-archive-article.show",
+                                                                    article.id
                                                                 )}
                                                             >
                                                                 {truncate(
-                                                                    entry.body,
+                                                                    article.title,
                                                                     50
                                                                 )}
                                                             </Link>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {/* {entry.visibility} */}
+                                                            {/* {article.visibility} */}
                                                             <span
                                                                 className={
                                                                     "px-2 py-1 rounded text-white " +
                                                                     VISIBILITY_CLASS_MAP[
-                                                                        entry
+                                                                        article
                                                                             .visibility
                                                                     ]
                                                                 }
                                                             >
                                                                 {
                                                                     VISIBILITY_TEXT_MAP[
-                                                                        entry
+                                                                        article
                                                                             .visibility
                                                                     ]
                                                                 }
                                                             </span>
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {entry.report_count}
-                                                        </td>
                                                         {/* <td className="px-3 py-2 text-nowrap">
-                                                            {entry.visibility !==
+                                                            {
+                                                                article.report_count
+                                                            }
+                                                        </td> */}
+                                                        {/* <td className="px-3 py-2 text-nowrap">
+                                                            {article.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openHideModal(
-                                                                            entry
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
@@ -504,12 +422,12 @@ export default function Index({
                                                                     Hide
                                                                 </button>
                                                             )}
-                                                            {entry.visibility !==
+                                                            {article.visibility !==
                                                                 "visible" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRestoreModal(
-                                                                            entry
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
@@ -518,12 +436,12 @@ export default function Index({
                                                                 </button>
                                                             )}
 
-                                                            {entry.visibility !==
+                                                            {article.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRejectModal(
-                                                                            entry
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
@@ -532,11 +450,11 @@ export default function Index({
                                                                 </button>
                                                             )}
                                                             {auth.user.role ===
-                                                                "admin" && (
+                                                                "editor" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
-                                                                            entry
+                                                                            article
                                                                         )
                                                                     }
                                                                     className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
@@ -555,26 +473,12 @@ export default function Index({
                                                                     </DropdownAction.Trigger>
 
                                                                     <DropdownAction.Content>
-                                                                        {entry.visibility !==
-                                                                            "hidden" && (
-                                                                            <DropdownAction.Btn
-                                                                                onClick={() =>
-                                                                                    openHideModal(
-                                                                                        entry
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                <ArchiveBoxIcon className="w-6 text-rose-600" />
-                                                                                Archive
-                                                                            </DropdownAction.Btn>
-                                                                        )}
-
-                                                                        {entry.visibility !==
+                                                                        {article.visibility !==
                                                                             "visible" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openRestoreModal(
-                                                                                        entry
+                                                                                        article
                                                                                     )
                                                                                 }
                                                                             >
@@ -583,34 +487,22 @@ export default function Index({
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {entry.visibility !==
-                                                                            "hidden" && (
-                                                                            <DropdownAction.Btn
-                                                                                onClick={() =>
-                                                                                    openRejectModal(
-                                                                                        entry
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                <ArrowUturnLeftIcon className="w-6 text-sky-600" />
-                                                                                Reject
-                                                                            </DropdownAction.Btn>
-                                                                        )}
-
                                                                         {(auth
                                                                             .user
                                                                             .role ===
                                                                             "admin" &&
-                                                                            entry.visibility ===
+                                                                            article.visibility ===
                                                                                 "hidden") ||
-                                                                            (entry.user_id ===
+                                                                            (article
+                                                                                .createdBy
+                                                                                .id ===
                                                                                 auth
                                                                                     .user
                                                                                     .id && (
                                                                                 <DropdownAction.Btn
                                                                                     onClick={() =>
                                                                                         openDeleteModal(
-                                                                                            entry
+                                                                                            article
                                                                                         )
                                                                                     }
                                                                                 >
@@ -639,13 +531,14 @@ export default function Index({
                                 </table>
                             </div>
                             <Pagination
-                                links={reportedFreedomWall.meta.links}
+                                links={archivedArticle.meta.links}
                                 queryParams={queryParams}
                             />
                         </div>
                     </div>
                 </div>
             </div>
+            {/* Confirm Modal */}
             <Modal
                 show={confirmAction.show}
                 onClose={() =>
@@ -654,22 +547,14 @@ export default function Index({
             >
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
-                        {confirmAction.type === "hide"
-                            ? "Confirm Archive"
-                            : confirmAction.type === "restore"
+                        {confirmAction.type === "restore"
                             ? "Confirm Restore"
-                            : confirmAction.type === "reject"
-                            ? "Confirm Reject"
                             : "Confirm Delete"}
                     </h2>
                     <p className="mt-4">
-                        {confirmAction.type === "hide"
-                            ? "Are you sure you want to archive this Freedom Wall Entry?"
-                            : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this archive Freedom Wall Entry?"
-                            : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported Freedom Wall Entry?"
-                            : "Are you sure you want to permanently delete this reported Freedom Wall Entry?"}
+                        {confirmAction.type === "restore"
+                            ? "Are you sure you want to restore this archive article?"
+                            : "Are you sure you want to permanently delete this archive article?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -683,17 +568,13 @@ export default function Index({
                             Cancel
                         </SecondaryButton>
                         <DangerButton onClick={handleAction} className="ml-2">
-                            {confirmAction.type === "hide"
-                                ? "Archive"
-                                : confirmAction.type === "restore"
+                            {confirmAction.type === "restore"
                                 ? "Restore"
-                                : confirmAction.type === "reject"
-                                ? "Reject"
                                 : "Delete"}
                         </DangerButton>
                     </div>
                 </div>
             </Modal>
-        </WriterAuthenticatedLayout>
+        </StudentAuthenticatedLayout>
     );
 }

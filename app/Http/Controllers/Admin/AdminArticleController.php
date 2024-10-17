@@ -452,6 +452,7 @@ class AdminArticleController extends Controller
             return back()->with('error', 'Article not found.');
         }
 
+        $admin_article->update(['archive_by' => Auth::user()->id ]);
         $admin_article->update(['visibility' => 'hidden']);
 
         return to_route('admin-article.index')->with(['success' => 'Archive successfully.']);

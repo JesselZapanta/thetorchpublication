@@ -39,6 +39,7 @@ class StudentFreedomWallController extends Controller
 
 
         $entries = $query->where('user_id', $id)
+                            ->where('visibility', 'visible')
                             ->orderBy($sortField, $sortDirection)
                             ->paginate(10)
                             ->onEachSide(1);
@@ -178,12 +179,21 @@ class StudentFreedomWallController extends Controller
     {
         $freedomWall = FreedomWall::find($id); // Use find instead of findOrFail
 
+        // if(!$freedomWall){
+        //     return to_route('student-freedomwall.index')->with(['error' => 'Freedom wall not found.']);
+        // }
+
+        // $freedomWall->delete();
+
+        // return to_route('student-freedomwall.index')->with(['success' => 'Deleted successfully.']);
+
         if(!$freedomWall){
-            return to_route('student-freedomwall.index')->with(['error' => 'Freedom wall not found.']);
+            return back()->with('error', 'FreedomWall not found');
         }
 
-        $freedomWall->delete();
+        $freedomWall->update(['archive_by' => Auth::user()->id ]);
+        $freedomWall->update(['visibility' => 'hidden']);
 
-        return to_route('student-freedomwall.index')->with(['success' => 'Deleted successfully.']);
+        return to_route('student-freedomwall.index')->with(['success' => 'Archive successfully.']);
     }
 }

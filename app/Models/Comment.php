@@ -16,8 +16,9 @@ class Comment extends Model
         'article_id', 
         'academic_year_id', 
         'user_id', 
-        'visibility',
         'report_count',
+        'visibility',
+        'archive_by'
     ];
 
     public function article()

@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -35,7 +36,10 @@ class EditorReviewReport extends Controller
         // Ensure proper grouping with orWhere for visibility
         $query->where(function($q) {
             $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
         });
 
         // Apply sorting
@@ -65,6 +69,7 @@ class EditorReviewReport extends Controller
             return back()->with('error', 'Article not found.');
         }
 
+        $article->update(['archive_by' => Auth::user()->id ]);
         $article->update(['visibility' => 'hidden']);
 
         return to_route('editor-review-report-article.index')->with(['success' => 'Archive successfully.']);
@@ -77,6 +82,7 @@ class EditorReviewReport extends Controller
             return back()->with('error', 'Article not found.');
         }
 
+        $article->update(['archive_by' => null ]);
         $article->update(['visibility' => 'visible']);
 
         return to_route('editor-review-report-article.index')->with(['success' => 'Restore successfully.']);
@@ -134,7 +140,10 @@ class EditorReviewReport extends Controller
         // Ensure proper grouping with orWhere for visibility
         $query->where(function($q) {
             $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
         });
 
         // Apply sorting
@@ -168,6 +177,7 @@ class EditorReviewReport extends Controller
             return back()->with('error', 'Comment not found.');
         }
 
+        $comment->update(['archive_by' => Auth::user()->id ]);
         $comment->update(['visibility' => 'hidden']);
 
         return to_route('editor-review-report-comment.index')->with(['success' => 'Archive successfully.']);
@@ -180,6 +190,7 @@ class EditorReviewReport extends Controller
             return back()->with('error', 'Comment not found.');
         }
 
+        $comment->update(['archive_by' => null ]);
         $comment->update(['visibility' => 'visible']);
 
         return to_route('editor-review-report-comment.index')->with(['success' => 'Restore successfully.']);
@@ -232,11 +243,28 @@ class EditorReviewReport extends Controller
             $query->where('visibility', request('visibility'));
         }
 
-        // Ensure proper grouping with orWhere for visibility
-        $query->where(function($q) {
-            $q->where('report_count', '>', 0)
-                ->orWhere('visibility', 'hidden');
+         // Get all FreedomWall entries where:
+        // 1. reports_count > 0 (withCount relationship)
+        // 2. visibility is set to 'hidden'
+        //this is a trial func
+
+        $query->where(function ($q) {
+        $q->whereHas('reports', function ($subQuery) {
+              $subQuery->where('id', '>', 0); // Report count > 0
+            })
+            ->orWhere('visibility', 'hidden');
         });
+
+        //todo
+        // $query->where(function ($q) {
+        //     $q->whereHas('reports', function ($subQuery) {
+        //         $subQuery->where('id', '>', 0); // Report count > 0
+        //     })
+        //     ->orWhere(function ($subQuery) {
+        //         $subQuery->where('visibility', 'hidden')
+        //                 ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items the 
+        //     });
+        // });
 
         // Apply sorting
         $reportedFreedomWall = $query->orderBy($sortField, $sortDirection)
@@ -267,6 +295,7 @@ class EditorReviewReport extends Controller
             return back()->with('error', 'FreedomWall not found.');
         }
 
+        $freedomWall->update(['archive_by' => Auth::user()->id ]);
         $freedomWall->update(['visibility' => 'hidden']);
 
         return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Archive successfully.']);
@@ -278,7 +307,8 @@ class EditorReviewReport extends Controller
         if(!$entry){
             return back()->with('error', 'FreedomWall not found.');
         }
-
+        
+        $entry->update(['archive_by' => null ]);
         $entry->update(['visibility' => 'visible']);
 
         return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Restore successfully.']);
@@ -295,6 +325,9 @@ class EditorReviewReport extends Controller
         $entry->update(['visibility' => 'visible']);
         $entry->update(['report_count' => 0]);
 
+        //get the id of the freedom wall then delete all the report data
+        $entry->reports()->delete();//trial
+
         return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Reject successfully.']);
     }
 
@@ -308,6 +341,7 @@ class EditorReviewReport extends Controller
         }
 
         $entry->delete();
+        $entry->reports()->delete();//trial
 
         return to_route('editor-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }

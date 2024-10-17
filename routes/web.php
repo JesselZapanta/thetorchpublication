@@ -39,6 +39,7 @@ use App\Http\Controllers\Student\StudentArticleController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentFreedomWallController;
 use App\Http\Controllers\Student\StudentGenerateReportController;
+use App\Http\Controllers\Student\StudentArchiveController;
 use App\Http\Controllers\Writer\WriterArticleController;
 use App\Http\Controllers\Writer\WriterDashboardController;
 use App\Http\Controllers\Writer\WriterGenerateReportController;
@@ -355,12 +356,29 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
     Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
     Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
     Route::delete('/student/contributor/{id}/destroy', [StudentApplyContributorController::class, 'destroy'])->name('student-contributor.destroy');
+
+    //archive article
+    Route::get('/student-archive-article', [StudentArchiveController::class, 'article'])->name('student-archive-article.index');
+    Route::get('/student-archive-article/{id}/show', [StudentArchiveController::class, 'showArticle'])->name('student-archive-article.show');
+    Route::post('/student-archive-article/{id}/restore', [StudentArchiveController::class, 'restoreArticle'])->name('student-archive-article.restore');
+    Route::delete('/student-archive-article/{id}/destroy', [StudentArchiveController::class, 'destroyArticle'])->name('student-archive-article.destroy');
+
+    //archive comment
+    Route::get('/student-archive-comment', [StudentArchiveController::class, 'comment'])->name('student-archive-comment.index');
+    Route::get('/student-archive-comment/{comment_id}/{article_id}/show/', [StudentArchiveController::class, 'showComment'])->name('student-archive-comment.show');
+    Route::post('/student-archive-comment/{id}/restore', [StudentArchiveController::class, 'restoreComment'])->name('student-archive-comment.restore');
+    Route::delete('/student-archive-comment/{id}/destroy', [StudentArchiveController::class, 'destroyComment'])->name('student-archive-comment.destroy');
+
+    Route::get('/student-archive-freedom-wall', [StudentArchiveController::class, 'freedomWall'])->name('student-archive-freedom-wall.index');
+    Route::get('/student-archive-freedom-wall/{id}/show', [StudentArchiveController::class, 'showFreedomWall'])->name('student-archive-freedom-wall.show');
+    Route::post('/student-archive-freedom-wall/{id}/restore', [StudentArchiveController::class, 'restoreFreedomWall'])->name('student-archive-freedom-wall.restore');
+    Route::delete('/student-archive-freedom-wall/{id}/destroy', [StudentArchiveController::class, 'destroyFreedomWall'])->name('student-archive-freedom-wall.destroy');
 });
 
 
 Route::middleware(['auth','userStatus'] )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');  
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

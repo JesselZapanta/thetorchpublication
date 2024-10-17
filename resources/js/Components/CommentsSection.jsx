@@ -400,7 +400,7 @@ export default function CommentsSection({
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         {/* change later */}
-                                        {auth.user.role !== "student" &&
+                                        {/* {auth.user.role !== "student" &&
                                             auth.user.role !==
                                                 "student_contributor" && (
                                                 <Dropdown.Link
@@ -411,7 +411,18 @@ export default function CommentsSection({
                                                 >
                                                     Archive
                                                 </Dropdown.Link>
-                                            )}
+                                            )} */}
+                                        {auth &&
+                                        (
+                                            <Dropdown.Link
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    openHideModal(comment);
+                                                }}
+                                            >
+                                                Archive
+                                            </Dropdown.Link>
+                                        )}
 
                                         {auth.user.id === comment.user_id && (
                                             <Dropdown>

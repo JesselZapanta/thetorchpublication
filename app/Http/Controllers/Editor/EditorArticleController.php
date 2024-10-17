@@ -508,6 +508,7 @@ class EditorArticleController extends Controller
             return back()->with('error', 'Article not found');
         }
 
+        $editor_article->update(['archive_by' => Auth::user()->id ]);
         $editor_article->update(['visibility' => 'hidden']);
 
 

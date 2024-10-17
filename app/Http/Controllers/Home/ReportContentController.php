@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
+use App\Models\ReportedFreedomWall;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportContentController extends Controller
 {
@@ -15,6 +17,13 @@ class ReportContentController extends Controller
     {
         $freedomwall = FreedomWall::findOrFail($id);
         $freedomwall->increment('report_count');
+        $userId = Auth::user()->id;
+
+        ReportedFreedomWall::create([
+                'user_id' => $userId,
+                'freedom_wall_id' => $freedomwall->id,
+                // 'reason' 
+            ]);
 
         // return to_route('freedom-wall.index')->with('success', 'Content Reported Successfully');
         return redirect()->back()->with('success', 'Content Reported Successfully');

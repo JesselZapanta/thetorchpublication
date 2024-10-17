@@ -33,6 +33,7 @@ class Newsletter extends Model
 
         'report_count',
         'visibility',
+        'archive_by'
     ];
 
 

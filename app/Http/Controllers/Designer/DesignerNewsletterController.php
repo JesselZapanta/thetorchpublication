@@ -205,6 +205,7 @@ class DesignerNewsletterController extends Controller
         }
 
         $newsletter->update(['visibility' => 'hidden']);
+        $newsletter->update(['archive_by' => Auth::user()->id ]);
 
         return to_route('designer-newsletter.index')->with(['success' => 'Archive successfully.']);
     }

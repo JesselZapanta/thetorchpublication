@@ -11,7 +11,7 @@ class FreedomWall extends Model
 
     protected $table = 'freedom_walls';
 
-    protected $fillable = ['user_id', 'academic_year_id', 'body', 'emotion', 'report_count', 'visibility'];
+    protected $fillable = ['user_id', 'academic_year_id', 'body', 'emotion', 'archive_by', 'visibility'];
 
     public function user()
     {
@@ -32,5 +32,17 @@ class FreedomWall extends Model
     public function dislikes()
     {
         return $this->hasMany(FreedomWallLike::class)->where('is_like', false);
+    }
+
+    //for reported freedom wall trial only
+    public function archiveBy()
+    {
+        return $this->belongsTo(User::class, 'archive_by');
+    }
+
+    //for reported freedom wall trial only
+    public function reports()
+    {
+        return $this->hasMany(ReportedFreedomWall::class);
     }
 }

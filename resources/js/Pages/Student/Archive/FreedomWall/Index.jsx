@@ -5,7 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -20,17 +20,17 @@ import {
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Dropdown from "@/Components/Dropdown";
 import { VISIBILITY_CLASS_MAP, VISIBILITY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import SearchInput from "@/Components/SearchInput";
-import Dropdown from "@/Components/Dropdown";
 
 export default function Index({
     auth,
     reportedFreedomWall,
     queryParams = null,
     flash,
-    WriterBadgeCount,
+    StudentBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -58,7 +58,7 @@ export default function Index({
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("writer-review-report-freedom-wall.index"),
+                route("student-archive-freedom-wall.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -78,7 +78,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("writer-review-report-freedom-wall.index"),
+                    route("student-archive-freedom-wall.index"),
                     {},
                     {
                         preserveState: true,
@@ -87,7 +87,7 @@ export default function Index({
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("writer-review-report-freedom-wall.index"),
+                    route("student-archive-freedom-wall.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -102,7 +102,7 @@ export default function Index({
         setVisibility(value);
         queryParams[name] = value;
         router.get(
-            route("writer-review-report-freedom-wall.index"),
+            route("student-archive-freedom-wall.index"),
             queryParams,
             {
                 preserveState: true,
@@ -123,23 +123,10 @@ export default function Index({
             queryParams.sort_direction = "asc";
         }
         router.get(
-            route("writer-review-report-freedom-wall.index"),
+            route("student-archive-freedom-wall.index"),
             queryParams
         );
     };
-
-    //select reported content
-    // const handleSelectReport = (e) => {
-    //     const value = e.target.value;
-
-    //     if (value === "article") {
-    //         router.get(route("writer-review-report-article.index"));
-    //     } else if (value === "comment") {
-    //         router.get(route("writer-review-report-comment.index"));
-    //     } else if (value === "freedomWall") {
-    //         router.get(route("writer-review-report-freedom-wall.index"));
-    //     }
-    // };
 
     //delete, hide, report
     const [confirmAction, setConfirmAction] = useState({
@@ -159,32 +146,10 @@ export default function Index({
     const handleAction = () => {
         if (confirmAction.entry) {
             switch (confirmAction.type) {
-                case "hide":
-                    router.post(
-                        route(
-                            "writer-review-report-freedom-wall.hide",
-                            confirmAction.entry.id
-                        ),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
-                    break;
                 case "restore":
                     router.post(
                         route(
-                            "writer-review-report-freedom-wall.restore",
-                            confirmAction.entry.id
-                        ),
-                        {
-                            preserveScroll: true,
-                        }
-                    );
-                    break;
-                case "reject":
-                    router.post(
-                        route(
-                            "writer-review-report-freedom-wall.reject",
+                            "student-archive-freedom-wall.restore",
                             confirmAction.entry.id
                         ),
                         {
@@ -195,7 +160,7 @@ export default function Index({
                 case "delete":
                     router.delete(
                         route(
-                            "writer-review-report-freedom-wall.destroy",
+                            "student-archive-freedom-wall.destroy",
                             confirmAction.entry.id
                         ),
                         {
@@ -210,34 +175,24 @@ export default function Index({
         setConfirmAction({ type: "", entry: null, show: false });
     };
 
-    const openHideModal = (entry) => {
-        openActionModal(entry, "hide");
-    };
 
     const openRestoreModal = (entry) => {
         openActionModal(entry, "restore");
     };
 
-    const openRejectModal = (entry) => {
-        openActionModal(entry, "reject");
-    };
 
     const openDeleteModal = (entry) => {
         openActionModal(entry, "delete");
     };
 
     return (
-        <WriterAuthenticatedLayout
-            WriterBadgeCount={WriterBadgeCount}
+        <StudentAuthenticatedLayout
+            StudentBadgeCount={StudentBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        {visibility === "visible"
-                            ? "List of Reported Freedom Wall"
-                            : visibility === "hidden"
-                            ? "List of Archive Freedom Wall"
-                            : "List of Reported/Archive Freedom Wall"}
+                        List of Archive Freedom Wall
                     </h2>
                     {/* <div className="flex gap-4">
                         <SelectInput
@@ -260,77 +215,33 @@ export default function Index({
                                     <span className="hidden sm:block">
                                         Content Type
                                     </span>
-
-                                    {WriterBadgeCount.totalReportCount > 0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </div>
                             </Dropdown.Trigger>
 
                             <Dropdown.Content>
                                 <Link
                                     href={route(
-                                        "writer-review-report-article.index"
+                                        "student-archive-article.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
                                     Articles
-                                    {WriterBadgeCount.totalArticleReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalArticleReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalArticleReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                                 <Link
                                     href={route(
-                                        "writer-review-report-comment.index"
+                                        "student-archive-comment.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-sky-600 text-gray-50 transition-all duration-300 rounded hover:bg-sky-700"
                                 >
                                     Comments
-                                    {WriterBadgeCount.totalCommentReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalCommentReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalCommentReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                                 <Link
                                     href={route(
-                                        "writer-review-report-freedom-wall.index"
+                                        "student-archive-freedom-wall.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                 >
                                     Freedom Wall
-                                    {WriterBadgeCount.totalFreedomWallReportCount >
-                                        0 && (
-                                        <>
-                                            <span className="flex justify-center items-center min-w-5 h-5 -mt-5 rounded-full p-1 bg-red-500 text-gray-100">
-                                                {WriterBadgeCount.totalFreedomWallReportCount >
-                                                9
-                                                    ? "9+"
-                                                    : WriterBadgeCount.totalFreedomWallReportCount}
-                                            </span>
-                                        </>
-                                    )}
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>
@@ -338,18 +249,9 @@ export default function Index({
                 </div>
             }
         >
-            <Head
-                title={
-                    visibility === "visible"
-                        ? "List of Reported Freedom Wall"
-                        : visibility === "hidden"
-                        ? "List of Archive Freedom Wall"
-                        : "List of Reported/Archive Freedom Wall"
-                }
-            />
+            <Head title="List of Archive Freedom Wall" />
 
             <ToastContainer position="bottom-right" />
-
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -360,7 +262,7 @@ export default function Index({
                                         className="w-full"
                                         defaultValue={queryParams.body}
                                         route={route(
-                                            "writer-review-report-freedom-wall.index"
+                                            "student-archive-freedom-wall.index"
                                         )}
                                         queryParams={queryParams}
                                         placeholder="Search Freedom Wall"
@@ -375,7 +277,7 @@ export default function Index({
                                         }
                                     />
                                 </div>
-                                <div className="w-[40%]">
+                                {/* <div className="w-[40%]">
                                     <SelectInput
                                         className="w-full"
                                         defaultValue={queryParams.visibility}
@@ -390,7 +292,7 @@ export default function Index({
                                         <option value="visible">Visible</option>
                                         <option value="hidden">Archive</option>
                                     </SelectInput>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -424,18 +326,7 @@ export default function Index({
                                             <th className="px-3 py-3">
                                                 Visibility
                                             </th>
-                                            <TableHeading
-                                                name="report_count"
-                                                sort_field={
-                                                    queryParams.sort_field
-                                                }
-                                                sort_direction={
-                                                    queryParams.sort_direction
-                                                }
-                                                sortChanged={sortChanged}
-                                            >
-                                                Report Count
-                                            </TableHeading>
+
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
@@ -458,7 +349,7 @@ export default function Index({
                                                                 // added
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 href={route(
-                                                                    "writer-review-report-freedom-wall.show",
+                                                                    "student-archive-freedom-wall.show",
                                                                     entry.id
                                                                 )}
                                                             >
@@ -487,64 +378,6 @@ export default function Index({
                                                                 }
                                                             </span>
                                                         </td>
-                                                        <td className="px-3 py-2 text-nowrap">
-                                                            {entry.report_count}
-                                                        </td>
-                                                        {/* <td className="px-3 py-2 text-nowrap">
-                                                            {entry.visibility !==
-                                                                "hidden" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openHideModal(
-                                                                            entry
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-                                                                >
-                                                                    Hide
-                                                                </button>
-                                                            )}
-                                                            {entry.visibility !==
-                                                                "visible" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openRestoreModal(
-                                                                            entry
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Restore
-                                                                </button>
-                                                            )}
-
-                                                            {entry.visibility !==
-                                                                "hidden" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openRejectModal(
-                                                                            entry
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Reject
-                                                                </button>
-                                                            )}
-                                                            {auth.user.role ===
-                                                                "admin" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        openDeleteModal(
-                                                                            entry
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
-                                                                >
-                                                                    Delete
-                                                                </button>
-                                                            )}
-                                                        </td> */}
                                                         <td className="px-3 py-2 text-nowrap w-[10%]">
                                                             <div className="flex items-center relative">
                                                                 <DropdownAction>
@@ -654,22 +487,14 @@ export default function Index({
             >
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
-                        {confirmAction.type === "hide"
-                            ? "Confirm Archive"
-                            : confirmAction.type === "restore"
+                        {confirmAction.type === "restore"
                             ? "Confirm Restore"
-                            : confirmAction.type === "reject"
-                            ? "Confirm Reject"
                             : "Confirm Delete"}
                     </h2>
                     <p className="mt-4">
-                        {confirmAction.type === "hide"
-                            ? "Are you sure you want to archive this Freedom Wall Entry?"
-                            : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this archive Freedom Wall Entry?"
-                            : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported Freedom Wall Entry?"
-                            : "Are you sure you want to permanently delete this reported Freedom Wall Entry?"}
+                        {confirmAction.type === "restore"
+                            ? "Are you sure you want to restore this archived Freedom Wall Entry?"
+                            : "Are you sure you want to permanently delete this archived Freedom Wall Entry?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -683,17 +508,13 @@ export default function Index({
                             Cancel
                         </SecondaryButton>
                         <DangerButton onClick={handleAction} className="ml-2">
-                            {confirmAction.type === "hide"
-                                ? "Archive"
-                                : confirmAction.type === "restore"
+                            {confirmAction.type === "restore"
                                 ? "Restore"
-                                : confirmAction.type === "reject"
-                                ? "Reject"
                                 : "Delete"}
                         </DangerButton>
                     </div>
                 </div>
             </Modal>
-        </WriterAuthenticatedLayout>
+        </StudentAuthenticatedLayout>
     );
 }

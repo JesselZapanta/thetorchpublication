@@ -29,7 +29,6 @@ class Task extends Model
         'status',
         'priority',
         'draft',
-        'visibility',
 
         'assigned_date',
 
@@ -54,6 +53,9 @@ class Task extends Model
         'due_date',
         
         'task_image_path',
+
+        'archive_by',
+        'visibility',
     ];
 
     //who assign the task

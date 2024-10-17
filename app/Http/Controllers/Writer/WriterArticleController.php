@@ -420,6 +420,7 @@ class WriterArticleController extends Controller
             return back()->with('error', 'Article not found');
         }
 
+        $writer_article->update(['archive_by' => Auth::user()->id ]);
         $writer_article->update(['visibility' => 'hidden']);
 
         return to_route('writer-article.index')->with(['success' => 'Archive successfully.']);

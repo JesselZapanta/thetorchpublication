@@ -29,7 +29,7 @@ class FreedomWallResource extends JsonResource
             'user_has_disliked' => $this->dislikes()->where('user_id', auth()->id())->exists(),
 
             'user_id' => $this->user_id,
-            'report_count' => $this->report_count,
+            'report_count' => $this->reports()->count(),
             
             'visibility' => $this->visibility
         ];

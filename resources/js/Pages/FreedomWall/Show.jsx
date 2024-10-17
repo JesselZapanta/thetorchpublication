@@ -290,21 +290,22 @@ export default function Show({ auth, categories, entry, success }) {
                                         </Dropdown.Trigger>
                                         <Dropdown.Content>
                                             {/* change later */}
-                                            {auth.user.role !== "student" &&
+                                            {(auth.user.role !== "student" &&
                                                 auth.user.role !==
-                                                    "student_contributor" && (
+                                                    "student_contributor") ||
+                                                (auth.user.id ===
+                                                    entry.data.user_id && (
                                                     <Dropdown.Link
                                                         onClick={(event) => {
                                                             event.preventDefault();
                                                             openHideModal(
-                                                                entry.data.id
+                                                                entry
                                                             );
                                                         }}
                                                     >
                                                         Archive
                                                     </Dropdown.Link>
-                                                )}
-
+                                                ))}
                                             {auth.user.id ===
                                                 entry.data.user_id && (
                                                 <Dropdown>

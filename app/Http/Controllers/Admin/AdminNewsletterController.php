@@ -48,22 +48,40 @@ class AdminNewsletterController extends Controller
 
         $id = Auth::user()->id;
 
-        $newsletters = $query->orderBy($sortField, $sortDirection)
-            ->where('visibility', 'visible')
-            ->where(function ($query) use ($id) {
-                // Get all newsletters if auth user is the layout_by, regardless of status
-                $query->where('layout_by', $id);
+        // $newsletters = $query->orderBy($sortField, $sortDirection)
+        //     ->where('visibility', 'visible')
+        //     ->where(function ($query) use ($id) {
+        //         // Get all newsletters if auth user is the layout_by, regardless of status
+        //         $query->where('layout_by', $id);
+        //     })
+        //     ->orWhere(function ($query) use ($id) {
+        //         // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
+        //         $query->where(function ($query) use ($id) {
+        //             $query->where('layout_by', '!=', $id)
+        //                 ->orWhereNull('layout_by');
+        //         })
+        //         ->whereIn('status', ['pending', 'approved', 'revision','distributed']);
+        //     })
+        //     ->paginate(10)
+        //     ->onEachSide(1);
+
+        $newsletters = $query->where('visibility', 'visible')
+        ->where(function ($query) use ($id) {
+            // Get all newsletters if auth user is the layout_by, regardless of status
+            $query->where('layout_by', $id);
+        })
+        ->orWhere(function ($query) use ($id) {
+            // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
+            $query->where(function ($subQuery) use ($id) {
+                $subQuery->where('layout_by', '!=', $id)
+                    ->orWhereNull('layout_by');
             })
-            ->orWhere(function ($query) use ($id) {
-                // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
-                $query->where(function ($query) use ($id) {
-                    $query->where('layout_by', '!=', $id)
-                        ->orWhereNull('layout_by');
-                })
-                ->whereIn('status', ['pending', 'approved', 'revision','distributed']);
-            })
-            ->paginate(10)
-            ->onEachSide(1);
+            ->whereIn('status', ['pending', 'approved', 'revision', 'distributed'])
+            ->where('visibility', 'visible'); // Ensure visibility check here as well
+        })
+        ->orderBy($sortField, $sortDirection)
+        ->paginate(10)
+        ->onEachSide(1);
 
         
         return inertia('Admin/Newsletter/Index', [

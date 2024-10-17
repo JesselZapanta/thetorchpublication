@@ -192,9 +192,10 @@ export default function FreedomWallEntries({
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         {/* change later */}
-                                        {auth.user.role !== "student" &&
+                                        {(auth.user.role !== "student" &&
                                             auth.user.role !==
-                                                "student_contributor" && (
+                                                "student_contributor") ||
+                                            (auth.user.id === entry.user_id && (
                                                 <Dropdown.Link
                                                     onClick={(event) => {
                                                         event.preventDefault();
@@ -203,7 +204,7 @@ export default function FreedomWallEntries({
                                                 >
                                                     Archive
                                                 </Dropdown.Link>
-                                            )}
+                                            ))}
 
                                         {auth.user.id === entry.user_id && (
                                             <Dropdown>

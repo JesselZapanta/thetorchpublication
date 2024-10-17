@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateFreedomWallRequest;
 use App\Models\Word;
 use App\Utilities\AhoCorasick;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FreedomWallController extends Controller
 {
@@ -237,6 +238,7 @@ class FreedomWallController extends Controller
         }
 
         $freedomWall->update(['visibility' => 'hidden']);
+        $freedomWall->update(['archive_by' => Auth::user()->id ]);
 
         return to_route('freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }

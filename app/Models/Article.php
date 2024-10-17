@@ -31,7 +31,6 @@ class Article extends Model
 
         'status',
         'draft',
-        'visibility',
 
         'rejection_message',
         'revision_message',
@@ -48,6 +47,9 @@ class Article extends Model
 
         'report_count',
         'views',
+        
+        'visibility',
+        'archive_by'
 
     ];
 

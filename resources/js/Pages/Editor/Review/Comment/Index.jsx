@@ -350,7 +350,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                             "editor-review-report-comment.index"
                                         )}
                                         queryParams={queryParams}
-                                        placeholder="Search Freedom Wall"
+                                        placeholder="Search Comments"
                                         onKeyPress={(e) =>
                                             onKeyPressed("body", e)
                                         }

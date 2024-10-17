@@ -61,6 +61,7 @@ class StudentArticleController extends Controller
         $categories = Category::all();
 
         $articles = $query->where('created_by', $id)
+                            ->where('visibility', 'visible')
                             ->orderBy($sortField, $sortDirection)
                             ->paginate(10)
                             ->onEachSide(1);
@@ -406,13 +407,22 @@ class StudentArticleController extends Controller
     public function destroy(Article $student_article)
     {
         // dd($article);
-        $student_article->delete();
+        // $student_article->delete();
 
-        if ($student_article->article_image_path) {
-            // Delete the specific old image file
-            Storage::disk('public')->delete($student_article->article_image_path);
+        // if ($student_article->article_image_path) {
+        //     // Delete the specific old image file
+        //     Storage::disk('public')->delete($student_article->article_image_path);
+        // }
+        // return to_route('student-article.index')->with(['success' => 'Deleted successfully.']);
+
+        if(!$student_article){
+            return back()->with('error', 'Article not found');
         }
-        return to_route('student-article.index')->with(['success' => 'Deleted successfully.']);
+
+        $student_article->update(['archive_by' => Auth::user()->id ]);
+        $student_article->update(['visibility' => 'hidden']);
+
+        return to_route('student-article.index')->with(['success' => 'Archive successfully.']);
     }
 
 

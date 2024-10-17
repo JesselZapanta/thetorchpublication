@@ -217,6 +217,10 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
 
             <ToastContainer position="bottom-right" />
 
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(newsletters, null, 2)}
+            </pre> */}
+
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

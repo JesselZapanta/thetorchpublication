@@ -65,6 +65,14 @@ export default function StudentAuthenticatedLayout({
                                 >
                                     Freedom Wall
                                 </NavLink>
+                                <NavLink
+                                    href={route("student-archive-article.index")}
+                                    active={route().current(
+                                        "student-archive-article.index"
+                                    )}
+                                >
+                                    Archive
+                                </NavLink>
                             </div>
                         </div>
 
