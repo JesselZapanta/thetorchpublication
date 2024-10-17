@@ -69,6 +69,8 @@ npm install aos --save
 <!-- for cron -->
 <!-- run locally -->
 php artisan schedule:run
+<!-- db backup -->
+php artisan database:backup
 
 <!-- in server -->
 

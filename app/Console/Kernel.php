@@ -15,8 +15,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+         // Task that checks past due
+        // command :  php artisan schedule:run
         $schedule->command('taskpastdue')->everyFiveSeconds();
+
+        // Database backup task running daily at 12:00 midnight
+        // $schedule->command('database:backup')->daily()->at('00:00');
+
+        //for testing
+        //command :  php artisan database:backup
+        $schedule->command('database:backup')->everyFiveSeconds();
     }
+    
 
     /**
      * Register the commands for the application.
