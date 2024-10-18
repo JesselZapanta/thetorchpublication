@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use Carbon\Carbon;
+
 class DatabaseBackup extends Command
 {
     /**
@@ -29,37 +31,28 @@ class DatabaseBackup extends Command
         $dbUser = env('DB_USERNAME');
         $dbPass = env('DB_PASSWORD');
         $dbHost = env('DB_HOST');
+
+        //in prod, Set the backup path to a directory / e change path 
         $backupPath = storage_path('app/backups');
-        $fileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $fileName = 'torch_db_backup_' . Carbon::now()->format('F j, Y') . '.sql';
 
         // Ensure the backup directory exists
         if (!file_exists($backupPath)) {
             mkdir($backupPath, 0755, true);
         }
 
-        // Wrap paths and parameters with double quotes to handle spaces
         $command = "mysqldump --user=\"{$dbUser}\" --password=\"{$dbPass}\" --host=\"{$dbHost}\" \"{$dbName}\" > \"{$backupPath}/{$fileName}\"";
-
-        // Log the command for debugging
-        \Log::info("Running command: {$command}");
 
         // Execute the command
         $result = null;
-        $output = null;
         exec($command, $output, $result);
-
-        // Log the output for debugging
-        \Log::info('Command output: ' . implode("\n", $output));
-        \Log::info('Command result: ' . $result);
 
         if ($result === 0) {
             $this->info("Database backup was successful: {$fileName}");
         } else {
             $this->error("Failed to backup database.");
-            \Log::error("Database backup failed.");
         }
 
         return 0;
     }
-
 }
