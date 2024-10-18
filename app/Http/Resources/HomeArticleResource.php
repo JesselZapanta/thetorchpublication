@@ -57,7 +57,7 @@ class HomeArticleResource extends JsonResource
 
             'is_anonymous' => $this->is_anonymous,
             'is_featured' => $this->is_featured,
-
+            
             'average_rating' => $averageRating ? round($averageRating) : 0,
             'report_count' => $this->report_count,
 

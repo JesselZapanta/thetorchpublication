@@ -53,6 +53,7 @@ return new class extends Migration
 
             $table->integer('report_count')->default(0);
 
+            $table->fullText(['title', 'body']);//remove
 
             $table->tinyText('visibility')->default('visible');//archive
             $table->foreignId('archive_by')->nullable()->constrained(table: 'users')->onDelete('set null');

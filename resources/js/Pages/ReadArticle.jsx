@@ -1,6 +1,6 @@
 import RatingComponent from "@/Components/RatingComponent";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import CommentsSection from "@/Components/CommentsSection";
 import CommentForm from "@/Components/CommentForm ";
@@ -11,8 +11,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import ShareToFacebook from "@/Components/ShareBtns/ShareToFacebook";
 import ShareToX from "@/Components/ShareBtns/ShareToX";
+import RecommendedArticles from "@/Components/Article/RecommendedArticles";
 
-export default function ReadArticle({ auth, article, categories, comments, flash }) {
+export default function ReadArticle({
+    auth,
+    article,
+    categories,
+    comments,
+    flash,
+    recommendedArticles,
+}) {
     // Display flash messages if they exist
     useEffect(() => {
         // console.log(flash);
@@ -122,9 +130,6 @@ export default function ReadArticle({ auth, article, categories, comments, flash
             speakNextChunk(); // Start speaking the first chunk
         }
     };
-
-
-
 
     useEffect(() => {
         const stopSpeech = () => {
@@ -243,6 +248,10 @@ export default function ReadArticle({ auth, article, categories, comments, flash
             <Head title={`Read ${article.title}`} />
 
             <ToastContainer position="bottom-right" />
+
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(recommendedArticles, null, 2)}
+            </pre> */}
 
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -374,6 +383,20 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                             <ShareToFacebook />
                         </div>
                     </div>
+                    {/* Recommended arti */}
+                    {recommendedArticles.data.length > 0 && (
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg my-4 p-4">
+                            <h4 className="text-indigo-500">
+                                Recommended Articles
+                            </h4>
+                            <div className="overflow-auto mt-2">
+                                <RecommendedArticles
+                                    recommendedArticles={recommendedArticles}
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     {/* Use the CommentForm Component */}
                     <CommentForm
                         auth={auth}

@@ -80,8 +80,16 @@ class HomeController extends Controller
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();
 
+
         // Fetch the current category details
         $currentCategory = Category::findOrFail($id);
+
+
+        if ($currentCategory->status !== 'active') {
+            // If the category is not active, return a 404 response
+            abort(404);
+        }
+
 
         // Fetch articles by the selected category and filter by title if search query is provided
         $query = Article::where('category_id', $id)
@@ -150,19 +158,42 @@ class HomeController extends Controller
     }
 
 
-    public function read(Article $article)
+    public function read( $id)
     {
+        $article = Article::find($id);
+
+        // check if the category on arti has a status active
+
+        if ($article->category->status !== 'active') {
+            abort(404);
+        }
+
+
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();
 
+        // Fetch the latest 5 comments for the article
         $comments = Comment::where('article_id', $article->id)
             // ->where('draft', 'no')
             ->where('visibility', 'visible')
             ->latest()
             ->get();
 
+        $recommendedArticles = Article::where('id', '!=', $article->id) // Exclude current article
+            ->where('visibility', 'visible') // Ensure visibility is 'visible'
+            ->where('status', 'published') // Ensure status is 'published'
+            ->whereHas('category', function ($query) {
+                // Check that the associated category has an 'active' status
+                $query->where('status', 'active');
+            })
+            ->whereRaw("MATCH(title, body) AGAINST(? IN BOOLEAN MODE)", [preg_replace('/[^\w\s]/', '', $article->title)]) // Sanitize title
+            ->limit(5) // Limit results to 5
+            ->get(); // Execute the query
+
+
         return inertia('ReadArticle', [
             'article' => new HomeArticleResource($article),
+            'recommendedArticles' => HomeArticleResource::collection($recommendedArticles),
             'categories' => CategoryResource::collection($categories),
             'comments' => CommentResource::collection($comments),
         ]);
