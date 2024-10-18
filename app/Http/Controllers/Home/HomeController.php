@@ -155,7 +155,6 @@ class HomeController extends Controller
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();
 
-        // Fetch the latest 5 comments for the article
         $comments = Comment::where('article_id', $article->id)
             // ->where('draft', 'no')
             ->where('visibility', 'visible')

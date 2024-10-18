@@ -9,6 +9,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import ShareToFacebook from "@/Components/ShareBtns/ShareToFacebook";
+import ShareToX from "@/Components/ShareBtns/ShareToX";
 
 export default function ReadArticle({ auth, article, categories, comments, flash }) {
     // Display flash messages if they exist
@@ -369,6 +371,7 @@ export default function ReadArticle({ auth, article, categories, comments, flash
                                 </svg>
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
+                            <ShareToFacebook />
                         </div>
                     </div>
                     {/* Use the CommentForm Component */}
