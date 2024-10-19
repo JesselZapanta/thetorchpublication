@@ -91,14 +91,17 @@ class HomeController extends Controller
         ]);
     }
 
-    public function filterByCategory(Request $request, $id)
+    public function filterByCategory(Request $request, $slug)
     {
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();
 
+        $currentCategory = Category::where('slug', $slug)
+                        ->where('status', 'active')
+                        ->firstOrFail();
 
         // Fetch the current category details
-        $currentCategory = Category::findOrFail($id);
+        // $currentCategory = Category::findOrFail($id);
 
 
         if ($currentCategory->status !== 'active') {
@@ -108,7 +111,7 @@ class HomeController extends Controller
 
 
         // Fetch articles by the selected category and filter by title if search query is provided
-        $query = Article::where('category_id', $id)
+        $query = Article::where('category_id', $currentCategory->id)
                             // ->where('draft', 'no')
                             ->where('status', 'published')
                             ->where('visibility', 'visible');

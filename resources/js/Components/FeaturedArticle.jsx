@@ -66,7 +66,7 @@ export default function FeaturedArticle({ featuredArticle }) {
                     className="block mt-2 text-xl font-bold text-indigo-500"
                     href={route(
                         "articles.byCategory",
-                        featuredArticle.category.id
+                        featuredArticle.category.slug
                     )}
                 >
                     {featuredArticle.category.name}

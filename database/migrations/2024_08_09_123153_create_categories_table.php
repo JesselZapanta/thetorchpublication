@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->integer('order')->nullable();
+            $table->integer('order')->nullable();//way pulos
+            $table->text('slug')->nullable();
             $table->tinyText('status')->default('active');
             $table->string('category_image_path')->nullable();
             $table->timestamps();

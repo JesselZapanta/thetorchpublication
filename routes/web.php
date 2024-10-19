@@ -88,7 +88,7 @@ Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/category/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
+Route::get('/category/{slug}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/article/{slug}/view', [HomeController::class, 'read'])->name('article.read');
 
 Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');

@@ -60,6 +60,8 @@ class AdminCategoryController extends Controller
 
         // $data['name']=strtoupper($data['name']);
 
+        $data['slug'] = Str::slug($request->name);
+
         if ($image) {
             // Store the image directly under the 'category/' directory and save its path
             $data['category_image_path'] = $image->store('category', 'public');
@@ -102,7 +104,9 @@ class AdminCategoryController extends Controller
     {
         $data = $request->validated();
 
-        $data['name']=strtoupper($data['name']);
+        // $data['name']=strtoupper($data['name']);
+
+        $data['slug'] = Str::slug($request->name);
 
         $image = $data['category_image_path'];
 

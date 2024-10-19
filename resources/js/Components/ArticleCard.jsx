@@ -59,7 +59,7 @@ export default function ArticleCard({ article }) {
             <div className="flex items-center justify-between ">
                 <Link
                     className="block mt-2 text-xl font-bold text-indigo-500"
-                    href={route("articles.byCategory", article.category.id)}
+                    href={route("articles.byCategory", article.category.slug)}
                 >
                     {article.category.name}
                 </Link>

@@ -38,12 +38,12 @@ export default function UnauthenticatedLayout({
                                         className="capitalize"
                                         href={route(
                                             "articles.byCategory",
-                                            category.id
+                                            category.slug
                                         )}
                                         key={category.id}
                                         active={route().current(
                                             "articles.byCategory",
-                                            category.id
+                                            category.slug
                                         )}
                                     >
                                         {category.name.toLowerCase()}
