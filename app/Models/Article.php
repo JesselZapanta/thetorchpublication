@@ -21,7 +21,7 @@ class Article extends Model
         'revision_by',
         'published_by',
 
-        'slug',//way pulos 
+        'slug',//way pulos --naa na HAHAHA
 
         'title',
         'excerpt',

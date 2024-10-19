@@ -29,6 +29,10 @@ class HomeController extends Controller
                                 // ->where('draft', 'no')
                                 ->where('status', 'published')
                                 ->where('visibility', 'visible')
+                                ->whereHas('category', function ($query) {
+                                    // Check that the associated category has an 'active' status
+                                    $query->where('status', 'active');
+                                })
                                 ->first();
 
         // If there is no featured article, get the latest article
@@ -37,6 +41,10 @@ class HomeController extends Controller
                 ->where('status', 'published')
                 // ->where('draft', 'no')
                 ->where('visibility', 'visible')
+                ->whereHas('category', function ($query) {
+                                    // Check that the associated category has an 'active' status
+                                    $query->where('status', 'active');
+                                })
                 ->first() ?? null;
         }
 
@@ -47,6 +55,10 @@ class HomeController extends Controller
                                 // ->where('draft', 'no') // Uncomment if needed
                                 ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
+                                ->whereHas('category', function ($query) {
+                                    // Check that the associated category has an 'active' status
+                                    $query->where('status', 'active');
+                                })
                                 ->orderBy('views_count', 'DESC') // Order by the count of views
                                 ->limit(2)
                                 ->get();
@@ -57,6 +69,10 @@ class HomeController extends Controller
                                 // ->where('draft', 'no')
                                 ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
+                                ->whereHas('category', function ($query) {
+                                    // Check that the associated category has an 'active' status
+                                    $query->where('status', 'active');
+                                })
                                 ->limit(12)
                                 ->get();
 
@@ -158,16 +174,24 @@ class HomeController extends Controller
     }
 
 
-    public function read( $id)
+    public function read($slug)
     {
-        $article = Article::find($id);
+        $article = Article::where('slug', $slug)
+                            ->where('status', 'published')
+                            ->where('visibility', 'visible')
+                            ->firstOrFail();
+
+        // dd($article);
 
         // check if the category on arti has a status active
-
         if ($article->category->status !== 'active') {
             abort(404);
         }
 
+        // check if the arti status is !published
+        if ($article->status !== 'published') {
+            abort(404);
+        }
 
         // Fetch active categories
         $categories = Category::where('status', 'active')->limit(5)->get();

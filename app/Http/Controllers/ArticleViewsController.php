@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
+use App\Models\Article;
 use App\Models\ArticleView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleViewsController extends Controller
 {
-    public function incrementViews(Request $request, $articleId)
+    public function incrementViews($slug)
     {
+        $article = Article::where('slug', $slug)
+                            ->where('status', 'published')
+                            ->where('visibility', 'visible')
+                            ->firstOrFail();
+
          // Check if the user is authenticated
         // if (!Auth::check()) {
         //     // Do not increment if the user is not authenticated
@@ -45,11 +51,11 @@ class ArticleViewsController extends Controller
         // }
 
         ArticleView::create([
-            'article_id' => $articleId,
+            'article_id' => $article->id,
             'user_id' => $user,
             'academic_year_id' => $activeAy->id,
         ]);
 
-        return redirect()->route('article.read', $articleId);
+        return redirect()->route('article.read', $article->slug);
     }
 }

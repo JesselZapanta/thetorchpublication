@@ -7,15 +7,12 @@ import { useEffect } from "react";
 
 
 export default function ArticleCard({ article }) {
-    const incrementViews = () => {
+    const incrementViews = (slug) => {
         router.post(
-            `/articles/${article.id}/increment-views`,
+            `/articles/${slug}/increment-views`,
             {},
             {
                 preserveScroll: true,
-                // onSuccess: () => {
-                //     router.visit(route("article.read", article.id));
-                // },
             }
         );
     };
@@ -42,10 +39,10 @@ export default function ArticleCard({ article }) {
         <div className="flex w-full flex-col" data-aos="fade-up">
             <div className="overflow-hidden rounded-xl h-64">
                 <Link
-                    href={route("article.read", article.id)}
+                    href={route("article.read", article.slug)}
                     onClick={(e) => {
                         e.preventDefault();
-                        incrementViews();
+                        incrementViews(article.slug);
                     }}
                 >
                     <img
@@ -76,10 +73,10 @@ export default function ArticleCard({ article }) {
             </div>
             <div className="text-gray-800 dark:text-gray-400 ">
                 <Link
-                    href={route("article.read", article.id)}
+                    href={route("article.read", article.slug)}
                     onClick={(e) => {
                         e.preventDefault();
-                        incrementViews(article.id);
+                        incrementViews(article.slug);
                     }}
                     className="block text-justify text-base font-bold mt-2"
                 >

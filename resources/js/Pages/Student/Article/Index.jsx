@@ -430,7 +430,7 @@ export default function Index({
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
                                                                 "student-article.show",
-                                                                article.id
+                                                                article.slug
                                                             )}
                                                         >
                                                             {truncate(
@@ -495,7 +495,7 @@ export default function Index({
                                                                     <DropdownAction.Link
                                                                         href={route(
                                                                             "student-article.edit",
-                                                                            article.id
+                                                                            article.slug
                                                                         )}
                                                                     >
                                                                         <PencilSquareIcon className="w-6 text-sky-600" />

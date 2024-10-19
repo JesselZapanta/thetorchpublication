@@ -2,8 +2,8 @@ import { Link, router } from "@inertiajs/react";
 import React from "react";
 
 const RecommendedArticles = ({ recommendedArticles }) => {
-    const incrementViews = (articleId) => {
-        router.post(`/articles/${articleId}/increment-views`);
+    const incrementViews = (slug) => {
+        router.post(`/articles/${slug}/increment-views`);
     };
 
     //text limit
@@ -24,10 +24,10 @@ const RecommendedArticles = ({ recommendedArticles }) => {
                     {/* Add flex-shrink-0 to prevent shrinking */}
                     <div className="h-20">
                         <Link
-                            href={route("article.read", article.id)}
+                            href={route("article.read", article.slug)}
                             onClick={(e) => {
                                 e.preventDefault(); // Prevent default link behavior
-                                incrementViews(article.id); // Pass the current article's ID
+                                incrementViews(article.slug); // Pass the current article's ID
                             }}
                         >
                             <img

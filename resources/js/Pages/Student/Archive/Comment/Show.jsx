@@ -4,7 +4,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 
 
-export default function Index({ auth, article, comment, StudentBadgeCount }) {
+export default function Index({ auth, comment, StudentBadgeCount }) {
     const commentRef = useRef(null);
 
     useEffect(() => {
@@ -22,32 +22,29 @@ export default function Index({ auth, article, comment, StudentBadgeCount }) {
             header={
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight text-justify uppercase">
-                        {`Title: ${article.title}`}
+                        {`Title: ${comment.article.title}`}
                     </h2>
-                    {/* <div className="flex gap-4">
-                        <Link
-                            href={route("user.create")}
-                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                        >
-                            Create New
-                        </Link>
-                    </div> */}
                 </div>
             }
         >
-            <Head title={`Article ${article.title}`} />
+            <Head title={`Article ${comment.article.title}`} />
+
+            {/* <pre className="text-gray-900">
+                {JSON.stringify(comment, null, 2)}
+            </pre> */}
+
             <div className="py-4">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="relative">
                             <img
-                                src={article.article_image_path}
-                                alt={article.name}
+                                src={comment.article.article_image_path}
+                                alt={comment.article.name}
                                 className="w-full object-cover"
                             />
                             <div className="absolute bottom-0 left-0 w-full px-6 py-2 bg-slate-800 bg-opacity-50">
                                 <p className="italic text-justify text-white text-xs">
-                                    {article.caption}
+                                    {comment.article.caption}
                                 </p>
                             </div>
                         </div>
@@ -56,22 +53,25 @@ export default function Index({ auth, article, comment, StudentBadgeCount }) {
                                 {/* ID */}
                                 <div className="flex items-center gap-2">
                                     <div className="rounded-full overflow-hidden w-14 h-14 border-2 border-indigo-500">
-                                        {article.article_image_path && (
+                                        {comment.article.article_image_path && (
                                             <img
                                                 src={
-                                                    article.author
+                                                    comment.article.author
                                                         ? "/images/default/profile.jpg"
-                                                        : article.is_anonymous ===
+                                                        : comment.article
+                                                              .is_anonymous ===
                                                           "yes"
                                                         ? "/images/default/profile.jpg"
-                                                        : article.article_image_path
+                                                        : comment.article
+                                                              .article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
                                                 alt={
-                                                    article.is_anonymous ===
-                                                    "yes"
+                                                    comment.article
+                                                        .is_anonymous === "yes"
                                                         ? "Default image"
-                                                        : article.createdBy.name
+                                                        : comment.article
+                                                              .createdBy.name
                                                 }
                                             />
                                         )}
@@ -81,20 +81,23 @@ export default function Index({ auth, article, comment, StudentBadgeCount }) {
                                         <h4>
                                             Author:
                                             <span className="font-bold">
-                                                {article.author
-                                                    ? article.author
-                                                    : article.is_anonymous ===
+                                                {comment.article.author
+                                                    ? comment.article.author
+                                                    : comment.article
+                                                          .is_anonymous ===
                                                       "yes"
                                                     ? "Anonymous"
-                                                    : article.createdBy.name}
+                                                    : comment.article.createdBy
+                                                          .name}
                                             </span>
                                         </h4>
                                         <p className="mt-1">
                                             Published Date:
                                             <span className="font-bold">
                                                 {" "}
-                                                {article.published_date
-                                                    ? article.published_date
+                                                {comment.article.published_date
+                                                    ? comment.article
+                                                          .published_date
                                                     : " Not Published"}
                                             </span>
                                         </p>
@@ -105,27 +108,17 @@ export default function Index({ auth, article, comment, StudentBadgeCount }) {
                                     <h4>
                                         Category:{" "}
                                         <span className="font-bold">
-                                            {article.category.name}
+                                            {comment.article.category.name}
                                         </span>
                                     </h4>
                                     <p className="mt-1">
                                         Status:{" "}
                                         <span className="font-bold uppercase">
-                                            {article.status}
+                                            {comment.article.status}
                                         </span>
                                     </p>
                                 </div>
                             </div>
-                            {/* <div className="mt-4 text-gray-400">
-                                <p>for testing</p>
-                                <p>
-                                    Edited by:
-                                    {article.editedBy
-                                        ? article.editedBy.name
-                                        : "No Editor"}
-                                </p>
-                                <p> Layout By by:{article.layoutBy.name}</p>
-                            </div> */}
                             {/* Body */}
                             <div className="mt-8">
                                 {/* <p className="text-base text-justify whitespace-pre-line">
@@ -134,7 +127,7 @@ export default function Index({ auth, article, comment, StudentBadgeCount }) {
                                 <div
                                     className="text-base text-justify whitespace-pre-line"
                                     dangerouslySetInnerHTML={{
-                                        __html: article.body,
+                                        __html: comment.article.body,
                                     }}
                                 ></div>
                             </div>

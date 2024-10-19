@@ -224,16 +224,26 @@ class StudentArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $student_article)
+    public function show($slug)
     {
+
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'visible')
+                    ->firstOrFail();
+
         return inertia('Student/Article/Show', [
-            'article' => new ArticleResource($student_article),
+            'article' => new ArticleResource($article),
         ]);
     }
 
-    public function timeLine($id)
+    public function timeLine($slug)
     {
-        $article = Article::find($id);
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'visible')
+                    ->firstOrFail();
+
         // dd($article);
         return inertia('Student/Article/Timeline', [
             'article' => new ArticleResource($article),
@@ -245,12 +255,17 @@ class StudentArticleController extends Controller
      * Show the form for editing the specified resource.
      */
 
-    public function edit(Article $student_article)
+    public function edit($slug)
     {
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'visible')
+                    ->firstOrFail();
+
         $categories = Category::all();
 
         return inertia('Student/Article/Edit', [
-            'article' => new ArticleResource($student_article),
+            'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
         ]);
     }
@@ -263,6 +278,8 @@ class StudentArticleController extends Controller
         $student_article = Article::find($id);
 
         $data = $request->validated();
+
+        // dd($data);
 
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
@@ -329,7 +346,7 @@ class StudentArticleController extends Controller
         if (in_array($status, ['edited', 'revision', 'published'])) {
             // Only update the 'is_anonymous' field
             $student_article->update(['is_anonymous' => $data['is_anonymous']]);
-        } else if (in_array($status, ['pending', 'rejected'])) {
+        } else if (in_array($status, ['draft','pending', 'rejected'])) {
             // Update all fields
 
             $image = $data['article_image_path'] ?? null;

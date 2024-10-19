@@ -30,7 +30,8 @@ class HomeArticleResource extends JsonResource
 
         return[
             'id' => $this->id,
-
+            'slug' => $this->slug,
+            
             'author' => $this->author ?? '',
             'excerpt' => $this->excerpt,
 

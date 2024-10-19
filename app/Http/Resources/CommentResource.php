@@ -21,6 +21,7 @@ class CommentResource extends JsonResource
             'body' => $this->body,
             'user_id' => $this->user_id,
             'article_id' => $this->article_id,
+            'article' => new HomeArticleResource($this->article),
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'commentedBy' => new UserResource($this->commentedBy), // Assuming you have a UserResource
 

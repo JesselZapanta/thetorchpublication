@@ -54,9 +54,12 @@ class StudentArchiveController extends Controller
         ]);
     }
     
-    public function showArticle($id)
+    public function showArticle($slug)
     {
-        $article = Article::find($id);
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'hidden')
+                    ->firstOrFail();
 
         return inertia('Student/Archive/Article/Show', [
             'article' => new ArticleResource($article),
@@ -144,14 +147,15 @@ class StudentArchiveController extends Controller
         ]);
     }
 
-    public function showComment($comment_id, $article_id )
+    public function showComment($comment_id )
     {
-        $comment = Comment::findOrFail($comment_id);
-        $article = Article::findOrFail($article_id);
+
+        $comment = Comment::where('visibility', 'hidden')
+                    ->where('user_id', Auth::user()->id)
+                    ->findOrFail($comment_id);
 
         return inertia('Student/Archive/Comment/Show', [
-            'comment' => new CommentResource($comment),
-            'article' => new ArticleResource($article),
+            'comment' => new CommentResource($comment)
         ]);
     }
 
@@ -229,7 +233,10 @@ class StudentArchiveController extends Controller
 
     public function showFreedomWall($id)
     {
-        $entry = FreedomWall::findOrFail($id);
+
+        $entry = FreedomWall::where('visibility', 'hidden')
+                    ->where('user_id', Auth::user()->id)
+                    ->findOrFail($id);
 
         return inertia('Student/Archive/FreedomWall/Show', [
             'entry' => new FreedomWallResource($entry),

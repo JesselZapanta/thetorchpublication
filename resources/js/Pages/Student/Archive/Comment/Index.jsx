@@ -313,8 +313,6 @@ export default function Index({ auth, archiveComments, queryParams, flash, Stude
                                                                     {
                                                                         comment_id:
                                                                             comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
                                                                     }
                                                                 )}
                                                             >

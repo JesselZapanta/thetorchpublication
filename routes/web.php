@@ -88,12 +88,12 @@ Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/byCategory/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
-Route::get('/read-article/{article}', [HomeController::class, 'read'])->name('article.read');
+Route::get('/category/{id}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
+Route::get('/article/{slug}/view', [HomeController::class, 'read'])->name('article.read');
 
 Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
 
-Route::post('/articles/{article}/increment-views', [ArticleViewsController::class, 'incrementViews']);
+Route::post('/articles/{slug}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 
 
 //Get Ratings
@@ -365,7 +365,7 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
 
     //archive comment
     Route::get('/student-archive-comment', [StudentArchiveController::class, 'comment'])->name('student-archive-comment.index');
-    Route::get('/student-archive-comment/{comment_id}/{article_id}/show/', [StudentArchiveController::class, 'showComment'])->name('student-archive-comment.show');
+    Route::get('/student-archive-comment/{comment_id}/show/', [StudentArchiveController::class, 'showComment'])->name('student-archive-comment.show');
     Route::post('/student-archive-comment/{id}/restore', [StudentArchiveController::class, 'restoreComment'])->name('student-archive-comment.restore');
     Route::delete('/student-archive-comment/{id}/destroy', [StudentArchiveController::class, 'destroyComment'])->name('student-archive-comment.destroy');
 

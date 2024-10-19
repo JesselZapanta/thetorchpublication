@@ -8,15 +8,12 @@ import { useEffect } from "react";
 
 
 export default function FeaturedArticle({ featuredArticle }) {
-    const incrementViews = (articleId) => {
+    const incrementViews = (slug) => {
         router.post(
-            `/articles/${articleId}/increment-views`,
+            `/articles/${slug}/increment-views`,
             {},
             {
                 preserveScroll: true,
-                // onSuccess: () => {
-                //     router.visit(route("article.read", article.id))
-                // }
             }
         );
     };
@@ -42,15 +39,15 @@ export default function FeaturedArticle({ featuredArticle }) {
     return (
         <div className="w-full md:w-[65%] flex flex-col" data-aos="fade-up">
             {/* <pre className="text-gray-950">
-                {JSON.stringify(featuredArticle, null, 2)}
+                {JSON.stringify(featuredArticle.slug, null, 2)}
             </pre> */}
 
             <div className="relative overflow-hidden rounded-xl h-[300px] sm:h-[600px]">
                 <Link
-                    href={route("article.read", featuredArticle.id)}
+                    href={route("article.read", featuredArticle.slug)}
                     onClick={(e) => {
                         e.preventDefault();
-                        incrementViews(featuredArticle.id);
+                        incrementViews(featuredArticle.slug);
                     }}
                 >
                     <img
@@ -84,10 +81,10 @@ export default function FeaturedArticle({ featuredArticle }) {
             </div>
             <div className="text-gray-800 dark:text-gray-400 ">
                 <Link
-                    href={route("article.read", featuredArticle.id)}
+                    href={route("article.read", featuredArticle.slug)}
                     onClick={(e) => {
                         e.preventDefault();
-                        incrementViews(featuredArticle.id);
+                        incrementViews(featuredArticle.slug);
                     }}
                     className="block text-justify mt-2 text-xl font-bold"
                 >

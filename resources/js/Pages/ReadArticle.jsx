@@ -337,7 +337,13 @@ export default function ReadArticle({
                                         isAuthenticated={isAuthenticated}
                                     />
                                     {auth.user &&
-                                        auth.user.role === "student" && (
+                                        (auth.user.role === "student" ||
+                                            (auth.user.role ===
+                                                "student_contributor" &&
+                                                article.createdBy.id !==
+                                                    auth.user.id)) &&
+                                        article.createdBy.id !==
+                                            auth.user.id && (
                                             <div className="mt-4">
                                                 <button
                                                     className="px-2 bg-rose-400 text-white transition-all duration-300 rounded hover:bg-rose-500"
