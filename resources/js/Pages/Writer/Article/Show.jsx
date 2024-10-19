@@ -165,7 +165,7 @@ export default function Index({ auth, article, WriterBadgeCount }) {
                                 <Link
                                     href={route(
                                         "writer-article.edit",
-                                        article.id
+                                        article.slug
                                     )}
                                     className="px-4 py-2 bg-indigo-600 text-white transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
@@ -174,7 +174,7 @@ export default function Index({ auth, article, WriterBadgeCount }) {
                                 <Link
                                     href={route(
                                         "writer-article.timeline",
-                                        article.id
+                                        article.slug
                                     )}
                                     className="px-4 py-2 bg-lime-600 text-white transition-all duration-300 rounded hover:bg-lime-700"
                                 >

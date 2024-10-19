@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Writer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\StudentStoreArticleRequest;
 use App\Http\Requests\Student\StudentUpdateArticleRequest;
+use App\Http\Requests\Writer\WriterStoreArticleRequest;
+use App\Http\Requests\Writer\WriterUpdateArticleRequest;
 use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
@@ -91,7 +93,7 @@ class WriterArticleController extends Controller
      * Store a newly created resource in storage.
      */
     //writer req AHAHA bala basta mo gana | same validation ra sa writer
-    public function store(StudentStoreArticleRequest $request)
+    public function store(WriterStoreArticleRequest $request)
     {
         $data = $request->validated();
 
@@ -224,16 +226,28 @@ class WriterArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $writer_article)
+    public function show($slug)
     {
+        
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'visible')
+                    ->firstOrFail();
+
         return inertia('Writer/Article/Show', [
-            'article' => new ArticleResource($writer_article),
+            'article' => new ArticleResource($article),
         ]);
     }
 
-    public function timeLine($id)
+    public function timeLine($slug)
     {
-        $article = Article::find($id);
+        // $article = Article::find($id);
+
+        $article = Article::where('slug', $slug)
+                ->where('created_by', Auth::user()->id)
+                ->where('visibility', 'visible')
+                ->firstOrFail();
+                
         // dd($article);
         return inertia('Writer/Article/Timeline', [
             'article' => new ArticleResource($article),
@@ -245,12 +259,17 @@ class WriterArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $writer_article)
+    public function edit($slug)
     {
+        $article = Article::where('slug', $slug)
+                    ->where('created_by', Auth::user()->id)
+                    ->where('visibility', 'visible')
+                    ->firstOrFail();
+
         $categories = Category::all();
 
         return inertia('Writer/Article/Edit', [
-            'article' => new ArticleResource($writer_article),
+            'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
         ]);
     }
@@ -258,8 +277,7 @@ class WriterArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-     //writer req AHAHA bala basta mo gana | same validation ra sa writer
-    public function update(StudentUpdateArticleRequest $request, Article $writer_article)
+    public function update(WriterUpdateArticleRequest $request, Article $writer_article)
     {
         // dd($request);
         $data = $request->validated();
@@ -395,7 +413,7 @@ class WriterArticleController extends Controller
         if ($editedBy) {
                 Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorMessage));
 
-                return to_route('writer-article.index')->with(['success' => 'Article submitted successfully']);
+                return to_route('writer-article.index')->with(['success' => 'Article edited successfully']);
         }
 
 
