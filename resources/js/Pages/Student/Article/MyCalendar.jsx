@@ -15,7 +15,7 @@ export default function MyCalendar({ auth, articles, StudentBadgeCount }) {
         //     ? task.task_completed_date.split(" ")[0]
         //     : task.assigned_date,
 
-        url: route("student-article.show", article.id),
+        url: route("student-article.show", article.slug),
     }));
 
     // console.log(article.title);

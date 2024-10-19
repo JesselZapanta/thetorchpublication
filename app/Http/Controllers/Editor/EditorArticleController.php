@@ -278,16 +278,69 @@ class EditorArticleController extends Controller
     //     ]);
     // }
 
-    public function show(Article $editor_article)
+    public function show($slug)
     {
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                    $query->where('created_by', '!=', $id)  // Articles not created by the authenticated user
+                        ->where(function ($q) {
+                            // Include all published articles
+                            $q->where('status', 'published');
+                        })
+                        ->orWhere(function ($query) use ($id) {
+                            // Include articles with specific statuses (pending, revision, edited)
+                            $query->whereIn('status', ['pending', 'revision', 'edited'])
+                                ->where(function ($query) use ($id) {
+                                    // Articles not yet edited (edited_by is null) or edited by the authenticated user
+                                    $query->whereNull('edited_by')
+                                        ->orWhere('edited_by', $id);
+                                });
+                        });
+                });
+        })
+        ->firstOrFail();
+
+
         return inertia('Editor/Article/Show', [
-            'article' => new ArticleResource($editor_article),
+            'article' => new ArticleResource($article),
         ]);
     }
     
-    public function timeLine($id)
+    public function timeLine($slug)
     {
-        $article = Article::find($id);
+        // $article = Article::find($id);
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                    $query->where('created_by', '!=', $id)  // Articles not created by the authenticated user
+                        ->where(function ($q) {
+                            // Include all published articles
+                            $q->where('status', 'published');
+                        })
+                        ->orWhere(function ($query) use ($id) {
+                            // Include articles with specific statuses (pending, revision, edited)
+                            $query->whereIn('status', ['pending', 'revision', 'edited'])
+                                ->where(function ($query) use ($id) {
+                                    // Articles not yet edited (edited_by is null) or edited by the authenticated user
+                                    $query->whereNull('edited_by')
+                                        ->orWhere('edited_by', $id);
+                                });
+                        });
+                });
+        })
+        ->firstOrFail();
+
         // dd($article);
         return inertia('Editor/Article/Timeline', [
             'article' => new ArticleResource($article),
@@ -300,12 +353,38 @@ class EditorArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $editor_article)
-    {
+    public function edit($slug)
+    {   
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                    $query->where('created_by', '!=', $id)  // Articles not created by the authenticated user
+                        ->where(function ($q) {
+                            // Include all published articles
+                            $q->where('status', 'published');
+                        })
+                        ->orWhere(function ($query) use ($id) {
+                            // Include articles with specific statuses (pending, revision, edited)
+                            $query->whereIn('status', ['pending', 'revision', 'edited'])
+                                ->where(function ($query) use ($id) {
+                                    // Articles not yet edited (edited_by is null) or edited by the authenticated user
+                                    $query->whereNull('edited_by')
+                                        ->orWhere('edited_by', $id);
+                                });
+                        });
+                });
+        })
+        ->firstOrFail();
+
         $categories = Category::all();
 
         return inertia('Editor/Article/Edit', [
-            'article' => new ArticleResource($editor_article),
+            'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
         ]);
     }
@@ -519,9 +598,10 @@ class EditorArticleController extends Controller
     public function calendar()
     {
         $articles = Article::where('status', operator: 'published')
-                            ->where('created_by' , Auth::user()->id)
+                            ->where('visibility', 'visible') 
+                            ->where('created_by' , Auth::user()->id)//
                             ->whereNotNull('published_date')
-                            ->get(['id','title', 'status', 'published_date']);
+                            ->get(['id','slug','title', 'status', 'published_date']);
 
         // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
 

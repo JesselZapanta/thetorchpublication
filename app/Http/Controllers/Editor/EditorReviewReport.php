@@ -53,9 +53,18 @@ class EditorReviewReport extends Controller
         ]);
     }
     
-    public function showArticle($id)
+    public function showArticle($slug)
     {
-        $article = Article::find($id);
+        // $article = Article::find($id);
+        $article = Article::where('slug', $slug)
+            ->where(function($q) {
+                $q->where('report_count', '>', 0)
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
+            })
+            ->firstOrFail();
 
         return inertia('Editor/Review/Article/Show', [
             'article' => new ArticleResource($article),
@@ -157,14 +166,21 @@ class EditorReviewReport extends Controller
         ]);
     }
 
-    public function showComment($comment_id, $article_id )
+    public function showComment($comment_id)
     {
-        $comment = Comment::findOrFail($comment_id);
-        $article = Article::findOrFail($article_id);
+        // $comment = Comment::findOrFail($comment_id);
+        $comment = Comment::where('id', $comment_id)
+            ->where(function($q) {
+                $q->where('report_count', '>', 0)
+                ->orWhere(function($subQuery) {
+                    $subQuery->where('visibility', 'hidden')
+                            ->where('archive_by', auth()->id()); // Ensure only the archiver can see hidden items
+                });
+            })
+            ->firstOrFail();
 
         return inertia('Editor/Review/Comment/Show', [
             'comment' => new CommentResource($comment),
-            'article' => new ArticleResource($article),
         ]);
     }
 
@@ -279,10 +295,18 @@ class EditorReviewReport extends Controller
 
     public function showFreedomWall($id)
     {
-        $entry = FreedomWall::findOrFail($id);
+        // $entry = FreedomWall::findOrFail($id);
+        $freedomWall = FreedomWall::where('id', $id)
+            ->where(function ($q) {
+                $q->whereHas('reports', function ($subQuery) {
+                    $subQuery->where('id', '>', 0); // Report count > 0
+                })
+                ->orWhere('visibility', 'hidden');
+            })
+            ->firstOrFail();
 
         return inertia('Editor/Review/FreedomWall/Show', [
-            'entry' => new FreedomWallResource($entry),
+            'entry' => new FreedomWallResource($freedomWall),
         ]);
     }
 

@@ -213,7 +213,7 @@ Route::middleware(['auth', 'editor','verified', 'userStatus'])->group(function()
     
     // editor article
     Route::get('editor-article/calendar', [EditorArticleController::class, 'calendar'])->name('editor-article.calendar');
-    Route::get('editor-article/{id}/timeline', [EditorArticleController::class, 'timeLine'])->name('editor-article.timeline');
+    Route::get('editor-article/{slug}/timeline', [EditorArticleController::class, 'timeLine'])->name('editor-article.timeline');
     Route::resource('editor-article', EditorArticleController::class);
 
 
@@ -227,14 +227,14 @@ Route::middleware(['auth', 'editor','verified', 'userStatus'])->group(function()
 
      //review Report article
     Route::get('/editor-review-report-article', [EditorReviewReport::class, 'article'])->name('editor-review-report-article.index');
-    Route::get('/editor-review-report-article/{id}/show', [EditorReviewReport::class, 'showArticle'])->name('editor-review-report-article.show');
+    Route::get('/editor-review-report-article/{slug}/show', [EditorReviewReport::class, 'showArticle'])->name('editor-review-report-article.show');
     Route::post('/editor-review-report-article/{id}/hide', [EditorReviewReport::class, 'hideArticle'])->name('editor-review-report-article.hide');
     Route::post('/editor-review-report-article/{id}/restore', [EditorReviewReport::class, 'restoreArticle'])->name('editor-review-report-article.restore');
     Route::post('/editor-review-report-article/{id}/reject', [EditorReviewReport::class, 'rejectArticleReport'])->name('editor-review-report-article.reject');
     Route::delete('/editor-review-report-article/{id}/destroy', [EditorReviewReport::class, 'destroyArticle'])->name('editor-review-report-article.destroy');
      //review Report comment
     Route::get('/editor-review-report-comment', [EditorReviewReport::class, 'comment'])->name('editor-review-report-comment.index');
-    Route::get('/editor-review-report-comment/{comment_id}/{article_id}/show/', [EditorReviewReport::class, 'showComment'])->name('editor-review-report-comment.show');
+    Route::get('/editor-review-report-comment/{comment_id}/show/', [EditorReviewReport::class, 'showComment'])->name('editor-review-report-comment.show');
     Route::post('/editor-review-report-comment/{id}/hide', [EditorReviewReport::class, 'hideComment'])->name('editor-review-report-comment.hide');
     Route::post('/editor-review-report-comment/{id}/restore', [EditorReviewReport::class, 'restoreComment'])->name('editor-review-report-comment.restore');
     Route::post('/editor-review-report-comment/{id}/reject', [EditorReviewReport::class, 'rejectCommentReport'])->name('editor-review-report-comment.reject');
@@ -255,7 +255,7 @@ Route::middleware(['auth', 'writer', 'verified', 'userStatus'])->group(function(
     Route::get('/writer/report', [WriterGenerateReportController::class, 'report'])->name('writer.report');
 
     Route::get('writer-article/calendar', [WriterArticleController::class, 'calendar'])->name('writer-article.calendar');
-    Route::get('writer-article/{id}/timeline', [WriterArticleController::class, 'timeLine'])->name('writer-article.timeline');
+    Route::get('writer-article/{slug}/timeline', [WriterArticleController::class, 'timeLine'])->name('writer-article.timeline');
     Route::resource('writer-article', WriterArticleController::class);
 
 
@@ -347,7 +347,7 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
     Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
 
     Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
-    Route::get('student-article/{id}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
+    Route::get('student-article/{slug}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
     Route::resource('student-article', StudentArticleController::class);
 
     Route::resource('student-freedomwall', StudentFreedomWallController::class);

@@ -448,9 +448,7 @@ export default function Index({ auth, reportedComments, queryParams, flash, Edit
                                                                     "editor-review-report-comment.show",
                                                                     {
                                                                         comment_id:
-                                                                            comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
+                                                                            comment.id
                                                                     }
                                                                 )}
                                                             >

@@ -29,7 +29,7 @@ class EditorUpdateArticleRequest extends FormRequest
             // 'author' => ['nullable','string', 'max:255'],//added
             // 'edited_by' => ['nullable','exists:users,id'],
             // 'layout_by' => ['nullable','exists:users,id'],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($this->route('editor_article'))],
             'excerpt' => ['required', 'string', 'max:500'],//added
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string' , 'max:255'],
@@ -43,5 +43,7 @@ class EditorUpdateArticleRequest extends FormRequest
             'is_anonymous' => ['required', Rule::in(['no','yes',])],
             // 'published_date' => ['required', 'date'],//added
         ];
+         //  'title' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($this->route('student_article'))],
+        // 'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
     }
 }

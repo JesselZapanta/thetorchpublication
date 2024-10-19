@@ -447,9 +447,10 @@ class StudentArticleController extends Controller
     public function calendar()
     {
         $articles = Article::where('status', operator: 'published')
+                            ->where('visibility', 'visible') 
                             ->where('created_by' , Auth::user()->id)
                             ->whereNotNull('published_date')
-                            ->get(['id','title', 'status', 'published_date']);
+                            ->get(['id','slug','title', 'status', 'published_date']);
 
         // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
 
