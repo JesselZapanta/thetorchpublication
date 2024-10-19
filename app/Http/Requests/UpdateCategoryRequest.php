@@ -23,12 +23,15 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:30',Rule::unique('categories')->ignore($this->route('category'))],
             'description' => ['required', 'string' , 'max:255'],
             'status' => ['required',
                 Rule::in(['active', 'inactive'])
             ],
             'category_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
         ];
+
+        //   'name' => ['required', 'string', 'max:30',Rule::unique('categories')->ignore($this->route('category'))],
+        //  'name' => ['required', 'string', 'max:30', 'unique:categories,name'],
     }
 }

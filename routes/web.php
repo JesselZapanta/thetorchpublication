@@ -132,7 +132,6 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     
     Route::resource('user', AdminUserController::class);
 
-    Route::get('/backup/download', [AdminDatabaseBackupController::class, 'downloadBackup'])->name('backup.download');
 
     Route::get('/admin/contributor/index', [AdminApplyContributorController::class, 'index'])->name('admin-contributor.index');
     Route::post('/admin/contributor/{id}/reject', [AdminApplyContributorController::class, 'reject'])->name('admin-contributor.reject');
