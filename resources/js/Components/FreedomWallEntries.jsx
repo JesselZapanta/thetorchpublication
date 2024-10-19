@@ -195,16 +195,16 @@ export default function FreedomWallEntries({
                                         {(auth.user.role !== "student" &&
                                             auth.user.role !==
                                                 "student_contributor") ||
-                                            (auth.user.id === entry.user_id && (
-                                                <Dropdown.Link
-                                                    onClick={(event) => {
-                                                        event.preventDefault();
-                                                        openHideModal(entry);
-                                                    }}
-                                                >
-                                                    Archive
-                                                </Dropdown.Link>
-                                            ))}
+                                        auth.user.id === entry.user_id ? (
+                                            <Dropdown.Link
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    openHideModal(entry);
+                                                }}
+                                            >
+                                                Archive
+                                            </Dropdown.Link>
+                                        ) : null}
 
                                         {auth.user.id === entry.user_id && (
                                             <Dropdown>

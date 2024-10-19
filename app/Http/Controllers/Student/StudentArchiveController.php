@@ -73,7 +73,7 @@ class StudentArchiveController extends Controller
 
         // dd($article);
 
-        if($article->archive_by != Auth::user()->id){
+        if($article->archive_by !== Auth::user()->id){
             return to_route('student-archive-article.index')->with(key: ['error' => 'Unable to restore the content. This content was archived by an administrator.']);
         }
 
@@ -170,7 +170,7 @@ class StudentArchiveController extends Controller
             return back()->with('error', 'Comment not found.');
         }
 
-        if($comment->archive_by != Auth::user()->id){
+        if($comment->archive_by !== Auth::user()->id){
             return to_route('student-archive-comment.index')->with(key: ['error' => 'Unable to restore the content. This content was archived by an administrator.']);
         }
 
@@ -246,12 +246,12 @@ class StudentArchiveController extends Controller
     public function restoreFreedomWall($id)
     {
         $entry = FreedomWall::findOrFail($id);
-
+        // dd($entry);
         if(!$entry){
             return back()->with('error', 'FreedomWall not found.');
         }
 
-        if($entry->archive_by != Auth::user()->id){
+        if($entry->archive_by !== Auth::user()->id){
             return to_route('student-archive-freedom-wall.index')->with(key: ['error' => 'Unable to restore the content. This content was archived by an administrator.']);
         }
         

@@ -268,14 +268,14 @@ Route::middleware(['auth', 'writer', 'verified', 'userStatus'])->group(function(
 
      //review Report article
     Route::get('/writer-review-report-article', [WriterReviewReport::class, 'article'])->name('writer-review-report-article.index');
-    Route::get('/writer-review-report-article/{id}/show', [WriterReviewReport::class, 'showArticle'])->name('writer-review-report-article.show');
+    Route::get('/writer-review-report-article/{slug}/show', [WriterReviewReport::class, 'showArticle'])->name('writer-review-report-article.show');
     Route::post('/writer-review-report-article/{id}/hide', [WriterReviewReport::class, 'hideArticle'])->name('writer-review-report-article.hide');
     Route::post('/writer-review-report-article/{id}/restore', [WriterReviewReport::class, 'restoreArticle'])->name('writer-review-report-article.restore');
     Route::post('/writer-review-report-article/{id}/reject', [WriterReviewReport::class, 'rejectArticleReport'])->name('writer-review-report-article.reject');
     Route::delete('/writer-review-report-article/{id}/destroy', [WriterReviewReport::class, 'destroyArticle'])->name('writer-review-report-article.destroy');
      //review Report comment
     Route::get('/writer-review-report-comment', [WriterReviewReport::class, 'comment'])->name('writer-review-report-comment.index');
-    Route::get('/writer-review-report-comment/{comment_id}/{article_id}/show/', [WriterReviewReport::class, 'showComment'])->name('writer-review-report-comment.show');
+    Route::get('/writer-review-report-comment/{comment_id}/show/', [WriterReviewReport::class, 'showComment'])->name('writer-review-report-comment.show');
     Route::post('/writer-review-report-comment/{id}/hide', [WriterReviewReport::class, 'hideComment'])->name('writer-review-report-comment.hide');
     Route::post('/writer-review-report-comment/{id}/restore', [WriterReviewReport::class, 'restoreComment'])->name('writer-review-report-comment.restore');
     Route::post('/writer-review-report-comment/{id}/reject', [WriterReviewReport::class, 'rejectCommentReport'])->name('writer-review-report-comment.reject');
