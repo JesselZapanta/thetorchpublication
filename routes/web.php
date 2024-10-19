@@ -313,14 +313,14 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
 
       //review Report article
     Route::get('/designer-review-report-article', [DesignerReviewReport::class, 'article'])->name('designer-review-report-article.index');
-    Route::get('/designer-review-report-article/{id}/show', [DesignerReviewReport::class, 'showArticle'])->name('designer-review-report-article.show');
+    Route::get('/designer-review-report-article/{slug}/show', [DesignerReviewReport::class, 'showArticle'])->name('designer-review-report-article.show');
     Route::post('/designer-review-report-article/{id}/hide', [DesignerReviewReport::class, 'hideArticle'])->name('designer-review-report-article.hide');
     Route::post('/designer-review-report-article/{id}/restore', [DesignerReviewReport::class, 'restoreArticle'])->name('designer-review-report-article.restore');
     Route::post('/designer-review-report-article/{id}/reject', [DesignerReviewReport::class, 'rejectArticleReport'])->name('designer-review-report-article.reject');
     Route::delete('/designer-review-report-article/{id}/destroy', [DesignerReviewReport::class, 'destroyArticle'])->name('designer-review-report-article.destroy');
      //review Report comment
     Route::get('/designer-review-report-comment', [DesignerReviewReport::class, 'comment'])->name('designer-review-report-comment.index');
-    Route::get('/designer-review-report-comment/{comment_id}/{article_id}/show/', [DesignerReviewReport::class, 'showComment'])->name('designer-review-report-comment.show');
+    Route::get('/designer-review-report-comment/{comment_id}/show/', [DesignerReviewReport::class, 'showComment'])->name('designer-review-report-comment.show');
     Route::post('/designer-review-report-comment/{id}/hide', [DesignerReviewReport::class, 'hideComment'])->name('designer-review-report-comment.hide');
     Route::post('/designer-review-report-comment/{id}/restore', [DesignerReviewReport::class, 'restoreComment'])->name('designer-review-report-comment.restore');
     Route::post('/designer-review-report-comment/{id}/reject', [DesignerReviewReport::class, 'rejectCommentReport'])->name('designer-review-report-comment.reject');

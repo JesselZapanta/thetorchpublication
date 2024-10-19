@@ -457,8 +457,6 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                                                     {
                                                                         comment_id:
                                                                             comment.id,
-                                                                        article_id:
-                                                                            comment.article_id,
                                                                     }
                                                                 )}
                                                             >
