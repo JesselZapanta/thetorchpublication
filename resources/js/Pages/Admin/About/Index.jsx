@@ -35,7 +35,7 @@ export default function Index({
     const [member, setMember] = useState(null); // For storing the member to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+    const { data, setData, post, put, errors, reset, clearErrors } =
         useForm({
             name: "",
             role: "",
@@ -133,12 +133,16 @@ export default function Index({
         setIsCreateModalOpen(true);
     };
 
+    const [processing, setProcessing] = useState(false); // Initialize processing state
+
     const onSubmit = (e) => {
         e.preventDefault();
 
         if (processing) {
             return; // Prevent multiple submissions while the request is still being processed
         }
+
+        setProcessing(true); // Set processing to true when form is submitted
 
         if (member) {
             // Update existing member
@@ -147,6 +151,7 @@ export default function Index({
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
+                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         } else {
             // Create new member
@@ -155,6 +160,7 @@ export default function Index({
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
+                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         }
     };

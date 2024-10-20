@@ -35,13 +35,12 @@ export default function Index({
     const [category, setCategory] = useState(null); // For storing the category to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors, processing } =
-        useForm({
-            name: "",
-            description: "",
-            status: "",
-            category_image_path: "",
-        });
+    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
+        name: "",
+        description: "",
+        status: "",
+        category_image_path: "",
+    });
 
     // Display flash messages if they exist
     useEffect(() => {
@@ -125,11 +124,13 @@ export default function Index({
             name: category.name || "",
             description: category.description || "",
             status: category.status || "",
-            category_image_path: "",    
+            category_image_path: "",
             _method: "PUT",
         }); // Set the form data with the selected category's data
         setIsCreateModalOpen(true);
     };
+
+    const [processing, setProcessing] = useState(false); // Initialize processing state
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -138,6 +139,8 @@ export default function Index({
             return; // Prevent multiple submissions while the request is still being processed
         }
 
+        setProcessing(true); // Set processing to true when form is submitted
+
         if (category) {
             // Update existing category
             put(route("category.update", category.id), {
@@ -145,6 +148,7 @@ export default function Index({
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
+                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         } else {
             // Create new category
@@ -153,10 +157,10 @@ export default function Index({
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
+                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         }
     };
-
 
     const closeCreateModal = () => {
         setIsCreateModalOpen(false);
