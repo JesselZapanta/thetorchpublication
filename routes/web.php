@@ -115,7 +115,7 @@ Route::middleware(['auth', 'userStatus'])->group(function () {
     Route::post('/comments/{comment}/like', [CommentLikeController::class, 'toggleLike'])->name('comments.like');
     Route::post('/comments/{comment}/dislike', [CommentLikeController::class, 'toggleDislike'])->name('comments.dislike');
 
-    //Freedom Wall
+    //Freedom Wall--home
 
     route::resource('/freedom-wall', FreedomWallController::class);
     Route::post('/freedom-wall/{entryId}/hide', [FreedomWallController::class, 'hide'])->name('freedom-wall.hide');
@@ -139,9 +139,9 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::put('/admin/contributor/{id}/update', [AdminApplyContributorController::class, 'update'])->name('admin-contributor.update');
         
 
-
+    //article
     Route::get('admin-article/calendar', [AdminArticleController::class, 'calendar'])->name('admin-article.calendar');
-    Route::get('admin-article/{id}/imeline', [AdminArticleController::class, 'timeLine'])->name('admin-article.timeline');
+    Route::get('admin-article/{slug}/timeline', [AdminArticleController::class, 'timeLine'])->name('admin-article.timeline');
     Route::resource('admin-article', AdminArticleController::class);
 
     //Settings
@@ -170,14 +170,14 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
 
     //review Report article
     Route::get('/admin-review-report-article', [AdminReviewReport::class, 'article'])->name('admin-review-report-article.index');
-    Route::get('/admin-review-report-article/{id}/show', [AdminReviewReport::class, 'showArticle'])->name('admin-review-report-article.show');
+    Route::get('/admin-review-report-article/{slug}/show', [AdminReviewReport::class, 'showArticle'])->name('admin-review-report-article.show');
     Route::post('/admin-review-report-article/{id}/hide', [AdminReviewReport::class, 'hideArticle'])->name('admin-review-report-article.hide');
     Route::post('/admin-review-report-article/{id}/restore', [AdminReviewReport::class, 'restoreArticle'])->name('admin-review-report-article.restore');
     Route::post('/admin-review-report-article/{id}/reject', [AdminReviewReport::class, 'rejectArticleReport'])->name('admin-review-report-article.reject');
     Route::delete('/admin-review-report-article/{id}/destroy', [AdminReviewReport::class, 'destroyArticle'])->name('admin-review-report-article.destroy');
      //review Report comment
     Route::get('/admin-review-report-comment', [AdminReviewReport::class, 'comment'])->name('admin-review-report-comment.index');
-    Route::get('/admin-review-report-comment/{comment_id}/{article_id}/show/', [AdminReviewReport::class, 'showComment'])->name('admin-review-report-comment.show');
+    Route::get('/admin-review-report-comment/{comment_id}/show/', [AdminReviewReport::class, 'showComment'])->name('admin-review-report-comment.show');
     Route::post('/admin-review-report-comment/{id}/hide', [AdminReviewReport::class, 'hideComment'])->name('admin-review-report-comment.hide');
     Route::post('/admin-review-report-comment/{id}/restore', [AdminReviewReport::class, 'restoreComment'])->name('admin-review-report-comment.restore');
     Route::post('/admin-review-report-comment/{id}/reject', [AdminReviewReport::class, 'rejectCommentReport'])->name('admin-review-report-comment.reject');

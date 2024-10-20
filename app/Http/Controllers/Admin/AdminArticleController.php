@@ -217,19 +217,48 @@ class AdminArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $admin_article)
+    public function show($slug)
     {
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                                $query->where('created_by', '!=', $id)
+                                        ->whereIn('status', ['edited', 'published']); 
+                            });
+        })
+        ->firstOrFail();
+
+
         return inertia('Admin/Article/Show', [
-            'article' => new ArticleResource($admin_article),
+            'article' => new ArticleResource($article),
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function timeLine($id)
+    public function timeLine($slug)
     {
-        $article = Article::find($id);
+        // $article = Article::find($id);
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                                $query->where('created_by', '!=', $id)
+                                        ->whereIn('status', ['edited', 'published']); 
+                            });
+        })
+        ->firstOrFail();
+
         // dd($article);
         return inertia('Admin/Article/Timeline', [
             'article' => new ArticleResource($article),
@@ -240,7 +269,7 @@ class AdminArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $admin_article)
+    public function edit($slug)
     {
         // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
         $activeAy = AcademicYear::all();//for admin
@@ -249,10 +278,24 @@ class AdminArticleController extends Controller
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
         }
 
+        $id = Auth::user()->id;
+
+        $article = Article::where('slug', $slug)
+        ->where('visibility', 'visible') 
+        ->where(function ($query) use ($id) {
+            // Articles created by the authenticated user
+            $query->where('created_by', $id)
+                ->orWhere(function ($query) use ($id) {
+                                $query->where('created_by', '!=', $id)
+                                        ->whereIn('status', ['edited', 'published']); 
+                            });
+        })
+        ->firstOrFail();
+
         $categories = Category::all();
 
         return inertia('Admin/Article/Edit', [
-            'article' => new ArticleResource($admin_article),
+            'article' => new ArticleResource($article),
             'categories' => CategoryResource::collection($categories),
             // 'activeAy' => new AcademicYearResource($activeAy),//for non admin
             'activeAy' => AcademicYearResource::collection($activeAy),//for admin
@@ -463,7 +506,7 @@ class AdminArticleController extends Controller
     {
         $articles = Article::where('status', operator: 'published')
                             ->whereNotNull('published_date')
-                            ->get(['id','title', 'status', 'published_date']);
+                            ->get(['id','slug','title', 'status', 'published_date']);
 
         // $article = Article::select('id', 'name', 'status', 'assigned_date' ,'task_completed_date')->get();
 

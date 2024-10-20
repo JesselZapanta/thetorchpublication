@@ -151,7 +151,7 @@ export default function Index({ auth, article, comment, DesignerBadgeCount }) {
                         ref={commentRef}
                         className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4"
                     >
-                        <p className="text-red-600">Archive Comment</p>
+                        <p className="text-red-600">Reported/Arhive Comment</p>
                         <div className="flex justify-between" key={comment.id}>
                             <div className="flex gap-2 w-full">
                                 <div className="rounded-full overflow-hidden w-14 h-14 flex-shrink-0 border-2 border-indigo-500">

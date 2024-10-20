@@ -29,7 +29,7 @@ class UpdateArticleRequest extends FormRequest
             'author' => ['nullable','string', 'max:255'],//added
             'edited_by' => ['nullable','exists:users,id'],
             'layout_by' => ['nullable','exists:users,id'],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($this->route('admin_article'))],
             'excerpt' => ['required', 'string'], 'max:500',//added
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string', 'max:255'],
@@ -43,5 +43,8 @@ class UpdateArticleRequest extends FormRequest
             'published_date' => ['nullable','required_if:status,published', 'date'],
             // 'draft'  => ['required', Rule::in(['no', 'yes'])],
         ];
+
+        //  'title' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($this->route('admin_article'))],
+        // 'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
     }
 }

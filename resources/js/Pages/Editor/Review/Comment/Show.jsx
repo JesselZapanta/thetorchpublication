@@ -61,17 +61,20 @@ export default function Index({ auth, comment, EditorBadgeCount }) {
                                                 src={
                                                     comment.article.author
                                                         ? "/images/default/profile.jpg"
-                                                        : comment.article.is_anonymous ===
+                                                        : comment.article
+                                                              .is_anonymous ===
                                                           "yes"
                                                         ? "/images/default/profile.jpg"
-                                                        : comment.article.article_image_path
+                                                        : comment.article
+                                                              .article_image_path
                                                 }
                                                 className="object-cover w-full h-full"
                                                 alt={
-                                                    comment.article.is_anonymous ===
-                                                    "yes"
+                                                    comment.article
+                                                        .is_anonymous === "yes"
                                                         ? "Default image"
-                                                        : comment.article.createdBy.name
+                                                        : comment.article
+                                                              .createdBy.name
                                                 }
                                             />
                                         )}
@@ -83,10 +86,12 @@ export default function Index({ auth, comment, EditorBadgeCount }) {
                                             <span className="font-bold">
                                                 {comment.article.author
                                                     ? comment.article.author
-                                                    : comment.article.is_anonymous ===
+                                                    : comment.article
+                                                          .is_anonymous ===
                                                       "yes"
                                                     ? "Anonymous"
-                                                    : comment.article.createdBy.name}
+                                                    : comment.article.createdBy
+                                                          .name}
                                             </span>
                                         </h4>
                                         <p className="mt-1">
@@ -94,7 +99,8 @@ export default function Index({ auth, comment, EditorBadgeCount }) {
                                             <span className="font-bold">
                                                 {" "}
                                                 {comment.article.published_date
-                                                    ? comment.article.published_date
+                                                    ? comment.article
+                                                          .published_date
                                                     : " Not Published"}
                                             </span>
                                         </p>
@@ -145,7 +151,7 @@ export default function Index({ auth, comment, EditorBadgeCount }) {
                         ref={commentRef}
                         className="bg-gray-50 dark:bg-gray-800 shadow-sm sm:rounded-lg my-4 p-4 flex flex-col gap-4"
                     >
-                        <p className="text-red-600">Archive Comment</p>
+                        <p className="text-red-600">Reported/Arhive Comment</p>
                         <div className="flex justify-between" key={comment.id}>
                             <div className="flex gap-2 w-full">
                                 <div className="rounded-full overflow-hidden w-14 h-14 flex-shrink-0 border-2 border-indigo-500">

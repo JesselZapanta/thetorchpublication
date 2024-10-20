@@ -15,6 +15,7 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
 use App\Models\Word;
+use Illuminate\Support\Str;
 use App\Notifications\TaskReminder;
 use App\Utilities\AhoCorasick;
 use Illuminate\Support\Facades\Auth;
@@ -457,6 +458,7 @@ class AdminTaskController extends Controller
             $article->category_id = $task->category_id;
             $article->academic_year_id = $task->academic_year_id;
             $article->title = $task->title;
+            $article->slug = Str::slug($task->title);//might remoce later //todo
             $article->excerpt = $task->excerpt;
             $article->body = $task->body;
             $article->status = 'published'; // Set article status to published
