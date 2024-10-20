@@ -35,7 +35,7 @@ Install the vendor
 composer install
 ```
 
-Install the node_modules
+Install the node modules
 ```bash
 npm install
 ```
