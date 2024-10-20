@@ -66,19 +66,19 @@ class AdminNewsletterController extends Controller
         //     ->onEachSide(1);
 
         $newsletters = $query->where('visibility', 'visible')
-        ->where(function ($query) use ($id) {
-            // Get all newsletters if auth user is the layout_by, regardless of status
-            $query->where('layout_by', $id);
-        })
-        ->orWhere(function ($query) use ($id) {
-            // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
-            $query->where(function ($subQuery) use ($id) {
-                $subQuery->where('layout_by', '!=', $id)
-                    ->orWhereNull('layout_by');
+            ->where(function ($query) use ($id) {
+                // Get all newsletters if auth user is the layout_by, regardless of status
+                $query->where('layout_by', $id);
             })
-            ->whereIn('status', ['pending', 'approved', 'revision', 'distributed'])
-            ->where('visibility', 'visible'); // Ensure visibility check here as well
-        })
+            ->orWhere(function ($query) use ($id) {
+                // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
+                $query->where(function ($subQuery) use ($id) {
+                    $subQuery->where('layout_by', '!=', $id)
+                        ->orWhereNull('layout_by');
+                })
+                ->whereIn('status', ['pending', 'approved', 'revision', 'distributed'])
+                ->where('visibility', 'visible'); // Ensure visibility check here as well
+            })
         ->orderBy($sortField, $sortDirection)
         ->paginate(10)
         ->onEachSide(1);
@@ -372,9 +372,16 @@ class AdminNewsletterController extends Controller
         ]);
     }
 
-    public function articleShow($id)
+    public function articleShow($slug)
     {
-        $article = Article::findOrFail($id);
+        // $article = Article::findOrFail($id);
+        $article = Article::where('slug', $slug)
+                        ->where('status', 'published')  // Only published articles
+                        ->where('visibility', 'visible')
+                        ->whereHas('createdBy', function ($query){
+                            $query->where('role', '!=', 'student');
+                        })
+                    ->firstOrFail();
 
         if(!$article){
             return to_route('newsletter.articles')->with(['error' => 'Article not Found']);

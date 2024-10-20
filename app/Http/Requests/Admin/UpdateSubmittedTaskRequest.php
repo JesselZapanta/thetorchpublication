@@ -23,11 +23,12 @@ class UpdateSubmittedTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'   => ['required', 'string'],
-            'excerpt' => ['required', 'string'],
+            // 'title'   => ['required', 'string'],
+        'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
+            'excerpt' => ['required', 'string', 'max:500'],
             'body'    => ['required', 'string'],
-            'caption' => ['required', 'string'],
-            'status'  => ['required', Rule::in(['approved','content_revision', 'image_revision', 'completed'])],
+            'caption' => ['required', 'string',  'max:255'],
+            'status'  => ['required', Rule::in(['approval','approved','content_revision', 'image_revision', 'completed'])],
             'content_revision_message' => ['nullable', 'string', 'required_if:status,content_revision'],
             'image_revision_message' => ['nullable', 'string', 'required_if:status,image_revision'],
         ];

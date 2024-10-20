@@ -57,7 +57,11 @@ class WriterTaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::find($id);
+        // $task = Task::find($id);
+        $task = Task::where('id',$id)
+                ->where('assigned_to', Auth::user()->id)
+                ->firstOrFail();
+
 
         if(!$task){
             return to_route('writer-task.index')->with(['error' => 'Task not found']);

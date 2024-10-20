@@ -153,7 +153,7 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::get('/newsletter/calendar', [AdminNewsletterController::class, 'calendar'])->name('newsletter.calendar');
     Route::get('newsletter/{id}/timeline', [AdminNewsletterController::class, 'timeLine'])->name('newsletter.timeline');
     Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
-    Route::get('/newsletter-articles/{id}/show', [AdminNewsletterController::class, 'articleShow'])->name('admin-newsletter.article-show');
+    Route::get('/newsletter-articles/{slug}/show', [AdminNewsletterController::class, 'articleShow'])->name('admin-newsletter.article-show');
     Route::post('/newsletter-articles/{id}/add-article', [AdminNewsletterController::class, 'addArticle'])->name('newsletter.add-article');
     Route::post('/newsletter-articles/{id}/remove-article', [AdminNewsletterController::class, 'removeArticle'])->name('newsletter.remove-article');
     Route::get('/newsletter-distribute/{id}/', [AdminNewsletterController::class, 'distributeIndex'])->name('distribute.index');

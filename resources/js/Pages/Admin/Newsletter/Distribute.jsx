@@ -71,7 +71,7 @@ export default function Edit({ auth, newsletter, AdminBadgeCount }) {
                                     type="text"
                                     name="message"
                                     value={data.message}
-                                    className="mt-2 block w-full min-h-32 text-justify"
+                                    className="mt-2 block w-full min-h-64 text-justify"
                                     onChange={(e) =>
                                         setData("message", e.target.value)
                                     }

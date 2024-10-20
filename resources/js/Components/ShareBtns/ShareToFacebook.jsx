@@ -1,11 +1,4 @@
 import React from "react";
-import {
-    PencilSquareIcon,
-    TrashIcon,
-    ListBulletIcon,
-    AdjustmentsHorizontalIcon,
-    MagnifyingGlassIcon,
-} from "@heroicons/react/16/solid";
 
 const ShareToFacebook = () => {
     const currentUrl = window.location.href; // Get the current URL of the page

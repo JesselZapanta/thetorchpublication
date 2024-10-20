@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Editor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Editor\EditorUpdateTaskRequest;
 use App\Http\Requests\Writer\WriterUpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -57,7 +58,9 @@ class EditorTaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::find($id);
+        $task = Task::where('id',$id)
+                    ->where('assigned_to', Auth::user()->id)
+                    ->firstOrFail();
 
         if(!$task){
             return to_route('editor-task.index')->with(['error' => 'Task not found']);
@@ -75,7 +78,7 @@ class EditorTaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(WriterUpdateTaskRequest $request, $id)
+    public function update(EditorUpdateTaskRequest $request, $id)
     {
         $task = Task::find($id);
 

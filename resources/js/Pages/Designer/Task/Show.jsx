@@ -146,7 +146,7 @@ export default function Show({ auth, task, DesignerBadgeCount }) {
                             </div>
 
                             {/* excerpt */}
-                            <div className="w-full">
+                            <div className="w-full mt-4">
                                 <h2 className="font-bold">Excerpt</h2>
                                 <p className="p-2 bg-gray-100 rounded-sm">
                                     {task.excerpt}
@@ -154,13 +154,13 @@ export default function Show({ auth, task, DesignerBadgeCount }) {
                             </div>
 
                             {/* body */}
-                            <div className="w-full">
+                            <div className="w-full mt-4">
                                 <h2 className="font-bold">Body</h2>
                                 {/* <p className="p-2 bg-gray-100 rounded-sm">
                                     {task.body}
                                 </p> */}
                                 <div
-                                    className="p-2 bg-gray-100 rounded-sm"
+                                    className="p-2 bg-gray-100 rounded-sm text-justify"
                                     dangerouslySetInnerHTML={{
                                         __html: task.body,
                                     }}
@@ -168,8 +168,8 @@ export default function Show({ auth, task, DesignerBadgeCount }) {
                             </div>
 
                             {/* image caption */}
-                            <div className="w-full">
-                                <h2 className="font-bold">Imaage Caption</h2>
+                            <div className="w-full mt-4">
+                                <h2 className="font-bold">Image Caption</h2>
                                 <p className="p-2 bg-gray-100 rounded-sm">
                                     {task.caption}
                                 </p>

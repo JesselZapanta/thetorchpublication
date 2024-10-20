@@ -63,7 +63,10 @@ class DesignerTaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::find($id);
+        // $task = Task::find($id);
+        $task = Task::where('id',$id)
+                ->where('layout_by', Auth::user()->id)
+                ->firstOrFail();
 
         if(!$task){
             return to_route('designer-task.index')->with(['error' => 'Task not found']);

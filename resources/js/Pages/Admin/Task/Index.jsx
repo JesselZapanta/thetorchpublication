@@ -546,15 +546,18 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
                                                                 </DropdownAction.Trigger>
 
                                                                 <DropdownAction.Content>
-                                                                    <DropdownAction.Link
-                                                                        href={route(
-                                                                            "admin-task.remind",
-                                                                            task.id
-                                                                        )}
-                                                                    >
-                                                                        <BellAlertIcon className="w-6 text-sky-600" />
-                                                                        Remind
-                                                                    </DropdownAction.Link>
+                                                                    {task.status !==
+                                                                        "completed" && (
+                                                                        <DropdownAction.Link
+                                                                            href={route(
+                                                                                "admin-task.remind",
+                                                                                task.id
+                                                                            )}
+                                                                        >
+                                                                            <BellAlertIcon className="w-6 text-sky-600" />
+                                                                            Remind
+                                                                        </DropdownAction.Link>
+                                                                    )}
                                                                     <DropdownAction.Link
                                                                         href={route(
                                                                             "admin-task.show",
