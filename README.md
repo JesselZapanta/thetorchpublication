@@ -52,4 +52,4 @@ npm run dev
 
 Browse the application on localhost:8000
 
-![Project Preview](./images/screenshot.png)
+<!-- ![Project Preview](./images/screenshot.png) -->
