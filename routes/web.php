@@ -88,7 +88,7 @@ Route::get('/validate-student/{student_id}', [EnrolledStudentController::class, 
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/category/{slug}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
+Route::get('/home/category/{slug}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/article/{slug}/view', [HomeController::class, 'read'])->name('article.read');
 
 Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
@@ -296,7 +296,7 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
 
     Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
     Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');
-    Route::get('/designer-newsletter-articles/{id}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
+    Route::get('/designer-newsletter-articles/{slug}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
     Route::post('/designer-newsletter-articles/{id}/is-layout', [DesignerNewsletterController::class, 'isLayout'])->name('designer-newsletter.is-layout');
     Route::post('/designer-newsletter-articles/{id}/not-layout', [DesignerNewsletterController::class, 'notLayout'])->name('designer-newsletter.not-layout');
     Route::get('/designer-newsletter-articles', [DesignerNewsletterController::class, 'SelectArticles'])->name('designer-newsletter.articles');
@@ -306,7 +306,7 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
     Route::get('designer-task', [DesignerTaskController::class, 'index'])->name('designer-task.index');
     Route::get('designer-task-getData', [DesignerTaskController::class, 'getData'])->name('designer-task.getData');
     Route::get('designer-task/calendar', [DesignerTaskController::class, 'calendar'])->name('designer-task.calendar');
-    Route::get('designer-task/{id}/show', [DesignerTaskController::class, 'show'])->name('designer-task.show');
+    Route::get('designer-task/{id}/show', [ DesignerTaskController::class, 'show'])->name('designer-task.show');
     Route::put('designer-task/{id}/update', [DesignerTaskController::class, 'update'])->name('designer-task.update');
     Route::get('designer-task/{id}/timeline', [DesignerTaskController::class, 'timeLine'])->name('designer-task.timeline');
 

@@ -326,7 +326,7 @@ export default function Index({
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
                                                                 "category.show",
-                                                                category.id
+                                                                category.slug
                                                             )}
                                                         >
                                                             {category.name}

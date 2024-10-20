@@ -76,13 +76,19 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($slug)
     {
+
+        $category = Category::where('slug', $slug)
+                        ->firstOrFail();
+
 
         $articlesCount = Article::where('category_id', $category->id)
                                 ->where('status', 'published')
                                 ->count();
 
+                                
+        
         return inertia('Admin/Category/Show', [
             'category' => new CategoryResource($category),
             'articlesCount' => $articlesCount

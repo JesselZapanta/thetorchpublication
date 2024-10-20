@@ -111,16 +111,6 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="mt-4 text-gray-400">
-                                <p>for testing</p>
-                                <p>
-                                    Edited by:
-                                    {article.editedBy
-                                        ? article.editedBy.name
-                                        : "No Editor"}
-                                </p>
-                                <p> Layout By by:{article.layoutBy.name}</p>
-                            </div>
                             {/* Body */}
                             <div className="mt-8">
                                 {/* <p className="text-base text-justify whitespace-pre-line">

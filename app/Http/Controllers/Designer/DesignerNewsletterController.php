@@ -262,9 +262,18 @@ class DesignerNewsletterController extends Controller
         ]);
     }
 
-    public function articleShow($id)
+    public function articleShow($slug)
     {
-        $article = Article::findOrFail($id);
+        // $article = Article::findOrFail($id);
+        $article = Article::where('slug', $slug)
+                    ->where('status', 'published')  // Only published articles
+                    ->where(function ($query) {
+                        $query->where('is_newsletter', 'yes')
+                            ->orWhere('is_newsletter', 'added');  // Newsletter conditions
+                    })
+                    ->where('visibility', 'visible')  // Only visible articles
+                    ->firstOrFail();
+
 
         if(!$article){
             return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
