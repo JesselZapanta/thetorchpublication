@@ -1,4 +1,6 @@
-## PUBLICATION PORTAL
+## THE TORCH PUBLICATION
+
+A publication Website for the official publication office of Tangub City Global College.
 
 ### Application Requirements (Windows)
 Install the following:
@@ -23,7 +25,7 @@ Clone the repository or run the command (only the collaborator can clone this re
 https://github.com/JesselZapanta/thetorchpublication.git
 ```
 
-Go to the repository (repo-name is publication-portal)
+Go to the repository (repo-name is thetorchpublication)
 ```bash
 cd repo-name
 ```
@@ -49,3 +51,5 @@ npm run dev
 ```
 
 Browse the application on localhost:8000
+
+![Project Preview](./images/screenshot.png)
