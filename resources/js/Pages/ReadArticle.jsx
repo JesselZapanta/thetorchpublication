@@ -386,7 +386,7 @@ export default function ReadArticle({
                                 </svg>
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
-                            <ShareToFacebook />
+                            <ShareToFacebook article={article} />
                         </div>
                     </div>
                     {/* Recommended arti */}
