@@ -20,6 +20,7 @@ class WordSeeder extends Seeder
             ['name' => 'maot'],
             ['name' => 'bati'],
             ['name' => 'yawa'],
+            ['name' => 'ywa'],
             ['name' => 'atay'],
             ['name' => 'nimal'],
             ['name' => 'deputa'],

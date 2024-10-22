@@ -234,7 +234,6 @@ export default function ReadArticle({
         }
     };
 
-    const currentUrl = window.location.href; // Get the current URL of the page
 
     return (
         <UnauthenticatedLayout
@@ -249,18 +248,7 @@ export default function ReadArticle({
             }
         >
 
-            <Head title={`Read ${article.title}`}>
-                <meta name="description" content={article.description} />
-                <meta name="keywords" content="article, read, content" />
-                <meta property="og:title" content={`Read ${article.title}`} />
-                <meta property="og:description" content={article.caption} />
-                <meta
-                    property="og:image"
-                    content={article.article_image_path}
-                />
-                <meta property="og:url" content={currentUrl} />
-                <meta property="og:type" content="article" />
-            </Head>
+            <Head title={article.title} />
 
             <ToastContainer position="bottom-right" />
 
@@ -401,7 +389,9 @@ export default function ReadArticle({
                                 </svg>
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
-                            <ShareToFacebook article={article} />
+                            
+                            <ShareToFacebook />
+
                         </div>
                     </div>
                     {/* Recommended arti */}

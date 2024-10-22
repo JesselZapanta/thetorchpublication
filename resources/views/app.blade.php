@@ -5,14 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- Title and Meta Description -->
-        <title>The Torch Publication | The Torch is Tangub City Global College's official publication.</title>
+        {{-- <title inertia>{{ config('app.name', "The Torch Publication | The Torch is Tangub City Global College's official publication.") }}</title> --}}
         <meta name="description" content="The Torch is the official student publication of Tangub City Global College. Discover college news, events, and creative works through newsletters, tabloids, and literary folios." />
         
         <!-- Keywords for SEO -->
         <meta name="keywords" content="Tangub City Global College, student publication, student journalism, college news, newsletters, literary folios, academic articles, student voice, freedom wall, ethical journalism, TCGC" />
 
+        <meta property="og:image" content="{{ config('app.url') }}/images/logo.jpg"/>
 
-        <meta property="og:image" content="https://torch.kod-lens.tech/images/logo.jpg"/>
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
 
         <!-- Fonts -->
         <link rel="icon" href="/images/logo.jpg" />
@@ -28,3 +30,5 @@
         @inertia
     </body>
 </html>
+
+

@@ -1,7 +1,6 @@
 import React from "react";
-// import { Helmet } from "react-helmet";
 
-const ShareToFacebook = ({ article }) => {
+const ShareToFacebook = () => {
     const currentUrl = window.location.href; // Get the current URL of the page
 
     const handleShare = () => {
@@ -13,26 +12,6 @@ const ShareToFacebook = ({ article }) => {
 
     return (
         <div>
-            {/* Dynamic Open Graph Tags */}
-            {/* <Helmet>
-                <title>{article.title}</title>
-                <meta property="og:title" content={article.title} />
-                <meta
-                    property="og:description"
-                    content={article.caption.substring(0, 150)}
-                />
-                <meta
-                    property="og:image"
-                    content={
-                        article.article_image_path
-                            ? `https://torch.kod-lens.tech${article.article_image_path}`
-                            : "https://torch.kod-lens.tech/images/default/article.png"
-                    }
-                />
-                <meta property="og:url" content={currentUrl} />
-                <meta property="og:type" content="article" />
-            </Helmet> */}
-
             {/* Facebook Share Button */}
             <button
                 onClick={handleShare}

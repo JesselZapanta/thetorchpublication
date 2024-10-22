@@ -13,11 +13,11 @@ export default function Timeline({ auth, newsletter, AdminBadgeCount }) {
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Timeline : {newsletter.description}
                     </h2>
-                    <div className="flex gap-4">
+                    {/* <div className="flex gap-4">
                         <SecondaryButton href={route("newsletter.index")}>
                             Back
                         </SecondaryButton>
-                    </div>
+                    </div> */}
                 </div>
             }
         >
@@ -27,6 +27,11 @@ export default function Timeline({ auth, newsletter, AdminBadgeCount }) {
             </pre> */}
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex justify-end  gap-4">
+                        <SecondaryButton href={route("newsletter.index")}>
+                            Back
+                        </SecondaryButton>
+                    </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
                         <div className="p-4">
                             <ol className="relative ms-6 border-s border-indigo-500 dark:border-gray-700">
