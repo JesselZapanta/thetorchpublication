@@ -12,6 +12,8 @@
         <meta name="keywords" content="Tangub City Global College, student publication, student journalism, college news, newsletters, literary folios, academic articles, student voice, freedom wall, ethical journalism, TCGC" />
 
 
+        <meta property="og:image" content="https://torch.kod-lens.tech/images/logo.jpg"/>
+
         <!-- Fonts -->
         <link rel="icon" href="/images/logo.jpg" />
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

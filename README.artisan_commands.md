@@ -81,3 +81,5 @@ php artisan database:backup
 npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
 
 <!-- react helmet -->
+
+npm install react-helmet -- di mo gana --remove later

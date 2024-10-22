@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import ShareToFacebook from "@/Components/ShareBtns/ShareToFacebook";
 import ShareToX from "@/Components/ShareBtns/ShareToX";
 import RecommendedArticles from "@/Components/Article/RecommendedArticles";
+import { Helmet } from "react-helmet";
 
 export default function ReadArticle({
     auth,
@@ -233,6 +234,8 @@ export default function ReadArticle({
         }
     };
 
+    const currentUrl = window.location.href; // Get the current URL of the page
+
     return (
         <UnauthenticatedLayout
             categories={categories}
@@ -245,7 +248,19 @@ export default function ReadArticle({
                 </div>
             }
         >
-            <Head title={`Read ${article.title}`} />
+
+            <Head title={`Read ${article.title}`}>
+                <meta name="description" content={article.description} />
+                <meta name="keywords" content="article, read, content" />
+                <meta property="og:title" content={`Read ${article.title}`} />
+                <meta property="og:description" content={article.caption} />
+                <meta
+                    property="og:image"
+                    content={article.article_image_path}
+                />
+                <meta property="og:url" content={currentUrl} />
+                <meta property="og:type" content="article" />
+            </Head>
 
             <ToastContainer position="bottom-right" />
 
