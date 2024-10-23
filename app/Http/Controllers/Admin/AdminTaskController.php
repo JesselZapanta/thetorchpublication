@@ -465,11 +465,32 @@ class AdminTaskController extends Controller
             $article->published_date = now();
             $article->is_anonymous = 'no';
             $article->caption = $task->caption;
-            $article->article_image_path = $task->task_image_path;
+
 
             $article->submitted_at = $task->task_completed_date;
             $article->edited_at = $task->content_submitted_date;
             $article->published_date = $task->task_completed_date;
+
+
+            //task_image_path == storage/app/public/task
+            //article_image_path == storage/app/public/article
+            //copy the task image to the article image
+            // $article->article_image_path = $task->task_image_path;
+
+            if ($task->task_image_path) {
+                $taskImagePath = $task->task_image_path;
+
+                // Generate a unique filename with the same extension
+                $articleImagePath = 'article/' . Str::random(40) . '.' . pathinfo($taskImagePath, PATHINFO_EXTENSION);
+
+                // Copy the file if it exists
+                if (Storage::disk('public')->exists($taskImagePath)) {
+                    Storage::disk('public')->copy($taskImagePath, $articleImagePath);
+
+                    // Save the new image path
+                    $article->article_image_path = $articleImagePath;
+                }
+            }
 
             // Save the new article
             $article->save();
