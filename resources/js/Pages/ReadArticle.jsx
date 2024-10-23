@@ -10,9 +10,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import ShareToFacebook from "@/Components/ShareBtns/ShareToFacebook";
-import ShareToX from "@/Components/ShareBtns/ShareToX";
 import RecommendedArticles from "@/Components/Article/RecommendedArticles";
-import { Helmet } from "react-helmet";
 
 export default function ReadArticle({
     auth,
@@ -21,6 +19,7 @@ export default function ReadArticle({
     comments,
     flash,
     recommendedArticles,
+    appUrl,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -234,7 +233,6 @@ export default function ReadArticle({
         }
     };
 
-
     return (
         <UnauthenticatedLayout
             categories={categories}
@@ -247,9 +245,8 @@ export default function ReadArticle({
                 </div>
             }
         >
-
             <Head title={article.title} />
-
+            
             <ToastContainer position="bottom-right" />
 
             {/* <pre className="text-gray-900">
@@ -389,9 +386,8 @@ export default function ReadArticle({
                                 </svg>
                                 {isSpeaking ? "Stop Reading" : "Read Aloud"}
                             </button>
-                            
-                            <ShareToFacebook />
 
+                            {/* <ShareToFacebook /> */}
                         </div>
                     </div>
                     {/* Recommended arti */}

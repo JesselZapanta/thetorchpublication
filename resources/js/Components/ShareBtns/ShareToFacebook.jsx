@@ -12,6 +12,7 @@ const ShareToFacebook = () => {
 
     return (
         <div>
+            {/* imposible to implement due to tech stack limitation */}
             {/* Facebook Share Button */}
             <button
                 onClick={handleShare}
