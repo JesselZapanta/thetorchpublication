@@ -27,9 +27,10 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
         article_image_path: "",
         is_featured: article.is_featured || "",
         is_anonymous: article.is_anonymous || "",
-        published_date: article.published_date
-            ? new Date(article.published_date).toISOString().split("T")[0] // Format date correctly
-            : "",
+        published_date: article.publishedDate || "",
+        // published_date: article.published_date
+        //     ? new Date(article.published_date).toISOString().split("T")[0] // Format date correctly
+        //     : "",
         // draft: article.draft || "no",
         _method: "PUT",
     });
@@ -37,10 +38,14 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
 
     // Automatically set published_date if status is "published"
     useEffect(() => {
-        if (data.status === "published" && !data.published_date) {
+        if (
+            (data.status === "published" || data.status === "scheduled") &&
+            !data.published_date
+        ) {
             const today = new Date().toISOString().split("T")[0];
             setData("published_date", today);
         }
+
     }, [data.status, setData]); // Run effect when status changes
 
     const onSubmit = () => {
@@ -263,7 +268,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                             {/* status and published */}
                             <div className="flex gap-4">
                                 {/* Published Date */}
-                                {article.createdBy.id === auth.user.id && (
+                                {/* {article.createdBy.id === auth.user.id && (
                                     <div className="w-full mt-4">
                                         <InputLabel
                                             htmlFor="published_date"
@@ -292,7 +297,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                             className="mt-2"
                                         />
                                     </div>
-                                )}
+                                )} */}
 
                                 {/* author if no acc */}
                                 {article.createdBy.id === auth.user.id && (
@@ -425,6 +430,38 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                     className="mt-2"
                                 />
                             </div>
+                            {(article.createdBy.id === auth.user.id ||
+                                data.status === "scheduled") && (
+                                <div className="w-full mt-4">
+                                    <InputLabel
+                                        htmlFor="published_date"
+                                        value="Published Date"
+                                    />
+
+                                    <TextInput
+                                        id="published_date"
+                                        type="date"
+                                        name="published_date"
+                                        value={data.published_date}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData(
+                                                "published_date",
+                                                e.target.value
+                                            )
+                                        }
+                                        disabled={
+                                            data.status !== "published" &&
+                                            data.status !== "scheduled"
+                                        } // Disable unless status is "published" or "scheduled"
+                                    />
+
+                                    <InputError
+                                        message={errors.published_date}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
                             <div className="flex gap-4">
                                 {/* image path */}
                                 <div className="mt-4 w-full">
@@ -476,8 +513,13 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                                 Save as Draft
                                             </option>
                                         )}
+                                        
                                         <option value="published">
                                             Approved and Published
+                                        </option>
+
+                                        <option value="scheduled">
+                                            Scheduled and Published
                                         </option>
 
                                         {auth.user.id !==

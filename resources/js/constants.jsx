@@ -18,6 +18,7 @@ export const ARTICLE_STATUS_CLASS_MAP = {
     edited: "bg-blue-500",
     rejected: "bg-red-500",
     revision: "bg-rose-500",
+    scheduled: "bg-lime-500",
     published: "bg-green-500",
 };
 
@@ -27,6 +28,7 @@ export const ARTICLE_STATUS_TEXT_MAP = {
     edited: "Edited",
     rejected: "Rejected",
     revision: "Revision",
+    scheduled: "Scheduled",
     published: "Published",
 };
 

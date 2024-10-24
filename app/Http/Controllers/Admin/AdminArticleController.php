@@ -75,7 +75,7 @@ class AdminArticleController extends Controller
                     $query->where('created_by', $id) // Auth user's articles
                             ->orWhere(function ($query) use ($id) {
                                 $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['edited', 'published']); 
+                                        ->whereIn('status', ['edited','scheduled', 'published']); 
                             });
                     });
                 break;
@@ -183,6 +183,10 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
+        if($data['status'] === 'scheduled' && $data['published_date'] < now()){
+            return redirect()->back()->withErrors(['published_date' => 'For scheduled status, the published date must be in the future.']);
+        }
+
         // 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
@@ -228,7 +232,7 @@ class AdminArticleController extends Controller
             $query->where('created_by', $id)
                 ->orWhere(function ($query) use ($id) {
                                 $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['edited', 'published']); 
+                                        ->whereIn('status', ['edited','scheduled', 'published']); 
                             });
         })
         ->firstOrFail();
@@ -254,7 +258,7 @@ class AdminArticleController extends Controller
             $query->where('created_by', $id)
                 ->orWhere(function ($query) use ($id) {
                                 $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['edited', 'published']); 
+                                        ->whereIn('status', ['edited','scheduled', 'published']); 
                             });
         })
         ->firstOrFail();
@@ -287,7 +291,7 @@ class AdminArticleController extends Controller
             $query->where('created_by', $id)
                 ->orWhere(function ($query) use ($id) {
                                 $query->where('created_by', '!=', $id)
-                                        ->whereIn('status', ['edited', 'published']); 
+                                        ->whereIn('status', ['edited','scheduled', 'published']); 
                             });
         })
         ->firstOrFail();
@@ -379,10 +383,9 @@ class AdminArticleController extends Controller
         $data['revision_message'] = $request->input('revision_message');
         
 
-        // if($status == 'published'){
-        //     $data['revision_message'] = null;
-        //     $data['rejection_message'] = null;
-        // }
+        if($data['status'] === 'scheduled' && $data['published_date'] < now()){
+            return redirect()->back()->withErrors(['published_date' => 'For scheduled status, the published date must be in the future.']);
+        }
 
         // If the article is already published, retain the existing published date
         if($admin_article->status === 'published'){
@@ -391,13 +394,14 @@ class AdminArticleController extends Controller
 
         // If the article is being published for the first time, set the published date
         elseif ($data['status'] === 'published' && $admin_article->status !== 'published') {
-            $data['published_date'] = now();
+            $data['published_date'] = $data['published_date'] ?? now();
             $data['published_by'] = Auth::user()->id;
         }
 
-        if($data['status'] !== 'published'){
+        if ($data['status'] !== 'published' && $data['status'] !== 'scheduled') {
             $data['published_date'] = null;
         }
+
 
         if($data['status'] === 'revision'){
             $data['revision_at'] = now();
@@ -457,6 +461,11 @@ class AdminArticleController extends Controller
 
         $customPublishedMessage = 'Congratulations! Your article, edited by ' . $editedBy->name . ', has been successfully published. It is now live for readers to enjoy. Thank you for your hard work and contribution!';
         
+        $customEditorPublishedMessage = 'Great job! The article you edited has been successfully sceduled for publication. Thank you for your attention to detail and hard work in preparing it for publication.';
+
+        $customScheduledMessage = 'Congratulations! Your article, edited by ' . $editedBy->name . ', has been successfully scheduled for publication. Thank you for your hard work and valuable contribution!';
+
+        
 
         if ($admin_article->status === 'revision') {
 
@@ -470,6 +479,14 @@ class AdminArticleController extends Controller
 
             Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorPublishedMessage));
             Notification::send($createdBy, new ArticleStatus($articleDetails, $customPublishedMessage));
+
+            return to_route('admin-article.index')->with(['success'=> 'Article published succesfullly.']);
+        }
+
+        if ($admin_article->status === 'scheduled') {
+
+            Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorPublishedMessage));
+            Notification::send($createdBy, new ArticleStatus($articleDetails, $customScheduledMessage));
 
             return to_route('admin-article.index')->with(['success'=> 'Article published succesfullly.']);
         }

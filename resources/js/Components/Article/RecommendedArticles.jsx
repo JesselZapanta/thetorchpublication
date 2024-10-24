@@ -22,7 +22,7 @@ const RecommendedArticles = ({ recommendedArticles }) => {
             {recommendedArticles.data.map((article) => (
                 <div key={article.id} className="flex-shrink-0">
                     {/* Add flex-shrink-0 to prevent shrinking */}
-                    <div className="h-20">
+                    <div className="h-20 w-52">
                         <Link
                             href={route("article.read", article.slug)}
                             onClick={(e) => {

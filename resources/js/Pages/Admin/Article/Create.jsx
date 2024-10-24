@@ -228,7 +228,7 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                             {/* author and published */}
                             <div className="flex gap-4">
                                 {/* published_date */}
-                                <div className="w-full mt-4">
+                                {/* <div className="w-full mt-4">
                                     <InputLabel
                                         htmlFor="published_date"
                                         value="Published Date"
@@ -252,7 +252,7 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                         message={errors.published_date}
                                         className="mt-2"
                                     />
-                                </div>
+                                </div> */}
                                 {/* author if no acc */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
@@ -381,6 +381,31 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                     className="mt-2"
                                 />
                             </div>
+                            <div className="w-full mt-4">
+                                <InputLabel
+                                    htmlFor="published_date"
+                                    value="Published Date"
+                                />
+
+                                <TextInput
+                                    id="published_date"
+                                    type="date"
+                                    name="published_date"
+                                    value={data.published_date}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData(
+                                            "published_date",
+                                            e.target.value
+                                        )
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.published_date}
+                                    className="mt-2"
+                                />
+                            </div>
                             <div className="flex gap-4">
                                 {/* image path */}
                                 <div className="mt-4 w-full">
@@ -429,6 +454,9 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                         </option>
                                         <option value="published">
                                             Published
+                                        </option>
+                                        <option value="scheduled">
+                                            Scheduled and Published
                                         </option>
                                     </SelectInput>
 
