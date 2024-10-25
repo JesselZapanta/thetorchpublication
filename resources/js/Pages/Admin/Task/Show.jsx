@@ -236,6 +236,38 @@ export default function Show({ auth, task, AdminBadgeCount }) {
                                     className="mt-2"
                                 />
                             </div>
+                            {data.status === "scheduled" && (
+                                <div className="w-full mt-4">
+                                    <InputLabel
+                                        htmlFor="task_completed_date"
+                                        value="Scheduled Date"
+                                    />
+
+                                    <TextInput
+                                        id="task_completed_date"
+                                        type="date"
+                                        name="task_completed_date"
+                                        value={data.task_completed_date}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData(
+                                                "task_completed_date",
+                                                e.target.value
+                                            )
+                                        }
+                                        disabled={
+                                            data.status !==
+                                                "completedcompleted" &&
+                                            data.status !== "scheduled"
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.task_completed_date}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            )}
 
                             {/* Status */}
                             {(task.status === "approval" ||
@@ -295,6 +327,9 @@ export default function Show({ auth, task, AdminBadgeCount }) {
                                         <option value="">Select Status</option>
                                         <option value="completed">
                                             Approved and Published
+                                        </option>
+                                        <option value="scheduled">
+                                            Scheduled and Published
                                         </option>
                                         <option value="image_revision">
                                             Image Revision
