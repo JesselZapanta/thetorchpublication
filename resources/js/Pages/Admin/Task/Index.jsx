@@ -430,19 +430,43 @@ export default function Index({ auth, tasks, queryParams = null, flash, AdminBad
                                                     <td className="p-3 text-nowrap">
                                                         {/* {task.dueDate} */}
                                                         {task.status !==
-                                                            "completed" && (
+                                                            "completed" &&
+                                                            task.status !==
+                                                                "scheduled" && (
+                                                                <span
+                                                                    className={
+                                                                        "px-2 py-1 rounded text-white " +
+                                                                        getTaskDueClass(
+                                                                            task.dueDate
+                                                                        ) // Use the function here
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        task.dueDate
+                                                                    }
+                                                                </span>
+                                                            )}
+
+                                                        {/* {task.dueDate} */}
+                                                        {task.status ===
+                                                            "scheduled" && (
                                                             <span
                                                                 className={
                                                                     "px-2 py-1 rounded text-white " +
-                                                                    getTaskDueClass(
-                                                                        task.dueDate
-                                                                    ) // Use the function here
+                                                                    TASK_STATUS_CLASS_MAP[
+                                                                        task
+                                                                            .status
+                                                                    ]
                                                                 }
                                                             >
-                                                                {task.dueDate}
+                                                                {
+                                                                    TASK_STATUS_TEXT_MAP[
+                                                                        task
+                                                                            .status
+                                                                    ]
+                                                                }
                                                             </span>
                                                         )}
-                                                        {/* {task.dueDate} */}
                                                         {task.status ===
                                                             "completed" && (
                                                             <span

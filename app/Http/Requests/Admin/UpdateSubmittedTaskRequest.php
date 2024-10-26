@@ -28,9 +28,11 @@ class UpdateSubmittedTaskRequest extends FormRequest
             'excerpt' => ['required', 'string', 'max:500'],
             'body'    => ['required', 'string'],
             'caption' => ['required', 'string',  'max:255'],
-            'status'  => ['required', Rule::in(['approval','approved','content_revision', 'image_revision', 'completed'])],
+            'status'  => ['required', Rule::in(['approval','approved','content_revision', 'image_revision','scheduled', 'completed'])],
             'content_revision_message' => ['nullable', 'string', 'required_if:status,content_revision'],
             'image_revision_message' => ['nullable', 'string', 'required_if:status,image_revision'],
+
+            'task_completed_date' => ['nullable', 'required_if:status,completed,scheduled', 'date'],
         ];
     }
 }

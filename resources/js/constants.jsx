@@ -41,6 +41,7 @@ export const TASK_STATUS_CLASS_MAP = {
     content_revision: "bg-rose-500",
     review: "bg-violet-500",
     image_revision: "bg-rose-500",
+    scheduled: "bg-lime-500",
     completed: "bg-green-500",
 };
 export const TASK_STATUS_TEXT_MAP = {
@@ -51,6 +52,7 @@ export const TASK_STATUS_TEXT_MAP = {
     content_revision: "Content Revision",
     review: "For Review",
     image_revision: "Image Revision",
+    scheduled: "Scheduled",
     completed: "Completed",
 };
 
@@ -65,6 +67,18 @@ export const TASK_PRIORITY_TEXT_MAP = {
     low: "Low",
     medium: "Medium",
     high: "High",
+};
+
+// task due date
+export const getTaskDueClass = (dueDate) => {
+    const now = new Date();
+    const taskDueDate = new Date(dueDate);
+
+    if (taskDueDate < now) {
+        return "bg-red-600"; // Past due date
+    } else {
+        return "bg-green-600"; // Future due date (or on time)
+    }
 };
 
 // Newsletter  Status
@@ -139,14 +153,3 @@ export const EMOTION_CLASS_MAP = {
     down: "bg-gray-600",
 };
 
-
-export const getTaskDueClass = (dueDate) => {
-    const now = new Date();
-    const taskDueDate = new Date(dueDate);
-
-    if (taskDueDate < now) {
-        return "bg-red-600"; // Past due date
-    } else {
-        return "bg-green-600"; // Future due date (or on time)
-    }
-};

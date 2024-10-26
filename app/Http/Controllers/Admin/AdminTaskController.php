@@ -432,20 +432,54 @@ class AdminTaskController extends Controller
             ];
 
             // Customize the message based on the task status
-            $customMessage = 'The tast is completed and published.';
+            $customMessage = 'The task is completed and published.';
+
+            // Send the email notification to the assigned user
+            Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
+        }
+
+        //task completed date
+        if($data['status'] === 'scheduled'){
+
+            // if($data['task_completed_date'] < now()){
+            //     return redirect()->back()->withErrors(['task_completed_date' => 'For scheduled status, the published/completed date must be in the future.']);
+            // }
+
+            // dd($data['task_completed_date']);
+
+            // ==============send email notif ==================//
+
+            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            $assignedUser = User::find($task->layout_by);
+
+            // Prepare task details for the notification
+            $taskDetails = [
+                'task_id' => $task->id,
+                'task_name' => $task->name,
+                'assigned_by_name' => $task->assignedBy->name,
+                'due_date' =>  $task->due_date,
+                'priority' => $task->priority,
+            ];
+
+            // Customize the message based on the task status
+            $customMessage = 'The tast is completed and scheduled to published.';
 
             // Send the email notification to the assigned user
             Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
         // Update the task
+        
         $task->update($data);
 
         // dd($task);
         
 
-        if($data['status'] === 'completed'){
+        if($data['status'] === 'completed' || $data['status'] === 'scheduled'){
             
+
+            // dd($task);
+
             $article = new Article();
 
              // Map task data to article fields
@@ -461,8 +495,8 @@ class AdminTaskController extends Controller
             $article->slug = Str::slug($task->title);//might remoce later //todo
             $article->excerpt = $task->excerpt;
             $article->body = $task->body;
-            $article->status = 'published'; // Set article status to published
-            $article->published_date = now();
+            $article->status = $task->status === 'completed' ? 'published' : $task->status;
+            $article->published_date = $task->task_completed_date;
             $article->is_anonymous = 'no';
             $article->caption = $task->caption;
 
@@ -491,6 +525,8 @@ class AdminTaskController extends Controller
                     $article->article_image_path = $articleImagePath;
                 }
             }
+
+            // dd($article);
 
             // Save the new article
             $article->save();

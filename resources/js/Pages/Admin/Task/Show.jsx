@@ -23,6 +23,7 @@ export default function Show({ auth, task, AdminBadgeCount }) {
         body: task.body || "",
         caption: task.caption || "",
         status: task.status || "",
+        task_completed_date: task.taskCompletedDate || "",
         content_revision_message: task.content_revision_message || "",
         image_revision_message: task.image_revision_message || "",
         _method: "PUT",
@@ -240,7 +241,7 @@ export default function Show({ auth, task, AdminBadgeCount }) {
                                 <div className="w-full mt-4">
                                     <InputLabel
                                         htmlFor="task_completed_date"
-                                        value="Scheduled Date"
+                                        value="Scheduled/Complete Date"
                                     />
 
                                     <TextInput
@@ -257,7 +258,7 @@ export default function Show({ auth, task, AdminBadgeCount }) {
                                         }
                                         disabled={
                                             data.status !==
-                                                "completedcompleted" &&
+                                                "completed" &&
                                             data.status !== "scheduled"
                                         }
                                     />

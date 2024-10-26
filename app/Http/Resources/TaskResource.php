@@ -59,6 +59,7 @@ class TaskResource extends JsonResource
             'image_revision_date' =>  $this->image_revision_date ? (new Carbon($this->image_revision_date))->format('F j, Y') : null,
             
             'task_completed_date' => $this->task_completed_date ? (new Carbon($this->task_completed_date))->format('F j, Y') : null,
+            'taskCompletedDate' => $this->task_completed_date ? (new Carbon($this->task_completed_date))->format('Y-m-d') : null,
 
             'dueDate' => $this->due_date ? (new Carbon($this->due_date))->format('F j, Y') : null,//for table
             'due_date' => $this->due_date ? (new Carbon($this->due_date))->format('Y-m-d'): null,//for the form

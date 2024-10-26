@@ -26,11 +26,10 @@ class ScheduleArticles extends Command
      */
     public function handle()
     {
-        $today = now()->startOfDay(); // Get the start of the current day
 
         // Fetch articles scheduled for today
         $articles = Article::where('status', 'scheduled')
-            ->whereDate('published_date', today()) 
+            ->whereDate('published_date', '<=', today()) 
             ->get();
 
         foreach ($articles as $article) {

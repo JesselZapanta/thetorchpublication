@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
         // command :  php artisan schedule:run
         $schedule->command('taskpastdue')->everyFiveSeconds();
 
+         //scheduled tasks
+        $schedule->command('scheduledTasks')->everyFiveSeconds();
+
         //scheduled articleds
         $schedule->command('scheduledArticles')->everyFiveSeconds();
 
