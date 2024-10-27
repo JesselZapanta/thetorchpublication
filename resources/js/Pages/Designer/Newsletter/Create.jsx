@@ -31,6 +31,12 @@ export default function Create({ auth, DesignerBadgeCount }) {
         setConfirmSubmit(false);
         onSubmit();
     };
+
+    
+    // useEffect(() => {
+    //     window.find("Add");
+    // }, []);
+
     return (
         <DesignerAuthenticatedLayout
             DesignerBadgeCount={DesignerBadgeCount}

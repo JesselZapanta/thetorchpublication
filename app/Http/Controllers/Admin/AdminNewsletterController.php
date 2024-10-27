@@ -17,7 +17,9 @@ use App\Models\Newsletter;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Requests\UpdateNewsletterRequest;
 use App\Models\User;
+use App\Models\Word;
 use App\Notifications\NewsletterNotification;
+use App\Utilities\AhoCorasick;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -108,6 +110,29 @@ class AdminNewsletterController extends Controller
     {
         $data = $request->validated();
 
+        // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+
+        $ahoCorasick->buildFailureLinks();
+
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the article description contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['description']));
+        if (!empty($detectedWords)) {
+            $errors['description'] = 'The description contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
+
         $image = $data['newsletter_thumbnail_image_path'];
         $pdfFile = $data['newsletter_file_path'];
 
@@ -164,6 +189,29 @@ class AdminNewsletterController extends Controller
     public function update(UpdateNewsletterRequest $request, Newsletter $newsletter)
     {
         $data = $request->validated();
+
+        // Build the Trie with bad words
+        $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
+        $ahoCorasick = new AhoCorasick();
+        foreach ($badWords as $badWord) {
+            $ahoCorasick->insert(strtolower($badWord));
+        }
+
+        $ahoCorasick->buildFailureLinks();
+
+        // Initialize an array to collect errors
+        $errors = [];
+
+        // Check if the article description contains any bad words
+        $detectedWords = $ahoCorasick->search(strtolower($data['description']));
+        if (!empty($detectedWords)) {
+            $errors['description'] = 'The description contains inappropriate content: ' . implode(', ', $detectedWords);
+        }
+
+        // If there are any errors, return them
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
 
         // dd($data['newsletter_file_path']);
         $image = $data['newsletter_thumbnail_image_path'];
