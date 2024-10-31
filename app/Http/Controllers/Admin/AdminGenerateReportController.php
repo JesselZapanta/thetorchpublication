@@ -220,8 +220,10 @@ class AdminGenerateReportController extends Controller
             $query->withCount(['views' => function($viewQuery) use ($dateFrom, $dateTo) {
                 $viewQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
             }]);
-            // Limit the number of articles to 10
-            $query->limit(10);
+             // Apply visibility and status filters to articles
+            $query->where('visibility', 'visible')
+                ->where('status', 'published');
+                
         }])->where('status', 'active')->get();
 
         // Map categories to get total article view count per category

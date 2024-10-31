@@ -220,6 +220,11 @@ class AdminDashboardController extends Controller
                 $viewQuery->whereBetween('created_at', [$dateFrom, $dateTo]);
             }]);
 
+             // Apply visibility and status filters to articles
+            $query->where('visibility', 'visible')
+                ->where('status', 'published');
+                
+
         }])->where('status', 'active')->get();
 
         // Map categories to get total article view count per category
