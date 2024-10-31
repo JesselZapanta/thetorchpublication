@@ -159,19 +159,24 @@ export default function UnauthenticatedLayout({
                         >
                             Home
                         </ResponsiveNavLink>
+
                         {categories.data.map((category) => (
                             <ResponsiveNavLink
                                 className="capitalize"
-                                href={route("articles.byCategory", category.id)}
+                                href={route(
+                                    "articles.byCategory",
+                                    category.slug
+                                )}
                                 key={category.id}
                                 active={route().current(
                                     "articles.byCategory",
-                                    category.id
+                                    category.slug
                                 )}
                             >
                                 {category.name.toLowerCase()}
                             </ResponsiveNavLink>
                         ))}
+
                         <ResponsiveNavLink
                             href={route("freedom-wall.index")}
                             active={route().current("freedom-wall.index")}
