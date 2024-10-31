@@ -194,12 +194,15 @@ class AdminGenerateReportController extends Controller
             if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
                 $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             } else {
-                // Ensure we handle other cases properly
+                // Handle other cases if needed
                 $query->whereBetween('published_date', [$dateFrom, $dateTo]);
             }
-            // Limit the number of articles to 10
-            $query->limit(10);
+
+            // Apply visibility and status filters to articles
+            $query->where('visibility', 'visible')
+                ->where('status', 'published');
         }])->where('status', 'active')->get();
+
 
 
         // Return categories with the article count for each

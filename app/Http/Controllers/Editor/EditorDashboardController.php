@@ -246,6 +246,11 @@ class EditorDashboardController extends Controller
             // Limit the number of articles to 10
             // $query->where('created_by', $userId)->limit(10);
             $query->where('created_by', $userId);
+
+            // Apply visibility and status filters to articles
+            $query->where('visibility', 'visible')
+                ->where('status', 'published');
+                
         }])->where('status', 'active')->get();
 
 
