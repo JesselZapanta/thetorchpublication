@@ -41,20 +41,6 @@ class AcademicYearSeeder extends Seeder
                 'start_at' => '2024-08-01 00:00:00',
                 'end_at' => '2024-12-27 00:00:00',
             ],
-            // [
-            //     'code' => '242',
-            //     'description' => '2ND SEM AY 2024-2025',
-            //     'status' => 'inactive',
-            //     'start_at' => '2025-01-01 00:00:00',
-            //     'end_at' => '2025-06-01 00:00:00',
-            // ],
-            // [
-            //     'code' => '243',
-            //     'description' => 'SUMMER AY 2024-2025',
-            //     'status' => 'inactive',
-            //     'start_at' => '2024-06-01 00:00:00',
-            //     'end_at' => '2024-08-01 00:00:00',
-            // ],
         ];
         \App\Models\AcademicYear::insertOrIgnore($data);
     }

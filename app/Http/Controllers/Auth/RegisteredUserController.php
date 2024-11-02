@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
     {
         // Validate the incoming request data
         $data = $request->validate([
-            'student_id' => 'required|integer',
+            'student_id' => 'required|integer|unique:users,student_id',
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'profile_image_path' => ['required', 'image', 'mimes:jpeg,png,jpg'],
