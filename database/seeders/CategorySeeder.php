@@ -15,7 +15,7 @@ class CategorySeeder extends Seeder
         //
         $data = [
             [
-                'name' => 'annoucements',
+                'name' => 'Annoucements',
                 'description' => 'This is annoucements description',
                 'slug' => 'annoucements',
                 'status' => 'active',
@@ -27,31 +27,31 @@ class CategorySeeder extends Seeder
                 'status' => 'active',
             ],
             [
-                'name' => 'sports',
+                'name' => 'Sports',
                 'description' => 'This is sports description',
                 'slug' => 'sports',
                 'status' => 'active',
             ],
             [
-                'name' => 'feature',
+                'name' => 'Feature',
                 'description' => 'This is feature description',
                 'slug' => 'feature',
                 'status' => 'active',
             ],
             [
-                'name' => 'editorial',
+                'name' => 'Editorial',
                 'description' => 'This is editorial description',
                 'slug' => 'editorial',
                 'status' => 'active',
             ],
             [
-                'name' => 'literary',
+                'name' => 'Literary',
                 'description' => 'This is literary description',
                 'slug' => 'literary',
                 'status' => 'active',
             ],
             [
-                'name' => 'others',
+                'name' => 'Others',
                 'description' => 'This is others description',
                 'slug' => 'others',
                 'status' => 'active',
