@@ -97,7 +97,7 @@ Route::post('/articles/{slug}/increment-views', [ArticleViewsController::class, 
 
 
 //Get Ratings
-    Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
+Route::get('/get-article-ratings/{articleId}', [RatingController::class, 'getArticleRatings']);
 
 //Comment Like Dislike
 Route::middleware(['auth', 'userStatus'])->group(function () {
