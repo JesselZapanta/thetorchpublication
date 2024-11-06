@@ -34,7 +34,7 @@ class UpdateArticleRequest extends FormRequest
             'body' => ['required', 'string' ],
             'caption' => ['required', 'string', 'max:255'],
             'status' => ['required',
-                Rule::in(['draft','revision','scheduled','published'])
+                Rule::in(['draft','edited','revision','scheduled','published'])
             ],
             'revision_message' => ['nullable', 'string', 'required_if:status,revision'],
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
