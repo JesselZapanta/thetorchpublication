@@ -23,7 +23,7 @@ export default function ByCategory({
         setSort(selectedValue);
 
         router.get(
-            route("articles.byCategory", { id: currentCategory.id }),
+            route("articles.byCategory", { slug: currentCategory.slug }),
             {
                 sort: selectedValue,
                 search,
@@ -41,7 +41,7 @@ export default function ByCategory({
 
         if (value === "") {
             router.get(
-                route("articles.byCategory", { id: currentCategory.id }),
+                route("articles.byCategory", { slug: currentCategory.slug }),
                 {
                     sort,
                     search: value,
@@ -58,7 +58,7 @@ export default function ByCategory({
             // Check for the correct key
             e.preventDefault();
             router.get(
-                route("articles.byCategory", { id: currentCategory.id }),
+                route("articles.byCategory", { slug: currentCategory.slug }),
                 {
                     sort,
                     search, // Trigger search with current search state
