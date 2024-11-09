@@ -106,8 +106,14 @@ class AppServiceProvider extends ServiceProvider
          //editor notif badge count
         Inertia::share('EditorBadgeCount', function () {
                 if (Auth::check() && Auth::user()->role === 'editor') { // Check if user is an editor
-                // for article
-                $pendingArticleCount = Article::where('status', 'pending')->count();
+                // for article//edited by === id or null
+                $pendingArticleCount = Article::where('status', 'pending')
+                ->where(function ($query) {
+                    $query->where('edited_by', auth()->id())
+                        ->orWhereNull('edited_by');
+                })
+                ->count();
+
 
                 $revisionArticleCount = 0;
                 if (Auth::check()) {

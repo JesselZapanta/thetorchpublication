@@ -246,7 +246,7 @@ export default function ReadArticle({
             }
         >
             <Head title={article.title} />
-            
+
             <ToastContainer position="bottom-right" />
 
             {/* <pre className="text-gray-900">
@@ -307,7 +307,7 @@ export default function ReadArticle({
                                         </div>
                                         <div>
                                             <h4 className="font-bold text-base">
-                                                Author:
+                                                Author:{" "}
                                                 {article.author
                                                     ? article.author
                                                     : article.is_anonymous ===

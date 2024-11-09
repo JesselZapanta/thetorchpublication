@@ -196,8 +196,8 @@ class AdminArticleController extends Controller
         $data['submitted_at'] = now();
         $data['edited_at'] = now();
         
-
-        $data['slug'] = Str::slug($request->title);//might remoce later
+        //alter fonts not recommended
+        $data['slug'] = Str::slug($request->title) . '-' . time();// add the current time para prevent og di basahon ang font sa titel
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
@@ -377,7 +377,7 @@ class AdminArticleController extends Controller
 
         
         $image = $data['article_image_path'];
-        $data['slug'] = Str::slug($request->title);
+        $data['slug'] = Str::slug($request->title) . '-' . time();
 
         //the revision or reject message message 
         $data['revision_message'] = $request->input('revision_message');

@@ -58,11 +58,14 @@ export default function Edit({ auth, article, categories, WriterBadgeCount }) {
             }
         >
             <Head title={`Edit ${article.title}`} />
-            {/* <pre className="text-gray-950">{JSON.stringify(article, null, 2)}</pre> */}
+            {/* <pre className="text-gray-950">
+                {JSON.stringify(article, null, 2)}
+            </pre> */}
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {article.rejection_message ||
-                        (article.status === "rejected" && (
+                    {article.rejection_message &&
+                        article.status === "rejected" &&
+                        article.status !== "published" && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
@@ -87,7 +90,7 @@ export default function Edit({ auth, article, categories, WriterBadgeCount }) {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         {article.article_image_path && (
                             <img

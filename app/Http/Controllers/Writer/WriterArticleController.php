@@ -178,7 +178,7 @@ class WriterArticleController extends Controller
         $data['submitted_at'] =now();
         $data['academic_year_id'] = $activeAy->id;
 
-        $data['slug'] = Str::slug($request->title);
+        $data['slug'] = Str::slug($request->title) . '-' . time();
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
@@ -354,7 +354,7 @@ class WriterArticleController extends Controller
             $data['created_by'] = Auth::user()->id;
             $data['submitted_at'] =now();
 
-            $data['slug'] = Str::slug($request->title);
+            $data['slug'] = Str::slug($request->title) . '-' . time();
             
 
             if ($image) {
