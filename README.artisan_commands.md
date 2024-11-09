@@ -65,6 +65,10 @@ npm install react-to-print
 <!-- AOS -->
 npm install aos --save
 
+<!-- for text editor -->
+npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
+
+
 
 <!-- for cron -->
 <!-- run locally -->
@@ -72,10 +76,6 @@ php artisan schedule:run
 <!-- db backup -->
 php artisan database:backup
 
-<!-- in server -->
+<!-- in server c panel -->
 
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
-
-
-<!-- for text editor -->
-npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
