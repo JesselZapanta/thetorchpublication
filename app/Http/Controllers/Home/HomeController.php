@@ -167,7 +167,7 @@ class HomeController extends Controller
             $query->where('title', 'like', "%{$request->search}%");
         }
 
-        $categoryarticles = $query->paginate(15);
+        $categoryarticles = $query->paginate(15);//adjust if needed
 
         return inertia('ByCategory', [
             'categories' => CategoryResource::collection($categories),
