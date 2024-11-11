@@ -492,7 +492,8 @@ class AdminTaskController extends Controller
             $article->category_id = $task->category_id;
             $article->academic_year_id = $task->academic_year_id;
             $article->title = $task->title;
-            $article->slug = Str::slug($task->title);//might remoce later //todo
+            // $article->slug = Str::slug($task->title);//might remoce later //todo
+            $article->slug = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $task->title));
             $article->excerpt = $task->excerpt;
             $article->body = $task->body;
             $article->status = $task->status === 'completed' ? 'published' : $task->status;

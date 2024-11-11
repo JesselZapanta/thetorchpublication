@@ -176,7 +176,8 @@ class StudentArticleController extends Controller
         $data['submitted_at'] =now();
         $data['academic_year_id'] = $activeAy->id;
 
-        $data['slug'] = Str::slug($request->title) . '-' . time();
+        // $data['slug'] = Str::slug($request->title) . '-' . time();
+        $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
@@ -352,7 +353,8 @@ class StudentArticleController extends Controller
             $image = $data['article_image_path'] ?? null;
             $data['created_by'] = Auth::user()->id;
             $data['status'] = 'pending'; // Always set to 'pending'
-            $data['slug'] = Str::slug($request->title) . '-' . time();
+            // $data['slug'] = Str::slug($request->title) . '-' . time();
+            $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));
 
             if ($image) {
                 // Delete the old image file if a new one is uploaded

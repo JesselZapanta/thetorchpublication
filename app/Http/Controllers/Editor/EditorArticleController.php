@@ -219,7 +219,8 @@ class EditorArticleController extends Controller
         $data['edited_at'] =now();
         // $data['status'] = 'edited';
 
-        $data['slug'] = Str::slug($request->title) . '-' . time();
+        // $data['slug'] = Str::slug($request->title) . '-' . time();
+        $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));
 
         if ($image) {
             // Store the image directly under the 'article/' directory and save its path
@@ -464,7 +465,8 @@ class EditorArticleController extends Controller
         // 
         $image = $data['article_image_path'];
         $data['edited_by'] = Auth::user()->id;
-        $data['slug'] = Str::slug($request->title) . '-' . time();
+        // $data['slug'] = Str::slug($request->title) . '-' . time();
+        $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));
 
         //if ge edit but published na as is ang edited_by[i mention in index func]
         if($editor_article->status !== 'published'){
