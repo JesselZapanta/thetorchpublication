@@ -127,19 +127,21 @@ Route::middleware(['auth', 'userStatus'])->group(function () {
 
 //Admin Routes
 Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() {
+    //admin dashboard and generate report
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/report', [AdminGenerateReportController::class, 'report'])->name('admin.report');
     
+    //user route
     Route::resource('user', AdminUserController::class);
 
-
+    //application for student contributor route
     Route::get('/admin/contributor/index', [AdminApplyContributorController::class, 'index'])->name('admin-contributor.index');
     Route::post('/admin/contributor/{id}/reject', [AdminApplyContributorController::class, 'reject'])->name('admin-contributor.reject');
     Route::get('/admin/contributor/{id}/view', [AdminApplyContributorController::class, 'view'])->name('admin-contributor.view');
     Route::put('/admin/contributor/{id}/update', [AdminApplyContributorController::class, 'update'])->name('admin-contributor.update');
         
 
-    //article
+    //article with timeline and calendar
     Route::get('admin-article/calendar', [AdminArticleController::class, 'calendar'])->name('admin-article.calendar');
     Route::get('admin-article/{slug}/timeline', [AdminArticleController::class, 'timeLine'])->name('admin-article.timeline');
     Route::resource('admin-article', AdminArticleController::class);
@@ -150,6 +152,7 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::resource('word', AdminWordController::class);
     Route::resource('about', AdminAboutController::class);
     
+    //newsletter routes
     Route::get('/newsletter/calendar', [AdminNewsletterController::class, 'calendar'])->name('newsletter.calendar');
     Route::get('newsletter/{id}/timeline', [AdminNewsletterController::class, 'timeLine'])->name('newsletter.timeline');
     Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
@@ -161,7 +164,7 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
     Route::resource('newsletter', AdminNewsletterController::class);
 
-    // Task route
+    // Task routes
     Route::put('admin-task/{id}/updateSubmittedTask', [AdminTaskController::class, 'updateSubmittedTask'])->name('admin.updateSubmittedTask');
     Route::get('admin-task/{id}/timeline', [AdminTaskController::class, 'timeLine'])->name('admin-task.timeline');
     Route::get('admin-task/calendar', [AdminTaskController::class, 'calendar'])->name('admin-task.calendar');
@@ -208,6 +211,7 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
 
 // for editor
 Route::middleware(['auth', 'editor','verified', 'userStatus'])->group(function() {
+    //editor dashboard and report
     Route::get('/editor/dashboard', action: [EditorDashboardController::class, 'index'])->name('editor.dashboard');
     Route::get('/editor/report', [EditorGenerateReportController::class, 'report'])->name('editor.report');
     
@@ -251,6 +255,7 @@ Route::middleware(['auth', 'editor','verified', 'userStatus'])->group(function()
 
 // for Writer
 Route::middleware(['auth', 'writer', 'verified', 'userStatus'])->group(function() {
+    //writer dashboard and report
     Route::get('/writer/dashboard', [WriterDashboardController::class, 'index'])->name('writer.dashboard');
     Route::get('/writer/report', [WriterGenerateReportController::class, 'report'])->name('writer.report');
 
@@ -291,9 +296,10 @@ Route::middleware(['auth', 'writer', 'verified', 'userStatus'])->group(function(
 
 // for Designer
 Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(function() {
+    //desinger dashboard and report
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     Route::get('/designer/report', [DesignerGenerateReportController::class, 'report'])->name('designer.report');
-
+    //newsletter routes
     Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
     Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');
     Route::get('/designer-newsletter-articles/{slug}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
@@ -302,7 +308,7 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
     Route::get('/designer-newsletter-articles', [DesignerNewsletterController::class, 'SelectArticles'])->name('designer-newsletter.articles');
     Route::resource('designer-newsletter', DesignerNewsletterController::class);
 
-    // task
+    // task routes
     Route::get('designer-task', [DesignerTaskController::class, 'index'])->name('designer-task.index');
     Route::get('designer-task-getData', [DesignerTaskController::class, 'getData'])->name('designer-task.getData');
     Route::get('designer-task/calendar', [DesignerTaskController::class, 'calendar'])->name('designer-task.calendar');
@@ -343,15 +349,19 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
 
 // For Student and Student Contributor
 Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function() {
+    //student dashboard and report
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
     Route::get('/student/report', [StudentGenerateReportController::class, 'report'])->name('student.report');
 
+    //article routes
     Route::get('student-article/calendar', [StudentArticleController::class, 'calendar'])->name('student-article.calendar');
     Route::get('student-article/{slug}/timeline', [StudentArticleController::class, 'timeLine'])->name('student-article.timeline');
     Route::resource('student-article', StudentArticleController::class);
 
+    //freedom wall routes
     Route::resource('student-freedomwall', StudentFreedomWallController::class);
-
+    
+    //student contributor applicatrion
     Route::get('/student/contributor/create', [StudentApplyContributorController::class, 'create'])->name('student-contributor.create');
     Route::post('/student/contributor/store', [StudentApplyContributorController::class, 'store'])->name('student-contributor.store');
     Route::delete('/student/contributor/{id}/destroy', [StudentApplyContributorController::class, 'destroy'])->name('student-contributor.destroy');
@@ -367,7 +377,7 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
     Route::get('/student-archive-comment/{comment_id}/show/', [StudentArchiveController::class, 'showComment'])->name('student-archive-comment.show');
     Route::post('/student-archive-comment/{id}/restore', [StudentArchiveController::class, 'restoreComment'])->name('student-archive-comment.restore');
     Route::delete('/student-archive-comment/{id}/destroy', [StudentArchiveController::class, 'destroyComment'])->name('student-archive-comment.destroy');
-
+    //archive freedom wall
     Route::get('/student-archive-freedom-wall', [StudentArchiveController::class, 'freedomWall'])->name('student-archive-freedom-wall.index');
     Route::get('/student-archive-freedom-wall/{id}/show', [StudentArchiveController::class, 'showFreedomWall'])->name('student-archive-freedom-wall.show');
     Route::post('/student-archive-freedom-wall/{id}/restore', [StudentArchiveController::class, 'restoreFreedomWall'])->name('student-archive-freedom-wall.restore');
