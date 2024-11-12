@@ -81,7 +81,7 @@ class WriterArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Writer/Article/Create', [
             'categories' => CategoryResource::collection($categories),
@@ -267,7 +267,7 @@ class WriterArticleController extends Controller
                     ->where('visibility', 'visible')
                     ->firstOrFail();
 
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Writer/Article/Edit', [
             'article' => new ArticleResource($article),

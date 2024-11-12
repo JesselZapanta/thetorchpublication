@@ -79,7 +79,7 @@ class StudentArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Student/Article/Create', [
             'categories' => CategoryResource::collection($categories),
@@ -263,7 +263,7 @@ class StudentArticleController extends Controller
                     ->where('visibility', 'visible')
                     ->firstOrFail();
 
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Student/Article/Edit', [
             'article' => new ArticleResource($article),

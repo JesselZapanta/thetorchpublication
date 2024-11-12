@@ -107,7 +107,7 @@ class AdminArticleController extends Controller
             $activeAy = AcademicYear::orderBy('created_at', 'desc')->first();
         }
 
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Admin/Article/Create', [
             'categories' => CategoryResource::collection($categories),
@@ -297,7 +297,7 @@ class AdminArticleController extends Controller
         })
         ->firstOrFail();
 
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Admin/Article/Edit', [
             'article' => new ArticleResource($article),

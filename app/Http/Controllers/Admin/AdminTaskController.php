@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSubmittedTaskRequest;
 use App\Http\Resources\AcademicYearResource;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Models\AcademicYear;
@@ -84,7 +85,7 @@ class AdminTaskController extends Controller
     {
         
         $users = User::whereIn('role', ['editor', 'writer'])->get();
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
         $designers = User::where('role', 'designer')->get();
 
          // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
@@ -97,7 +98,7 @@ class AdminTaskController extends Controller
         return inertia('Admin/Task/Create', [
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
-            'categories' => UserResource::collection($categories),
+            'categories' => CategoryResource::collection($categories),
             'activeAy' => AcademicYearResource::collection($activeAy),//for admin
         ]);
     }
@@ -194,7 +195,7 @@ class AdminTaskController extends Controller
         }
 
         $users = User::whereIn('role', ['editor', 'writer', 'designer'])->get();
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
         $designers = User::where('role', 'designer')->get();
 
          // $activeAy = AcademicYear::where('status', 'active')->first();//for non admin
@@ -208,7 +209,7 @@ class AdminTaskController extends Controller
             'task' => new TaskResource($task),
             'users' => UserResource::collection($users),
             'designers' => UserResource::collection($designers),
-            'categories' => UserResource::collection($categories),
+            'categories' => CategoryResource::collection($categories),
             'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
     }

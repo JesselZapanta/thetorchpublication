@@ -119,7 +119,7 @@ class EditorArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Editor/Article/Create', [
             'categories' => CategoryResource::collection($categories),
@@ -382,7 +382,7 @@ class EditorArticleController extends Controller
         })
         ->firstOrFail();
 
-        $categories = Category::all();
+        $categories = Category::where('status', 'active')->get();
 
         return inertia('Editor/Article/Edit', [
             'article' => new ArticleResource($article),
