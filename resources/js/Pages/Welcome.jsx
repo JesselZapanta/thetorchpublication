@@ -55,7 +55,7 @@ export default function Welcome({
                     className="w-full h-[2px] bg-indigo-500 mt-2"
                     data-aos="fade-up"
                 ></div>
-
+                {/* latest articles */}
                 <h5
                     className="block text-start  text-2xl text-indigo-500 py-2"
                     data-aos="fade-up"
