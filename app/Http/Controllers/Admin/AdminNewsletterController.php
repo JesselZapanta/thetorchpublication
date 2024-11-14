@@ -469,6 +469,7 @@ class AdminNewsletterController extends Controller
     public function calendar()
     {
         $newsletters = Newsletter::where('status', 'distributed')
+                            ->where('visibility', 'visible')
                             ->whereNotNull('distributed_at')
                             ->get(['id','description', 'distributed_at' ,'status',]);
 

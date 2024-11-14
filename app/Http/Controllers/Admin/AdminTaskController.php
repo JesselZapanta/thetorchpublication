@@ -583,6 +583,7 @@ class AdminTaskController extends Controller
     public function calendar()
     {
         $tasks = Task::where('status', 'completed')
+                            ->where('visibility', 'visible')
                             ->whereNotNull('task_completed_date')
                             ->get(['id','name', 'status', 'task_completed_date']);
 

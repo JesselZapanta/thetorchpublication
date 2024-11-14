@@ -123,6 +123,8 @@ class DesignerNewsletterController extends Controller
         $data['status'] = 'pending';
         $data['academic_year_id'] = $activeAy->id;
 
+        //might add notif
+
         Newsletter::create($data);
 
         return to_route('designer-newsletter.index')->with(['success' => 'Newsletter submitted successfully.']);
@@ -363,6 +365,7 @@ class DesignerNewsletterController extends Controller
     public function calendar()
     {
         $newsletters = Newsletter::where('status', 'distributed')
+                            ->where('visibility', 'visible')
                             ->whereNotNull('distributed_at')
                             ->get(['id','description', 'distributed_at' ,'status',]);
 
