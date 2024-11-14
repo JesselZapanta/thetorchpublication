@@ -66,8 +66,9 @@ class AdminTaskController extends Controller
             });
         }
 
+        //task nga auth-id === assigned_by ra abg nakita
         $tasks = $query->orderBy($sortField, $sortDirection)
-                    ->where('visibility', 'visible') //todo add this col
+                    ->where('visibility', 'visible')
                     ->where('assigned_by', Auth::user()->id)
                     ->paginate(10)
                     ->onEachSide(1);
@@ -266,6 +267,7 @@ class AdminTaskController extends Controller
             return to_route('admin-task.index')->with(['error' => 'Task Not Found.']);
         }
 
+        //remove if want to re upload the task
         if($task->status === 'completed'){
             return to_route('admin-task.index')->with(['error' => 'Task is already completed.']);
         }
@@ -273,7 +275,7 @@ class AdminTaskController extends Controller
         // Get the validated data
         $data = $request->validated();
 
-                 // Build the Trie with bad words
+        // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes
         $ahoCorasick = new AhoCorasick();
         foreach ($badWords as $badWord) {
@@ -371,6 +373,7 @@ class AdminTaskController extends Controller
 
             // Get the user assigned to the task (assuming there's an 'assigned_to' field)
             $assignedUser = User::find($task->assigned_to);
+            $assignedDesigner = User::find($task->layout_by);
 
             // Prepare task details for the notification
             $taskDetails = [
@@ -382,10 +385,12 @@ class AdminTaskController extends Controller
             ];
 
             // Customize the message based on the task status
-            $customMessage = 'The task content is approved.';
+            $customMessage = 'The task content has been reviewed and is officially approved. Thank you for your hardwork.';
+            $customDesignerMessage = 'The task content has been thoroughly reviewed and is approved. Please proceed to upload an image or infographics';
 
             // Send the email notification to the assigned user
             Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
+            Notification::send($assignedDesigner, new TaskAssigned($taskDetails, $customDesignerMessage));
         }
 
         //task status set to image revision status date
@@ -420,8 +425,9 @@ class AdminTaskController extends Controller
 
             // ==============send email notif ==================//
 
-            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
-            $assignedUser = User::find($task->layout_by);
+            // Get the user assigned to the task
+            $assignedDesigner = User::find($task->layout_by);
+            $assignedUser = User::find($task->assigned_to);
 
             // Prepare task details for the notification
             $taskDetails = [
@@ -436,6 +442,7 @@ class AdminTaskController extends Controller
             $customMessage = 'The task is completed and published.';
 
             // Send the email notification to the assigned user
+            Notification::send($assignedDesigner, new TaskAssigned($taskDetails, $customMessage));
             Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
         }
 
@@ -450,7 +457,7 @@ class AdminTaskController extends Controller
 
             // ==============send email notif ==================//
 
-            // Get the user assigned to the task (assuming there's an 'assigned_to' field)
+            // Get the user assigned to the task
             $assignedUser = User::find($task->layout_by);
 
             // Prepare task details for the notification

@@ -24,7 +24,7 @@ class UpdateSubmittedTaskRequest extends FormRequest
     {
         return [
             // 'title'   => ['required', 'string'],
-        'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
+            'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
             'excerpt' => ['required', 'string', 'max:500'],
             'body'    => ['required', 'string'],
             'caption' => ['required', 'string',  'max:255'],
@@ -32,7 +32,7 @@ class UpdateSubmittedTaskRequest extends FormRequest
             'content_revision_message' => ['nullable', 'string', 'required_if:status,content_revision'],
             'image_revision_message' => ['nullable', 'string', 'required_if:status,image_revision'],
 
-            'task_completed_date' => ['nullable', 'required_if:status,completed,scheduled', 'date'],
+            'task_completed_date' => ['nullable', 'required_if:status,scheduled', 'date'],
         ];
     }
 }

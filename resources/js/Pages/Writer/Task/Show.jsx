@@ -63,32 +63,33 @@ export default function Show({ auth, task, WriterBadgeCount }) {
             {/* <pre className="text-gray-900">{JSON.stringify(task, null, 2)}</pre> */}
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {task.content_revision_message && (
-                        <div
-                            className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
-                            role="alert"
-                        >
-                            <div className="flex">
-                                <div className="py-1">
-                                    <svg
-                                        className="fill-current h-6 w-6 text-red-500 mr-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p className="font-bold">
-                                        Revision Message:
-                                    </p>
-                                    <p className="text-sm">
-                                        {task.content_revision_message}
-                                    </p>
+                    {task.status === "content_revision" &&
+                        task.content_revision_message && (
+                            <div
+                                className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
+                                role="alert"
+                            >
+                                <div className="flex">
+                                    <div className="py-1">
+                                        <svg
+                                            className="fill-current h-6 w-6 text-red-500 mr-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold">
+                                            Revision Message:
+                                        </p>
+                                        <p className="text-sm">
+                                            {task.content_revision_message}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="w-full p-4 sm:p8">
                             <div className="w-full">

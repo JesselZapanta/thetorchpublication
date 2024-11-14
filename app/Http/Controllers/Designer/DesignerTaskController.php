@@ -109,15 +109,19 @@ class DesignerTaskController extends Controller
                 $data['task_image_path'] = $image->store('task', 'public');
                 $data['image_submitted_date'] = now();
                 $data['status'] = 'review';
+            } else {
+                // Keep the existing image
+                $data['task_image_path'] = $task->task_image_path;
+            }
+        
+            if($data['status'] === 'review'){
+                // ==============send email notif ==================//
 
-                 // ==============send email notif ==================//
+                    $assignedBy = User::find($task->assigned_by);
+                    $assignedTo = User::find($task->layout_by);
 
-                // Get the user assigned to the task (assuming there's an 'assigned_to' field)
-                $assignedUser = User::find($task->assigned_by);
-                $assignedTo = User::find($task->layout_by);
-
-                // Prepare task details for the notification
-                $taskDetails = [
+                    // Prepare task details for the notification
+                    $taskDetails = [
                     'task_id' => $task->id,
                     'task_name' => $task->name,
                     'assigned_by_name' => $task->assignedBy->name,
@@ -125,21 +129,16 @@ class DesignerTaskController extends Controller
                     'priority' => $task->priority,
                 ];
 
-                // Customize the message based on the task status
-                $customMessage = $assignedTo->name . ' submitted an image for the task.';
+                    // Customize the message based on the task status
+                    $customMessage = $assignedTo->name . ' submitted an image for the task.';
 
-                // Send the email notification to the assigned user
-                Notification::send($assignedUser, new TaskAssigned($taskDetails, $customMessage));
-
-            } else {
-                // Keep the existing image
-                $data['task_image_path'] = $task->task_image_path;
+                    // Send the email notification to the assigned user
+                    Notification::send($assignedBy, new TaskAssigned($taskDetails, $customMessage));
             }
-
 
         $task->update($data);
 
-        return to_route('designer-task.index')->with(['success' => 'Image Submitted Successfully']);
+        return to_route('designer-task.index')->with(['success' => 'Image submitted successfully.']);
     }
 
     

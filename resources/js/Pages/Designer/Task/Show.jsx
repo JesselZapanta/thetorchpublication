@@ -54,7 +54,7 @@ export default function Show({ auth, task, DesignerBadgeCount }) {
             {/* <pre className="text-gray-900">{JSON.stringify(task, null, 2)}</pre> */}
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {task.image_revision_message && (
+                    {task.status === 'image_revision' && task.image_revision_message && (
                         <div
                             className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                             role="alert"

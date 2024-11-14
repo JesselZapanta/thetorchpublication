@@ -68,8 +68,16 @@ class AppServiceProvider extends ServiceProvider
                 $editedCount = Article::where('status', 'edited')->count();
                 $newsletterPendingCount = Newsletter::where('status', 'pending')->where('visibility', 'visible')->count();
 
-                $pendingApprovalTaskCount = Task::where('status', 'approval')->count();
-                $reviewApprovalTaskCount = Task::where('status', 'review')->count();
+                $pendingApprovalTaskCount = Task::where('status', 'approval')
+                        ->where('visibility', 'visible') 
+                        ->where('assigned_by', Auth::user()->id)
+                        ->count();
+
+                $reviewApprovalTaskCount = Task::where('status', 'review')
+                        ->where('visibility', 'visible') 
+                                ->where('assigned_by', Auth::user()->id)
+                                ->count();
+                                
                 $totalTaskCount = $pendingApprovalTaskCount + $reviewApprovalTaskCount;
 
                 $totalArticleReportCount = Article::where('visibility', 'visible')
