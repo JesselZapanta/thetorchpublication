@@ -527,6 +527,7 @@ class AdminArticleController extends Controller
     public function calendar()
     {
         $articles = Article::where('status', operator: 'published')
+                            ->where('visibility', 'visible')
                             ->whereNotNull('published_date')
                             ->get(['id','slug','title', 'status', 'published_date']);
 
