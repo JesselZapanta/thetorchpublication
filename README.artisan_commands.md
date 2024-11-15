@@ -75,6 +75,13 @@ npm install @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
 php artisan schedule:run
 <!-- db backup -->
 php artisan database:backup
+<!--  -->
+php artisan scheduledTask
+<!--  -->
+php artisan scheduledArticles
+<!--  -->
+php artisan taskpastdue
+
 
 <!-- in server c panel -->
 
