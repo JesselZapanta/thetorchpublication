@@ -413,16 +413,20 @@ export default function CommentsSection({
                                                 </Dropdown.Link>
                                             )} */}
                                         {auth &&
-                                        (
-                                            <Dropdown.Link
-                                                onClick={(event) => {
-                                                    event.preventDefault();
-                                                    openHideModal(comment);
-                                                }}
-                                            >
-                                                Archive
-                                            </Dropdown.Link>
-                                        )}
+                                            (auth.user.id === comment.user_id ||
+                                                ![
+                                                    "student",
+                                                    "student_contributor",
+                                                ].includes(auth.user.role)) && (
+                                                <Dropdown.Link
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        openHideModal(comment);
+                                                    }}
+                                                >
+                                                    Archive
+                                                </Dropdown.Link>
+                                            )}
 
                                         {auth.user.id === comment.user_id && (
                                             <Dropdown>

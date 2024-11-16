@@ -78,7 +78,7 @@ export default function Login({ status, canResetPassword }) {
                         Dont have an Account?
                     </Link>
                 </div>
-{/* 
+
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox
@@ -92,7 +92,7 @@ export default function Login({ status, canResetPassword }) {
                             Remember me
                         </span>
                     </label>
-                </div> */}
+                </div>
 
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
