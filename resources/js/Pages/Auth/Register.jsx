@@ -48,6 +48,16 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
+            <div className="w-full rounded-lg overflow-hidden mb-4">
+                <Link href="/">
+                    <img
+                        src="/images/about.png"
+                        alt="Torch Logo"
+                        className="w-full j-full"
+                    />
+                </Link>
+            </div>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="student_id" value="Student Id" />

@@ -36,6 +36,16 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
+            <div className="w-full rounded-lg overflow-hidden mb-4">
+                <Link href="/">
+                    <img
+                        src="/images/about.png"
+                        alt="Torch Logo"
+                        className="w-full j-full"
+                    />
+                </Link>
+            </div>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
@@ -47,7 +57,6 @@ export default function Login({ status, canResetPassword }) {
                         value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
-                         
                         onChange={(e) => setData("email", e.target.value)}
                     />
 
