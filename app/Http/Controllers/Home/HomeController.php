@@ -141,12 +141,12 @@ class HomeController extends Controller
                         ->orderBy('views_count', 'asc'); 
                 break;
             case 'ratings_desc':
-                $query->withCount(['ratings as avg_ratings'])
-                    ->orderBy('avg_ratings', 'desc');
+                $query->withAvg('ratings as avg_rating', 'rating')
+                    ->orderBy('avg_rating', 'desc');
                     break;
             case 'ratings_asc':
-                $query->withCount(['ratings as avg_ratings'])
-                    ->orderBy('avg_ratings', 'asc');
+                $query->withAvg('ratings as avg_rating', 'rating')
+                    ->orderBy('avg_rating', 'asc');
                     break;
             case '30_days_desc':
                 $query->where('created_at', '>=', now()->subDays(30))
