@@ -151,7 +151,7 @@ export default function ByCategory({
                                 className="w-full"
                                 queryParams={{ sort, search }} 
                                 route={route("articles.byCategory", {
-                                    id: currentCategory.id,
+                                    slug: currentCategory.slug,
                                 })}
                             />
                         </div>
