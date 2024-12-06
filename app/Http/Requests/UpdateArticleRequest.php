@@ -41,10 +41,6 @@ class UpdateArticleRequest extends FormRequest
             'is_featured' => ['nullable', Rule::in(['no','yes',])],
             'is_anonymous' => ['nullable', Rule::in(['no','yes',])],
             'published_date' => ['nullable', 'required_if:status,published,scheduled', 'date'],
-            // 'draft'  => ['required', Rule::in(['no', 'yes'])],
         ];
-
-        //  'title' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($this->route('admin_article'))],
-        // 'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
     }
 }

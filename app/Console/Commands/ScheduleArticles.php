@@ -36,7 +36,6 @@ class ScheduleArticles extends Command
             // Update the article's status to published
             $article->update(['status' => 'published']);
 
-            // Optionally, you can add additional logic here (e.g., sending notifications)
         }
 
         $this->info('Scheduled articles have been published successfully.');

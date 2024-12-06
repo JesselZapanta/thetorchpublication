@@ -37,9 +37,9 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                             <ol className="relative ms-6 border-s border-indigo-500 dark:border-gray-700">
                                 {article.submitted_at && article.createdBy && (
                                     <li className="mb-10 ml-6">
-                                        <span className="absolute flex items-center justify-center w-10 h-10  rounded-full -start-5  border-2 border-indigo-500 ">
+                                        <span className="absolute flex items-center justify-center w10- h-10 rounded-full -start-5 border-2 border-indigo-500">
                                             <img
-                                                className="rounded-full shadow-lg"
+                                                className="w-full h-full rounded-full shadow-lg object-cover"
                                                 src={
                                                     article.createdBy
                                                         .profile_image_path
@@ -47,6 +47,7 @@ export default function Timeline({ auth, article, AdminBadgeCount }) {
                                                 alt={article.createdBy.name}
                                             />
                                         </span>
+
                                         <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
                                             <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
                                                 {article.submitted_at}
