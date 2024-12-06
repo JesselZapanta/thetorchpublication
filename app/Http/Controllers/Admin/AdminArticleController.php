@@ -466,11 +466,11 @@ class AdminArticleController extends Controller
 
         $customPublishedMessage = 'Congratulations! Your article, edited by ' . $editedBy->name . ', has been successfully published. It is now live for readers to enjoy. Thank you for your hard work and contribution!';
         
-        $customEditorPublishedMessage = 'Great job! The article you edited has been successfully sceduled for publication. Thank you for your attention to detail and hard work in preparing it for publication.';
+        $customEditorScheduledMessage = 'Great job! The article you edited has been successfully sceduled for publication. Thank you for your attention to detail and hard work in preparing it for publication.';
 
         $customScheduledMessage = 'Congratulations! Your article, edited by ' . $editedBy->name . ', has been successfully scheduled for publication. Thank you for your hard work and valuable contribution!';
 
-        
+        //todo
 
         if ($admin_article->status === 'revision') {
 
@@ -490,7 +490,7 @@ class AdminArticleController extends Controller
 
         if ($admin_article->status === 'scheduled') {
 
-            Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorPublishedMessage));
+            Notification::send($editedBy, new ArticleStatus($articleDetails, $customEditorScheduledMessage));
             Notification::send($createdBy, new ArticleStatus($articleDetails, $customScheduledMessage));
 
             return to_route('admin-article.index')->with(['success'=> 'Article published succesfullly.']);
