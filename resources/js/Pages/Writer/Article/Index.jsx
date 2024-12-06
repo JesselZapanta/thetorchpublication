@@ -48,7 +48,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("student-article.index"), queryParams, {
+            router.get(route("writer-article.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
