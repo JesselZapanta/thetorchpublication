@@ -148,15 +148,20 @@ export default function Dashboard({
                                         ))}
                                     </SelectInput>
                                 )}
-                                
                             </div>
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Published Articles
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Published Articles
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Published Articles that you have
+                                                written.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.articles}
@@ -166,9 +171,15 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Unpublished Articles
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Total Unpublished Articles
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Unpublished Articles that you
+                                                have written.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.unpublishedArticles}
@@ -178,9 +189,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Views
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Total Views
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Views on your written articles.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.views}
@@ -190,9 +206,15 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Ratings
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Total Ratings
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Ratings on your written
+                                                articles.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.ratings}
@@ -203,9 +225,15 @@ export default function Dashboard({
 
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-emerald-600 font-semibold text-md">
-                                            Total Comments
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-emerald-600 font-semibold text-md">
+                                                Total Comments
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Comments on your written
+                                                articles.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.comments}
@@ -215,9 +243,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-emerald-600 font-semibold text-md">
-                                            Total Comments Like
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-emerald-600 font-semibold text-md">
+                                                Total Comments Like
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Total Comments Like.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.commentsLike}
@@ -227,9 +260,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-emerald-600 font-semibold text-md">
-                                            Total Comments Dislike
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-emerald-600 font-semibold text-md">
+                                                Total Comments Dislike
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Total Comments Dislike.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.commentsDislike}
@@ -277,9 +315,14 @@ export default function Dashboard({
 
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-blue-600 font-semibold text-md">
-                                            Total Incomplete Task
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-blue-600 font-semibold text-md">
+                                                Total Incomplete Task
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Your Incomplete Tasks.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.tasksIncomplete}
@@ -289,9 +332,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-blue-600 font-semibold text-md">
-                                            Total Completed Task
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-blue-600 font-semibold text-md">
+                                                Total Completed Task
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Your Completed Tasks.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.tasksCompeted}

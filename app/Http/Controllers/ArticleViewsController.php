@@ -37,15 +37,15 @@ class ArticleViewsController extends Controller
         }
 
         // code para 1 ra ka view per user per article
-        // $existingView = ArticleView::where('article_id', $articleId)
-        //     ->where('user_id', $user->id)
+        // $existingView = ArticleView::where('article_id', $article->id)
+        //     ->where('user_id', Auth::user()->id)
         //     ->where('academic_year_id', $activeAy->id)
         //     ->first();
 
         // if (!$existingView) {
         //     ArticleView::create([
-        //         'article_id' => $articleId,
-        //         'user_id' => $user->id,
+        //         'article_id' => $article->id,
+        //         'user_id' => $user,
         //         'academic_year_id' => $activeAy->id,
         //     ]);
         // }

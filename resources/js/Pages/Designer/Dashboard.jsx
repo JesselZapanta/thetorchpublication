@@ -157,9 +157,14 @@ export default function Dashboard({
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-2">
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Distributed Newsletter
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Total Distributed Newsletter
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Your Distributed Newsletter.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {
@@ -171,9 +176,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-amber-600 font-semibold text-md">
-                                            Total Undistributed Newsletter
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-amber-600 font-semibold text-md">
+                                                Your Undistributed Newsletter
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Undistributed Newsletter.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {
@@ -284,9 +294,14 @@ export default function Dashboard({
 
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-blue-600 font-semibold text-md">
-                                            Total Incomplete Task
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-blue-600 font-semibold text-md">
+                                                Total Incomplete Task
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Your Incomplete Tasks.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.tasksIncomplete}
@@ -296,9 +311,14 @@ export default function Dashboard({
                                 </div>
                                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                                        <h3 className="text-blue-600 font-semibold text-md">
-                                            Total Completed Task
-                                        </h3>
+                                        <div className="relative group">
+                                            <h3 className="text-blue-600 font-semibold text-md">
+                                                Total Completed Task
+                                            </h3>
+                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                                Your Completed Tasks.
+                                            </span>
+                                        </div>
                                         <p className="text-md mt-4">
                                             <span className="mr-2">
                                                 {reportData.tasksCompeted}
