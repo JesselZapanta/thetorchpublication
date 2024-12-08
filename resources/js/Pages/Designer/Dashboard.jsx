@@ -161,7 +161,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Total Distributed Newsletter
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Your Distributed Newsletter.
                                             </span>
                                         </div>
@@ -180,7 +180,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Your Undistributed Newsletter
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Undistributed Newsletter.
                                             </span>
                                         </div>
@@ -298,7 +298,7 @@ export default function Dashboard({
                                             <h3 className="text-blue-600 font-semibold text-md">
                                                 Total Incomplete Task
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Your Incomplete Tasks.
                                             </span>
                                         </div>
@@ -315,7 +315,7 @@ export default function Dashboard({
                                             <h3 className="text-blue-600 font-semibold text-md">
                                                 Total Completed Task
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Your Completed Tasks.
                                             </span>
                                         </div>

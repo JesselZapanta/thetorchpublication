@@ -17,9 +17,9 @@ class UserSeeder extends Seeder
         //
         $users = [
             [   
-                'student_id' => '000000',
+                'student_id' => '111111',
                 'username' => 'torchadmin',
-                'name' => 'torchadmin',
+                'name' => 'Torch Admin',
                 'role' => 'admin',
                 'position' => 'none',
                 'email_verified_at' => now(),
@@ -28,9 +28,9 @@ class UserSeeder extends Seeder
             ],
 
             [   
-                'student_id' => '111111',
+                'student_id' => '222222',
                 'username' => 'assistantadviser',
-                'name' => 'assistantadviser',
+                'name' => 'Torch Assistant Adviser',
                 'role' => 'admin',
                 'position' => 'none',
                 'email_verified_at' => now(),
@@ -40,19 +40,19 @@ class UserSeeder extends Seeder
 
             [   
                 'student_id' => '543189',
-                'username' => 'torcheditor',
-                'name' => 'torcheditor',
+                'username' => 'torcheditor1',
+                'name' => 'Torch Editor 1',
                 'role' => 'editor',
                 'position' => 'none',
                 'email_verified_at' => now(),
-                'email' => 'torcheditor@gmail.com',
+                'email' => 'torcheditor1@gmail.com',
                 'password' => Hash::make('1'),
             ],
 
             [   
                 'student_id' => '542369',
                 'username' => 'torcheditor2',
-                'name' => 'torcheditor2',
+                'name' => 'Torch Editor 2',
                 'role' => 'editor',
                 'position' => 'none',
                 'email_verified_at' => now(),
@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
             [   
                 'student_id' => '544369',
                 'username' => 'torcheditor3',
-                'name' => 'torcheditor3',
+                'name' => 'Torch Editor 3',
                 'role' => 'editor',
                 'position' => 'none',
                 'email_verified_at' => now(),
@@ -73,41 +73,41 @@ class UserSeeder extends Seeder
 
             [   
                 'student_id' => '595469',
-                'username' => 'torchwriter',
-                'name' => 'torchwriter',
+                'username' => 'torchwriter1',
+                'name' => 'Torch Writer 1',
                 'role' => 'writer',
                 'position' => 'none',
                 'email_verified_at' => now(),
-                'email' => 'torchwriter@gmail.com',
+                'email' => 'torchwriter1@gmail.com',
                 'password' => Hash::make('1'),
             ],
 
             [   
                 'student_id' => '546564',
-                'username' => 'torchdesigner',
-                'name' => 'torchdesigner',
+                'username' => 'torchdesigner1',
+                'name' => 'Torch Designer 1',
                 'role' => 'designer',
                 'position' => 'none',
                 'email_verified_at' => now(),
-                'email' => 'torchdesigner@gmail.com',
+                'email' => 'torchdesigner1@gmail.com',
                 'password' => Hash::make('1'),
             ],
 
             [   
                 'student_id' => '546569',
-                'username' => 'torchstudent',
-                'name' => 'torchstudent',
+                'username' => 'torchstudent1',
+                'name' => 'Torch Student 1',
                 'role' => 'student',
                 'position' => 'none',
                 'email_verified_at' => now(),
-                'email' => 'torchstudent@gmail.com',
+                'email' => 'torchstudent1@gmail.com',
                 'password' => Hash::make('1'),
             ],
 
             [   
                 'student_id' => '123369',
                 'username' => 'jesselzapanta',
-                'name' => 'jesselzapanta',
+                'name' => 'Jessel Zapanta',
                 'role' => 'student',
                 'position' => 'none',
                 'email_verified_at' => now(),

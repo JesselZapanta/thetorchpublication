@@ -77,7 +77,7 @@ export default function Dashboard({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold sm:text-xs lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Editor Dashboard
                     </h2>
                     <div className="flex gap-4">
@@ -157,7 +157,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Published Article
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Published Articles that you have
                                                 written.
                                             </span>
@@ -176,7 +176,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Total Edited Articles
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Articles that you have edited.
                                             </span>
                                         </div>
@@ -193,7 +193,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Total Views
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Views on your written articles.
                                             </span>
                                         </div>
@@ -210,7 +210,7 @@ export default function Dashboard({
                                             <h3 className="text-amber-600 font-semibold text-md">
                                                 Total Ratings
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Ratings on your written
                                                 articles.
                                             </span>
@@ -229,7 +229,7 @@ export default function Dashboard({
                                             <h3 className="text-emerald-600 font-semibold text-md">
                                                 Total Comments
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Comments on your written
                                                 articles.
                                             </span>
@@ -247,7 +247,7 @@ export default function Dashboard({
                                             <h3 className="text-emerald-600 font-semibold text-md">
                                                 Total Comments Like
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Comments Like on your written
                                                 articles.
                                             </span>
@@ -265,7 +265,7 @@ export default function Dashboard({
                                             <h3 className="text-emerald-600 font-semibold text-md">
                                                 Total Comments Dislike
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Comments Dislike on your written
                                                 articles.
                                             </span>
@@ -321,7 +321,7 @@ export default function Dashboard({
                                             <h3 className="text-emerald-600 font-semibold text-md">
                                                 Total Incomplete Tasks
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Your Incomplete Tasks.
                                             </span>
                                         </div>
@@ -338,7 +338,7 @@ export default function Dashboard({
                                             <h3 className="text-blue-600 font-semibold text-md">
                                                 Total Completed Tasks
                                             </h3>
-                                            <span className="absolute left-1/2 w-62 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-sm text-white group-hover:scale-100">
+                                            <span className="absolute left-1/2 -translate-x-1/2 scale-0 transition-all rounded bg-gray-700 p-2 text-xs text-white group-hover:scale-100">
                                                 Your completed Tasks.
                                             </span>
                                         </div>
