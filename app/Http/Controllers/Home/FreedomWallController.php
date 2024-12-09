@@ -34,6 +34,9 @@ class FreedomWallController extends Controller
 
         // Apply sorting based on the input or default
         switch ($sort) {
+            case 'my':
+                $query->where('user_id', Auth::user()->id);
+                break;
             case 'date_asc':
                 $query->orderBy('created_at', 'asc');
                 break;

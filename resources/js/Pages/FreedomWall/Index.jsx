@@ -299,7 +299,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                             onChange={handleSortChange} // Handle the change
                         >
                             {/* <option value="">Sort by</option> */}
-                            <option value="my">Date: Descending</option>
+
                             <option value="date_desc">Date: Descending</option>
                             <option value="date_asc">Date: Ascending</option>
 
@@ -317,6 +317,12 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
 
                             <option value="body_desc">Body: Z-A</option>
                             <option value="body_asc">Body: A-Z</option>
+                            {auth &&
+                                (auth.user.role === "student" ||
+                                    auth.user.role ===
+                                        "student_contributor") && (
+                                    <option value="my">My Entries</option>
+                                )}
                         </SelectInput>
 
                         <SelectInput

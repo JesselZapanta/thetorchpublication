@@ -14,7 +14,7 @@ export default defineConfig({
         host: true,
         port: 3000,
         hmr: {
-            host: "192.168.123.3",
+            host: "192.168.123.3",// dev ip
         },
     },
 });

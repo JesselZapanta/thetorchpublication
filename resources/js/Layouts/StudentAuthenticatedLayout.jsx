@@ -66,7 +66,9 @@ export default function StudentAuthenticatedLayout({
                                     Freedom Wall
                                 </NavLink>
                                 <NavLink
-                                    href={route("student-archive-article.index")}
+                                    href={route(
+                                        "student-archive-article.index"
+                                    )}
                                     active={route().current(
                                         "student-archive-article.index"
                                     )}
@@ -184,6 +186,14 @@ export default function StudentAuthenticatedLayout({
                             active={route().current("student-article.index")}
                         >
                             Articles
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("student-freedomwall.index")}
+                            active={route().current(
+                                "student-freedomwall.index"
+                            )}
+                        >
+                            Freedom Wall
                         </ResponsiveNavLink>
                     </div>
 
