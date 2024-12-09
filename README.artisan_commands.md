@@ -16,6 +16,8 @@ php artisan key:generate
 <!-- Run the system -->
 php artisan serve
 
+php artisan serve --host=192.168.123.3 --port=8000
+
 npm run dev
 
 php artisan queue:work

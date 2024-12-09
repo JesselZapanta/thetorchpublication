@@ -425,14 +425,12 @@ class AdminReviewReport extends Controller
         // $query->where(function($q) {
         //     $q->where('report_count', '>', 0)//report count is not implemented
         //         ->orWhere('visibility', 'hidden');
-        // });
+        // });  
 
         $query->where(function ($q) {
             $q->orWhere('visibility', 'hidden')
             ->where('archive_by', Auth::user()->id);
         });
-
-        
 
         // Apply sorting
         $newsletters = $query->orderBy($sortField, $sortDirection)

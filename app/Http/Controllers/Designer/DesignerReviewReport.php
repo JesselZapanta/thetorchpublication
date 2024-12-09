@@ -404,6 +404,7 @@ class DesignerReviewReport extends Controller
         // Apply sorting
         $newsletters = $query->orderBy($sortField, $sortDirection)
             ->where('visibility', 'hidden')
+            ->where('layout_by', Auth::user()->id)
             ->paginate(10)
             ->onEachSide(1);
 

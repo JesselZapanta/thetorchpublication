@@ -134,12 +134,12 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                         {/* show in large screen */}
                         <div className="hidden lg:block">
                             <div className="flex gap-2">
-                                <Link
+                                {/* <Link
                                     href={route("jobs.index")}
                                     className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
                                 >
                                     Queue
-                                </Link>
+                                </Link> */}
                                 <Link
                                     href={route("newsletter.calendar")}
                                     className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
@@ -198,14 +198,14 @@ export default function Index({ auth, newsletters, queryParams = null, flash, Ad
                                         href={route("newsletter.calendar")}
                                         className="px-4 py-2 text-nowrap bg-teal-600 text-gray-50 transition-all duration-300 rounded hover:bg-teal-700"
                                     >
-                                        Calendar
+                                        
                                     </Link>
-                                    <Link
+                                    {/* <Link
                                         href={route("jobs.index")}
                                         className="px-4 py-2 bg-yellow-600 text-gray-50 transition-all duration-300 rounded hover:bg-yellow-700"
                                     >
                                         Queue
-                                    </Link>
+                                    </Link> */}
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>

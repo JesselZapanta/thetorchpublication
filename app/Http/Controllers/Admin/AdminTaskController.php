@@ -540,7 +540,7 @@ class AdminTaskController extends Controller
             // Save the new article
             $article->save();
 
-            return to_route('admin-task.index')->with(['success' => 'The tast is completed and published.']);
+            return to_route('admin-task.index')->with(['success' => 'The task is completed.']);
         }
 
         // Check the status after update and redirect with appropriate message

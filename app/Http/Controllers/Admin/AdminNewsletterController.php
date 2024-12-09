@@ -287,6 +287,7 @@ class AdminNewsletterController extends Controller
         }
 
         $newsletter->update(['visibility' => 'hidden']);
+        $newsletter->update(['archive_by' => Auth::user()->id ]);
 
 
         return to_route('newsletter.index')->with(['success' => 'Archive Successfully']);
