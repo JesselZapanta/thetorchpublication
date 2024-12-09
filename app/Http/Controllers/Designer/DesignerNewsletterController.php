@@ -123,7 +123,6 @@ class DesignerNewsletterController extends Controller
         $data['status'] = 'pending';
         $data['academic_year_id'] = $activeAy->id;
 
-        //might add notif
 
         Newsletter::create($data);
 

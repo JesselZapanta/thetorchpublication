@@ -136,11 +136,9 @@ class StudentFreedomWallController extends Controller
         $freedomWall = FreedomWall::find($id);
         
 
-        dd($freedomWall);
+        // dd($freedomWall);
 
         $data = $request->validated();
-
-        //todo check entry limitation
 
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes

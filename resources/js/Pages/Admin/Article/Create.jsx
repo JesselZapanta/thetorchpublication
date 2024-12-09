@@ -390,6 +390,7 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                 <TextInput
                                     id="published_date"
                                     type="date"
+                                    // type="datetime-local"
                                     name="published_date"
                                     value={data.published_date}
                                     className="mt-2 block w-full"

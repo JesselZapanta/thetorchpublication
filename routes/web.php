@@ -384,7 +384,7 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
 });
 
 
-Route::middleware(['auth','userStatus'] )->group(function () {
+Route::middleware(['auth','userStatus', 'verified'] )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');  
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
