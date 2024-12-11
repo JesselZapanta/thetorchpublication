@@ -449,9 +449,9 @@ class AdminTaskController extends Controller
         //task completed date
         if($data['status'] === 'scheduled'){
 
-            // if($data['task_completed_date'] < now()){
-            //     return redirect()->back()->withErrors(['task_completed_date' => 'For scheduled status, the published/completed date must be in the future.']);
-            // }
+            if($data['task_completed_date'] < now()){
+                return redirect()->back()->withErrors(['task_completed_date' => 'For scheduled status, the published/completed date must be in the future.']);
+            }
 
             // dd($data['task_completed_date']);
 
