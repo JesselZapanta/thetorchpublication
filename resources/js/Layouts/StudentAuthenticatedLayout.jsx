@@ -195,6 +195,14 @@ export default function StudentAuthenticatedLayout({
                         >
                             Freedom Wall
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("student-archive-article.index")}
+                            active={route().current(
+                                "student-archive-article.index"
+                            )}
+                        >
+                            Archive
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
