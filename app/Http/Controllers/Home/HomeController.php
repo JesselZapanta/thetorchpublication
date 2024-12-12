@@ -66,7 +66,6 @@ class HomeController extends Controller
 
         $latestArticles = Article::orderBy('published_date', 'DESC')
                                 ->where('status', 'published')
-                                // ->where('draft', 'no')
                                 ->where('visibility', 'visible')
                                 ->whereNot('is_featured', 'yes')
                                 ->whereHas('category', function ($query) {

@@ -471,7 +471,7 @@ export default function Index({ auth, categories, freedomWallEntries, flash }) {
                         <form onSubmit={onSubmit}>
                             {/* body */}
                             <div className="mt-2 w-full">
-                                <InputLabel htmlFor="body" value="Message" />
+                                <InputLabel htmlFor="body" value="Message (500 characters)" />
 
                                 <TextAreaInput
                                     id="body"
