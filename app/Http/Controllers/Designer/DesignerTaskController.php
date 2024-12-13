@@ -41,6 +41,7 @@ class DesignerTaskController extends Controller
         }
 
         $tasks = $query->where('layout_by', $id)
+                        ->where('visibility', 'visible')
                         ->where(function ($query) {
                             $query->where('status', 'approved')
                                     ->orWhere('status', 'image_revision')

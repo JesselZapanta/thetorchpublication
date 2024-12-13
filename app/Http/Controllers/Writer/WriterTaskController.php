@@ -42,6 +42,7 @@ class WriterTaskController extends Controller
         }
 
         $tasks = $query->where('assigned_to', $id)
+                        ->where('visibility', 'visible')
                         ->orderBy($sortField, $sortDirection) 
                         ->paginate(10)
                         ->onEachSide(1);

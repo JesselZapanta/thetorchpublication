@@ -277,13 +277,24 @@ class WriterReviewReport extends Controller
         // 2. visibility is set to 'hidden'
         //this is a trial func
 
-        //todo
+       //todo add to othther
+        // $query->where(function ($q) {
+        //     $q->whereHas('reports', function ($subQuery) {
+        //         $subQuery->where('id', '>', 0); // Report count > 0
+        //         })
+        //         ->orWhere('visibility', 'hidden');
+        //     });
+
         $query->where(function ($q) {
             $q->whereHas('reports', function ($subQuery) {
                 $subQuery->where('id', '>', 0); // Report count > 0
-                })
-                ->orWhere('visibility', 'hidden');
+            })
+            ->orWhere(function ($nestedQuery) {
+                $nestedQuery->where('visibility', 'hidden')
+                            ->where('user_id', Auth::user()->id);
             });
+        });
+
 
         // Apply sorting
         $reportedFreedomWall = $query->orderBy($sortField, $sortDirection)

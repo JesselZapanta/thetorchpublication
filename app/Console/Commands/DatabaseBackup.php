@@ -34,7 +34,7 @@ class DatabaseBackup extends Command
 
         //in prod, Set the backup path to a directory / e change path 
         $backupPath = storage_path('app/backups');
-        $fileName = 'torch_db_backup_' . Carbon::now()->format('F j, Y') . '.sql';
+        $fileName = 'torch_db_backup_' . Carbon::now('Asia/Manila')->format('F j, Y') . '.sql';
 
         // Ensure the backup directory exists
         if (!file_exists($backupPath)) {

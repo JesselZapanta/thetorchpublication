@@ -116,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
                 if (Auth::check() && Auth::user()->role === 'editor') { // Check if user is an editor
                 // for article//edited by === id or null
                 $pendingArticleCount = Article::where('status', 'pending')
+                ->where('visibility', 'visible')
                 ->where(function ($query) {
                     $query->where('edited_by', auth()->id())
                         ->orWhereNull('edited_by');
@@ -126,6 +127,7 @@ class AppServiceProvider extends ServiceProvider
                 $revisionArticleCount = 0;
                 if (Auth::check()) {
                     $revisionArticleCount = Article::where('status', 'revision')
+                        ->where('visibility', 'visible')
                         ->where('edited_by', Auth::user()->id)
                         ->count();
                 }
@@ -138,10 +140,12 @@ class AppServiceProvider extends ServiceProvider
 
                 if (Auth::check()) {
                     $pendingTaskCount = Task::where('status', 'pending')
+                        ->where('visibility', 'visible')
                         ->where('assigned_to', Auth::user()->id)
                         ->count();
 
                     $revisionTaskCount = Task::where('status', 'content_revision')
+                        ->where('visibility', 'visible')
                         ->where('assigned_to', Auth::user()->id)
                         ->count();
                 }
@@ -183,6 +187,7 @@ class AppServiceProvider extends ServiceProvider
 
                 if (Auth::check()) {
                     $rejectedArticleCount = Article::where('status', 'rejected')
+                        ->where('visibility', 'visible')
                         ->where('created_by', Auth::user()->id)
                         ->count();
                 }
@@ -196,10 +201,12 @@ class AppServiceProvider extends ServiceProvider
                     $userId = Auth::user()->id;
 
                     $pendingTaskCount = Task::where('status', 'pending')
+                        ->where('visibility', 'visible')
                         ->where('assigned_to', $userId)
                         ->count();
 
                     $revisionTaskCount = Task::where('status', 'content_revision')
+                        ->where('visibility', 'visible')
                         ->where('assigned_to', $userId)
                         ->count();
                 }
@@ -243,10 +250,12 @@ class AppServiceProvider extends ServiceProvider
                     $userId = Auth::user()->id;
 
                     $pendingTaskCount = Task::where('status', 'Approved')
+                        ->where('visibility', 'visible')
                         ->where('layout_by', $userId)
                         ->count();
 
                     $revisionTaskCount = Task::where('status', 'image_revision')
+                        ->where('visibility', 'visible')
                         ->where('layout_by', $userId)
                         ->count();
                 }
@@ -306,6 +315,7 @@ class AppServiceProvider extends ServiceProvider
 
                 if (Auth::check()) {
                     $rejectedArticleCount = Article::where('status', 'rejected')
+                        ->where('visibility', 'visible')
                         ->where('created_by', Auth::user()->id)
                         ->count();
 

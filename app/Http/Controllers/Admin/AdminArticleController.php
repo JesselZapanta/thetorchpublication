@@ -392,9 +392,14 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors(['published_date' => 'For scheduled status, the published date must be in the future.']);
         }
 
-        // If the article is already published, retain the existing published date
-        if($admin_article->status === 'published'){
-            $data['published_date'] = $admin_article->published_date;
+        // If the article is already published, retain the existing published date 
+        // if($admin_article->status === 'published'){
+        //     $data['published_date'] = $admin_article->published_date;
+        // }
+
+        //if na sched una tas ge published nalng
+        if($admin_article->status === 'scheduled' && $data['status'] === 'published'){
+            $data['published_date'] = now();
         }
 
         // If the article is being published for the first time, set the published date

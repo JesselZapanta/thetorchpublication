@@ -452,6 +452,7 @@ export default function Edit({ auth, article, categories, activeAy, AdminBadgeCo
                                         }
                                         disabled={
                                             data.status !== "published" &&
+                                            data.status !== "draft" &&
                                             data.status !== "scheduled"
                                         } // Disable unless status is "published" or "scheduled"
                                     />
