@@ -90,9 +90,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home/category/{slug}', [HomeController::class, 'filterByCategory'])->name('articles.byCategory');
 Route::get('/article/{slug}/view', [HomeController::class, 'read'])->name('article.read');
 
-Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
+Route::get('/home/about-us', [HomeController::class, 'about'])->name('about-us');
 
 Route::post('/articles/{slug}/increment-views', [ArticleViewsController::class, 'incrementViews']);
+
+Route::get('/home/newsletter', [HomeController::class, 'newsletter'])->name('home.newsletter');
 
 
 //Get Ratings

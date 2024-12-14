@@ -50,6 +50,15 @@ export default function UnauthenticatedLayout({
                                     </NavLink>
                                 ))}
                                 <NavLink
+                                    href={route("home.newsletter")}
+                                    active={route().current(
+                                        "home.newsletter"
+                                    )}
+                                    className="text-nowrap"
+                                >
+                                    Newsletters
+                                </NavLink>
+                                <NavLink
                                     href={route("freedom-wall.index")}
                                     active={route().current(
                                         "freedom-wall.index"

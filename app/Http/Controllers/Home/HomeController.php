@@ -9,6 +9,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\HomeNewsletterResource;
 use App\Http\Resources\MemberResource;
+use App\Http\Resources\NewsletterResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
@@ -258,13 +259,20 @@ class HomeController extends Controller
         ]);
     }
 
-    // public function incrementViews($articleId)
-    // {
-    //     $article = Article::findOrFail($articleId);
-    //     $article->increment('views');
+    public function newsletter()
+    {
+        $categories = Category::where('status', 'active')->limit(5)->get();
 
-    //     return redirect()->route('article.read', $articleId);
-    // }
+        $query = Newsletter::where('status', 'distributed')
+                                ->where('visibility', 'visible');
+
+        $newsletters = $query->paginate(15);//adjust if needed
+
+        return inertia('Newsletter', [
+            'categories' =>  CategoryResource::collection($categories),
+            'newsletters' =>  NewsletterResource::collection($newsletters),
+        ]);
+    }
 }
 
 

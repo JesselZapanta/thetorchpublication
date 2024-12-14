@@ -60,7 +60,7 @@ export default function Welcome({
                     className="block text-start  text-2xl text-indigo-500 py-2"
                     data-aos="fade-up"
                 >
-                    The Latest
+                    The Latest Articles
                 </h5>
 
                 <div
@@ -85,7 +85,7 @@ export default function Welcome({
                     className="block text-start  text-2xl text-indigo-500 py-2"
                     data-aos="fade-up"
                 >
-                    Latest Release
+                    Latest Release Newsletters
                 </h5>
 
                 <div data-aos="fade-up">
