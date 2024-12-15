@@ -259,12 +259,28 @@ class HomeController extends Controller
         ]);
     }
 
-    public function newsletter()
+    public function newsletter(Request $request)
     {
         $categories = Category::where('status', 'active')->limit(5)->get();
 
         $query = Newsletter::where('status', 'distributed')
                                 ->where('visibility', 'visible');
+
+        $sort = $request->input('sort', 'date_desc');
+
+        switch($sort){
+            case 'date_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'date_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+        }
+
+        //Apply search filter
+        if($request->has('search') && !empty($request->search)){
+            $query->where('description', 'like', "%{$request->search}%");
+        }
 
         $newsletters = $query->paginate(15);//adjust if needed
 

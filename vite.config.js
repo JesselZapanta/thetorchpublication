@@ -10,11 +10,11 @@ export default defineConfig({
         }),
         react(),
     ],
-    server: {
-        host: true,
-        port: 3000,
-        hmr: {
-            host: "192.168.123.5", // IPv4 Address.
-        },
-    },
+    // server: {
+    //     host: true,
+    //     port: 3000,
+    //     hmr: {
+    //         host: "192.168.123.5", // IPv4 Address.
+    //     },
+    // },
 });
