@@ -193,8 +193,8 @@ class AdminArticleController extends Controller
         $data['edited_by'] = Auth::user()->id;
         $data['layout_by'] = Auth::user()->id;
         $data['published_by'] = Auth::user()->id;
-        $data['submitted_at'] = now();
-        $data['edited_at'] = now();
+        $data['submitted_at'] = now('Asia/Manila');
+        $data['edited_at'] = now('Asia/Manila');
         
         //alter fonts not recommended
         // $data['slug'] = Str::slug($request->title) . '-' . time();
@@ -399,12 +399,13 @@ class AdminArticleController extends Controller
 
         //if na sched una tas ge published nalng
         if($admin_article->status === 'scheduled' && $data['status'] === 'published'){
-            $data['published_date'] = now();
+            $data['published_date'] = now('Asia/Manila');
         }
 
         // If the article is being published for the first time, set the published date
         elseif ($data['status'] === 'published' && $admin_article->status !== 'published') {
-            $data['published_date'] = $data['published_date'] ?? now();
+            // $data['published_date'] = $data['published_date'] ?? now('Asia/Manila');
+            $data['published_date'] =  now('Asia/Manila')->format('Y-m-d H:i:s');
             $data['published_by'] = Auth::user()->id;
         }
 
@@ -414,7 +415,7 @@ class AdminArticleController extends Controller
 
 
         if($data['status'] === 'revision'){
-            $data['revision_at'] = now();
+            $data['revision_at'] = now('Asia/Manila');
             $data['revision_by'] = Auth::user()->id;
         }
 

@@ -175,7 +175,7 @@ class WriterArticleController extends Controller
 
         $image = $data['article_image_path'];
         $data['created_by'] = Auth::user()->id;
-        $data['submitted_at'] =now();
+        $data['submitted_at'] = now('Asia/Manila');
         $data['academic_year_id'] = $activeAy->id;
 
         // $data['slug'] = Str::slug($request->title) . '-' . time();
@@ -353,7 +353,7 @@ class WriterArticleController extends Controller
 
             $image = $data['article_image_path'];
             $data['created_by'] = Auth::user()->id;
-            $data['submitted_at'] =now();
+            $data['submitted_at'] = now('Asia/Manila');
 
             // $data['slug'] = Str::slug($request->title) . '-' . time();
             $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));

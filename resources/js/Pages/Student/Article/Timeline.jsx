@@ -178,7 +178,7 @@ export default function Timeline({ auth, article, StudentBadgeCount }) {
                                             </span>
                                             <div className="items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
                                                 <time className="mb-1 text-xs font-normal text-gray-400 sm:order-last sm:mb-0">
-                                                    {article.published_date}
+                                                    {article.publishedDate}
                                                 </time>
                                                 <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                                                     <span className="font-semibold text-indigo-600 dark:text-indigo-500">

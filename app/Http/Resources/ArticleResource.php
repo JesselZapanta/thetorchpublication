@@ -51,12 +51,12 @@ class ArticleResource extends JsonResource
 
             // 'published_date' => $this->published_date ? (new Carbon($this->published_date))->format('Y-m-d') : null,
 
-            'submitted_at' => $this->submitted_at ? (new Carbon ($this->submitted_at))->format('F j, Y') : null,
-            'rejected_at' => $this->rejected_at ? (new Carbon ($this->rejected_at))->format('F j, Y') : null,
-            'edited_at' => $this->edited_at ? (new Carbon ($this->edited_at))->format('F j, Y') : null,
-            'revision_at' => $this->revision_at ? (new Carbon ($this->revision_at))->format('F j, Y') : null,
+            'submitted_at' => $this->submitted_at ? (new Carbon ($this->submitted_at))->format('F j, Y g:i A') : null,
+            'rejected_at' => $this->rejected_at ? (new Carbon ($this->rejected_at))->format('F j, Y g:i A') : null,
+            'edited_at' => $this->edited_at ? (new Carbon ($this->edited_at))->format('F j, Y g:i A') : null,
+            'revision_at' => $this->revision_at ? (new Carbon ($this->revision_at))->format('F j, Y g:i A') : null,
             'published_date' => $this->published_date ? (new Carbon ($this->published_date))->format('F j, Y') : null,//for form
-            'publishedDate' => $this->published_date ? (new Carbon ($this->published_date))->format('Y-m-d') : null,
+            'publishedDate' => $this->published_date ? (new Carbon ($this->published_date))->format('F j, Y g:i A') : null,
             
             'academic_year_id' => $this->academic_year_id,
 

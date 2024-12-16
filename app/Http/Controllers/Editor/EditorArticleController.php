@@ -215,8 +215,8 @@ class EditorArticleController extends Controller
         $data['created_by'] = Auth::user()->id;
         $data['edited_by'] = Auth::user()->id;
         $data['academic_year_id'] = $activeAy->id;
-        $data['submitted_at'] =now();
-        $data['edited_at'] =now();
+        $data['submitted_at'] =now('Asia/Manila');
+        $data['edited_at'] =now('Asia/Manila');
         // $data['status'] = 'edited';
 
         // $data['slug'] = Str::slug($request->title) . '-' . time();
@@ -482,12 +482,12 @@ class EditorArticleController extends Controller
 
          //if edited put the date
         if($data['status'] === 'edited'){
-            $data['edited_at'] = now();
+            $data['edited_at'] = now('Asia/Manila');
         }
 
         //if rejected put the date
         if($data['status'] === 'rejected'){
-            $data['rejected_at'] = now();
+            $data['rejected_at'] = now('Asia/Manila');
         }
 
         // $status = $data['status'];
