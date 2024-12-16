@@ -446,13 +446,18 @@ export default function Edit({ auth, article, categories, WriterBadgeCount }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
-                                <button
-                                    type="button"
-                                    className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gary-700"
-                                    onClick={openDraftModal}
-                                >
-                                    Draft
-                                </button>
+                                {(article.status === "draft" ||
+                                    article.status === "pending" ||
+                                    article.status === "rejected") && (
+                                    <button
+                                        type="button"
+                                        className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                                        onClick={openDraftModal}
+                                    >
+                                        Draft
+                                    </button>
+                                )}
+
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
