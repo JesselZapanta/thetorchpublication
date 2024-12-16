@@ -97,6 +97,8 @@ class WriterArticleController extends Controller
     {
         $data = $request->validated();
 
+        // dd($data);
+
         // limitations
         $entriesCount = Article::where('created_by', auth()->id())
                         ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
@@ -282,6 +284,8 @@ class WriterArticleController extends Controller
     {
         // dd($request);
         $data = $request->validated();
+
+        // dd($data);
 
         // Build the Trie with bad words
         $badWords = Word::pluck('name')->toArray(); // Adjust if column name changes

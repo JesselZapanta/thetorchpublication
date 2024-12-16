@@ -92,9 +92,9 @@ class StudentArticleController extends Controller
      */
     public function store(StudentStoreArticleRequest $request)
     {
+        // dd($request);
         $data = $request->validated();
 
-        
         // limitations
         $entriesCount = Article::where('created_by', auth()->id())
                         ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
@@ -276,6 +276,7 @@ class StudentArticleController extends Controller
      */
     public function update(StudentUpdateArticleRequest $request, $id)
     {
+        // dd($request);
         $student_article = Article::find($id);
 
         $data = $request->validated();
@@ -352,7 +353,7 @@ class StudentArticleController extends Controller
 
             $image = $data['article_image_path'] ?? null;
             $data['created_by'] = Auth::user()->id;
-            $data['status'] = 'pending'; // Always set to 'pending'
+            // $data['status'] = 'pending'; // Always set to 'pending'
             // $data['slug'] = Str::slug($request->title) . '-' . time();
             $data['slug'] = Str::slug(iconv('UTF-8', 'ASCII//TRANSLIT', $request->title));
 
