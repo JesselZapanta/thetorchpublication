@@ -20,15 +20,23 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
         caption: "",
         article_image_path: "",
         is_anonymous: "",
+        status: "",
     });
 
     const onSubmit = () => {
         post(route("editor-article.store", data));
     };
     const [confirmSubmit, setConfirmSubmit] = useState(false);
+    const [confirmDraft, setConfirmDraft] = useState(false);
 
     const openSubmitModal = () => {
         setConfirmSubmit(true);
+        data.status = "edited";
+    };
+
+    const openDraftModal = () => {
+        setConfirmDraft(true);
+        data.status = "draft";
     };
 
     const handleConfirmSubmit = () => {
@@ -258,7 +266,7 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                                 </div>
 
                                 {/* Status */}
-                                <div className="mt-4 w-full">
+                                {/* <div className="mt-4 w-full">
                                     <InputLabel
                                         htmlFor="status"
                                         value="Article status"
@@ -284,7 +292,7 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                                         message={errors.status}
                                         className="mt-2"
                                     />
-                                </div>
+                                </div> */}
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
@@ -292,6 +300,13 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gary-700"
+                                    onClick={openDraftModal}
+                                >
+                                    Draft
+                                </button>
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
@@ -324,6 +339,28 @@ export default function Create({ auth, categories, EditorBadgeCount }) {
                             disabled={processing}
                         >
                             {processing ? "Processing" : "Submit"}
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+            {/* Confirm draft Modal */}
+            <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm</h2>
+                    <p className="mt-4">
+                        Are you sure you want to save this article as draft?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton onClick={() => setConfirmDraft(false)}>
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                            onClick={handleConfirmSubmit}
+                            disabled={processing}
+                        >
+                            {processing ? "Processing" : "Save as Draft"}
                         </button>
                     </div>
                 </div>

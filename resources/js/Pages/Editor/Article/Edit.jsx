@@ -16,11 +16,11 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
         title: article.title || "",
         excerpt: article.excerpt || "",
         body: article.body || "",
-        status: article.status || "",
         rejection_message: article.rejection_message || "",
         caption: article.caption || "",
         article_image_path: "",
         is_anonymous: article.is_anonymous || "",
+        status: article.status || "",
         _method: "PUT",
     });
 
@@ -29,9 +29,15 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
+    const [confirmDraft, setConfirmDraft] = useState(false);
 
     const openUpdateModal = () => {
         setConfirmUpdate(true);
+    };
+
+    const openDraftModal = () => {
+        setConfirmDraft(true);
+        data.status = "draft";
     };
 
     const handleConfirmUpdate = () => {
@@ -57,7 +63,7 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     {article.status === "pending" &&
-                        (article.rejection_message && (
+                        article.rejection_message && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
@@ -82,7 +88,7 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )}
 
                     {article.status == "revision" && (
                         <div
@@ -348,12 +354,12 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                                             <option value="">
                                                 Select a status
                                             </option>
-                                            {auth.user.id ===
+                                            {/* {auth.user.id ===
                                                 article.createdBy.id && (
                                                 <option value="draft">
                                                     Save as Draft
                                                 </option>
-                                            )}
+                                            )} */}
 
                                             <option value="edited">
                                                 Edited
@@ -444,6 +450,16 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
+                                {auth.user.id === article.createdBy.id && (
+                                    <button
+                                        type="button"
+                                        className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gary-700"
+                                        onClick={openDraftModal}
+                                    >
+                                        Draft
+                                    </button>
+                                )}
+
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
@@ -475,6 +491,28 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                             onClick={handleConfirmUpdate}
                         >
                             Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm</h2>
+                    <p className="mt-4">
+                        Are you sure you want to save this article as draft?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton onClick={() => setConfirmDraft(false)}>
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                            onClick={handleConfirmUpdate}
+                            // disabled={processing}
+                        >
+                            {/* {processing ? "Processing" : "Save as Draft"} */}
+                            Save as Draft
                         </button>
                     </div>
                 </div>

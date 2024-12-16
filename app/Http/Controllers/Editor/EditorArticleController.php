@@ -132,6 +132,7 @@ class EditorArticleController extends Controller
     {
         $data = $request->validated();
 
+        // dd($data);
 
         // limitations
         $entriesCount = Article::where('created_by', auth()->id())

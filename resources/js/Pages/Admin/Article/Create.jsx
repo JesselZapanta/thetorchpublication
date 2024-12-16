@@ -15,7 +15,12 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export default function Create({ auth, categories, activeAy, AdminBadgeCount }) {
+export default function Create({
+    auth,
+    categories,
+    activeAy,
+    AdminBadgeCount,
+}) {
     const { data, setData, post, errors, processing } = useForm({
         category_id: "",
         academic_year_id: "",
@@ -39,9 +44,15 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
     };
 
     const [confirmSubmit, setConfirmSubmit] = useState(false);
+    const [confirmDraft, setConfirmDraft] = useState(false);
 
     const openSubmitModal = () => {
         setConfirmSubmit(true);
+    };
+
+    const openDraftModal = () => {
+        setConfirmDraft(true);
+        data.status = "draft";
     };
 
     const handleConfirmSubmit = () => {
@@ -450,9 +461,9 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                         }
                                     >
                                         <option value="">Select Status</option>
-                                        <option value="draft">
+                                        {/* <option value="draft">
                                             Save as Draft
-                                        </option>
+                                        </option> */}
                                         <option value="published">
                                             Published
                                         </option>
@@ -494,6 +505,13 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                                 </SecondaryButton>
                                 <button
                                     type="button"
+                                    className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gary-700"
+                                    onClick={openDraftModal}
+                                >
+                                    Draft
+                                </button>
+                                <button
+                                    type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                                     onClick={openSubmitModal}
                                 >
@@ -524,6 +542,28 @@ export default function Create({ auth, categories, activeAy, AdminBadgeCount }) 
                             disabled={processing}
                         >
                             {processing ? "Processing" : "Confirm"}
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+            {/* Confirm draft Modal */}
+            <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm</h2>
+                    <p className="mt-4">
+                        Are you sure you want to save this article as draft?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton onClick={() => setConfirmDraft(false)}>
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                            onClick={handleConfirmSubmit}
+                            disabled={processing}
+                        >
+                            {processing ? "Processing" : "Save as Draft"}
                         </button>
                     </div>
                 </div>
