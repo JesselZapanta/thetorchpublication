@@ -7,6 +7,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
 import StudentAuthenticatedLayout from "@/Layouts/StudentAuthenticatedLayout";
+import { InformationCircleIcon } from "@heroicons/react/16/solid";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -226,10 +227,22 @@ export default function Edit({ auth, article, categories, StudentBadgeCount }) {
 
                             {/* excerpt */}
                             <div className="mt-4 w-full">
-                                <InputLabel
-                                    htmlFor="excerpt"
-                                    value="Article Excerpt"
-                                />
+                                <div className="flex items-center gap-2">
+                                    <InputLabel
+                                        htmlFor="excerpt"
+                                        value="Article Excerpt"
+                                    />
+
+                                    <span className="group relative cursor-pointer">
+                                        <InformationCircleIcon className="w-6 text-indigo-600" />
+                                        {/* Icon added here */}
+                                        {/* Tooltip */}
+                                        <span className="absolute opacity-0 group-hover:opacity-100 text-sm bg-gray-700 text-white rounded px-2 py-1 w-64">
+                                            Provide a brief summary of the
+                                            article.
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <TextAreaInput
                                     id="excerpt"

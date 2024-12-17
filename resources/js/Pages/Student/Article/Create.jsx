@@ -163,7 +163,7 @@ export default function Create({ auth, categories, StudentBadgeCount }) {
                             </div>
 
                             {/* excerpt */}
-                            <div className="mt-4 w-full relative">
+                            <div className="mt-4 w-full">
                                 <div className="flex items-center gap-2">
                                     <InputLabel
                                         htmlFor="excerpt"
@@ -174,7 +174,7 @@ export default function Create({ auth, categories, StudentBadgeCount }) {
                                         <InformationCircleIcon className="w-6 text-indigo-600" />
                                         {/* Icon added here */}
                                         {/* Tooltip */}
-                                        <span className="absolute opacity-0 group-hover:opacity-100 text-sm bg-gray-700 text-white rounded px-2 py-1 w-32">
+                                        <span className="absolute opacity-0 group-hover:opacity-100 text-sm bg-gray-700 text-white rounded px-2 py-1 w-64">
                                             Provide a brief summary of the
                                             article.
                                         </span>
