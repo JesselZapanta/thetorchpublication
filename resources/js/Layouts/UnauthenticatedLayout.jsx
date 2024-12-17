@@ -51,9 +51,7 @@ export default function UnauthenticatedLayout({
                                 ))}
                                 <NavLink
                                     href={route("home.newsletter")}
-                                    active={route().current(
-                                        "home.newsletter"
-                                    )}
+                                    active={route().current("home.newsletter")}
                                     className="text-nowrap"
                                 >
                                     Newsletters
@@ -192,6 +190,13 @@ export default function UnauthenticatedLayout({
                             className="text-nowrap"
                         >
                             Freedom Wall
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("home.newsletter")}
+                            active={route().current("home.newsletter")}
+                            className="text-nowrap"
+                        >
+                            Newsletters
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route("about-us")}
