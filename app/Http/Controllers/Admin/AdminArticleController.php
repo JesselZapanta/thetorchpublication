@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Word;
 use App\Notifications\ArticleStatus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -397,9 +398,9 @@ class AdminArticleController extends Controller
         }
 
         // If the article is already published, retain the existing published date 
-        // if($admin_article->status === 'published'){
-        //     $data['published_date'] = $admin_article->published_date;
-        // }
+        if($admin_article->status === 'published'){
+            $data['published_date'] = Carbon::parse($admin_article->published_date)->format('Y-m-d H:i:s');
+        }
 
         //if na sched una tas ge published nalng
         if($admin_article->status === 'scheduled' && $data['status'] === 'published'){

@@ -40,7 +40,7 @@ class UpdateArticleRequest extends FormRequest
             'article_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
             'is_featured' => ['nullable', Rule::in(['no','yes',])],
             'is_anonymous' => ['nullable', Rule::in(['no','yes',])],
-            'published_date' => ['nullable', 'required_if:status,published,scheduled', 'date'],
+            'published_date' => ['nullable', 'required_if:status,published,scheduled'],
         ];
     }
 }
