@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'position' => 'none',
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'email_verified_at' => now('Asia/Manila'),
             'password' => Hash::make('1'),
             'remember_token' => Str::random(10),
         ];

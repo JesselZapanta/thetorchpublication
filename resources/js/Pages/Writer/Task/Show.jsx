@@ -6,12 +6,9 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextAreaInput from "@/Components/TextAreaInput";
 import CustomCKEditor from "@/Components/TextEditor/CustomCKEditor";
 import TextInput from "@/Components/TextInput";
-import {
-    TASK_PRIORITY_CLASS_MAP,
-    TASK_PRIORITY_TEXT_MAP,
-
-} from "@/constants";
+import { TASK_PRIORITY_CLASS_MAP, TASK_PRIORITY_TEXT_MAP } from "@/constants";
 import WriterAuthenticatedLayout from "@/Layouts/WriterAuthenticatedLayout";
+import { InformationCircleIcon } from "@heroicons/react/16/solid";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -25,7 +22,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
         body: task.body || "",
         content_revision_message: task.content_revision_message || "",
         caption: task.caption || "",
-        draft: task.draft || "yes",
+        draft: "",
         _method: "PUT",
     });
 
@@ -36,9 +33,16 @@ export default function Show({ auth, task, WriterBadgeCount }) {
     };
 
     const [confirmSubmit, setConfirmSubmit] = useState(false);
+    const [confirmDraft, setConfirmDraft] = useState(false);
 
     const openSubmitModal = () => {
         setConfirmSubmit(true);
+        data.draft = "no";
+    };
+
+    const openDraftModal = () => {
+        setConfirmDraft(true);
+        data.draft = "yes";
     };
 
     const handleConfirmUpdate = () => {
@@ -166,7 +170,22 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                             </div>
                             {/* excerpt */}
                             <div className="mt-4 w-full">
-                                <InputLabel htmlFor="excerpt" value="Excerpt" />
+                                <div className="flex items-center gap-2">
+                                    <InputLabel
+                                        htmlFor="excerpt"
+                                        value="Article Excerpt"
+                                    />
+
+                                    <span className="group relative cursor-pointer">
+                                        <InformationCircleIcon className="w-6 text-indigo-600" />
+                                        {/* Icon added here */}
+                                        {/* Tooltip */}
+                                        <span className="absolute opacity-0 group-hover:opacity-100 text-sm bg-gray-700 text-white rounded px-2 py-1 w-64">
+                                            Provide a brief summary of the
+                                            article.
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <TextAreaInput
                                     id="excerpt"
@@ -237,7 +256,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                                 />
                             </div>
 
-                            <div className="block mt-4">
+                            {/* <div className="block mt-4">
                                 <label className="flex items-center">
                                     <Checkbox
                                         name="draft"
@@ -253,7 +272,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                                         Save as Draft
                                     </span>
                                 </label>
-                            </div>
+                            </div> */}
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
@@ -261,6 +280,19 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                                 >
                                     Cancel
                                 </SecondaryButton>
+                                {/* Show if status is progress, pending, or content needs revision */}
+                                {(task.status === "progress" ||
+                                    task.status === "pending" ||
+                                    task.status === "approval" ||
+                                    task.status === "content_revision") && (
+                                    <button
+                                        type="button"
+                                        className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                                        onClick={openDraftModal}
+                                    >
+                                        Draft
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
@@ -292,6 +324,28 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                             onClick={handleConfirmUpdate}
                         >
                             Confirm
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+            {/* Confirm draft Modal */}
+            <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
+                <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <h2 className="text-base font-bold">Confirm</h2>
+                    <p className="mt-4">
+                        Are you sure you want to save this task as draft?
+                    </p>
+                    <div className="mt-4 flex justify-end gap-2">
+                        <SecondaryButton onClick={() => setConfirmDraft(false)}>
+                            Cancel
+                        </SecondaryButton>
+                        <button
+                            type="button"
+                            className="px-4 py-2 bg-gray-600 text-white transition-all duration-300 rounded hover:bg-gray-700"
+                            onClick={handleConfirmUpdate}
+                            // disabled={processing}
+                        >
+                            Save as Draft
                         </button>
                     </div>
                 </div>

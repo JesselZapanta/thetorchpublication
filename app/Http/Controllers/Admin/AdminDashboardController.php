@@ -30,18 +30,18 @@ class AdminDashboardController extends Controller
         // Initialize date range based on the selected period
         switch ($timePeriod) {
             case 'weekly':
-                $dateFrom = now()->subWeek();
-                $dateTo = now();
+                $dateFrom = now('Asia/Manila')->subWeek();
+                $dateTo = now('Asia/Manila');
                 break;
             case 'monthly':
                 if ($selectedMonth) {
                     // Handle specific month selection
-                    $year = now()->year;
+                    $year = now('Asia/Manila')->year;
                     $dateFrom = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
                     $dateTo = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
                 } else {
-                    $dateFrom = now()->subMonth();
-                    $dateTo = now();
+                    $dateFrom = now('Asia/Manila')->subMonth();
+                    $dateTo = now('Asia/Manila');
                 }
                 break;
             case 'ay': 
@@ -54,8 +54,8 @@ class AdminDashboardController extends Controller
                 }
                 break;
             default:
-                $dateFrom = now()->subDay();
-                $dateTo = now();
+                $dateFrom = now('Asia/Manila')->subDay();
+                $dateTo = now('Asia/Manila');
         }
 
         

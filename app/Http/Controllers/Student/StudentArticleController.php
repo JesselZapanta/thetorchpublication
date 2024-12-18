@@ -97,7 +97,7 @@ class StudentArticleController extends Controller
 
         // limitations
         $entriesCount = Article::where('created_by', auth()->id())
-                        ->where('created_at', '>=', now()->subDay()) // Check entries within the last 24 hours
+                        ->where('created_at', '>=', now('Asia/Manila')->subDay()) // Check entries within the last 24 hours
                         ->where('status', '!=', 'draft') // Exclude drafts
                         ->count();
 

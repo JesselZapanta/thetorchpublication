@@ -44,24 +44,24 @@ class TaskResource extends JsonResource
             'draft' => $this->draft,
             'visibility' => $this->visibility,
 
-            'assigned_date' => $this->assigned_date ? (new Carbon($this->assigned_date))->format('F j, Y') : null,
+            'assigned_date' => $this->assigned_date ? (new Carbon($this->assigned_date))->format('F j, Y g:i A') : null,
 
-            'content_submitted_date' => $this->content_submitted_date ? (new Carbon($this->content_submitted_date))->format('F j, Y') : null,
+            'content_submitted_date' => $this->content_submitted_date ? (new Carbon($this->content_submitted_date))->format('F j, Y g:i A') : null,
 
             'content_revision_message' => $this->content_revision_message,
-            'content_revision_date' => $this->content_revision_date ? (new Carbon($this->content_revision_date))->format('F j, Y') : null,
+            'content_revision_date' => $this->content_revision_date ? (new Carbon($this->content_revision_date))->format('F j, Y g:i A') : null,
             
-            'content_approved_date' =>  $this->content_approved_date ? (new Carbon($this->content_approved_date))->format('F j, Y') : null,
+            'content_approved_date' =>  $this->content_approved_date ? (new Carbon($this->content_approved_date))->format('F j, Y g:i A') : null,
             
-            'image_submitted_date' => $this->image_submitted_date ? (new Carbon($this->image_submitted_date))->format('F j, Y') : null,
+            'image_submitted_date' => $this->image_submitted_date ? (new Carbon($this->image_submitted_date))->format('F j, Y g:i A') : null,
 
             'image_revision_message' => $this->image_revision_message,
-            'image_revision_date' =>  $this->image_revision_date ? (new Carbon($this->image_revision_date))->format('F j, Y') : null,
+            'image_revision_date' =>  $this->image_revision_date ? (new Carbon($this->image_revision_date))->format('F j, Y g:i A') : null,
             
-            'task_completed_date' => $this->task_completed_date ? (new Carbon($this->task_completed_date))->format('F j, Y') : null,
+            'task_completed_date' => $this->task_completed_date ? (new Carbon($this->task_completed_date))->format('F j, Y g:i A') : null,
             'taskCompletedDate' => $this->task_completed_date ? (new Carbon($this->task_completed_date))->format('Y-m-d') : null,
 
-            'dueDate' => $this->due_date ? (new Carbon($this->due_date))->format('F j, Y') : null,//for table
+            'dueDate' => $this->due_date ? (new Carbon($this->due_date))->format('F j, Y g:i A') : null,//for table
             'due_date' => $this->due_date ? (new Carbon($this->due_date))->format('Y-m-d'): null,//for the form
 
             'task_image_path' => $this->task_image_path ? Storage::url($this->task_image_path) : '/images/default/article.png',

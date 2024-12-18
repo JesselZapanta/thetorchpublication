@@ -119,7 +119,7 @@ class DesignerNewsletterController extends Controller
 
 
         $data['layout_by'] = Auth::user()->id;
-        $data['submitted_at'] = now();
+        $data['submitted_at'] = now('Asia/Manila');
         $data['status'] = 'pending';
         $data['academic_year_id'] = $activeAy->id;
 

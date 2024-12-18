@@ -69,7 +69,7 @@ class AdminTaskController extends Controller
         //task nga auth-id === assigned_by ra abg nakita
         $tasks = $query->orderBy($sortField, $sortDirection)
                     ->where('visibility', 'visible')
-                    ->where('assigned_by', Auth::user()->id)
+                    // ->where('assigned_by', Auth::user()->id)
                     ->paginate(10)
                     ->onEachSide(1);
     
@@ -113,7 +113,7 @@ class AdminTaskController extends Controller
         $id = Auth::user()->id;
 
         $data['assigned_by'] = $id; // who assigns the task
-        $data['assigned_date'] = now(); // date the task is assigned
+        $data['assigned_date'] = now('Asia/Manila'); // date the task is assigned
 
         // Create the task
         $task = Task::create($data);
@@ -340,7 +340,7 @@ class AdminTaskController extends Controller
 
         // Set content_revision_date or content_approved_date based on the new status
         if($data['status'] === 'content_revision'){
-            $data['content_revision_date'] = now();
+            $data['content_revision_date'] = now('Asia/Manila');
             $data['content_approved_date'] = null;
 
             // ==============send email notif ==================//
@@ -367,7 +367,7 @@ class AdminTaskController extends Controller
 
         //task status set to approved status date
         if($data['status'] === 'approved'){
-            $data['content_approved_date'] = now();
+            $data['content_approved_date'] = now('Asia/Manila');
 
             // ==============send email notif ==================//
 
@@ -395,7 +395,7 @@ class AdminTaskController extends Controller
 
         //task status set to image revision status date
         if($data['status'] === 'image_revision'){
-            $data['image_revision_date'] = now();
+            $data['image_revision_date'] = now('Asia/Manila');
 
              // ==============send email notif ==================//
 
@@ -420,7 +420,7 @@ class AdminTaskController extends Controller
 
         //task completed date
         if($data['status'] === 'completed'){
-            $data['task_completed_date'] = now();
+            $data['task_completed_date'] = now('Asia/Manila');
 
 
             // ==============send email notif ==================//
@@ -449,7 +449,7 @@ class AdminTaskController extends Controller
         //task completed date
         if($data['status'] === 'scheduled'){
 
-            if($data['task_completed_date'] < now()){
+            if($data['task_completed_date'] < now('Asia/Manila')){
                 return redirect()->back()->withErrors(['task_completed_date' => 'For scheduled status, the published/completed date must be in the future.']);
             }
 
@@ -633,7 +633,7 @@ class AdminTaskController extends Controller
 
         //past due
 
-        if($due < now()){
+        if($due < now('Asia/Manila')){
             //to assignee
             if (in_array($taskStatus, ['pending', 'progress', 'content_revision'])) {
                 Notification::send($assignTo, new TaskReminder($taskDetails, $customOverdueMessage));

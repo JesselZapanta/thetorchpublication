@@ -108,7 +108,7 @@ class DesignerTaskController extends Controller
                 }
                 // Store the new image under the 'task/' directory
                 $data['task_image_path'] = $image->store('task', 'public');
-                $data['image_submitted_date'] = now();
+                $data['image_submitted_date'] = now('Asia/Manila');
                 $data['status'] = 'review';
             } else {
                 // Keep the existing image

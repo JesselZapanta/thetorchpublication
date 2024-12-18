@@ -144,7 +144,7 @@ class AdminNewsletterController extends Controller
         }
 
         $data['layout_by'] = Auth::user()->id;
-        $data['submitted_at'] = now();
+        $data['submitted_at'] = now('Asia/Manila');
 
         Newsletter::create($data);
 
@@ -239,12 +239,12 @@ class AdminNewsletterController extends Controller
         }
 
         if ($data['status'] === 'revision') {
-            $data['revision_at'] = now();
+            $data['revision_at'] = now('Asia/Manila');
             $data['revision_by'] = Auth::user()->id;
         }
 
         if ($data['status'] === 'approved') {
-            $data['approved_at'] = now();
+            $data['approved_at'] = now('Asia/Manila');
             $data['approved_by'] = Auth::user()->id;
         }
 
@@ -323,7 +323,7 @@ class AdminNewsletterController extends Controller
         }
 
         $newsletter->update(['status' => 'distributed']);
-        $newsletter->update(['distributed_at' => now()]);
+        $newsletter->update(['distributed_at' => now('Asia/Manila')]);
         $newsletter->update(['distributed_by' => Auth::user()->id]);
 
 

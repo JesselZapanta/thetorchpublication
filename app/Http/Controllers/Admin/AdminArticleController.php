@@ -183,8 +183,12 @@ class AdminArticleController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
-        if($data['status'] === 'scheduled' && $data['published_date'] < now()){
+        if($data['status'] === 'scheduled' && $data['published_date'] < now('Asia/Manila')){
             return redirect()->back()->withErrors(['published_date' => 'For scheduled status, the published date must be in the future.']);
+        }
+
+        if($data['status'] === 'published' && $data['published_date'] > now('Asia/Manila')){
+            return redirect()->back()->withErrors(['published_date' => 'For published status, the published date must be today or in the past.']);
         }
 
         // 
@@ -388,7 +392,7 @@ class AdminArticleController extends Controller
         $data['revision_message'] = $request->input('revision_message');
         
 
-        if($data['status'] === 'scheduled' && $data['published_date'] < now()){
+        if($data['status'] === 'scheduled' && $data['published_date'] < now('Asia/Manila')){
             return redirect()->back()->withErrors(['published_date' => 'For scheduled status, the published date must be in the future.']);
         }
 

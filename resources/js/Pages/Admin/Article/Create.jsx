@@ -528,7 +528,7 @@ export default function Create({
                                     className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                                     onClick={openSubmitModal}
                                 >
-                                    Submit
+                                    Save
                                 </button>
                             </div>
                         </form>
@@ -538,9 +538,9 @@ export default function Create({
             {/* Confirm Submit Modal */}
             <Modal show={confirmSubmit} onClose={() => setConfirmSubmit(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Submit</h2>
+                    <h2 className="text-base font-bold">Confirm save</h2>
                     <p className="mt-4">
-                        Are you sure you want to Submit this Article?
+                        Are you sure you want to save this article?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton

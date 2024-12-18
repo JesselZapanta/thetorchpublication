@@ -70,12 +70,12 @@ class AppServiceProvider extends ServiceProvider
 
                 $pendingApprovalTaskCount = Task::where('status', 'approval')
                         ->where('visibility', 'visible') 
-                        ->where('assigned_by', Auth::user()->id)
+                        // ->where('assigned_by', Auth::user()->id)
                         ->count();
 
                 $reviewApprovalTaskCount = Task::where('status', 'review')
                         ->where('visibility', 'visible') 
-                                ->where('assigned_by', Auth::user()->id)
+                                // ->where('assigned_by', Auth::user()->id)
                                 ->count();
                                 
                 $totalTaskCount = $pendingApprovalTaskCount + $reviewApprovalTaskCount;

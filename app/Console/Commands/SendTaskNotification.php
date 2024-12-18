@@ -30,7 +30,7 @@ class SendTaskNotification extends Command
     public function handle()
     {
         // Fetch all tasks that are overdue
-        $tasks = Task::where('due_date', '<', now())->get();
+        $tasks = Task::where('due_date', '<', now('Asia/Manila'))->get();
 
         // Custom overdue message
         $customOverdueMessage = 'Reminder: You have a task that is now overdue. This task was expected to be completed by the assigned due date, and it is important that it is addressed as soon as possible. Please review the task details and take the necessary steps to complete it at your earliest convenience to prevent any further delays. Your attention to this matter is highly appreciated.';

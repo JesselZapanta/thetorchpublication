@@ -149,15 +149,15 @@ class HomeController extends Controller
                     ->orderBy('avg_rating', 'asc');
                     break;
             case '30_days_desc':
-                $query->where('created_at', '>=', now()->subDays(30))
+                $query->where('created_at', '>=', now('Asia/Manila')->subDays(30))
                         ->orderBy('created_at', 'desc');
                 break;
             case '60_days_desc':
-                $query->where('created_at', '>=', now()->subDays(30))
+                $query->where('created_at', '>=', now('Asia/Manila')->subDays(30))
                         ->orderBy('created_at', 'desc');
                 break;
             case '90_days_desc':
-                $query->where('created_at', '>=', now()->subDays(30))
+                $query->where('created_at', '>=', now('Asia/Manila')->subDays(30))
                         ->orderBy('created_at', 'desc');
                 break;
         }

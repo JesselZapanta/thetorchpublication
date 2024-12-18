@@ -159,7 +159,7 @@ class WriterTaskController extends Controller
 
         if($data['draft'] === 'no'){
             $data['status'] = 'approval';
-            $data['content_submitted_date'] = now();
+            $data['content_submitted_date'] = now('Asia/Manila');
 
             // ==============send email notif ==================//
 
