@@ -11,7 +11,7 @@ Ensure the following software is installed on your system:
 - [Node.js](https://nodejs.org/en)
 
 ## Technology Stack
-- **Backend Framework**: Laravel 11
+- **Backend Framework**: Laravel 10
 - **Frontend**: ReactJS
 - **Database**: MariaDB
 
