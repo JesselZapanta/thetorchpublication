@@ -43,6 +43,7 @@ export default function Create({ auth, categories, WriterBadgeCount }) {
 
     const handleConfirmSubmit = () => {
         setConfirmSubmit(false);
+        setConfirmDraft(false);
         onSubmit();
     };
 
@@ -339,7 +340,7 @@ export default function Create({ auth, categories, WriterBadgeCount }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Submit</h2>
                     <p className="mt-4">
-                        Are you sure you want to Submit this Article?
+                        Are you sure you want to submit this article?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton
@@ -353,7 +354,7 @@ export default function Create({ auth, categories, WriterBadgeCount }) {
                             onClick={handleConfirmSubmit}
                             disabled={processing}
                         >
-                            {processing ? "Processing" : "Submit"}
+                            {processing ? "Processing" : "Confirm"}
                         </button>
                     </div>
                 </div>
@@ -361,7 +362,7 @@ export default function Create({ auth, categories, WriterBadgeCount }) {
             {/* Confirm draft Modal */}
             <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm</h2>
+                    <h2 className="text-base font-bold">Confirm save as draft</h2>
                     <p className="mt-4">
                         Are you sure you want to save this article as draft?
                     </p>
@@ -375,7 +376,7 @@ export default function Create({ auth, categories, WriterBadgeCount }) {
                             onClick={handleConfirmSubmit}
                             disabled={processing}
                         >
-                            {processing ? "Processing" : "Save as Draft"}
+                            {processing ? "Processing" : "Confirm"}
                         </button>
                     </div>
                 </div>

@@ -347,7 +347,8 @@ class WriterArticleController extends Controller
         }
 
         // Logic based on status
-        $status = $data['status'];
+        // $status = $data['status'];
+        $status = $writer_article->status;
         
         if (in_array($status, ['edited', 'revision', 'published'])) {
             // Only update the 'is_anonymous' field

@@ -490,7 +490,7 @@ export default function Edit({ auth, article, categories, EditorBadgeCount }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Update</h2>
                     <p className="mt-4">
-                        Are you sure you want to Update this Article?
+                        Are you sure you want to update this article?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton
