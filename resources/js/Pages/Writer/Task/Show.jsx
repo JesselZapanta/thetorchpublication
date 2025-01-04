@@ -47,6 +47,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
 
     const handleConfirmUpdate = () => {
         setConfirmSubmit(false);
+        setConfirmDraft(false);
         onSubmit();
     };
 
@@ -345,7 +346,7 @@ export default function Show({ auth, task, WriterBadgeCount }) {
                             onClick={handleConfirmUpdate}
                             // disabled={processing}
                         >
-                            Save as Draft
+                            Confirm
                         </button>
                     </div>
                 </div>

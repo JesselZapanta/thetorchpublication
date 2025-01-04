@@ -58,6 +58,7 @@ export default function Create({
 
     const handleConfirmSubmit = () => {
         setConfirmSubmit(false);
+        setConfirmDraft(false);
         onSubmit();
     };
 
@@ -562,7 +563,7 @@ export default function Create({
             {/* Confirm draft Modal */}
             <Modal show={confirmDraft} onClose={() => setConfirmDraft(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm</h2>
+                    <h2 className="text-base font-bold">Confirm save as draft</h2>
                     <p className="mt-4">
                         Are you sure you want to save this article as draft?
                     </p>
@@ -576,7 +577,7 @@ export default function Create({
                             onClick={handleConfirmSubmit}
                             disabled={processing}
                         >
-                            {processing ? "Processing" : "Save as Draft"}
+                            {processing ? "Processing" : "Confirm"}
                         </button>
                     </div>
                 </div>
