@@ -95,7 +95,7 @@ export default function Newsletter({ auth, categories, newsletters }) {
                         }}
                     />
                     <p className="absolute font-semibold sm:txt-md md:text-5xl text-gray-50 dark:text-gray-200 leading-tight text-justify uppercase">
-                        Newsletter
+                        Newsletters
                     </p>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center py-4 overflow-hidden gap-2">

@@ -541,9 +541,9 @@ export default function Index({
             {/* Confirm Delete Modal */}
             <Modal show={confirmDelete} onClose={() => setConfirmDelete(false)}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">Confirm Delete</h2>
+                    <h2 className="text-base font-bold">Confirm archive</h2>
                     <p className="mt-4">
-                        Are you sure you want to archive this Article?
+                        Are you sure you want to archive this article?
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

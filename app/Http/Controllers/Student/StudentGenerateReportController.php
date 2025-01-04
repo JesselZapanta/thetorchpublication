@@ -41,18 +41,18 @@ class StudentGenerateReportController extends Controller
         // Initialize date range based on the selected time period
         switch ($timePeriod) {
             case 'weekly':
-                $dateFrom = 'Asia/Manila'()->subWeek();
-                $dateTo = 'Asia/Manila'();
+                $dateFrom = now('Asia/Manila')->subWeek();
+                $dateTo = now('Asia/Manila');
                 break;
             case 'monthly':
                 if ($selectedMonth) {
                     // Handle specific month selection
-                    $year = 'Asia/Manila'()->year;
+                    $year = now('Asia/Manila')->year;
                     $dateFrom = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
                     $dateTo = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
                 } else {
-                    $dateFrom = 'Asia/Manila'()->subMonth();
-                    $dateTo = 'Asia/Manila'();
+                    $dateFrom = now('Asia/Manila')->subMonth();
+                    $dateTo = now('Asia/Manila');
                 }
                 break;
             case 'ay': 
@@ -65,8 +65,8 @@ class StudentGenerateReportController extends Controller
                 }
                 break;
             default:
-                $dateFrom = 'Asia/Manila'()->subDay();
-                $dateTo = 'Asia/Manila'();
+                $dateFrom = now('Asia/Manila')->subDay();
+                $dateTo = now('Asia/Manila');
         }
 
 
