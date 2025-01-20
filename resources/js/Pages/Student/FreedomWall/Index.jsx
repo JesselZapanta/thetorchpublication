@@ -489,7 +489,7 @@ export default function Index({
                                         : "hover:bg-emerald-700"
                                 }`}
                             >
-                                {freedomwall ? "Update" : "Create"}
+                                {freedomwall ? "Update" : "Submit"}
                             </button>
                         </div>
                     </form>
