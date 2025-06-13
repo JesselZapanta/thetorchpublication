@@ -478,3 +478,4 @@ class AdminNewsletterController extends Controller
         ]);
     }
 }
+

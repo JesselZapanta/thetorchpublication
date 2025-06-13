@@ -151,7 +151,7 @@ class AdminUserController extends Controller
         }else{
             unset($data['password']);
         }
-        
+    
         if ($image) {
             // Delete the old profile image file if a new one is uploaded
             if ($user->profile_image_path) {

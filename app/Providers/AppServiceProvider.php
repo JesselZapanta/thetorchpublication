@@ -65,7 +65,9 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share('AdminBadgeCount', function () {
             if (Auth::check() && Auth::user()->role === 'admin') { // Check if user is an admin
                 $userCount = User::count();    // Get the user count
-                $editedCount = Article::where('status', 'edited')->count();
+                $editedCount = Article::where('status', 'edited')
+                                ->where('visibility', 'visible')
+                                ->count();
                 $newsletterPendingCount = Newsletter::where('status', 'pending')->where('visibility', 'visible')->count();
 
                 $pendingApprovalTaskCount = Task::where('status', 'approval')

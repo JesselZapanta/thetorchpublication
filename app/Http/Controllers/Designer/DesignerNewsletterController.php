@@ -378,3 +378,4 @@ class DesignerNewsletterController extends Controller
 }
 
 
+

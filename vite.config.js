@@ -11,10 +11,10 @@ export default defineConfig({
         react(),
     ],
     // server: {
-    //     host: true,
+    //     host: true, // Listen on all network interfaces
     //     port: 3000,
     //     hmr: {
-    //         host: "192.168.123.5", // IPv4 Address.
+    //         host: "192.168.123.4", // Your IPv4 address
     //     },
     // },
 });

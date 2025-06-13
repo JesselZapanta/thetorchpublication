@@ -59,3 +59,5 @@ class ArticleViewsController extends Controller
         return redirect()->route('article.read', $article->slug);
     }
 }
+
+

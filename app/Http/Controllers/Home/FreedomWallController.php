@@ -246,3 +246,4 @@ class FreedomWallController extends Controller
         return to_route('freedom-wall.index')->with(['success' => 'Archive successfully.']);
     }
 }
+

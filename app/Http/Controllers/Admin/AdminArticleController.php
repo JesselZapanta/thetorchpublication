@@ -549,3 +549,4 @@ class AdminArticleController extends Controller
         ]);
     }
 }
+

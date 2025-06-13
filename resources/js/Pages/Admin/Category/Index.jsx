@@ -1,16 +1,15 @@
-import DangerButton from "@/Components/DangerButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
+import React, { useEffect, useState } from "react";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import { Head, router, useForm } from "@inertiajs/react";
 import Modal from "@/Components/Modal";
-import Pagination from "@/Components/Pagination";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
+import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
-import TextInput from "@/Components/TextInput";
-import { CATEGORY_CLASS_MAP, CATEGORY_TEXT_MAP } from "@/constants";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import DangerButton from "@/Components/DangerButton";
 
 import {
     PencilSquareIcon,
@@ -18,29 +17,25 @@ import {
     ListBulletIcon,
 } from "@heroicons/react/16/solid";
 
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { AY_CLASS_MAP, AY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import SearchInput from "@/Components/SearchInput";
 
-export default function Index({
-    auth,
-    categories,
-    queryParams = null,
-    flash,
-    AdminBadgeCount,
-}) {
+export default function Index({ auth, academicYears, queryParams = null, flash, AdminBadgeCount }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [category, setCategory] = useState(null); // For storing the category to edit/delete
+    const [academicYear, setAcademicYear] = useState(null); // For storing the academicYear to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-    const { data, setData, post, put, errors, reset, clearErrors } = useForm({
-        name: "",
-        description: "",
-        status: "",
-        category_image_path: "",
-    });
+    const { data, setData, post, put, errors, reset, clearErrors, processing } =
+        useForm({
+            code: "",
+            description: "",
+            status: "",
+            start_at: "",
+            end_at: "",
+        });
 
     // Display flash messages if they exist
     useEffect(() => {
@@ -59,7 +54,7 @@ export default function Index({
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("category.index"), queryParams, {
+            router.get(route("academic-year.index"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -76,7 +71,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("category.index"),
+                    route("academic-year.index"),
                     {},
                     {
                         preserveState: true,
@@ -84,7 +79,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("category.index"), queryParams, {
+                router.get(route("academic-year.index"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -94,7 +89,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("category.index"), queryParams, {
+        router.get(route("academic-year.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -107,57 +102,47 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("category.index"), queryParams);
+        router.get(route("academic-year.index"), queryParams);
     };
 
-    // Open modal for creating a new category
+    // Open modal for creating a new academic-year
     const openCreateModal = () => {
         reset(); // Reset the form to clear previous data
-        setCategory(null); // Clear the selected category for editing
+        setAcademicYear(null); // Clear the selected academic-year for editing
         setIsCreateModalOpen(true);
     };
 
-    // Open modal for editing an existing category
-    const openEditModal = (category) => {
-        setCategory(category);
+    // Open modal for editing an existing academic-year
+    const openEditModal = (academicYear) => {
+        setAcademicYear(academicYear);
         setData({
-            name: category.name || "",
-            description: category.description || "",
-            status: category.status || "",
-            category_image_path: "",
-            _method: "PUT",
-        }); // Set the form data with the selected category's data
+            code: academicYear.code,
+            description: academicYear.description,
+            status: academicYear.status,
+            start_at: academicYear.start_at,
+            end_at: academicYear.end_at,
+        }); // Set the form data with the selected academic-year's data
         setIsCreateModalOpen(true);
     };
-
-    const [processing, setProcessing] = useState(false); // Initialize processing state
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if (processing) {
-            return; // Prevent multiple submissions while the request is still being processed
-        }
-
-        setProcessing(true); // Set processing to true when form is submitted
-
-        if (category) {
-            // Update existing category
-            put(route("category.update", category.id), {
+        if (academicYear) {
+            // Update existing academicYear
+            put(route("academic-year.update", academicYear.id), {
                 onSuccess: () => {
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
-                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         } else {
-            // Create new category
-            post(route("category.store"), {
+            // Create new academicYear
+            post(route("academic-year.store"), {
                 onSuccess: () => {
                     setIsCreateModalOpen(false);
                     reset(); // Reset the form after successful submission
                 },
-                onFinish: () => setProcessing(false), // Set processing to false after request finishes
             });
         }
     };
@@ -168,19 +153,19 @@ export default function Index({
         clearErrors(); // Clear any validation errors
     };
 
-    // Open modal and set category to delete
-    const openDeleteModal = (category) => {
-        setCategory(category);
+    // Open modal and set academicYear to delete
+    const openDeleteModal = (academicYear) => {
+        setAcademicYear(academicYear);
         setConfirmDelete(true);
     };
 
     // Handle delete and close modal
     const handleDelete = () => {
-        if (category) {
-            router.delete(route("category.destroy", category.id));
+        if (academicYear) {
+            router.delete(route("academic-year.destroy", academicYear.id));
         }
         setConfirmDelete(false);
-        setCategory(null);
+        setAcademicYear(null);
     };
 
     return (
@@ -189,8 +174,8 @@ export default function Index({
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        List of Categories
+                    <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        Lists of Academic Years
                     </h2>
                     <div className="flex gap-4">
                         <button
@@ -203,7 +188,7 @@ export default function Index({
                 </div>
             }
         >
-            <Head title="Categories" />
+            <Head title="Academic Years" />
 
             <ToastContainer position="bottom-right" />
 
@@ -211,22 +196,38 @@ export default function Index({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-gray-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
+                            {/* <div className="w-full lg:w-[50%] gap-2">
+                                <TextInput
+                                    className="w-full"
+                                    defaultValue={queryParams.description}
+                                    placeholder="Search Academic Year"
+                                    onChange={(e) =>
+                                        searchFieldChanged(
+                                            "description",
+                                            e.target.value
+                                        )
+                                    }
+                                    onKeyPress={(e) =>
+                                        onKeyPressed("description", e)
+                                    }
+                                />
+                            </div> */}
                             <div className="w-full flex gap-2">
                                 <div className="w-full">
                                     <SearchInput
                                         className="w-full"
-                                        defaultValue={queryParams.name}
-                                        route={route("category.index")}
+                                        defaultValue={queryParams.description}
+                                        route={route("academic-year.index")}
                                         queryParams={queryParams}
-                                        placeholder="Search Category Name"
+                                        placeholder="Search Academic Year"
                                         onChange={(e) =>
                                             searchFieldChanged(
-                                                "name",
+                                                "description",
                                                 e.target.value
                                             )
                                         }
                                         onKeyPress={(e) =>
-                                            onKeyPressed("name", e)
+                                            onKeyPressed("description", e)
                                         }
                                     />
                                 </div>
@@ -251,8 +252,7 @@ export default function Index({
                             </div>
                             <div className="overflow-auto mt-2 pb-12">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    {/* Thhead with sorting */}
-                                    {/* added */}
+                                    {/* thead with sort */}
                                     <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                         <tr text-text-nowrap="true">
                                             <TableHeading
@@ -267,9 +267,8 @@ export default function Index({
                                             >
                                                 ID
                                             </TableHeading>
-                                            <th className="px-3 py-3">Image</th>
                                             <TableHeading
-                                                name="name"
+                                                name="code"
                                                 sort_field={
                                                     queryParams.sort_field
                                                 }
@@ -278,11 +277,20 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Name
+                                                Code
                                             </TableHeading>
-                                            <th className="px-3 py-3">
+                                            <TableHeading
+                                                name="description"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
                                                 Description
-                                            </th>
+                                            </TableHeading>
                                             <TableHeading
                                                 name="status"
                                                 sort_field={
@@ -295,127 +303,144 @@ export default function Index({
                                             >
                                                 Status
                                             </TableHeading>
+                                            <TableHeading
+                                                name="start_at"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                Start At
+                                            </TableHeading>
+                                            <TableHeading
+                                                name="end_at"
+                                                sort_field={
+                                                    queryParams.sort_field
+                                                }
+                                                sort_direction={
+                                                    queryParams.sort_direction
+                                                }
+                                                sortChanged={sortChanged}
+                                            >
+                                                End At
+                                            </TableHeading>
+
                                             <th className="px-3 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {categories.data.length > 0 ? (
-                                            categories.data.map((category) => (
-                                                <tr
-                                                    className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                    key={category.id}
-                                                >
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {category.id}
-                                                    </td>
-                                                    <th className="px-3 py-2 text-nowrap">
-                                                        <div className="rounded-full overflow-hidden w-10 h-10 border-2 border-indigo-500">
-                                                            {category.category_image_path && (
-                                                                <img
-                                                                    src={
-                                                                        category.category_image_path
-                                                                    }
-                                                                    className="object-cover w-full h-full"
-                                                                    alt={
-                                                                        category.category_image_path
-                                                                    }
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    </th>
-                                                    <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
-                                                        <Link
-                                                            className="text-md text-gray-900 dark:text-gray-300"
-                                                            href={route(
-                                                                "category.show",
-                                                                category.slug
-                                                            )}
-                                                        >
-                                                            {category.name}
-                                                        </Link>
-                                                    </th>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {category.description}
-                                                    </td>
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        {/* {category.status} */}
-                                                        <span
-                                                            className={
-                                                                "px-2 py-1 rounded text-white " +
-                                                                CATEGORY_CLASS_MAP[
-                                                                    category
-                                                                        .status
-                                                                ]
-                                                            }
-                                                        >
+                                        {academicYears.data.length > 0 ? (
+                                            academicYears.data.map(
+                                                (academicYear) => (
+                                                    <tr
+                                                        //added
+                                                        className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
+                                                        key={academicYear.id}
+                                                    >
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {academicYear.id}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {academicYear.code}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
                                                             {
-                                                                CATEGORY_TEXT_MAP[
-                                                                    category
-                                                                        .status
-                                                                ]
+                                                                academicYear.description
                                                             }
-                                                        </span>
-                                                    </td>
-                                                    {/* <td className="px-3 py-2 text-nowrap">
-                                                        <button
-                                                            onClick={() =>
-                                                                openEditModal(
-                                                                    category
-                                                                )
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {/* {
+                                                                academicYear.status
+                                                            } */}
+                                                            <span
+                                                                className={
+                                                                    "px-2 py-1 rounded text-white " +
+                                                                    AY_CLASS_MAP[
+                                                                        academicYear
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            >
+                                                                {
+                                                                    AY_TEXT_MAP[
+                                                                        academicYear
+                                                                            .status
+                                                                    ]
+                                                                }
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {
+                                                                academicYear.startAt
                                                             }
-                                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button
-                                                            onClick={() =>
-                                                                openDeleteModal(
-                                                                    category
-                                                                )
-                                                            }
-                                                            className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </td> */}
-                                                    <td className="px-3 py-2 text-nowrap">
-                                                        <div className="flex items-center relative">
-                                                            <DropdownAction>
-                                                                <DropdownAction.Trigger>
-                                                                    <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
-                                                                        <ListBulletIcon className="w-6" />
-                                                                    </div>
-                                                                </DropdownAction.Trigger>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            {academicYear.endAt}
+                                                        </td>
+                                                        {/* <td className="px-3 py-2 text-nowrap">
+                                                            <button
+                                                                onClick={() =>
+                                                                    openEditModal(
+                                                                        academicYear
+                                                                    )
+                                                                }
+                                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                                                            >
+                                                                Edit
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    openDeleteModal(
+                                                                        academicYear
+                                                                    )
+                                                                }
+                                                                className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </td> */}
+                                                        <td className="px-3 py-2 text-nowrap">
+                                                            <div className="flex items-center relative">
+                                                                <DropdownAction>
+                                                                    <DropdownAction.Trigger>
+                                                                        <div className="flex w-12 p-2 cursor-pointer justify-center items-center  text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700">
+                                                                            <ListBulletIcon className="w-6" />
+                                                                        </div>
+                                                                    </DropdownAction.Trigger>
 
-                                                                <DropdownAction.Content>
-                                                                    <DropdownAction.Btn
-                                                                        onClick={() =>
-                                                                            openEditModal(
-                                                                                category
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <PencilSquareIcon className="w-6 text-sky-600" />
-                                                                        Edit
-                                                                    </DropdownAction.Btn>
-                                                                    <DropdownAction.Btn
-                                                                        onClick={() =>
-                                                                            openDeleteModal(
-                                                                                category
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <TrashIcon className="w-6 text-red-600" />
-                                                                        Delete
-                                                                    </DropdownAction.Btn>
-                                                                </DropdownAction.Content>
-                                                            </DropdownAction>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))
+                                                                    <DropdownAction.Content>
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openEditModal(
+                                                                                    academicYear
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <PencilSquareIcon className="w-6 text-sky-600" />
+                                                                            Edit
+                                                                        </DropdownAction.Btn>
+                                                                        <DropdownAction.Btn
+                                                                            onClick={() =>
+                                                                                openDeleteModal(
+                                                                                    academicYear
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <TrashIcon className="w-6 text-red-600" />
+                                                                            Delete
+                                                                        </DropdownAction.Btn>
+                                                                    </DropdownAction.Content>
+                                                                </DropdownAction>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
                                         ) : (
                                             <tr>
                                                 <td
@@ -430,47 +455,52 @@ export default function Index({
                                 </table>
                             </div>
                             <Pagination
-                                links={categories.meta.links}
-                                queryParams={queryParams}
+                                links={academicYears.meta.links}
+                                // queryParams={queryParams}
                             />
                         </div>
                     </div>
                 </div>
             </div>
+
             {/* Create/Edit Modal */}
             <Modal show={isCreateModalOpen} onClose={closeCreateModal}>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">
-                        {category ? "Edit Category" : "Add New Category"}
+                        {academicYear
+                            ? "Edit Academic Year Word"
+                            : "Add New Academic Year"}
                     </h2>
 
                     <form onSubmit={onSubmit} className="mt-4">
                         {/* Code */}
-                        {/* name */}
                         <div>
-                            <InputLabel htmlFor="name" value="Category Name" />
+                            <InputLabel
+                                htmlFor="code"
+                                value="Academic Year Code"
+                            />
 
                             <TextInput
-                                id="name"
+                                id="code"
                                 type="text"
-                                name="name"
-                                value={data.name}
+                                name="code"
+                                value={data.code}
                                 className="mt-2 block w-full"
                                 onChange={(e) =>
-                                    setData("name", e.target.value)
+                                    setData("code", e.target.value)
                                 }
                             />
 
                             <InputError
-                                message={errors.name}
+                                message={errors.code}
                                 className="mt-2"
                             />
                         </div>
-                        {/* description */}
-                        <div className="mt-4">
+                        {/* Description */}
+                        <div className="mt-2 w-full">
                             <InputLabel
                                 htmlFor="description"
-                                value="Category Description"
+                                value="Academic Year Description"
                             />
 
                             <TextInput
@@ -489,8 +519,55 @@ export default function Index({
                                 className="mt-2"
                             />
                         </div>
+
+                        <div className="flex w-full justify-between gap-4">
+                            {/* Start At */}
+                            <div className="mt-2 w-full">
+                                <InputLabel
+                                    htmlFor="start_at"
+                                    value="Start At"
+                                />
+
+                                <TextInput
+                                    id="start_at"
+                                    type="date"
+                                    name="start_at"
+                                    value={data.start_at}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("start_at", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.start_at}
+                                    className="mt-2"
+                                />
+                            </div>
+                            {/* end At */}
+                            <div className="mt-2 w-full">
+                                <InputLabel htmlFor="end_at" value="End At" />
+
+                                <TextInput
+                                    id="end_at"
+                                    type="date"
+                                    name="end_at"
+                                    value={data.end_at}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("end_at", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.end_at}
+                                    className="mt-2"
+                                />
+                            </div>
+                        </div>
+
                         {/* Status */}
-                        <div className="mt-4 w-full">
+                        <div className="mt-2 w-full">
                             <InputLabel
                                 htmlFor="status"
                                 value="Category status"
@@ -515,31 +592,6 @@ export default function Index({
                                 className="mt-2"
                             />
                         </div>
-                        {/* image path */}
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="category_image_path"
-                                value="Category Image"
-                            />
-
-                            <TextInput
-                                id="category_image_path"
-                                type="file"
-                                name="category_image_path"
-                                className="mt-2 block w-full cursor-pointer"
-                                onChange={(e) =>
-                                    setData(
-                                        "category_image_path",
-                                        e.target.files[0]
-                                    )
-                                }
-                            />
-
-                            <InputError
-                                message={errors.category_image_path}
-                                className="mt-2"
-                            />
-                        </div>
 
                         <div className="mt-4 flex justify-end gap-2">
                             <SecondaryButton onClick={closeCreateModal}>
@@ -550,7 +602,7 @@ export default function Index({
                                 disabled={processing}
                                 className="px-4 py-2 bg-emerald-600 text-white transition-all duration-300 rounded hover:bg-emerald-700"
                             >
-                                {category ? "Update" : "Create"}
+                                {academicYear ? "Update" : "Create"}
                             </button> */}
                             <button
                                 type="submit"
@@ -561,7 +613,7 @@ export default function Index({
                                         : "hover:bg-emerald-700"
                                 }`}
                             >
-                                {category ? "Update" : "Create"}
+                                {academicYear ? "Update" : "Create"}
                             </button>
                         </div>
                     </form>
@@ -572,8 +624,8 @@ export default function Index({
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Delete</h2>
                     <p className="mt-4">
-                        Are you sure you want to delete "{category?.name}"
-                        Category?
+                        Are you sure you want to delete the Acedemic Year "
+                        {academicYear?.description}"?
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

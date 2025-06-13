@@ -126,3 +126,4 @@ class AdminAcademicYearController extends Controller
         return to_route('academic-year.index')->with(['success' => 'Academic Year Deleted Successfully']);
     }
 }
+

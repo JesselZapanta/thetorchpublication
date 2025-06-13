@@ -100,3 +100,4 @@ class AdminWordController extends Controller
         return to_route('word.index')->with(['success' => 'Deleted Successfully']);
     }
 }
+

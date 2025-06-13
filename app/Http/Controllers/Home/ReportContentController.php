@@ -47,3 +47,4 @@ class ReportContentController extends Controller
         return redirect()->back()->with('success', 'Content Reported Successfully');
     }
 }
+

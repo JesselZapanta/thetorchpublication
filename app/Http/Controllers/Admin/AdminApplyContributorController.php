@@ -101,3 +101,4 @@ class AdminApplyContributorController extends Controller
         return to_route('admin-contributor.index')->with(['success' => 'User was updated successfully.']);
     }
 }
+

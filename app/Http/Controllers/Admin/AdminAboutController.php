@@ -142,3 +142,4 @@ class AdminAboutController extends Controller
         return to_route('about.index')->with(['success' => 'Deleted successfully.']);
     }
 }
+

@@ -323,3 +323,4 @@ class EditorDashboardController extends Controller
         ]);
     }
 }
+

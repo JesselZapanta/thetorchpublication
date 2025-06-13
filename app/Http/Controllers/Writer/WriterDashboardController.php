@@ -324,3 +324,4 @@ class WriterDashboardController extends Controller
         ]);
     }
 }
+

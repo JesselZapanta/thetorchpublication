@@ -270,6 +270,6 @@ class AdminDashboardController extends Controller
             'academicYears' => AcademicYearResource::collection($academicYears),
         ]);
     }
-
-    
 }
+
+

@@ -65,3 +65,4 @@ class RatingController extends Controller
     }
 
 }
+

@@ -155,3 +155,4 @@ class AdminCategoryController extends Controller
         return to_route('category.index')->with(['success' => 'Deleted successfully.']);
     }
 }
+

@@ -464,3 +464,4 @@ class StudentArticleController extends Controller
         ]);
     }
 }
+

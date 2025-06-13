@@ -86,3 +86,4 @@ class FreedomWallLikeController extends Controller
         return back();
     }
 }
+
