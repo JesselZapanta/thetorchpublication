@@ -23,7 +23,7 @@ import { AY_CLASS_MAP, AY_TEXT_MAP } from "@/constants";
 import DropdownAction from "@/Components/DropdownAction";
 import SearchInput from "@/Components/SearchInput";
 
-export default function Index({ auth, academicYears, queryParams = null, flash, AdminBadgeCount }) {
+export default function Index({ auth, categories, queryParams = null, flash, AdminBadgeCount }) {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [academicYear, setAcademicYear] = useState(null); // For storing the academicYear to edit/delete
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -334,8 +334,8 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {academicYears.data.length > 0 ? (
-                                            academicYears.data.map(
+                                        {categories.data.length > 0 ? (
+                                            categories.data.map(
                                                 (academicYear) => (
                                                     <tr
                                                         //added
@@ -455,7 +455,7 @@ export default function Index({ auth, academicYears, queryParams = null, flash, 
                                 </table>
                             </div>
                             <Pagination
-                                links={academicYears.meta.links}
+                                links={categories.meta.links}
                                 // queryParams={queryParams}
                             />
                         </div>
