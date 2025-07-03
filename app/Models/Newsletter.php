@@ -10,7 +10,14 @@ class Newsletter extends Model
     use HasFactory;
 
     protected $table = 'newsletters';
-    //chag
+    //todo
+    //change the newsletter model  to 'release' or other term
+    //add category for the release [newsletter, tabloid, and folio]
+    //might change or add category to the existing category - add new column for type? [article or release]
+    //change the routes? 
+    //change other controller as well - the designer and admin role
+    //change the home page  - including the navigation
+    //add category select option (dropdown) to the release page
 
     protected $fillable = [
         'description',
