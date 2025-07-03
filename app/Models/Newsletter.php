@@ -10,6 +10,7 @@ class Newsletter extends Model
     use HasFactory;
 
     protected $table = 'newsletters';
+    //chag
 
     protected $fillable = [
         'description',
