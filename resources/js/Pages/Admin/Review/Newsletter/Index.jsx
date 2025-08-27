@@ -474,7 +474,7 @@ export default function Index({
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <a
                                                                 href={
-                                                                    newsletter.newsletter_file_path
+                                                                    newsletter.publication_file_path
                                                                 }
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 target="blank"

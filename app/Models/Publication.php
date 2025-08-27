@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Newsletter extends Model
+class Publication extends Model
 {
     use HasFactory;
 
-    protected $table = 'newsletters';
+    protected $table = 'publications';
     //todo
     //change the newsletter model  to 'release' or other term
     //add category for the release [newsletter, tabloid, and folio]
@@ -22,8 +22,9 @@ class Newsletter extends Model
     protected $fillable = [
         'description',
         'academic_year_id',//
-        'newsletter_thumbnail_image_path',
-        'newsletter_file_path',
+        'category',//
+        'publication_thumbnail_image_path',
+        'publication_file_path',
         'status',
 
         'submitted_at',

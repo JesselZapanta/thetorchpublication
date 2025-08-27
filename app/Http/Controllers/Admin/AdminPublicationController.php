@@ -8,14 +8,15 @@ use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\JobResource;
 use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\PublicationResource;
 use App\Jobs\SendNewsletterEmail;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Job;
-use App\Models\Newsletter;
-use App\Http\Requests\StoreNewsletterRequest;
-use App\Http\Requests\UpdateNewsletterRequest;
+use App\Models\Publication;
+use App\Http\Requests\StorePublicationRequest;
+use App\Http\Requests\UpdatePublicationRequest;
 use App\Models\User;
 use App\Models\Word;
 use App\Notifications\NewsletterNotification;
@@ -27,14 +28,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class AdminNewsletterController extends Controller
+class AdminPublicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = Newsletter::query();
+        $query = Publication::query();
 
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
@@ -48,17 +49,21 @@ class AdminNewsletterController extends Controller
             $query->where('status', request('status'));
         }
 
+        if(request('category')){
+            $query->where('category', request('category'));
+        }
+
         $id = Auth::user()->id;
 
 
 
-        // $newsletters = $query->where('visibility', 'visible')
+        // $publications = $query->where('visibility', 'visible')
         //     ->where(function ($query) use ($id) {
-        //         // Get all newsletters if auth user is the layout_by, regardless of status
+        //         // Get all publications if auth user is the layout_by, regardless of status
         //         $query->where('layout_by', $id);
         //     })
         //     ->orWhere(function ($query) use ($id) {
-        //         // Get all newsletters where layout_by is NOT the auth user or NULL, and status is pending or approved
+        //         // Get all publications where layout_by is NOT the auth user or NULL, and status is pending or approved
         //         $query->where(function ($subQuery) use ($id) {
         //             $subQuery->where('layout_by', '!=', $id)
         //                 ->orWhereNull('layout_by');
@@ -66,7 +71,7 @@ class AdminNewsletterController extends Controller
         //         ->whereIn('status', ['pending', 'approved', 'revision', 'distributed'])
         //         ->where('visibility', 'visible'); // Ensure visibility check here as well
         //     })
-        $newsletters = $query->where('visibility', 'visible')
+        $publications = $query->where('visibility', 'visible')
         ->where(function ($query) use ($id) {
             $query->where('layout_by', $id)
                 ->orWhere(function ($query) use ($id) {
@@ -83,8 +88,8 @@ class AdminNewsletterController extends Controller
         ->onEachSide(1);
 
         
-        return inertia('Admin/Newsletter/Index', [
-            'newsletters' => NewsletterResource::collection($newsletters),
+        return inertia('Admin/Publication/Index', [
+            'publications' => PublicationResource::collection($publications),
             'queryParams' => request()->query() ? : null,
         ]);
     }
@@ -95,7 +100,7 @@ class AdminNewsletterController extends Controller
     public function create()
     {
         $activeAy = AcademicYear::all();
-        return inertia('Admin/Newsletter/Create', [
+        return inertia('Admin/Publication/Create', [
             'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
     }
@@ -103,7 +108,7 @@ class AdminNewsletterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNewsletterRequest $request)
+    public function store(StorePublicationRequest $request)
     {
         $data = $request->validated();
 
@@ -130,52 +135,46 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
-        $image = $data['newsletter_thumbnail_image_path'];
-        $pdfFile = $data['newsletter_file_path'];
+        $image = $data['publication_thumbnail_image_path'];
+        $pdfFile = $data['publication_file_path'];
 
         if ($image) {
-            // Store the image directly under the 'newsletter-thumbnail/' directory and save its path
-            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+            // Store the image directly under the 'publication-thumbnail/' directory and save its path
+            $data['publication_thumbnail_image_path'] = $image->store('publication-thumbnail', 'public');
         }
 
         if ($pdfFile) {
-            // Store the image directly under the 'newsletter-file/' directory and save its path
-            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+            // Store the image directly under the 'publication-file/' directory and save its path
+            $data['publication_file_path'] = $pdfFile->store('publication-file', 'public');
         }
 
         $data['layout_by'] = Auth::user()->id;
         $data['submitted_at'] = now('Asia/Manila');
 
-        Newsletter::create($data);
+        Publication::create($data);
 
-        return to_route('newsletter.index')->with(['success' => 'Newsletter submitted Successfully']);
+        return to_route('publication.index')->with(['success' => 'Publication submitted Successfully']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Newsletter $newsletter)
-    {
-        
-    }
 
     public function timeLine($id)
     {
-        $newsletter = Newsletter::find($id);
+        $publication = Publication::find($id);
 
-        return inertia('Admin/Newsletter/Timeline', [
-            'newsletter' => new NewsletterResource($newsletter),
+        return inertia('Admin/Publication/Timeline', [
+            'publication' => new PublicationResource($publication),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Newsletter $newsletter)
+    public function edit($id)
     {
+        $publication = Publication::findOrFail($id);
         $activeAy = AcademicYear::all();
-        return inertia('Admin/Newsletter/Edit', [
-            'newsletter' => new NewsletterResource($newsletter),
+        return inertia('Admin/Publication/Edit', [
+            'publication' => new PublicationResource($publication),
             'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
     }
@@ -183,7 +182,7 @@ class AdminNewsletterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNewsletterRequest $request, Newsletter $newsletter)
+    public function update(UpdatePublicationRequest $request, Publication $publication)
     {
         $data = $request->validated();
 
@@ -210,32 +209,32 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
-        // dd($data['newsletter_file_path']);
-        $image = $data['newsletter_thumbnail_image_path'];
-        $pdfFile = $data['newsletter_file_path'];
+        // dd($data['publication_file_path']);
+        $image = $data['publication_thumbnail_image_path'];
+        $pdfFile = $data['publication_file_path'];
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
-            if ($newsletter->newsletter_thumbnail_image_path) {
-                Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+            if ($publication->publication_thumbnail_image_path) {
+                Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
             }
-            // Store the new image directly under the 'newsletter/' directory
-            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+            // Store the new image directly under the 'publication/' directory
+            $data['publication_thumbnail_image_path'] = $image->store('publication-thumbnail', 'public');
         } else {
             // If no new image is uploaded, keep the existing image
-            $data['newsletter_thumbnail_image_path'] = $newsletter->newsletter_thumbnail_image_path;
+            $data['publication_thumbnail_image_path'] = $publication->publication_thumbnail_image_path;
         }
 
         if ($pdfFile) {
             // Delete the old pdfFile file if a new one is uploaded
-            if ($newsletter->newsletter_file_path) {
-                Storage::disk('public')->delete($newsletter->newsletter_file_path);
+            if ($publication->publication_file_path) {
+                Storage::disk('public')->delete($publication->publication_file_path);
             }
-            // Store the new pdfFile directly under the 'newsletter/' directory
-            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+            // Store the new pdfFile directly under the 'publication/' directory
+            $data['publication_file_path'] = $pdfFile->store('publication-file', 'public');
         } else {
             // If no new pdfFile is uploaded, keep the existing pdfFile
-            $data['newsletter_file_path'] = $newsletter->newsletter_file_path;
+            $data['publication_file_path'] = $publication->publication_file_path;
         }
 
         if ($data['status'] === 'revision') {
@@ -249,63 +248,63 @@ class AdminNewsletterController extends Controller
         }
 
 
-        $newsletter->update($data);
+        $publication->update($data);
 
         if ($data['status'] === 'revision') {
-            return to_route('newsletter.index')->with(['access' => 'Newsletter needed revision.']);
+            return to_route('publication.index')->with(['access' => 'Publication needed revision.']);
         }
 
         if ($data['status'] === 'approved') {
-            return to_route('newsletter.index')->with(['access' => 'Newsletter approved successfully.']);
+            return to_route('publication.index')->with(['access' => 'Publication approved successfully.']);
         }
 
-        return to_route('newsletter.index')->with(['success' => 'Newsletter Updated Successfully']);
+        return to_route('publication.index')->with(['success' => 'Publication Updated Successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Newsletter $newsletter)
+    public function destroy(Publication $publication)
     {
-        // $newsletter->delete();
+        // $publication->delete();
 
-        // if ($newsletter->newsletter_thumbnail_image_path) {
+        // if ($publication->publication_thumbnail_image_path) {
         //     // Delete the specific old image file
-        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        //     Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
         // }
 
-        // if ($newsletter->newsletter_thumbnail_image_path) {
+        // if ($publication->publication_thumbnail_image_path) {
         //     // Delete the specific old  file
-        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        //     Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
         // }
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->update(['visibility' => 'hidden']);
-        $newsletter->update(['archive_by' => Auth::user()->id ]);
+        $publication->update(['visibility' => 'hidden']);
+        $publication->update(['archive_by' => Auth::user()->id ]);
 
 
-        return to_route('newsletter.index')->with(['success' => 'Archive Successfully']);
+        return to_route('publication.index')->with(['success' => 'Archive Successfully']);
     }
 
     public function distributeIndex($id)
     {
-        $newsletter = Newsletter::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        if(!$newsletter){
-            return to_route('newsletter.index')->with(['error' => 'Article not Found']);
+        if(!$publication){
+            return to_route('publication.index')->with(['error' => 'Publication not Found']);
         }
 
-        return inertia('Admin/Newsletter/Distribute', [
-            'newsletter' => new NewsletterResource($newsletter),
+        return inertia('Admin/Publication/Distribute', [
+            'publication' => new PublicationResource($publication),
         ]);
     }
 
-    public function distributeNewsletter(Request $request, Newsletter $newsletter)
+    public function distributeNewsletter(Request $request, Publication $publication)
     {
-        // dd($newsletter);
+        // dd($publication);
         // Validate the message and password
         $request->validate([
             'message' => 'required|string',
@@ -317,14 +316,14 @@ class AdminNewsletterController extends Controller
             return redirect()->back()->withErrors(['password' => 'Incorrect password.']);
         }
 
-        // Check if the newsletter status is approved
-        if ($newsletter->status !== 'approved' && $newsletter->status !== 'distributed') {
-            return to_route('newsletter.index')->with(['error' => 'Newsletter has not been approved for distribution.']);
+        // Check if the publication status is approved
+        if ($publication->status !== 'approved' && $publication->status !== 'distributed') {
+            return to_route('publication.index')->with(['error' => 'Publication has not been approved for distribution.']);
         }
 
-        $newsletter->update(['status' => 'distributed']);
-        $newsletter->update(['distributed_at' => now('Asia/Manila')]);
-        $newsletter->update(['distributed_by' => Auth::user()->id]);
+        $publication->update(['status' => 'distributed']);
+        $publication->update(['distributed_at' => now('Asia/Manila')]);
+        $publication->update(['distributed_by' => Auth::user()->id]);
 
 
         //old version
@@ -333,25 +332,26 @@ class AdminNewsletterController extends Controller
 
         // // Queue each email
         // foreach ($users as $email) {
-        //     SendNewsletterEmail::dispatch($email, $newsletter, $request->message);
+        //     SendNewsletterEmail::dispatch($email, $publication, $request->message);
         // }
 
         //new version
 
         $customMessage = $request->message;
 
-        $newsletterDetails = [
-            'id' => $newsletter->id,
-            'description' => $newsletter->description, 
-            'newsletter_file_path' => $newsletter->newsletter_file_path, 
+        $publicationDetails = [
+            'id' => $publication->id,
+            'category' => $publication->category, 
+            'description' => $publication->description, 
+            'publication_file_path' => $publication->publication_file_path, 
         ];
 
 
         $users = User::whereNotNull('email_verified_at')->get();
 
-        Notification::send($users, new NewsletterNotification($newsletterDetails, $customMessage));
+        Notification::send($users, new NewsletterNotification($publicationDetails, $customMessage));
 
-        return to_route('newsletter.index')->with(['success' => 'Newsletter queued successfully. Distribution will begin shortly.']);
+        return to_route('publication.index')->with(['success' => 'Publication queued successfully. Distribution will begin shortly.']);
     }
 
     public function jobIndex()
@@ -360,7 +360,7 @@ class AdminNewsletterController extends Controller
         $query = Job::query();
         $jobs = $query->orderBy('id', 'asc')->paginate(10)->onEachSide(1);
         // dd($jobs);
-        return inertia('Admin/Newsletter/Jobs', [
+        return inertia('Admin/Publication/Jobs', [
             'jobs' => JobResource::collection($jobs),
         ]);
     }
@@ -410,7 +410,7 @@ class AdminNewsletterController extends Controller
                         ->paginate(10)
                         ->onEachSide(1);
 
-        return inertia('Admin/Newsletter/Article', [
+        return inertia('Admin/Publication/Article', [
             'articles' => ArticleResource::collection($articles),
             'categories' => CategoryResource::collection($categories),
             'academicYears' => AcademicYearResource::collection($academicYears),
@@ -430,10 +430,10 @@ class AdminNewsletterController extends Controller
                     ->firstOrFail();
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
-        return inertia('Admin/Newsletter/Show', [
+        return inertia('Admin/Publication/Show', [
             'article' => new ArticleResource($article),
         ]);
     }
@@ -444,37 +444,37 @@ class AdminNewsletterController extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
         $article->update(['is_newsletter' => 'yes']);
 
-        return to_route('newsletter.articles')->with(['success' => 'Article is added to Newsletter']);
+        return to_route('publication.articles')->with(['success' => 'Article is added to Publication']);
     }
     public function removeArticle($id)
     {
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
         $article->update(['is_newsletter' => 'no']);
 
-        return to_route('newsletter.articles')->with(['success' => 'Article is remove to Newsletter']);
+        return to_route('publication.articles')->with(['success' => 'Article is remove to Publication']);
     }
 
     public function calendar()
     {
-        $newsletters = Newsletter::where('status', 'distributed')
+        $publications = Publication::where('status', 'distributed')
                             ->where('visibility', 'visible')
                             ->whereNotNull('distributed_at')
                             ->get(['id','description', 'distributed_at' ,'status',]);
 
-        // dd($newsletters);
-        // Render the calendar page with newsletter passed as props
-        return inertia('Admin/Newsletter/MyCalendar', [
-            'newsletters' => $newsletters,
+        // dd($publications);
+        // Render the calendar page with publication passed as props
+        return inertia('Admin/Publication/MyCalendar', [
+            'publications' => $publications,
         ]);
     }
 }

@@ -12,7 +12,7 @@ use App\Models\Comment;
 use App\Models\CommentLike;
 use App\Models\FreedomWall;
 use App\Models\FreedomWallLike;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Rating;
 use App\Models\Task;
 use Auth;

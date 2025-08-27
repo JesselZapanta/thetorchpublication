@@ -199,7 +199,7 @@
                                             {{ $messages }}
                                         </p>
                                         <div class="action" style="text-align: center;">
-                                            <a href="{{ 'http://127.0.0.1:8000/storage/' . $newsletter->newsletter_file_path }}" style="color: white" class="button" download>Click here to download the PDF</a>
+                                            <a href="{{ 'http://127.0.0.1:8000/storage/' . $newsletter->publication_file_path }}" style="color: white" class="button" download>Click here to download the PDF</a>
                                         </div>
                                         <p style="font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
                                             Regards,<br>The-Torch-Publication

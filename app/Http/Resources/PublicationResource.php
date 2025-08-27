@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
-class NewsletterResource extends JsonResource
+class PublicationResource extends JsonResource
 {
     public static $wrap = false;
     /**

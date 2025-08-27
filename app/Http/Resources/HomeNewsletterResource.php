@@ -21,8 +21,8 @@ class HomeNewsletterResource extends JsonResource
             'id' => $this->id,
             'academic_year_id' => $this->academic_year_id,
             'description' => $this->description,
-            'newsletter_thumbnail_image_path' => $this->newsletter_thumbnail_image_path ? Storage::url($this->newsletter_thumbnail_image_path) : '/images/default/newsletter.jpg',
-            'newsletter_file_path' => $this->newsletter_file_path ? Storage::url($this->newsletter_file_path) : '',
+            'publication_thumbnail_image_path' => $this->publication_thumbnail_image_path ? Storage::url($this->publication_thumbnail_image_path) : '/images/default/newsletter.jpg',
+            'publication_file_path' => $this->publication_file_path ? Storage::url($this->publication_file_path) : '',
             // 'status' => $this->status,
     
             // 'submitted_at' => $this->submitted_at ? (new Carbon($this->submitted_at))->format('F j, Y') : null,//Y-m-d

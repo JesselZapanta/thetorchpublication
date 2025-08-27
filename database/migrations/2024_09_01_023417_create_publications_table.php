@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('newsletters', function (Blueprint $table) {
+        Schema::create('publications', function (Blueprint $table) {
             $table->id();
             $table->string('description');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
-            $table->string('newsletter_thumbnail_image_path');
-            $table->string('newsletter_file_path');
+            $table->string('category')->nullable();//new
+            $table->string('publication_thumbnail_image_path');
+            $table->string('publication_file_path');
             $table->string('status')->default('pending');
 
             $table->timestamp('submitted_at')->nullable();//new
@@ -47,6 +48,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('newsletters');
+        Schema::dropIfExists('publications');
     }
 };

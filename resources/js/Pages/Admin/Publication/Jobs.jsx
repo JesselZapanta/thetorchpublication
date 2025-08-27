@@ -21,7 +21,7 @@ export default function Jobs({ jobs, auth, queryParams, AdminBadgeCount }) {
                         Queue
                     </h2>
                     <div className="flex gap-4">
-                        <SecondaryButton href={route("newsletter.index")}>
+                        <SecondaryButton href={route("publication.index")}>
                             Back
                         </SecondaryButton>
                     </div>

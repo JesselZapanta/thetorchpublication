@@ -46,9 +46,9 @@ export default function NewsletterCard({ newsletter }) {
             </pre> */}
             <div data-aos="fade-up">
                 <div className="overflow-hidden rounded-xl h-96 shadow-lg">
-                    <a href={newsletter.newsletter_file_path} target="blank">
+                    <a href={newsletter.publication_file_path} target="blank">
                         <img
-                            src={newsletter.newsletter_thumbnail_image_path}
+                            src={newsletter.publication_thumbnail_image_path}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                                 e.target.onerror = null;

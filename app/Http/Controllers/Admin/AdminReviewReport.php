@@ -11,7 +11,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\FreedomWall;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Task;
 use Auth;
 use Illuminate\Http\Request;
@@ -411,7 +411,7 @@ class AdminReviewReport extends Controller
     public function newsletter()
     {   
 
-        $query = Newsletter::query();
+        $query = Publication::query();
 
         $sortField = request('sort_field', 'id');
         $sortDirection = request('sort_direction', 'desc');
@@ -451,7 +451,7 @@ class AdminReviewReport extends Controller
     public function hideNewsletter($id)
     {
         // dd($id);
-        $newsletter = Newsletter::findOrFail($id);
+        $newsletter = Publication::findOrFail($id);
 
         if(!$newsletter){
             return back()->with('error', 'Newsletter not found.');
@@ -466,7 +466,7 @@ class AdminReviewReport extends Controller
     public function restoreNewsletter($id)
     {
         // dd('dksa;l');
-        $newsletter = Newsletter::findOrFail($id);
+        $newsletter = Publication::findOrFail($id);
 
         if(!$newsletter){
             return back()->with('error', 'Newsletter not found.');
@@ -480,7 +480,7 @@ class AdminReviewReport extends Controller
 
     public function rejectNewsletterReport($id)
     {
-        $newsletter = Newsletter::findOrFail($id);
+        $newsletter = Publication::findOrFail($id);
 
         if(!$newsletter){
             return back()->with('error', 'Newsletter not found.');
@@ -495,7 +495,7 @@ class AdminReviewReport extends Controller
     public function destroyNewsletter($id)
     {
         // dd($id);
-        $newsletter = Newsletter::findOrFail($id);
+        $newsletter = Publication::findOrFail($id);
 
         if(!$newsletter){
             return back()->with('error', 'Newsletter not found.');
@@ -503,14 +503,14 @@ class AdminReviewReport extends Controller
 
         $newsletter->delete();
 
-        if ($newsletter->newsletter_thumbnail_image_path) {
+        if ($newsletter->publication_thumbnail_image_path) {
             // Delete the specific old image file
-            Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+            Storage::disk('public')->delete($newsletter->publication_thumbnail_image_path);
         }
 
-        if ($newsletter->newsletter_file_path) {
+        if ($newsletter->publication_file_path) {
             // Delete the specific old  file
-            Storage::disk('public')->delete($newsletter->newsletter_file_path);
+            Storage::disk('public')->delete($newsletter->publication_file_path);
         }   
         return to_route('admin-review-report-newsletter.index')->with(['success' => 'Delete successfully.']);
     }

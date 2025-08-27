@@ -125,7 +125,7 @@ export default function Index({ auth, article, DesignerBadgeCount }) {
                             </div>
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("designer-newsletter.articles")}
+                                    href={route("designer-publication.articles")}
                                 >
                                     Back
                                 </SecondaryButton>

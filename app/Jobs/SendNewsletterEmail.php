@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\NewsletterMail;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

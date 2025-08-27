@@ -3,31 +3,31 @@
 namespace App\Http\Controllers\Designer;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Designer\DesignerStoreNewsletterRequest;
-use App\Http\Requests\Designer\DesignerUpdateNewsletterRequest;
+use App\Http\Requests\Designer\DesignerStorePublicationRequest;
+use App\Http\Requests\Designer\DesignerUpdatePublicationRequest;
 use App\Http\Requests\StoreNewsletterRequest;
 use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
-use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\PublicationResource;
 use App\Models\AcademicYear;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Word;
 use App\Utilities\AhoCorasick;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class DesignerNewsletterController extends Controller
+class DesignerPublicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = Newsletter::query();
+        $query = Publication::query();
 
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
@@ -41,16 +41,21 @@ class DesignerNewsletterController extends Controller
             $query->where('status', request('status'));
         }
 
+        if(request('category')){
+            $query->where('category', request('category'));
+        }
+
+
         $id = Auth::user()->id;
 
-        $newsletters = $query->orderBy($sortField, $sortDirection)
+        $publications = $query->orderBy($sortField, $sortDirection)
                                 ->where('visibility', 'visible')
                                 ->where('layout_by', $id)
                                 ->paginate(10)
                                 ->onEachSide(1);
 
-        return inertia('Designer/Newsletter/Index', [
-            'newsletters' => NewsletterResource::collection($newsletters),
+        return inertia('Designer/Publication/Index', [
+            'publications' => PublicationResource::collection($publications),
             'queryParams' => request()->query() ? : null,
         ]);
     }
@@ -61,7 +66,7 @@ class DesignerNewsletterController extends Controller
     public function create()
     {
         $activeAy = AcademicYear::all();
-        return inertia('Designer/Newsletter/Create', [
+        return inertia('Designer/Publication/Create', [
             'activeAy' => AcademicYearResource::collection($activeAy),
         ]);
     }
@@ -69,7 +74,7 @@ class DesignerNewsletterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DesignerStoreNewsletterRequest $request)
+    public function store(DesignerStorePublicationRequest $request)
     {
         // dd($request);
         $data = $request->validated();
@@ -98,17 +103,17 @@ class DesignerNewsletterController extends Controller
         }
 
 
-        $image = $data['newsletter_thumbnail_image_path'];
-        $pdfFile = $data['newsletter_file_path'];
+        $image = $data['publication_thumbnail_image_path'];
+        $pdfFile = $data['publication_file_path'];
 
         if ($image) {
-            // Store the image directly under the 'newsletter-thumbnail/' directory and save its path
-            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+            // Store the image directly under the 'publication-thumbnail/' directory and save its path
+            $data['publication_thumbnail_image_path'] = $image->store('publication-thumbnail', 'public');
         }
 
         if ($pdfFile) {
-            // Store the image directly under the 'newsletter-file/' directory and save its path
-            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+            // Store the image directly under the 'publication-file/' directory and save its path
+            $data['publication_file_path'] = $pdfFile->store('publication-file', 'public');
         }
 
         $activeAy = AcademicYear::where('status', 'active')->first();
@@ -124,26 +129,18 @@ class DesignerNewsletterController extends Controller
         $data['academic_year_id'] = $activeAy->id;
 
 
-        Newsletter::create($data);
+        Publication::create($data);
 
-        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter submitted successfully.']);
+        return to_route('designer-publication.index')->with(['success' => 'Publication submitted successfully.']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    
     public function timeLine($id)
     {
-        $newsletter = Newsletter::find($id);
+        $publication = Publication::find($id);
 
-        return inertia('Designer/Newsletter/Timeline', [
-            'newsletter' => new NewsletterResource($newsletter),
+        return inertia('Designer/Publication/Timeline', [
+            'publication' => new PublicationResource($publication),
         ]);
     }
 
@@ -151,17 +148,17 @@ class DesignerNewsletterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Newsletter $designer_newsletter)
+    public function edit(Publication $designer_publication)
     {
-        return inertia('Designer/Newsletter/Edit', [
-            'newsletter' => new NewsletterResource($designer_newsletter)
+        return inertia('Designer/Publication/Edit', [
+            'publication' => new PublicationResource($designer_publication)
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DesignerUpdateNewsletterRequest $request, Newsletter $designer_newsletter)
+    public function update(DesignerUpdatePublicationRequest $request, Publication $designer_publication)
     {
         $data = $request->validated();
 
@@ -188,39 +185,39 @@ class DesignerNewsletterController extends Controller
             return redirect()->back()->withErrors($errors);
         }
 
-        // dd($data['newsletter_file_path']);
-        $image = $data['newsletter_thumbnail_image_path'];
-        $pdfFile = $data['newsletter_file_path'];
+        // dd($data['publication_file_path']);
+        $image = $data['publication_thumbnail_image_path'];
+        $pdfFile = $data['publication_file_path'];
 
         if ($image) {
             // Delete the old image file if a new one is uploaded
-            if ($designer_newsletter->newsletter_thumbnail_image_path) {
-                Storage::disk('public')->delete($designer_newsletter->newsletter_thumbnail_image_path);
+            if ($designer_publication->publication_thumbnail_image_path) {
+                Storage::disk('public')->delete($designer_publication->publication_thumbnail_image_path);
             }
-            // Store the new image directly under the 'newsletter/' directory
-            $data['newsletter_thumbnail_image_path'] = $image->store('newsletter-thumbnail', 'public');
+            // Store the new image directly under the 'publication/' directory
+            $data['publication_thumbnail_image_path'] = $image->store('publication-thumbnail', 'public');
         } else {
             // If no new image is uploaded, keep the existing image
-            $data['newsletter_thumbnail_image_path'] = $designer_newsletter->newsletter_thumbnail_image_path;
+            $data['publication_thumbnail_image_path'] = $designer_publication->publication_thumbnail_image_path;
         }
 
         if ($pdfFile) {
             // Delete the old pdfFile file if a new one is uploaded
-            if ($designer_newsletter->newsletter_file_path) {
-                Storage::disk('public')->delete($designer_newsletter->newsletter_file_path);
+            if ($designer_publication->publication_file_path) {
+                Storage::disk('public')->delete($designer_publication->publication_file_path);
             }
-            // Store the new pdfFile directly under the 'newsletter/' directory
-            $data['newsletter_file_path'] = $pdfFile->store('newsletter-file', 'public');
+            // Store the new pdfFile directly under the 'publication/' directory
+            $data['publication_file_path'] = $pdfFile->store('publication-file', 'public');
         } else {
             // If no new pdfFile is uploaded, keep the existing pdfFile
-            $data['newsletter_file_path'] = $designer_newsletter->newsletter_file_path;
+            $data['publication_file_path'] = $designer_publication->publication_file_path;
         }
 
         $data['status'] = 'pending';
 
-        $designer_newsletter->update($data);
+        $designer_publication->update($data);
 
-        return to_route('designer-newsletter.index')->with(['success' => 'Newsletter Updated successfully.']);
+        return to_route('designer-publication.index')->with(['success' => 'Publication Updated successfully.']);
     }
 
     /**
@@ -230,34 +227,34 @@ class DesignerNewsletterController extends Controller
     //  archive instead of delte
     public function destroy($id)
     {
-        // $newsletter = Newsletter::find($id);
-        // if(!$newsletter){
-        //     return to_route('designer-newsletter.index')->with(['error' => 'Newsletter not found']);
+        // $publication = Publication::find($id);
+        // if(!$publication){
+        //     return to_route('designer-publication.index')->with(['error' => 'Publication not found']);
         // }
-        // $newsletter->delete();
+        // $publication->delete();
 
-        // if ($newsletter->newsletter_thumbnail_image_path) {
+        // if ($publication->publication_thumbnail_image_path) {
         //     // Delete the specific old image file
-        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        //     Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
         // }
 
-        // if ($newsletter->newsletter_thumbnail_image_path) {
+        // if ($publication->publication_thumbnail_image_path) {
         //     // Delete the specific old  file
-        //     Storage::disk('public')->delete($newsletter->newsletter_thumbnail_image_path);
+        //     Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
         // }
 
-        $newsletter = Newsletter::find($id);
+        $publication = Publication::find($id);
 
-        // dd($newsletter);
+        // dd($publication);
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->update(['visibility' => 'hidden']);
-        $newsletter->update(['archive_by' => Auth::user()->id ]);
+        $publication->update(['visibility' => 'hidden']);
+        $publication->update(['archive_by' => Auth::user()->id ]);
 
-        return to_route('designer-newsletter.index')->with(['success' => 'Archive successfully.']);
+        return to_route('designer-publication.index')->with(['success' => 'Archive successfully.']);
     }
 
     public function SelectArticles()
@@ -304,7 +301,7 @@ class DesignerNewsletterController extends Controller
         ->paginate(10)
         ->onEachSide(1);
 
-        return inertia('Designer/Newsletter/Article', [
+        return inertia('Designer/Publication/Article', [
             'articles' => ArticleResource::collection($articles),
             'categories' => CategoryResource::collection($categories),
             'academicYears' => AcademicYearResource::collection($academicYears),
@@ -319,17 +316,17 @@ class DesignerNewsletterController extends Controller
                     ->where('status', 'published')  // Only published articles
                     ->where(function ($query) {
                         $query->where('is_newsletter', 'yes')
-                            ->orWhere('is_newsletter', 'added');  // Newsletter conditions
+                            ->orWhere('is_newsletter', 'added');  // Publication conditions
                     })
                     ->where('visibility', 'visible')  // Only visible articles
                     ->firstOrFail();
 
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
-        return inertia('Designer/Newsletter/Show', [
+        return inertia('Designer/Publication/Show', [
             'article' => new ArticleResource($article),
         ]);
     }
@@ -340,12 +337,12 @@ class DesignerNewsletterController extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
         $article->update(['is_newsletter' => 'yes']);
 
-        return to_route('designer-newsletter.articles')->with('success', 'The article has not been laid out yet.');
+        return to_route('designer-publication.articles')->with('success', 'The article has not been laid out yet.');
     }
 
     public function isLayout($id)
@@ -353,25 +350,25 @@ class DesignerNewsletterController extends Controller
         $article = Article::findOrFail($id);
 
         if(!$article){
-            return to_route('newsletter.articles')->with(['error' => 'Article not Found']);
+            return to_route('publication.articles')->with(['error' => 'Article not Found']);
         }
 
         $article->update(['is_newsletter' => 'added']);
 
-        return to_route('designer-newsletter.articles')->with(['success' => 'The article has been successfully laid out in the newsletter.']);
+        return to_route('designer-publication.articles')->with(['success' => 'The article has been successfully laid out in the publication.']);
     }
 
     public function calendar()
     {
-        $newsletters = Newsletter::where('status', 'distributed')
+        $publications = Publication::where('status', 'distributed')
                             ->where('visibility', 'visible')
                             ->whereNotNull('distributed_at')
                             ->get(['id','description', 'distributed_at' ,'status',]);
 
-        // dd($newsletters);
-        // Render the calendar page with newsletter passed as props
-        return inertia('Designer/Newsletter/MyCalendar', [
-            'newsletters' => $newsletters,
+        // dd($publications);
+        // Render the calendar page with publication passed as props
+        return inertia('Designer/Publication/MyCalendar', [
+            'publications' => $publications,
         ]);
     }
     

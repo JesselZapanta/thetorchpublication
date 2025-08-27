@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Designer;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AcademicYearResource;
 use App\Models\AcademicYear;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Rating;
 use App\Models\Task;
 use Auth;
@@ -64,7 +64,7 @@ class DesignerGenerateReportController extends Controller
 
 
 
-        $newsletterQuery = Newsletter::where('status', 'distributed')
+        $newsletterQuery = Publication::where('status', 'distributed')
                                 ->where('visibility', 'visible')
                                 ->where('layout_by',  $userId);
 
@@ -74,7 +74,7 @@ class DesignerGenerateReportController extends Controller
             $newsletterQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
         }
 
-        $distributedNewsletters = $newsletterQuery->get(['id','description', 'newsletter_thumbnail_image_path', 'submitted_at', 'distributed_at']);
+        $distributedNewsletters = $newsletterQuery->get(['id','description', 'publication_thumbnail_image_path', 'submitted_at', 'distributed_at']);
 
         $taskQuery = Task::where('status', 'completed')
                                 ->where('visibility', 'visible')
@@ -95,7 +95,7 @@ class DesignerGenerateReportController extends Controller
             $combinedData[] = [
                 'id' => $newsletter->id,
                 'description' => $newsletter->description,
-                'image' => $newsletter->newsletter_thumbnail_image_path,
+                'image' => $newsletter->publication_thumbnail_image_path,
                 'submitted_at' => Carbon::parse($newsletter->submitted_at)->format('F j, Y'),
                 'completed_distributed_at' =>  Carbon::parse($newsletter->distributed_at)->format('F j, Y'),
             ];

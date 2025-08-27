@@ -12,7 +12,7 @@ use App\Models\Comment;
 use App\Models\CommentLike;
 use App\Models\FreedomWall;
 use App\Models\FreedomWallLike;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Rating;
 use App\Models\Task;
 use Auth;
@@ -70,7 +70,7 @@ class DesignerDashboardController extends Controller
 
         
         // Fetch counts based on the selected period or academic year range
-        $distritutedQuery = Newsletter::where('status', 'distributed')
+        $distritutedQuery = Publication::where('status', 'distributed')
                                 ->where('visibility', 'visible')
                                 ->where('layout_by',  $userId);
 
@@ -83,7 +83,7 @@ class DesignerDashboardController extends Controller
 
         // Fetch counts based on the selected period or academic year range
         //edited by
-        $undistributeQuery = Newsletter::where('status','!=' ,'distributed')
+        $undistributeQuery = Publication::where('status','!=' ,'distributed')
                                 ->where('visibility', 'visible')
                                 ->where('layout_by',  $userId);
 

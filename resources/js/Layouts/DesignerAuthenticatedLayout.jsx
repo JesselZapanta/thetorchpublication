@@ -39,12 +39,12 @@ export default function DesignerAuthenticatedLayout({
                                 </NavLink>
 
                                 <NavLink
-                                    href={route("designer-newsletter.index")}
+                                    href={route("designer-publication.index")}
                                     active={route().current(
-                                        "designer-newsletter.index"
+                                        "designer-publication.index"
                                     )}
                                 >
-                                    Newsletters
+                                    Publications
                                     {DesignerBadgeCount.newsletterRevision >
                                         0 && (
                                         <>
@@ -186,12 +186,12 @@ export default function DesignerAuthenticatedLayout({
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route("designer-newsletter.index")}
+                            href={route("designer-publication.index")}
                             active={route().current(
-                                "designer-newsletter.index"
+                                "designer-publication.index"
                             )}
                         >
-                            Newsletters
+                            Publications
                             {DesignerBadgeCount.newsletterRevision > 0 && (
                                 <>
                                     <span className="flex justify-center items-center min-w-5 h-5  rounded-full p-1 bg-red-500 text-gray-100">

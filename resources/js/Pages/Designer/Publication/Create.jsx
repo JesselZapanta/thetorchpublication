@@ -1,24 +1,25 @@
-import { Head, useForm } from '@inertiajs/react'
+import { Head, useForm } from "@inertiajs/react";
 import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
-import React, { useState } from 'react'
-import InputLabel from '@/Components/InputLabel';
-import SelectInput from '@/Components/SelectInput';
-import InputError from '@/Components/InputError';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import Modal from '@/Components/Modal';
+import React, { useState } from "react";
+import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
+import InputError from "@/Components/InputError";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import Modal from "@/Components/Modal";
 
 export default function Create({ auth, DesignerBadgeCount }) {
     const { data, setData, post, errors, processing } = useForm({
         // academic_year_id: "",
+        category: "",
         description: "",
-        newsletter_thumbnail_image_path: "",
-        newsletter_file_path: "",
+        publication_thumbnail_image_path: "",
+        publication_file_path: "",
         // status: "",
     });
 
     const onSubmit = () => {
-        post(route("designer-newsletter.store", data));
+        post(route("designer-publication.store", data));
     };
 
     const [confirmSubmit, setConfirmSubmit] = useState(false);
@@ -32,7 +33,6 @@ export default function Create({ auth, DesignerBadgeCount }) {
         onSubmit();
     };
 
-    
     // useEffect(() => {
     //     window.find("Add");
     // }, []);
@@ -44,12 +44,12 @@ export default function Create({ auth, DesignerBadgeCount }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Add New Newsletter
+                        Add New Publication
                     </h2>
                 </div>
             }
         >
-            <Head title="Add New Newsletter" />
+            <Head title="Add New Publication" />
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -57,11 +57,37 @@ export default function Create({ auth, DesignerBadgeCount }) {
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
                         >
+                            {/* Category */}
+                            <div className="w-full">
+                                <InputLabel htmlFor="status" value="Category" />
+
+                                <SelectInput
+                                    name="category"
+                                    id="category"
+                                    value={data.category}
+                                    className="mt-2 block w-full"
+                                    onChange={(e) =>
+                                        setData("category", e.target.value)
+                                    }
+                                >
+                                    <option value="">Select a Category</option>
+                                    <option value="newsletter">
+                                        Newsletter
+                                    </option>
+                                    <option value="folio">Folio</option>
+                                    <option value="tabloid">Tabloid</option>
+                                </SelectInput>
+
+                                <InputError
+                                    message={errors.category}
+                                    className="mt-2"
+                                />
+                            </div>
                             {/* description */}
                             <div className="mt-4">
                                 <InputLabel
                                     htmlFor="description"
-                                    value="Newsletter Description"
+                                    value="Publication Description"
                                 />
 
                                 <TextInput
@@ -70,7 +96,6 @@ export default function Create({ auth, DesignerBadgeCount }) {
                                     name="description"
                                     value={data.description}
                                     className="mt-2 block w-full"
-                                     
                                     onChange={(e) =>
                                         setData("description", e.target.value)
                                     }
@@ -83,21 +108,21 @@ export default function Create({ auth, DesignerBadgeCount }) {
                             </div>
 
                             <div className="flex gap-2">
-                                {/* newsletter_thumbnail_image_path */}
+                                {/* publication_thumbnail_image_path */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="newsletter_thumbnail_image_path"
-                                        value="Newsletter Thumbnail"
+                                        htmlFor="publication_thumbnail_image_path"
+                                        value="Publication Thumbnail"
                                     />
 
                                     <TextInput
-                                        id="newsletter_thumbnail_image_path"
+                                        id="publication_thumbnail_image_path"
                                         type="file"
-                                        name="newsletter_thumbnail_image_path"
+                                        name="publication_thumbnail_image_path"
                                         className="mt-2 block w-full cursor-pointer"
                                         onChange={(e) =>
                                             setData(
-                                                "newsletter_thumbnail_image_path",
+                                                "publication_thumbnail_image_path",
                                                 e.target.files[0]
                                             )
                                         }
@@ -105,7 +130,7 @@ export default function Create({ auth, DesignerBadgeCount }) {
 
                                     <InputError
                                         message={
-                                            errors.newsletter_thumbnail_image_path
+                                            errors.publication_thumbnail_image_path
                                         }
                                         className="mt-2"
                                     />
@@ -114,25 +139,25 @@ export default function Create({ auth, DesignerBadgeCount }) {
                                 {/* Pdf File, */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="newsletter_file_path"
-                                        value="Newsletter Pdf File"
+                                        htmlFor="publication_file_path"
+                                        value="Publication Pdf File"
                                     />
 
                                     <TextInput
-                                        id="newsletter_file_path"
+                                        id="publication_file_path"
                                         type="file"
-                                        name="newsletter_file_path"
+                                        name="publication_file_path"
                                         className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData(
-                                                "newsletter_file_path",
+                                                "publication_file_path",
                                                 e.target.files[0]
                                             )
                                         }
                                     />
 
                                     <InputError
-                                        message={errors.newsletter_file_path}
+                                        message={errors.publication_file_path}
                                         className="mt-2"
                                     />
                                 </div>
@@ -140,7 +165,7 @@ export default function Create({ auth, DesignerBadgeCount }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("designer-newsletter.index")}
+                                    href={route("designer-publication.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -161,7 +186,7 @@ export default function Create({ auth, DesignerBadgeCount }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Submit</h2>
                     <p className="mt-4">
-                        Are you sure you want to Add this Newsletter?
+                        Are you sure you want to Add this Publication?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton

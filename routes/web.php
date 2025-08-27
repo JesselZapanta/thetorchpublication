@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminGenerateReportController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
+use App\Http\Controllers\Admin\AdminPublicationController;
 use App\Http\Controllers\Admin\AdminReviewReport;
 use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\ArticleViewsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Designer\DesignerDashboardController;
 use App\Http\Controllers\Designer\DesignerGenerateReportController;
-use App\Http\Controllers\Designer\DesignerNewsletterController;
+use App\Http\Controllers\Designer\DesignerPublicationController;
 use App\Http\Controllers\Designer\DesignerReviewReport;
 use App\Http\Controllers\Designer\DesignerTaskController;
 use App\Http\Controllers\DummyDb\EnrolledStudentController;
@@ -153,17 +154,18 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::resource('word', AdminWordController::class);
     Route::resource('about', AdminAboutController::class);
     
-    //newsletter routes
-    Route::get('/newsletter/calendar', [AdminNewsletterController::class, 'calendar'])->name('newsletter.calendar');
-    Route::get('newsletter/{id}/timeline', [AdminNewsletterController::class, 'timeLine'])->name('newsletter.timeline');
-    Route::get('/newsletter-articles', [AdminNewsletterController::class, 'SelectArticles'])->name('newsletter.articles');
-    Route::get('/newsletter-articles/{slug}/show', [AdminNewsletterController::class, 'articleShow'])->name('admin-newsletter.article-show');
-    Route::post('/newsletter-articles/{id}/add-article', [AdminNewsletterController::class, 'addArticle'])->name('newsletter.add-article');
-    Route::post('/newsletter-articles/{id}/remove-article', [AdminNewsletterController::class, 'removeArticle'])->name('newsletter.remove-article');
-    Route::get('/newsletter-distribute/{id}/', [AdminNewsletterController::class, 'distributeIndex'])->name('distribute.index');
-    Route::post('/newsletters/{newsletter}/distribute', [AdminNewsletterController::class, 'distributeNewsletter'])->name('newsletter.distribute');
-    Route::get('/newsletter-jobs', [AdminNewsletterController::class, 'jobIndex'])->name('jobs.index');
-    Route::resource('newsletter', AdminNewsletterController::class);
+    //Publication routes
+    Route::get('/publication/calendar', [AdminPublicationController::class, 'calendar'])->name('publication.calendar');
+    Route::get('publication/{id}/timeline', [AdminPublicationController::class, 'timeLine'])->name('publication.timeline');
+    Route::get('/publication-articles', [AdminPublicationController::class, 'SelectArticles'])->name('publication.articles');
+    Route::get('/publication-articles/{slug}/show', [AdminPublicationController::class, 'articleShow'])->name('admin-publication.article-show');
+    Route::post('/publication-articles/{id}/add-article', [AdminPublicationController::class, 'addArticle'])->name('publication.add-article');
+    Route::post('/publication-articles/{id}/remove-article', [AdminPublicationController::class, 'removeArticle'])->name('publication.remove-article');
+    Route::get('/publication-distribute/{id}/', [AdminPublicationController::class, 'distributeIndex'])->name('distribute.index');
+    Route::post('/newsletters/{publication}/distribute', [AdminPublicationController::class, 'distributeNewsletter'])->name('publication.distribute');
+    Route::get('/publication-jobs', [AdminPublicationController::class, 'jobIndex'])->name('jobs.index');
+
+    Route::resource('publication', AdminPublicationController::class);
 
     // Task routes
     Route::put('admin-task/{id}/updateSubmittedTask', [AdminTaskController::class, 'updateSubmittedTask'])->name('admin.updateSubmittedTask');
@@ -300,14 +302,15 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
     //desinger dashboard and report
     Route::get('/designer/dashboard', [DesignerDashboardController::class, 'index'])->name('designer.dashboard');
     Route::get('/designer/report', [DesignerGenerateReportController::class, 'report'])->name('designer.report');
-    //newsletter routes
-    Route::get('/designer-newsletter/calendar', [DesignerNewsletterController::class, 'calendar'])->name('designer-newsletter.calendar');
-    Route::get('designer-newsletter/{id}/timeline', [DesignerNewsletterController::class, 'timeLine'])->name('designer-newsletter.timeline');
-    Route::get('/designer-newsletter-articles/{slug}/show', [DesignerNewsletterController::class, 'articleShow'])->name('designer-newsletter.article-show');
-    Route::post('/designer-newsletter-articles/{id}/is-layout', [DesignerNewsletterController::class, 'isLayout'])->name('designer-newsletter.is-layout');
-    Route::post('/designer-newsletter-articles/{id}/not-layout', [DesignerNewsletterController::class, 'notLayout'])->name('designer-newsletter.not-layout');
-    Route::get('/designer-newsletter-articles', [DesignerNewsletterController::class, 'SelectArticles'])->name('designer-newsletter.articles');
-    Route::resource('designer-newsletter', DesignerNewsletterController::class);
+    
+    //Publication routes
+    Route::get('/designer-publication/calendar', [DesignerPublicationController::class, 'calendar'])->name('designer-publication.calendar');
+    Route::get('designer-publication/{id}/timeline', [DesignerPublicationController::class, 'timeLine'])->name('designer-publication.timeline');
+    Route::get('/designer-publication-articles/{slug}/show', [DesignerPublicationController::class, 'articleShow'])->name('designer-publication.article-show');
+    Route::post('/designer-publication-articles/{id}/is-layout', [DesignerPublicationController::class, 'isLayout'])->name('designer-publication.is-layout');
+    Route::post('/designer-publication-articles/{id}/not-layout', [DesignerPublicationController::class, 'notLayout'])->name('designer-publication.not-layout');
+    Route::get('/designer-publication-articles', [DesignerPublicationController::class, 'SelectArticles'])->name('designer-publication.articles');
+    Route::resource('designer-publication', DesignerPublicationController::class);
 
     // task routes
     Route::get('designer-task', [DesignerTaskController::class, 'index'])->name('designer-task.index');
@@ -384,7 +387,6 @@ Route::middleware(['auth', 'student','verified', 'userStatus'])->group(function(
     Route::post('/student-archive-freedom-wall/{id}/restore', [StudentArchiveController::class, 'restoreFreedomWall'])->name('student-archive-freedom-wall.restore');
     Route::delete('/student-archive-freedom-wall/{id}/destroy', [StudentArchiveController::class, 'destroyFreedomWall'])->name('student-archive-freedom-wall.destroy');
 });
-
 
 Route::middleware(['auth','userStatus', 'verified'] )->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

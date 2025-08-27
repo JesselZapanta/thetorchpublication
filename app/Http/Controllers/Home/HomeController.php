@@ -15,7 +15,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Member;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -76,7 +76,7 @@ class HomeController extends Controller
                                 ->limit(12)
                                 ->get();
 
-        $latestNewsletter = Newsletter::orderBy('distributed_at', 'DESC')
+        $latestNewsletter = Publication::orderBy('distributed_at', 'DESC')
                                 ->where('visibility', 'visible')
                                 ->where('status', 'distributed')
                                 ->limit(4)
@@ -263,7 +263,7 @@ class HomeController extends Controller
     {
         $categories = Category::where('status', 'active')->limit(5)->get();
 
-        $query = Newsletter::where('status', 'distributed')
+        $query = Publication::where('status', 'distributed')
                                 ->where('visibility', 'visible');
 
         $sort = $request->input('sort', 'date_desc');

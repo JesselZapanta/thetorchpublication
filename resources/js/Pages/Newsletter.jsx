@@ -95,11 +95,31 @@ export default function Newsletter({ auth, categories, newsletters }) {
                         }}
                     />
                     <p className="absolute font-semibold sm:txt-md md:text-5xl text-gray-50 dark:text-gray-200 leading-tight text-justify uppercase">
-                        Newsletters
+                        Publications
                     </p>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center py-4 overflow-hidden gap-2">
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-4 gap-2">
+                        <div className="w-full">
+                            <SelectInput
+                                className="w-full"
+                                value={sort}
+                                onChange={handleSortChange} // Handle the change
+                            >
+                                <option value="date_desc">
+                                    All Publications
+                                </option>
+                                <option value="date_desc">
+                                    Newsletter
+                                </option>
+                                <option value="date_asc">
+                                    Folios
+                                </option>
+                                <option value="date_asc">
+                                    Tabliod
+                                </option>
+                            </SelectInput>
+                        </div>
                         <div className="w-full">
                             <SelectInput
                                 className="w-full"
@@ -137,13 +157,13 @@ export default function Newsletter({ auth, categories, newsletters }) {
                                     <div className="overflow-hidden rounded-xl h-96 shadow-lg">
                                         <a
                                             href={
-                                                newsletter.newsletter_file_path
+                                                newsletter.publication_file_path
                                             }
                                             target="blank"
                                         >
                                             <img
                                                 src={
-                                                    newsletter.newsletter_thumbnail_image_path
+                                                    newsletter.publication_thumbnail_image_path
                                                 }
                                                 className="w-full h-full object-cover"
                                                 onError={(e) => {

@@ -6,7 +6,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use App\Models\ContributorApplication;
 use App\Models\FreedomWall;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         // Inertia::share('AdminBadgeCount', function () {
         //     $userCount = User::count();    // Get the user count
         //     $editedCount = Article::where('status', 'edited')->count();
-        //     $newsletterPendingCount = Newsletter::where('status', 'pending')->count();
+        //     $newsletterPendingCount = Publication::where('status', 'pending')->count();
 
         //     $pendingApprovalTaskCount = Task::where('status', 'approval')->count();
         //     $reviewApprovalTaskCount = Task::where('status', 'review')->count();
@@ -68,7 +68,7 @@ class AppServiceProvider extends ServiceProvider
                 $editedCount = Article::where('status', 'edited')
                                 ->where('visibility', 'visible')
                                 ->count();
-                $newsletterPendingCount = Newsletter::where('status', 'pending')->where('visibility', 'visible')->count();
+                $newsletterPendingCount = Publication::where('status', 'pending')->where('visibility', 'visible')->count();
 
                 $pendingApprovalTaskCount = Task::where('status', 'approval')
                         ->where('visibility', 'visible') 
@@ -287,7 +287,7 @@ class AppServiceProvider extends ServiceProvider
                 if (Auth::check()) {
                     $userId = Auth::user()->id;
 
-                    $newsletterRevision = Newsletter::where('layout_by', $userId)
+                    $newsletterRevision = Publication::where('layout_by', $userId)
                                                         ->where('status', 'revision')
                                                         ->count();
                 }

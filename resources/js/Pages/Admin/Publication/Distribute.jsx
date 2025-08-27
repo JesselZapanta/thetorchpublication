@@ -9,15 +9,15 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import Modal from "@/Components/Modal";
 import TextAreaInput from "@/Components/TextAreaInput";
 
-export default function Edit({ auth, newsletter, AdminBadgeCount }) {
+export default function Edit({ auth, publication, AdminBadgeCount }) {
     const { data, setData, post, errors } = useForm({
         message:
-            "Our latest newsletter is packed with highlights, updates, and valuable insights. From exciting events that brought our community together to important announcements shaping our future, there's something for everyone. Whether you're interested in the latest trends, curious about upcoming initiatives, or just want to stay informed, this newsletter has it all. Don't miss out on this detailed recap of the past few months. Download or click the file attached to read our latest newsletter and stay connected with everything that's happening.",
+            "Our latest publication is packed with highlights, updates, and valuable insights. From exciting events that brought our community together to important announcements shaping our future, there's something for everyone. Whether you're interested in the latest trends, curious about upcoming initiatives, or just want to stay informed, this publication has it all. Don't miss out on this detailed recap of the past few months. Download or click the file attached to read our latest publication and stay connected with everything that's happening.",
         password: "",
     });
 
     const onSubmit = () => {
-        post(route("newsletter.distribute", newsletter.id));
+        post(route("publication.distribute", publication.id));
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -38,25 +38,25 @@ export default function Edit({ auth, newsletter, AdminBadgeCount }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Distribute Newsletter
+                        Distribute Publication
                     </h2>
                 </div>
             }
         >
-            <Head title="Distribute Newsletter" />
+            <Head title="Distribute Publication" />
 
             {/* <pre className="text-gray-900">
-                {JSON.stringify(newsletter, null, 2)}
+                {JSON.stringify(publication, null, 2)}
             </pre> */}
 
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        {newsletter.newsletter_file_path && (
+                        {publication.publication_file_path && (
                             <div className="w-full h-[400px]">
                                 <iframe
                                     className="w-full h-full"
-                                    src={newsletter.newsletter_file_path}
+                                    src={publication.publication_file_path}
                                 ></iframe>
                             </div>
                         )}
@@ -108,7 +108,7 @@ export default function Edit({ auth, newsletter, AdminBadgeCount }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("newsletter.index")}
+                                    href={route("publication.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -129,7 +129,7 @@ export default function Edit({ auth, newsletter, AdminBadgeCount }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Distribute</h2>
                     <p className="mt-4">
-                        Are you sure you want to distribute this newsletter?
+                        Are you sure you want to distribute this publication?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton

@@ -146,10 +146,12 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                                     )}
                                 </NavLink>
                                 <NavLink
-                                    href={route("newsletter.index")}
-                                    active={route().current("newsletter.index")}
+                                    href={route("publication.index")}
+                                    active={route().current(
+                                        "publication.index"
+                                    )}
                                 >
-                                    Newsletters
+                                    Publications
                                     {AdminBadgeCount.newsletterPendingCount >
                                         0 && (
                                         <>
@@ -345,10 +347,10 @@ export default function Authenticated({ user, header, children, AdminBadgeCount 
                             )}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            href={route("newsletter.index")}
-                            active={route().current("newsletter.index")}
+                            href={route("publication.index")}
+                            active={route().current("publication.index")}
                         >
-                            Newsletters
+                            Publications
                             {AdminBadgeCount.newsletterPendingCount > 0 && (
                                 <>
                                     <span className="flex justify-center items-center min-w-5 h-5 rounded-full p-1 bg-red-500 text-gray-100">

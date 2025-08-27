@@ -1,27 +1,28 @@
-import { Head, useForm } from '@inertiajs/react'
+import { Head, useForm } from "@inertiajs/react";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import React, { useState } from 'react'
-import InputLabel from '@/Components/InputLabel';
-import SelectInput from '@/Components/SelectInput';
-import InputError from '@/Components/InputError';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import Modal from '@/Components/Modal';
-import TextAreaInput from '@/Components/TextAreaInput';
+import React, { useState } from "react";
+import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
+import InputError from "@/Components/InputError";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import Modal from "@/Components/Modal";
+import TextAreaInput from "@/Components/TextAreaInput";
 
-export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
+export default function Edit({ auth, activeAy, publication, AdminBadgeCount }) {
     const { data, setData, post, errors } = useForm({
-        academic_year_id: newsletter.academic_year_id || "",
-        description: newsletter.description || "",
-        newsletter_thumbnail_image_path: "",
-        newsletter_file_path: "",
-        status: newsletter.status || "",
-        revision_message: newsletter.revision_message || "",
+        academic_year_id: publication.academic_year_id || "",
+        description: publication.description || "",
+        publication_thumbnail_image_path: "",
+        publication_file_path: "",
+        status: publication.status || "",
+        category: publication.category || "",
+        revision_message: publication.revision_message || "",
         _method: "PUT",
     });
 
     const onSubmit = () => {
-        post(route("newsletter.update", newsletter.id));
+        post(route("publication.update", publication.id));
     };
 
     const [confirmUpdate, setConfirmUpdate] = useState(false);
@@ -42,16 +43,16 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Edit Newsletter
+                        Edit Publication
                     </h2>
                 </div>
             }
         >
-            <Head title="Edit Newsletter" />
+            <Head title="Edit Publication" />
             <div className="py-4">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    {newsletter.revision_message &&
-                        newsletter.status !== "distributed" && (
+                    {publication.revision_message &&
+                        publication.status !== "distributed" && (
                             <div
                                 className="bg-red-100 mb-4 border-t-4 border-red-500 rounded-b-lg text-red-900 px-4 py-3 shadow-md"
                                 role="alert"
@@ -71,18 +72,18 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                                             Revision Message:
                                         </p>
                                         <p className="text-sm">
-                                            {newsletter.revision_message}
+                                            {publication.revision_message}
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         )}
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        {newsletter.newsletter_file_path && (
+                        {publication.publication_file_path && (
                             <div className="w-full h-[400px]">
                                 <iframe
                                     className="w-full h-full"
-                                    src={newsletter.newsletter_file_path}
+                                    src={publication.publication_file_path}
                                     frameBorder="0"
                                 ></iframe>
                             </div>
@@ -91,7 +92,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                             onSubmit={onSubmit}
                             className="p-4 sm:p8 bg-white dark:bg-gray-800 shadow "
                         >
-                            <div className="flex gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 {/* AY */}
                                 <div className="w-full">
                                     <InputLabel
@@ -159,6 +160,37 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                                         className="mt-2"
                                     />
                                 </div>
+                                {/* Category */}
+                                <div className="w-full">
+                                    <InputLabel
+                                        htmlFor="status"
+                                        value="Category"
+                                    />
+
+                                    <SelectInput
+                                        name="category"
+                                        id="category"
+                                        value={data.category}
+                                        className="mt-2 block w-full"
+                                        onChange={(e) =>
+                                            setData("category", e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select a Category
+                                        </option>
+                                        <option value="newsletter">
+                                            Newsletter
+                                        </option>
+                                        <option value="folio">Folio</option>
+                                        <option value="tabloid">Tabloid</option>
+                                    </SelectInput>
+
+                                    <InputError
+                                        message={errors.category}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
 
                             {/* revision_message */}
@@ -193,7 +225,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                             <div className="mt-4">
                                 <InputLabel
                                     htmlFor="description"
-                                    value="Newsletter Description"
+                                    value="Publication Description"
                                 />
 
                                 <TextInput
@@ -202,7 +234,6 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                                     name="description"
                                     value={data.description}
                                     className="mt-2 block w-full"
-                                     
                                     onChange={(e) =>
                                         setData("description", e.target.value)
                                     }
@@ -215,21 +246,21 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                             </div>
 
                             <div className="flex gap-2">
-                                {/* newsletter_thumbnail_image_path */}
+                                {/* publication_thumbnail_image_path */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="newsletter_thumbnail_image_path"
-                                        value="Newsletter Thumbnail"
+                                        htmlFor="publication_thumbnail_image_path"
+                                        value="Publication Thumbnail"
                                     />
 
                                     <TextInput
-                                        id="newsletter_thumbnail_image_path"
+                                        id="publication_thumbnail_image_path"
                                         type="file"
-                                        name="newsletter_thumbnail_image_path"
+                                        name="publication_thumbnail_image_path"
                                         className="mt-2 block w-full cursor-pointer"
                                         onChange={(e) =>
                                             setData(
-                                                "newsletter_thumbnail_image_path",
+                                                "publication_thumbnail_image_path",
                                                 e.target.files[0]
                                             )
                                         }
@@ -237,7 +268,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
 
                                     <InputError
                                         message={
-                                            errors.newsletter_thumbnail_image_path
+                                            errors.publication_thumbnail_image_path
                                         }
                                         className="mt-2"
                                     />
@@ -246,25 +277,25 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                                 {/* Pdf File, */}
                                 <div className="mt-4 w-full">
                                     <InputLabel
-                                        htmlFor="newsletter_file_path"
-                                        value="Newsletter Pdf File"
+                                        htmlFor="publication_file_path"
+                                        value="Publication Pdf File"
                                     />
 
                                     <TextInput
-                                        id="newsletter_file_path"
+                                        id="publication_file_path"
                                         type="file"
-                                        name="newsletter_file_path"
+                                        name="publication_file_path"
                                         className="mt-2 block w-full"
                                         onChange={(e) =>
                                             setData(
-                                                "newsletter_file_path",
+                                                "publication_file_path",
                                                 e.target.files[0]
                                             )
                                         }
                                     />
 
                                     <InputError
-                                        message={errors.newsletter_file_path}
+                                        message={errors.publication_file_path}
                                         className="mt-2"
                                     />
                                 </div>
@@ -272,7 +303,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
 
                             <div className="mt-6 flex justify-end gap-2">
                                 <SecondaryButton
-                                    href={route("newsletter.index")}
+                                    href={route("publication.index")}
                                 >
                                     Cancel
                                 </SecondaryButton>
@@ -293,7 +324,7 @@ export default function Edit({ auth, activeAy, newsletter, AdminBadgeCount }) {
                 <div className="p-6 text-gray-900 dark:text-gray-100">
                     <h2 className="text-base font-bold">Confirm Update</h2>
                     <p className="mt-4">
-                        Are you sure you want to Update this Newsletter?
+                        Are you sure you want to Update this Publication?
                     </p>
                     <div className="mt-4 flex justify-end gap-2">
                         <SecondaryButton

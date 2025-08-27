@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Designer;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreNewsletterRequest extends FormRequest
+class DesignerUpdatePublicationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,12 @@ class StoreNewsletterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'academic_year_id' => ['required','exists:academic_years,id'],
             'layout_by' => ['nullable','exists:users,id'],
             'description' => ['required', 'string', 'max:255'],
-            'newsletter_thumbnail_image_path' => ['required','image','mimes:jpg,png,jpeg'],//todo
-            'newsletter_file_path' => ['required','file','mimes:pdf'], //todo
-            'status' => ['required',
-                Rule::in(['pending', 'approved'])
+            'publication_thumbnail_image_path' => ['nullable','image','mimes:jpg,png,jpeg'],
+            'publication_file_path' => ['nullable','file','mimes:pdf'], 
+            'category' => ['required',
+                Rule::in(['newsletter', 'folio', 'tabloid'])
             ],
         ];
     }

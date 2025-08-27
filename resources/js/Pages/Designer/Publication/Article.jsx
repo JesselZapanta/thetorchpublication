@@ -9,7 +9,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
-import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
+import DesignerAuthenticatedLayout from "@/Layouts/DesignerAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
@@ -23,7 +23,7 @@ export default function Index({
     academicYears,
     queryParams = null,
     flash,
-    AdminBadgeCount,
+    DesignerBadgeCount,
 }) {
     // Display flash messages if they exist
     useEffect(() => {
@@ -36,12 +36,19 @@ export default function Index({
         }
     }, [flash]);
 
+    // useEffect(() => {
+    //     // Send the request only when queryParams changes
+    //     router.get(route("designer-publication.articles"), queryParams, {
+    //         preserveState: true,
+    //     });
+    // }, [queryParams]);
+
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
-            router.get(route("newsletter.articles"), queryParams, {
+            router.get(route("designer-publication.articles"), queryParams, {
                 preserveState: true,
             }); // Fetch all data when search is empty
         } else {
@@ -58,7 +65,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("newsletter.articles"),
+                    route("designer-publication.articles"),
                     {},
                     {
                         preserveState: true,
@@ -66,7 +73,7 @@ export default function Index({
                 ); // Fetch all data if search input is empty
             } else {
                 queryParams[name] = value; // Set query parameter for search
-                router.get(route("newsletter.articles"), queryParams, {
+                router.get(route("designer-publication.articles"), queryParams, {
                     preserveState: true,
                 });
             }
@@ -76,7 +83,7 @@ export default function Index({
     // Handle dropdown select changes
     const handleSelectChange = (name, value) => {
         queryParams[name] = value;
-        router.get(route("newsletter.articles"), queryParams, {
+        router.get(route("designer-publication.articles"), queryParams, {
             preserveState: true,
         });
     };
@@ -92,7 +99,7 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("newsletter.articles"), queryParams);
+        router.get(route("designer-publication.articles"), queryParams);
     };
 
     //text limit
@@ -103,16 +110,16 @@ export default function Index({
         return text;
     };
 
-    //delete report and removeArticle article and addArticle
+    //delete report and notLayout article and isLayout
     const [confirmAction, setConfirmAction] = useState({
-        type: "", // 'delete', 'removeArticle', or 'report'
+        type: "", // 'delete', 'notLayout', or 'report'
         article: null,
         show: false,
     });
 
     const openActionModal = (article, actionType) => {
         setConfirmAction({
-            type: actionType, // 'delete', 'removeArticle', or 'report'
+            type: actionType, // 'delete', 'notLayout', or 'report'
             article: article,
             show: true,
         });
@@ -121,10 +128,10 @@ export default function Index({
     const handleAction = () => {
         if (confirmAction.article) {
             switch (confirmAction.type) {
-                case "removeArticle":
+                case "notLayout":
                     router.post(
                         route(
-                            "newsletter.remove-article",
+                            "designer-publication.not-layout",
                             confirmAction.article.id
                         ),
                         {
@@ -133,10 +140,10 @@ export default function Index({
                         }
                     );
                     break;
-                case "addArticle":
+                case "isLayout":
                     router.post(
                         route(
-                            "newsletter.add-article",
+                            "designer-publication.is-layout",
                             confirmAction.article.id
                         ),
                         {
@@ -152,25 +159,27 @@ export default function Index({
         setConfirmAction({ type: "", article: null, show: false });
     };
 
-    const removeArticle = (article) => {
-        openActionModal(article, "removeArticle");
+    const notLayout = (article) => {
+        openActionModal(article, "notLayout");
     };
 
-    const isNewsleter = (article) => {
-        openActionModal(article, "addArticle");
+    const isLayout = (article) => {
+        openActionModal(article, "isLayout");
     };
 
     return (
-        <AdminAuthenticatedLayout
-            AdminBadgeCount={AdminBadgeCount}
+        <DesignerAuthenticatedLayout
+            DesignerBadgeCount={DesignerBadgeCount}
             user={auth.user}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="font-semiboldsm:text-sm lg:text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         List of Articles
                     </h2>
                     <div className="flex gap-4">
-                        <SecondaryButton href={route("newsletter.index")}>
+                        <SecondaryButton
+                            href={route("designer-publication.index")}
+                        >
                             Back
                         </SecondaryButton>
                     </div>
@@ -234,30 +243,14 @@ export default function Index({
                                             ))}
                                         </SelectInput>
                                     </div>
-                                    <div className="w-full">
-                                        <SelectInput
-                                            className="w-full"
-                                            defaultValue={queryParams.category}
-                                            onChange={(e) =>
-                                                handleSelectChange(
-                                                    "is_newsletter",
-                                                    e.target.value
-                                                )
-                                            }
-                                        >
-                                            <option value="">
-                                                Is Newsletter
-                                            </option>
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
-                                        </SelectInput>
-                                    </div>
                                 </div>
                                 <div>
                                     <SearchInput
                                         className="w-full"
                                         defaultValue={queryParams.title}
-                                        route={route("newsletter.articles")}
+                                        route={route(
+                                            "designer-publication.articles"
+                                        )}
                                         queryParams={queryParams}
                                         placeholder="Search Article Title"
                                         onChange={(e) =>
@@ -349,7 +342,7 @@ export default function Index({
                                                 }
                                                 sortChanged={sortChanged}
                                             >
-                                                Is Newsletter
+                                                Layout
                                             </TableHeading>
                                         </tr>
                                     </thead>
@@ -399,7 +392,7 @@ export default function Index({
                                                             // added
                                                             className="text-md text-gray-900 dark:text-gray-300"
                                                             href={route(
-                                                                "admin-newsletter.article-show",
+                                                                "designer-publication.article-show",
                                                                 article.slug
                                                             )}
                                                         >
@@ -415,38 +408,30 @@ export default function Index({
 
                                                     <td className="px-3 py-2 text-nowrap">
                                                         {article.is_newsletter !==
-                                                            "no" &&
-                                                            article.is_newsletter !==
-                                                                "added" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        removeArticle(
-                                                                            article
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
-                                                                >
-                                                                    Yes
-                                                                </button>
-                                                            )}
+                                                            "yes" && (
+                                                            <button
+                                                                onClick={() =>
+                                                                    notLayout(
+                                                                        article
+                                                                    )
+                                                                }
+                                                                className="font-medium text-teal-600 dark:text-teal-500 hover:underline mx-1"
+                                                            >
+                                                                Yes
+                                                            </button>
+                                                        )}
                                                         {article.is_newsletter !==
-                                                            "yes" &&
-                                                            article.is_newsletter !==
-                                                                "added" && (
-                                                                <button
-                                                                    onClick={() =>
-                                                                        isNewsleter(
-                                                                            article
-                                                                        )
-                                                                    }
-                                                                    className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
-                                                                >
-                                                                    NO
-                                                                </button>
-                                                            )}
-                                                        {article.is_newsletter ===
                                                             "added" && (
-                                                            <span>Added</span>
+                                                            <button
+                                                                onClick={() =>
+                                                                    isLayout(
+                                                                        article
+                                                                    )
+                                                                }
+                                                                className="font-medium text-yellow-600 dark:yellow-red-500 hover:underline mx-1"
+                                                            >
+                                                                No
+                                                            </button>
                                                         )}
                                                     </td>
                                                 </tr>
@@ -480,15 +465,11 @@ export default function Index({
                 }
             >
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 className="text-base font-bold">
-                        {confirmAction.type === "removeArticle"
-                            ? "Remove this article to newsletter?"
-                            : "Add this article to newsletter?"}
-                    </h2>
+                    <h2 className="text-base font-bold">Confirm Action</h2>
                     <p className="mt-4">
-                        {confirmAction.type === "removeArticle"
-                            ? "Are you sure you want to remove this article?"
-                            : "Are you sure you want to add this article?"}
+                        {confirmAction.type === "notLayout"
+                            ? "Are you sure this article has not been laid out yet?"
+                            : "Are you sure this article has been successfully laid out in the publication?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton
@@ -502,13 +483,11 @@ export default function Index({
                             Cancel
                         </SecondaryButton>
                         <ConfirmButton onClick={handleAction} className="ml-2">
-                            {confirmAction.type === "removeArticle"
-                                ? "Remove"
-                                : "Add"}
+                            Confirm
                         </ConfirmButton>
                     </div>
                 </div>
             </Modal>
-        </AdminAuthenticatedLayout>
+        </DesignerAuthenticatedLayout>
     );
 }

@@ -13,7 +13,7 @@ use App\Models\Comment;
 use App\Models\CommentLike;
 use App\Models\FreedomWall;
 use App\Models\FreedomWallLike;
-use App\Models\Newsletter;
+use App\Models\Publication;
 use App\Models\Rating;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -176,7 +176,7 @@ class AdminGenerateReportController extends Controller
         $totalViews = $totalViewsQuery->count();
 
         // Total newsletters
-        $totalNewslettersQuery = Newsletter::where('visibility', 'visible');
+        $totalNewslettersQuery = Publication::where('visibility', 'visible');
 
         if ($timePeriod === 'ay' && isset($dateFrom, $dateTo)) {
             $totalNewslettersQuery->whereBetween('distributed_at', [$dateFrom, $dateTo]);
