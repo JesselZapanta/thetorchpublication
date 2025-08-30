@@ -321,11 +321,11 @@ export default function Index({ auth, reportedComments, queryParams, flash, Desi
                                 </Link>
                                 <Link
                                     href={route(
-                                        "designer-review-report-newsletter.index"
+                                        "designer-review-report-publication.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
                                 >
-                                    Newsletters
+                                    Publications
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>

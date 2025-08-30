@@ -29,7 +29,7 @@ import SearchInput from "@/Components/SearchInput";
 
 export default function Index({
     auth,
-    newsletters,
+    publications,
     queryParams = null,
     flash,
     DesignerBadgeCount,
@@ -61,7 +61,7 @@ export default function Index({
         if (value === "") {
             delete queryParams[name]; // Remove the query parameter if input is empty
             router.get(
-                route("designer-review-report-newsletter.index"),
+                route("designer-review-report-publication.index"),
                 queryParams,
                 {
                     preserveState: true,
@@ -81,7 +81,7 @@ export default function Index({
             if (value.trim() === "") {
                 delete queryParams[name]; // Remove query parameter if search is empty
                 router.get(
-                    route("designer-review-report-newsletter.index"),
+                    route("designer-review-report-publication.index"),
                     {},
                     {
                         preserveState: true,
@@ -90,7 +90,7 @@ export default function Index({
             } else {
                 queryParams[name] = value; // Set query parameter for search
                 router.get(
-                    route("designer-review-report-newsletter.index"),
+                    route("designer-review-report-publication.index"),
                     queryParams,
                     {
                         preserveState: true,
@@ -104,7 +104,7 @@ export default function Index({
     const handleSelectChange = (name, value) => {
         setVisibility(value);
         queryParams[name] = value;
-        router.get(route("designer-review-report-newsletter.index"), queryParams, {
+        router.get(route("designer-review-report-publication.index"), queryParams, {
             preserveState: true,
         });
     };
@@ -121,7 +121,7 @@ export default function Index({
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("designer-review-report-newsletter.index"), queryParams);
+        router.get(route("designer-review-report-publication.index"), queryParams);
     };
 
     //select what reported content
@@ -129,8 +129,8 @@ export default function Index({
     // const handleSelectReport = (e) => {
     //     const value = e.target.value;
 
-    //     if (value === "newsletter") {
-    //         router.get(route("designer-review-report-newsletter.index"));
+    //     if (value === "publication") {
+    //         router.get(route("designer-review-report-publication.index"));
     //     } else if (value === "comment") {
     //         router.get(route("designer-review-report-comment.index"));
     //     } else if (value === "freedomWall") {
@@ -138,29 +138,29 @@ export default function Index({
     //     }
     // };
 
-    //delete report and hide newsletter and restore
+    //delete report and hide publication and restore
     const [confirmAction, setConfirmAction] = useState({
         type: "", // 'delete', 'hide', or 'report'
-        newsletter: null,
+        publication: null,
         show: false,
     });
 
-    const openActionModal = (newsletter, actionType) => {
+    const openActionModal = (publication, actionType) => {
         setConfirmAction({
             type: actionType, // 'delete', 'hide', or 'report'
-            newsletter: newsletter,
+            publication: publication,
             show: true,
         });
     };
 
     const handleAction = () => {
-        if (confirmAction.newsletter) {
+        if (confirmAction.publication) {
             switch (confirmAction.type) {
                 case "hide":
                     router.post(
                         route(
-                            "designer-review-report-newsletter.hide",
-                            confirmAction.newsletter.id
+                            "designer-review-report-publication.hide",
+                            confirmAction.publication.id
                         ),
                         {
                             preserveScroll: true,
@@ -170,8 +170,8 @@ export default function Index({
                 case "restore":
                     router.post(
                         route(
-                            "designer-review-report-newsletter.restore",
-                            confirmAction.newsletter.id
+                            "designer-review-report-publication.restore",
+                            confirmAction.publication.id
                         ),
                         {
                             preserveScroll: true,
@@ -181,8 +181,8 @@ export default function Index({
                 case "reject":
                     router.post(
                         route(
-                            "designer-review-report-newsletter.reject",
-                            confirmAction.newsletter.id
+                            "designer-review-report-publication.reject",
+                            confirmAction.publication.id
                         ),
                         {
                             preserveScroll: true,
@@ -192,8 +192,8 @@ export default function Index({
                 case "delete":
                     router.delete(
                         route(
-                            "designer-review-report-newsletter.destroy",
-                            confirmAction.newsletter.id
+                            "designer-review-report-publication.destroy",
+                            confirmAction.publication.id
                         ),
                         {
                             preserveScroll: true,
@@ -204,23 +204,23 @@ export default function Index({
                     break;
             }
         }
-        setConfirmAction({ type: "", newsletter: null, show: false });
+        setConfirmAction({ type: "", publication: null, show: false });
     };
 
-    const openHideModal = (newsletter) => {
-        openActionModal(newsletter, "hide");
+    const openHideModal = (publication) => {
+        openActionModal(publication, "hide");
     };
 
-    const openRestoreModal = (newsletter) => {
-        openActionModal(newsletter, "restore");
+    const openRestoreModal = (publication) => {
+        openActionModal(publication, "restore");
     };
 
-    const openRejectModal = (newsletter) => {
-        openActionModal(newsletter, "reject");
+    const openRejectModal = (publication) => {
+        openActionModal(publication, "reject");
     };
 
-    const openDeleteModal = (newsletter) => {
-        openActionModal(newsletter, "delete");
+    const openDeleteModal = (publication) => {
+        openActionModal(publication, "delete");
     };
 
     return (
@@ -231,21 +231,21 @@ export default function Index({
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold sm:text-sm lg:text-xl text-nowrap text-gray-800 dark:text-gray-200 leading-tight">
                         {visibility === "visible"
-                            ? "List of Reported Newsletter"
+                            ? "List of Reported Publication"
                             : visibility === "hidden"
-                            ? "List of Archive Newsletter"
-                            : // : "List of Reported/Archive Newsletter"}
-                              "List of Archive Newsletter"}
+                            ? "List of Archive Publication"
+                            : // : "List of Reported/Archive Publication"}
+                              "List of Archive Publication"}
                     </h2>
                     {/* not used */}
                     {/* <div className="flex gap-4">
                         <SelectInput
                             className="w-full"
                             // value="selectedValue"
-                            defaultValue="newsletter"
+                            defaultValue="publication"
                             onChange={handleSelectReport}
                         >
-                            <option value="newsletter">Reported Article</option>
+                            <option value="publication">Reported Article</option>
                             <option value="comment">Reported Comment</option>
                             <option value="freedomWall">
                                 Reported Freedom Wall
@@ -278,7 +278,7 @@ export default function Index({
                             <Dropdown.Content>
                                 <Link
                                     href={route(
-                                        "designer-review-report-newsletter.index"
+                                        "designer-review-report-publication.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-indigo-600 text-gray-50 transition-all duration-300 rounded hover:bg-indigo-700"
                                 >
@@ -335,11 +335,11 @@ export default function Index({
                                 </Link>
                                 <Link
                                     href={route(
-                                        "designer-review-report-newsletter.index"
+                                        "designer-review-report-publication.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
                                 >
-                                    Newsletters
+                                    Publications
                                 </Link>
                             </Dropdown.Content>
                         </Dropdown>
@@ -360,7 +360,7 @@ export default function Index({
             <ToastContainer position="bottom-right" />
             {/* 
             <pre className="text-gray-900">
-                {JSON.stringify(newsletters, null, 2)}
+                {JSON.stringify(publications, null, 2)}
             </pre> */}
 
             <div className="py-4">
@@ -373,10 +373,10 @@ export default function Index({
                                         className="w-full"
                                         defaultValue={queryParams.description}
                                         route={route(
-                                            "designer-review-report-newsletter.index"
+                                            "designer-review-report-publication.index"
                                         )}
                                         queryParams={queryParams}
-                                        placeholder="Search Newsletter"
+                                        placeholder="Search Publication"
                                         onKeyPress={(e) =>
                                             onKeyPressed("description", e)
                                         } // Trigger search on Enter key
@@ -455,45 +455,45 @@ export default function Index({
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {newsletters.data.length > 0 ? (
-                                            newsletters.data.map(
-                                                (newsletter) => (
+                                        {publications.data.length > 0 ? (
+                                            publications.data.map(
+                                                (publication) => (
                                                     <tr
                                                         //added
                                                         className="text-base text-gray-900 bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b dark:border-gray-700"
-                                                        key={newsletter.id}
+                                                        key={publication.id}
                                                     >
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.id}
+                                                            {publication.id}
                                                         </td>
                                                         <th className="px-3 py-2 text-gray-100 text-nowrap hover:underline">
                                                             <a
                                                                 href={
-                                                                    newsletter.publication_file_path
+                                                                    publication.publication_file_path
                                                                 }
                                                                 className="text-md text-gray-900 dark:text-gray-300"
                                                                 target="blank"
                                                             >
                                                                 {truncate(
-                                                                    newsletter.description,
+                                                                    publication.description,
                                                                     50
                                                                 )}
                                                             </a>
                                                         </th>
                                                         <td className="px-3 py-2 text-nowrap">
-                                                            {/* {newsletter.visibility} */}
+                                                            {/* {publication.visibility} */}
                                                             <span
                                                                 className={
                                                                     "px-2 py-1 rounded text-white " +
                                                                     VISIBILITY_CLASS_MAP[
-                                                                        newsletter
+                                                                        publication
                                                                             .visibility
                                                                     ]
                                                                 }
                                                             >
                                                                 {
                                                                     VISIBILITY_TEXT_MAP[
-                                                                        newsletter
+                                                                        publication
                                                                             .visibility
                                                                     ]
                                                                 }
@@ -501,16 +501,16 @@ export default function Index({
                                                         </td>
                                                         {/* <td className="px-3 py-2 text-nowrap">
                                                             {
-                                                                newsletter.report_count
+                                                                publication.report_count
                                                             }
                                                         </td> */}
                                                         {/* <td className="px-3 py-2 text-nowrap">
-                                                            {newsletter.visibility !==
+                                                            {publication.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openHideModal(
-                                                                            newsletter
+                                                                            publication
                                                                         )
                                                                     }
                                                                     className="font-medium text-yellow-600 dark:text-yellow-500 hover:underline mx-1"
@@ -518,12 +518,12 @@ export default function Index({
                                                                     Archive
                                                                 </button>
                                                             )}
-                                                            {newsletter.visibility !==
+                                                            {publication.visibility !==
                                                                 "visible" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRestoreModal(
-                                                                            newsletter
+                                                                            publication
                                                                         )
                                                                     }
                                                                     className="font-medium text-teal-600 dark:teal-red-500 hover:underline mx-1"
@@ -532,12 +532,12 @@ export default function Index({
                                                                 </button>
                                                             )}
 
-                                                            {newsletter.visibility !==
+                                                            {publication.visibility !==
                                                                 "hidden" && (
                                                                 <button
                                                                     onClick={() =>
                                                                         openRejectModal(
-                                                                            newsletter
+                                                                            publication
                                                                         )
                                                                     }
                                                                     className="font-medium text-indigo-600 dark:indigo-red-500 hover:underline mx-1"
@@ -550,7 +550,7 @@ export default function Index({
                                                                 <button
                                                                     onClick={() =>
                                                                         openDeleteModal(
-                                                                            newsletter
+                                                                            publication
                                                                         )
                                                                     }
                                                                     className="font-medium text-red-600 dark:red-red-500 hover:underline mx-1"
@@ -569,12 +569,12 @@ export default function Index({
                                                                     </DropdownAction.Trigger>
 
                                                                     <DropdownAction.Content>
-                                                                        {newsletter.visibility !==
+                                                                        {publication.visibility !==
                                                                             "hidden" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openHideModal(
-                                                                                        newsletter
+                                                                                        publication
                                                                                     )
                                                                                 }
                                                                             >
@@ -583,12 +583,12 @@ export default function Index({
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {newsletter.visibility !==
+                                                                        {publication.visibility !==
                                                                             "visible" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openRestoreModal(
-                                                                                        newsletter
+                                                                                        publication
                                                                                     )
                                                                                 }
                                                                             >
@@ -597,12 +597,12 @@ export default function Index({
                                                                             </DropdownAction.Btn>
                                                                         )}
 
-                                                                        {newsletter.visibility !==
+                                                                        {publication.visibility !==
                                                                             "hidden" && (
                                                                             <DropdownAction.Btn
                                                                                 onClick={() =>
                                                                                     openRejectModal(
-                                                                                        newsletter
+                                                                                        publication
                                                                                     )
                                                                                 }
                                                                             >
@@ -615,12 +615,12 @@ export default function Index({
                                                                             .user
                                                                             .role ===
                                                                             "admin" &&
-                                                                            newsletter.visibility ===
+                                                                            publication.visibility ===
                                                                                 "hidden" && (
                                                                                 <DropdownAction.Btn
                                                                                     onClick={() =>
                                                                                         openDeleteModal(
-                                                                                            newsletter
+                                                                                            publication
                                                                                         )
                                                                                     }
                                                                                 >
@@ -649,7 +649,7 @@ export default function Index({
                                 </table>
                             </div>
                             <Pagination
-                                links={newsletters.meta.links}
+                                links={publications.meta.links}
                                 queryParams={queryParams}
                             />
                         </div>
@@ -675,12 +675,12 @@ export default function Index({
                     </h2>
                     <p className="mt-4">
                         {confirmAction.type === "hide"
-                            ? "Are you sure you want to archive this newsletter?"
+                            ? "Are you sure you want to archive this publication?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to restore this archive newsletters?"
+                            ? "Are you sure you want to restore this archive publications?"
                             : confirmAction.type === "restore"
-                            ? "Are you sure you want to reject this reported newsletter?"
-                            : "Are you sure you want to permanently delete this archive newsletter?"}
+                            ? "Are you sure you want to reject this reported publication?"
+                            : "Are you sure you want to permanently delete this archive publication?"}
                     </p>
                     <div className="mt-4 flex justify-end">
                         <SecondaryButton

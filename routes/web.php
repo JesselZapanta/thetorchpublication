@@ -343,12 +343,12 @@ Route::middleware(['auth', 'designer', 'verified', 'userStatus'])->group(functio
     Route::post('/designer-review-report-freedom-wall/{id}/reject', [DesignerReviewReport::class, 'rejectFreedomWallReport'])->name('designer-review-report-freedom-wall.reject');
     Route::delete('/designer-review-report-freedom-wall/{id}/destroy', [DesignerReviewReport::class, 'destroyFreedomWall'])->name('designer-review-report-freedom-wall.destroy');
 
-    //newsletter archive
-    Route::get('/designer-review-report-newsletter', [DesignerReviewReport::class, 'newsletter'])->name('designer-review-report-newsletter.index');
-    Route::post('/designer-review-report-newsletter/{id}/hide', [DesignerReviewReport::class, 'hideNewsletter'])->name('designer-review-report-newsletter.hide');
-    Route::post('/designer-review-report-newsletter/{id}/restore', [DesignerReviewReport::class, 'restoreNewsletter'])->name('designer-review-report-newsletter.restore');
-    Route::post('/designer-review-report-newsletter/{id}/reject', [DesignerReviewReport::class, 'rejectNewsletterReport'])->name('designer-review-report-newsletter.reject');
-    Route::delete('/designer-review-report-newsletter/{id}/destroy', [DesignerReviewReport::class, 'destroyNewsletter'])->name('designer-review-report-newsletter.destroy');
+    //publication archive
+    Route::get('/designer-review-report-publication', [DesignerReviewReport::class, 'publication'])->name('designer-review-report-publication.index');
+    Route::post('/designer-review-report-publication/{id}/hide', [DesignerReviewReport::class, 'hidePublication'])->name('designer-review-report-publication.hide');
+    Route::post('/designer-review-report-publication/{id}/restore', [DesignerReviewReport::class, 'restorePublication'])->name('designer-review-report-publication.restore');
+    Route::post('/designer-review-report-publication/{id}/reject', [DesignerReviewReport::class, 'rejectPublicationReport'])->name('designer-review-report-publication.reject');
+    Route::delete('/designer-review-report-publication/{id}/destroy', [DesignerReviewReport::class, 'destroyPublication'])->name('designer-review-report-publication.destroy');
 });
 
 // For Student and Student Contributor
