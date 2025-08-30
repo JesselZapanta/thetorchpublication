@@ -8,15 +8,15 @@ import { useEffect } from "react";
 
 
 
-export default function NewsletterCard({ newsletter }) {
+export default function PublicationCard({ publication }) {
     const incrementViews = () => {
         router.post(
-            // `/articles/${newsletter.id}/increment-views`,
+            // `/articles/${publication.id}/increment-views`,
             {},
             {
                 preserveScroll: true,
                 // onSuccess: () => {
-                //     router.visit(route("newsletter.read", newsletter.id));
+                //     router.visit(route("publication.read", publication.id));
                 // },
             }
         );
@@ -42,24 +42,30 @@ export default function NewsletterCard({ newsletter }) {
     return (
         <>
             {/* <pre className="text-gray-900">
-                {JSON.stringify(newsletter, null, 2)}
+                {JSON.stringify(publication, null, 2)}
             </pre> */}
             <div data-aos="fade-up">
                 <div className="overflow-hidden rounded-xl h-96 shadow-lg">
-                    <a href={newsletter.publication_file_path} target="blank">
+                    <a href={publication.publication_file_path} target="blank">
                         <img
-                            src={newsletter.publication_thumbnail_image_path}
+                            src={publication.publication_thumbnail_image_path}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = "/images/default/article.png";//todo
+                                e.target.src = "/images/default/article.png"; //todo
                             }}
-                            alt={newsletter.description}
+                            alt={publication.description}
                         />
                     </a>
                 </div>
                 <p className="block mt-2 text-center">
-                    {truncate(newsletter?.description, 40)}
+                    {truncate(publication?.description, 40)}
+
+                    {publication?.category && (
+                        <p className="block italic uppercase text-center">
+                            ({truncate(publication.category, 40)})
+                        </p>
+                    )}
                 </p>
             </div>
         </>

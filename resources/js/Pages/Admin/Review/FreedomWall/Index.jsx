@@ -336,11 +336,11 @@ export default function Index({
                                 </Link>
                                 <Link
                                     href={route(
-                                        "admin-review-report-newsletter.index"
+                                        "admin-review-report-publication.index"
                                     )}
                                     className="px-4 py-2 flex items-center text-nowrap bg-amber-600 text-gray-50 transition-all duration-300 rounded hover:bg-amber-700"
                                 >
-                                    Newsletters
+                                    Publications
                                 </Link>
                                 <Link
                                     href={route("admin-archive-task.index")}

@@ -7,7 +7,7 @@ use App\Http\Resources\AcademicYearResource;
 use App\Http\Resources\HomeArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
-use App\Http\Resources\HomeNewsletterResource;
+use App\Http\Resources\PublicationResource;
 use App\Http\Resources\MemberResource;
 use App\Http\Resources\NewsletterResource;
 use App\Models\AcademicYear;
@@ -76,7 +76,7 @@ class HomeController extends Controller
                                 ->limit(12)
                                 ->get();
 
-        $latestNewsletter = Publication::orderBy('distributed_at', 'DESC')
+        $latestPublication = Publication::orderBy('distributed_at', 'DESC')
                                 ->where('visibility', 'visible')
                                 ->where('status', 'distributed')
                                 ->limit(4)
@@ -87,7 +87,7 @@ class HomeController extends Controller
             'featuredArticle' => $featuredArticle ? new HomeArticleResource($featuredArticle) : null,
             'topArticles' => HomeArticleResource::collection($topArticles),
             'latestArticles' => HomeArticleResource::collection($latestArticles),
-            'latestNewsletter' => HomeNewsletterResource::collection($latestNewsletter),
+            'latestPublication' => PublicationResource::collection($latestPublication),
         ]);
     }
 
@@ -259,7 +259,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function newsletter(Request $request)
+    public function publication(Request $request)
     {
         $categories = Category::where('status', 'active')->limit(5)->get();
 
@@ -267,6 +267,12 @@ class HomeController extends Controller
                                 ->where('visibility', 'visible');
 
         $sort = $request->input('sort', 'date_desc');
+
+        //do this
+        if ($request->filled('category')) {
+        $query->where('category', $request->input('category'));
+    }
+
 
         switch($sort){
             case 'date_desc':
@@ -284,9 +290,9 @@ class HomeController extends Controller
 
         $newsletters = $query->paginate(15);//adjust if needed
 
-        return inertia('Newsletter', [
+        return inertia('Publication', [
             'categories' =>  CategoryResource::collection($categories),
-            'newsletters' =>  NewsletterResource::collection($newsletters),
+            'publications' =>  NewsletterResource::collection($newsletters),
         ]);
     }
 }

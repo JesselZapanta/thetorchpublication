@@ -71,6 +71,7 @@ class AdminPublicationController extends Controller
         //         ->whereIn('status', ['pending', 'approved', 'revision', 'distributed'])
         //         ->where('visibility', 'visible'); // Ensure visibility check here as well
         //     })
+        
         $publications = $query->where('visibility', 'visible')
         ->where(function ($query) use ($id) {
             $query->where('layout_by', $id)

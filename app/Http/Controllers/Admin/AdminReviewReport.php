@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\FreedomWallResource;
-use App\Http\Resources\NewsletterResource;
+use App\Http\Resources\PublicationResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Article;
 use App\Models\Comment;
@@ -406,9 +406,9 @@ class AdminReviewReport extends Controller
         return to_route('admin-review-report-freedom-wall.index')->with(['success' => 'Delete successfully.']);
     }
 
-     //=====================================Newsletter=========================================//
+     //=====================================Publication=========================================//
 
-    public function newsletter()
+    public function publication()
     {   
 
         $query = Publication::query();
@@ -437,82 +437,81 @@ class AdminReviewReport extends Controller
         });
 
         // Apply sorting
-        $newsletters = $query->orderBy($sortField, $sortDirection)
+        $publications = $query->orderBy($sortField, $sortDirection)
             ->where('visibility', 'hidden')
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia('Admin/Review/Newsletter/Index', [
-            'newsletters' => NewsletterResource::collection($newsletters),
+        return inertia('Admin/Review/Publication/Index', [
+            'publications' => PublicationResource::collection($publications),
             'queryParams' => request()->query() ? : null,
         ]);
     }
 
-    public function hideNewsletter($id)
+    public function hidePublication($id)
     {
         // dd($id);
-        $newsletter = Publication::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->update(['archive_by' => Auth::user()->id ]);
-        $newsletter->update(['visibility' => 'hidden']);
+        $publication->update(['archive_by' => Auth::user()->id ]);
+        $publication->update(['visibility' => 'hidden']);
         
 
-        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Archive successfully.']);
+        return to_route('admin-review-report-publication.index')->with(['success' => 'Archive successfully.']);
     }
-    public function restoreNewsletter($id)
+    public function restorePublication($id)
     {
-        // dd('dksa;l');
-        $newsletter = Publication::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->update(['archive_by' => null ]);
-        $newsletter->update(['visibility' => 'visible']);
+        $publication->update(['archive_by' => null ]);
+        $publication->update(['visibility' => 'visible']);
 
-        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Restore successfully.']);
+        return to_route('admin-review-report-publication.index')->with(['success' => 'Restore successfully.']);
     }
 
-    public function rejectNewsletterReport($id)
+    public function rejectPublicationReport($id)
     {
-        $newsletter = Publication::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->update(['visibility' => 'visible']);
-        $newsletter->update(['report_count' => 0]);
+        $publication->update(['visibility' => 'visible']);
+        $publication->update(['report_count' => 0]);
 
-        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Reject successfully.']);
+        return to_route('admin-review-report-publication.index')->with(['success' => 'Reject successfully.']);
     }
 
-    public function destroyNewsletter($id)
+    public function destroyPublication($id)
     {
         // dd($id);
-        $newsletter = Publication::findOrFail($id);
+        $publication = Publication::findOrFail($id);
 
-        if(!$newsletter){
-            return back()->with('error', 'Newsletter not found.');
+        if(!$publication){
+            return back()->with('error', 'Publication not found.');
         }
 
-        $newsletter->delete();
+        $publication->delete();
 
-        if ($newsletter->publication_thumbnail_image_path) {
+        if ($publication->publication_thumbnail_image_path) {
             // Delete the specific old image file
-            Storage::disk('public')->delete($newsletter->publication_thumbnail_image_path);
+            Storage::disk('public')->delete($publication->publication_thumbnail_image_path);
         }
 
-        if ($newsletter->publication_file_path) {
+        if ($publication->publication_file_path) {
             // Delete the specific old  file
-            Storage::disk('public')->delete($newsletter->publication_file_path);
+            Storage::disk('public')->delete($publication->publication_file_path);
         }   
-        return to_route('admin-review-report-newsletter.index')->with(['success' => 'Delete successfully.']);
+        return to_route('admin-review-report-publication.index')->with(['success' => 'Delete successfully.']);
     }
 
     //=====================================Task=========================================//

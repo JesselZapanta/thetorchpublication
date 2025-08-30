@@ -9,7 +9,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect, useState } from "react";
 
-export default function Newsletter({ auth, categories, newsletters }) {
+export default function Publication({ auth, categories, publications }) {
     useEffect(() => {
         AOS.init({
             duration: 1000, // Animation duration in ms
@@ -17,8 +17,26 @@ export default function Newsletter({ auth, categories, newsletters }) {
         });
     }, []);
 
+    const [category, setCategory] = useState("");
     const [sort, setSort] = useState("");
     const [search, setSearch] = useState("");
+
+    // for sorting
+    const handleCategoryChange = (e) => {
+        const selectedValue = e.target.value;
+        setCategory(selectedValue);
+
+        router.get(
+            route("home.publication"),
+            {
+                category: selectedValue,
+                search,
+            },
+            {
+                preserveState: true,
+            }
+        );
+    };
 
     // for sorting
     const handleSortChange = (e) => {
@@ -26,7 +44,7 @@ export default function Newsletter({ auth, categories, newsletters }) {
         setSort(selectedValue);
 
         router.get(
-            route("home.newsletter"),
+            route("home.publication"),
             {
                 sort: selectedValue,
                 search,
@@ -44,7 +62,7 @@ export default function Newsletter({ auth, categories, newsletters }) {
 
         if (value === "") {
             router.get(
-                route("home.newsletter"),
+                route("home.publication"),
                 {
                     sort,
                     search: value,
@@ -61,7 +79,7 @@ export default function Newsletter({ auth, categories, newsletters }) {
             // Check for the correct key
             e.preventDefault();
             router.get(
-                route("home.newsletter"),
+                route("home.publication"),
                 {
                     sort,
                     search, // Trigger search with current search state
@@ -103,21 +121,13 @@ export default function Newsletter({ auth, categories, newsletters }) {
                         <div className="w-full">
                             <SelectInput
                                 className="w-full"
-                                value={sort}
-                                onChange={handleSortChange} // Handle the change
+                                value={category}
+                                onChange={handleCategoryChange} // Handle the change
                             >
-                                <option value="date_desc">
-                                    All Publications
-                                </option>
-                                <option value="date_desc">
-                                    Newsletter
-                                </option>
-                                <option value="date_asc">
-                                    Folios
-                                </option>
-                                <option value="date_asc">
-                                    Tabliod
-                                </option>
+                                <option value="">All Publications</option>
+                                <option value="newsletter">Newsletter</option>
+                                <option value="folio">Folio</option>
+                                <option value="tabloid">Tabloid</option>
                             </SelectInput>
                         </div>
                         <div className="w-full">
@@ -137,33 +147,33 @@ export default function Newsletter({ auth, categories, newsletters }) {
                         <div className="w-full col-span-2">
                             <SearchInput
                                 type="text"
-                                placeholder="Search newsletters..."
+                                placeholder="Search publications..."
                                 value={search}
                                 onChange={handleSearchChange}
                                 onKeyPress={handleKeyPress}
                                 className="w-full"
                                 queryParams={{ sort, search }}
-                                route={route("home.newsletter")}
+                                route={route("home.publication")}
                             />
                         </div>
                     </div>
                 </div>
                 <p></p>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-4 overflow-hidden">
-                    {newsletters.data.length > 0 ? (
+                    {publications.data.length > 0 ? (
                         <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {newsletters.data.map((newsletter) => (
+                            {publications.data.map((publication) => (
                                 <div data-aos="fade-up">
                                     <div className="overflow-hidden rounded-xl h-96 shadow-lg">
                                         <a
                                             href={
-                                                newsletter.publication_file_path
+                                                publication.publication_file_path
                                             }
                                             target="blank"
                                         >
                                             <img
                                                 src={
-                                                    newsletter.publication_thumbnail_image_path
+                                                    publication.publication_thumbnail_image_path
                                                 }
                                                 className="w-full h-full object-cover"
                                                 onError={(e) => {
@@ -171,19 +181,34 @@ export default function Newsletter({ auth, categories, newsletters }) {
                                                     e.target.src =
                                                         "/images/default/article.png";
                                                 }}
-                                                alt={newsletter.description}
+                                                alt={publication.description}
                                             />
                                         </a>
                                     </div>
-                                    <p className="block mt-2 text-center">
-                                        {truncate(newsletter?.description, 40)}
-                                    </p>
+                                    <div>
+                                        <p className="block mt-2 text-center">
+                                            {truncate(
+                                                publication?.description,
+                                                40
+                                            )}
+                                        </p>
+                                        {publication?.category && (
+                                            <p className="block italic uppercase text-center">
+                                                (
+                                                {truncate(
+                                                    publication.category,
+                                                    40
+                                                )}
+                                                )
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
                         <p className="text-gray-400 text-center">
-                            No newsletters found.
+                            No publications found.
                         </p>
                     )}
                 </div>

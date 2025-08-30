@@ -1,7 +1,7 @@
 import ArticleCard from "@/Components/ArticleCard";
 import FeaturedArticle from "@/Components/FeaturedArticle";
 import LatestArticles from "@/Components/LatestArticles";
-import NewsletterCard from "@/Components/NewsletterCard";
+import NewsletterCard from "@/Components/PublicationCard";
 import TopArticles from "@/Components/TopArticles";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head } from "@inertiajs/react";

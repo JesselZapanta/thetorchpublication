@@ -1,7 +1,7 @@
 import ArticleCard from "@/Components/ArticleCard";
 import FeaturedArticle from "@/Components/FeaturedArticle";
 import LatestArticles from "@/Components/LatestArticles";
-import NewsletterCard from "@/Components/NewsletterCard";
+import PublicationCard from "@/Components/PublicationCard";
 import TopArticles from "@/Components/TopArticles";
 import UnauthenticatedLayout from "@/Layouts/UnauthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -17,7 +17,7 @@ export default function Welcome({
     featuredArticle,
     topArticles,
     latestArticles,
-    latestNewsletter,
+    latestPublication,
 }) {
 
     useEffect(() => {
@@ -85,20 +85,20 @@ export default function Welcome({
                     className="block text-start  text-2xl text-indigo-500 py-2"
                     data-aos="fade-up"
                 >
-                    Latest Release Newsletters
+                    Latest Release Publications
                 </h5>
 
                 <div data-aos="fade-up">
                     <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* <LatestArticles latestArticles={latestArticles} /> */}
-                        {latestNewsletter.data.map((newsletter) => (
-                            <NewsletterCard
-                                key={newsletter.id}
-                                newsletter={newsletter}
+                        {latestPublication.data.map((publication) => (
+                            <PublicationCard
+                                key={publication.id}
+                                publication={publication}
                             />
                         ))}
                     </div>
-                    {latestNewsletter.data.length === 0 && (
+                    {latestPublication.data.length === 0 && (
                         <p className="text-center">No latest release</p>
                     )}
                 </div>
@@ -106,7 +106,6 @@ export default function Welcome({
                 {/* <pre className="text-gray-900">
                     {JSON.stringify(featuredArticle, null, 2)}
                 </pre> */}
-                
             </div>
         </UnauthenticatedLayout>
     );

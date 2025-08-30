@@ -95,7 +95,7 @@ Route::get('/home/about-us', [HomeController::class, 'about'])->name('about-us')
 
 Route::post('/articles/{slug}/increment-views', [ArticleViewsController::class, 'incrementViews']);
 
-Route::get('/home/newsletter', [HomeController::class, 'newsletter'])->name('home.newsletter');
+Route::get('/home/publication', [HomeController::class, 'publication'])->name('home.publication');
 
 
 //Get Ratings
@@ -196,12 +196,12 @@ Route::middleware(['auth','admin','verified', 'userStatus' ])->group(function() 
     Route::post('/admin-review-report-freedom-wall/{id}/reject', [AdminReviewReport::class, 'rejectFreedomWallReport'])->name('admin-review-report-freedom-wall.reject');
     Route::delete('/admin-review-report-freedom-wall/{id}/destroy', [AdminReviewReport::class, 'destroyFreedomWall'])->name('admin-review-report-freedom-wall.destroy');
 
-    //newsletter archive
-    Route::get('/admin-review-report-newsletter', [AdminReviewReport::class, 'newsletter'])->name('admin-review-report-newsletter.index');
-    Route::post('/admin-review-report-newsletter/{id}/hide', [AdminReviewReport::class, 'hideNewsletter'])->name('admin-review-report-newsletter.hide');
-    Route::post('/admin-review-report-newsletter/{id}/restore', [AdminReviewReport::class, 'restoreNewsletter'])->name('admin-review-report-newsletter.restore');
-    Route::post('/admin-review-report-newsletter/{id}/reject', [AdminReviewReport::class, 'rejectNewsletterReport'])->name('admin-review-report-newsletter.reject');
-    Route::delete('/admin-review-report-newsletter/{id}/destroy', [AdminReviewReport::class, 'destroyNewsletter'])->name('admin-review-report-newsletter.destroy');
+    //publication archive
+    Route::get('/admin-review-report-publication', [AdminReviewReport::class, 'publication'])->name('admin-review-report-publication.index');
+    Route::post('/admin-review-report-publication/{id}/hide', [AdminReviewReport::class, 'hidePublication'])->name('admin-review-report-publication.hide');
+    Route::post('/admin-review-report-publication/{id}/restore', [AdminReviewReport::class, 'restorePublication'])->name('admin-review-report-publication.restore');
+    Route::post('/admin-review-report-publication/{id}/reject', [AdminReviewReport::class, 'rejectPublicationReport'])->name('admin-review-report-publication.reject');
+    Route::delete('/admin-review-report-publication/{id}/destroy', [AdminReviewReport::class, 'destroyPublication'])->name('admin-review-report-publication.destroy');
 
       //task archive
     Route::get('/admin-archive-task', [AdminReviewReport::class, 'task'])->name('admin-archive-task.index');
